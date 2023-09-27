@@ -1,6 +1,6 @@
 import React from 'react';
-import Mainpage from '@/components/mainpage/mainpage';
-import Header from '@/components/common/header';
+import Mainpage from '@/components/mainpage/Mainpage';
+import Header from '@/components/common/Header';
 
 export default function page() {
   return (
