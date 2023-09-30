@@ -30,5 +30,6 @@
     "prettier": "^3.0.3",
     "tailwindcss": "latest",
     "typescript": "latest"
-  }
+  },
+  "packageManager": "yarn@3.6.3"
 }
