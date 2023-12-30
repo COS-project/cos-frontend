@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default function StopWatch() {
-  return <div>타이머입니다.</div>;
+  return <div>스톱워치 페이지</div>;
 }

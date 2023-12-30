@@ -9,7 +9,8 @@ export default function NavBar() {
       <div className="fixed bottom-0 flex justify-evenly items-center gap-[0.8rem] pb-[0.5rem]">
         {MENU_LIST.map((menu) => {
           return (
-            <Link href={menu.path} key={menu.id}>
+            <Link href={menu.path} key={menu.id} className="w-[4rem] flex flex-col justify-center items-center">
+              <menu.Icon />
               <span>{menu.name}</span>
             </Link>
           );
