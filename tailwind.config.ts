@@ -33,7 +33,8 @@ const config: Config = {
       h2: '20px', // Title 1
       h3: '18px', // Title 2, 3
       h4: '16px', // Title 4, 5, SubTitle 1, Body1
-      h5: '14px', // SubTitle 2, Body2, Button
+      h5: '15px',
+      h6: '14px', // SubTitle 2, Body2, Button
     },
   },
   plugins: [],
