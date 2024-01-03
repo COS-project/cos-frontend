@@ -1,42 +1,37 @@
 'use client';
 
-import { forwardRef, useState } from 'react';
+import React from 'react';
 
-interface CertificationClassificationItemProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>{
-
+interface CertificationClassificationItemProps {
+  className: string;
+  onClickItem?: () => void;
+  icon: string; //TODO: svg 변경예정
+  children: React.ReactNode;
+  isMoveButton?: boolean;
+  onClickMoveButton?: () => void;
 }
 
-const CertificationClassificationItem =
-  forwardRef<HTMLButtonElement, CertificationClassificationItemProps>(({
-                                                             children,
-                                                             type = "button",
-                                                             ...prop
-                                                           }, ref)=> {
-    const [isCheck, setIsCheck] = useState<boolean>(false);
-    const onClick = () => {
-      setIsCheck(!isCheck);
-    };
-    return (
-      <button
-        className={
-          isCheck
-            ? 'w-full h-16 bg-gray0 rounded-full border-[1px] border-second'
-            : 'w-full h-16 bg-gray0 rounded-full '
-        }
-        ref={ref}
-        onClick={onClick}
-        type={type}
-        {...prop}>
-        <div className="flex items-center gap-x-3 p-2">
-          <div className="w-12 h-12 rounded-full bg-white">
-            {/*TODO: 아이콘*/}
-            {isCheck ? <div>✅️</div> : <div>✔</div>}
-          </div>
-          <div className="text-h4 font-semibold">{children}</div>
+const CertificationClassificationItem: React.FC<CertificationClassificationItemProps> = ({
+  className,
+  onClickItem,
+  icon,
+  children,
+  isMoveButton = false,
+  onClickMoveButton,
+}) => {
+  return (
+    <button className={className} onClick={onClickItem}>
+      <div className="relative flex items-center gap-x-3 p-2">
+        <div className="left-2 w-12 h-12 rounded-full bg-white">
+          {/*TODO: 아이콘*/}
+          {icon}
         </div>
-      </button>
-    );
-  },
-);
-  export default CertificationClassificationItem;
+        <div className="text-h4 font-semibold">{children}</div>
+        <div className="absolute right-4" onClick={onClickMoveButton}>
+          {isMoveButton ? '>' : null}
+        </div>
+      </div>
+    </button>
+  );
+};
+export default CertificationClassificationItem;

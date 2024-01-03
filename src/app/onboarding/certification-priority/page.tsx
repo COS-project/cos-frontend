@@ -4,20 +4,19 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
-import CertificationClassificationItem from '@/app/(main)/mypage/components/CertificationClassificationItem';
 import DoneButton from '@/app/(main)/mypage/components/DoneButton';
 
 const CertificationPriority = () => {
-  //다음 페이지 이동
   const router = useRouter();
-  //자격증 데이터
+  // 자격증 데이터
+  // TODO: 백엔드 API 받으면 변경될 예정
   const [certifications, setCertifications] = useState([
-    { id: "1", title: "컴퓨터활용능력시험 1급" },
-    { id: "2", title: "컴퓨터활용능력시험 2급" },
-    { id: "3", title: "정보처리기사" },
+    { id: '1', title: '컴퓨터활용능력시험 1급' },
+    { id: '2', title: '컴퓨터활용능력시험 2급' },
+    { id: '3', title: '정보처리기사' },
   ]);
 
-  //완료 버튼이 눌리면 primary컬러로 바뀌도록 하는 state
+  //완료 버튼이 눌리면 primary 컬러로 바뀌도록 하는 state
   const [isClick, setIsClick] = useState(false);
 
   //완료버튼 눌렀을 시 다음페이지로 이동되는 함수
@@ -25,7 +24,8 @@ const CertificationPriority = () => {
     setIsClick(!isClick);
     router.push('/home');
   };
-  //이전버튼 눌렀을 시 다음페이지로 이동되는 함수
+
+  //이전버튼 눌렀을 시 이전페이지로 이동되는 함수
   const onBeforeClick = () => {
     router.push('/onboarding/choose-certification');
   };
@@ -48,6 +48,7 @@ const CertificationPriority = () => {
       <div>
         <button onClick={onBeforeClick}>이전</button>
       </div>
+
       {/* 온보딩 멘트 */}
       <div className="grid gap-y-8 m-4">
         <div className="grid">
@@ -61,16 +62,12 @@ const CertificationPriority = () => {
         <DragDropContext onDragEnd={handleChange}>
           <Droppable droppableId="todos">
             {(provided) => (
-              <div
-                className="grid gap-y-2"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-
-              >
+              <div className="grid gap-y-2" ref={provided.innerRef} {...provided.droppableProps}>
                 {certifications.map(({ id, title }, index) => (
                   <Draggable key={id} draggableId={id} index={index}>
                     {(provided) => (
-                      <div className="w-full h-16 bg-gray0 rounded-full"
+                      <div
+                        className="w-full h-16 bg-gray0 rounded-full"
                         ref={provided.innerRef}
                         {...provided.dragHandleProps}
                         {...provided.draggableProps}>
@@ -95,7 +92,7 @@ const CertificationPriority = () => {
       {/* 완료 버튼 */}
       <DoneButton onClick={onAfterClick} isClick={isClick}>
         완료
-      </ DoneButton>
+      </DoneButton>
     </div>
   );
 };
