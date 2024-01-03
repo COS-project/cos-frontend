@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import DoneButton from '@/app/(main)/mypage/components/DoneButton';
@@ -74,6 +74,7 @@ const CertificationPriority = () => {
                         <div>
                           <div className="flex items-center gap-x-3 p-2">
                             <div className="w-12 h-12 rounded-full bg-white">
+                              <div className="p-[10px]"><Icon /></div>
                             </div>
                             <div className="text-h4 font-semibold">{title}</div>
                           </div>
@@ -97,3 +98,14 @@ const CertificationPriority = () => {
   );
 };
 export default CertificationPriority;
+
+function Icon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M5.16024 20.1474C5.0204 20.1474 4.90317 20.0997 4.80855 20.0042C4.71396 19.9088 4.66666 19.7905 4.66666 19.6493C4.66666 19.5082 4.71396 19.3914 4.80855 19.299C4.90317 19.2065 5.0204 19.1602 5.16024 19.1602H22.8397C22.9796 19.1602 23.0968 19.208 23.1914 19.3034C23.286 19.3989 23.3333 19.5172 23.3333 19.6583C23.3333 19.7994 23.286 19.9162 23.1914 20.0087C23.0968 20.1012 22.9796 20.1474 22.8397 20.1474H5.16024ZM5.16024 14.4936C5.0204 14.4936 4.90317 14.4458 4.80855 14.3504C4.71396 14.2549 4.66666 14.1366 4.66666 13.9955C4.66666 13.8544 4.71396 13.7376 4.80855 13.6451C4.90317 13.5526 5.0204 13.5064 5.16024 13.5064H22.8397C22.9796 13.5064 23.0968 13.5541 23.1914 13.6496C23.286 13.745 23.3333 13.8633 23.3333 14.0044C23.3333 14.1455 23.286 14.2623 23.1914 14.3548C23.0968 14.4473 22.9796 14.4936 22.8397 14.4936H5.16024ZM5.16024 8.83971C5.0204 8.83971 4.90317 8.79198 4.80855 8.6965C4.71396 8.60105 4.66666 8.48277 4.66666 8.34166C4.66666 8.20054 4.71396 8.08373 4.80855 7.99126C4.90317 7.89878 5.0204 7.85254 5.16024 7.85254H22.8397C22.9796 7.85254 23.0968 7.90027 23.1914 7.99572C23.286 8.09117 23.3333 8.20946 23.3333 8.35059C23.3333 8.4917 23.286 8.60849 23.1914 8.70097C23.0968 8.79347 22.9796 8.83971 22.8397 8.83971H5.16024Z"
+        fill="#0D0E10"
+      />
+    </svg>
+  );
+}
