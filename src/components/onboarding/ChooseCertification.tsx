@@ -1,12 +1,13 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 import DoneButton from '@/components/onboarding/DoneButton';
+import { ChooseCertificationProps } from '@/types/global';
 
-const ChooseCertification = () => {
+const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBefore }) => {
   const router = useRouter();
 
   // 완료 버튼이 눌리면 primary 컬러로 바뀌도록 하는 state
@@ -15,17 +16,6 @@ const ChooseCertification = () => {
   // CertificationClassificationItem 컴포넌트 눌렀는지 안눌렀는지 체크하는 State
   // TODO: 백엔드에서 true, false로 받으면 같이 누르는거 해결할 예정.
   const [isCheck, setIsCheck] = useState<boolean>(false);
-
-  //완료버튼 눌렀을 시 다음페이지로 이동되는 함수
-  const onAfterClick = () => {
-    setIsClick(!isClick);
-    router.push('/onboarding/certification-priority');
-  };
-
-  // 이전버튼 눌렀을 시 다음페이지로 이동되는 함수
-  const onBeforeClick = () => {
-    router.push('/');
-  };
 
   // CertificationClassificationItem 컴포넌트 클릭했는지 안했는지 판별하는 함수
   const onClick = () => {
@@ -67,7 +57,7 @@ const ChooseCertification = () => {
     <div>
       {/* TODO: Header */}
       <div className="flex justify-between">
-        <button onClick={onBeforeClick}>이전</button>
+        <button onClick={onBefore}>이전</button>
       </div>
 
       {/* 온보딩 멘트 */}
@@ -110,7 +100,7 @@ const ChooseCertification = () => {
       </div>
 
       {/* 완료 버튼 */}
-      <DoneButton onClick={onAfterClick} isClick={isClick}>
+      <DoneButton onClick={onNext} isClick={isClick}>
         완료
       </DoneButton>
     </div>

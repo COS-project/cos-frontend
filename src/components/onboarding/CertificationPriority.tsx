@@ -5,9 +5,9 @@ import React, { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import DoneButton from '@/components/onboarding/DoneButton';
-import { LicenseInfo } from '@/types/global';
+import { CertificationPriorityProps, LicenseInfo } from '@/types/global';
 
-const CertificationPriority = () => {
+const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, onBefore }) => {
   const router = useRouter();
 
   // 자격증 데이터
@@ -20,17 +20,6 @@ const CertificationPriority = () => {
 
   //완료 버튼이 눌리면 primary 컬러로 바뀌도록 하는 state
   const [isClick, setIsClick] = useState<boolean>(false);
-
-  //완료버튼 눌렀을 시 다음페이지로 이동되는 함수
-  const onAfterClick = () => {
-    setIsClick(!isClick);
-    router.push('/home');
-  };
-
-  //이전버튼 눌렀을 시 이전페이지로 이동되는 함수
-  const onBeforeClick = () => {
-    router.push('/onboarding/choose-certification');
-  };
 
   //드레그 엔 드롭 순서 저장하는 함수
   const handleChange = (result) => {
@@ -48,7 +37,7 @@ const CertificationPriority = () => {
     <div>
       {/* TODO: Header */}
       <div>
-        <button onClick={onBeforeClick}>이전</button>
+        <button onClick={onBefore}>이전</button>
       </div>
 
       {/* 온보딩 멘트 */}
@@ -95,7 +84,7 @@ const CertificationPriority = () => {
       </div>
 
       {/* 완료 버튼 */}
-      <DoneButton onClick={onAfterClick} isClick={isClick}>
+      <DoneButton onClick={onNext} isClick={isClick}>
         완료
       </DoneButton>
     </div>

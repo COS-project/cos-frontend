@@ -7,6 +7,18 @@ export interface MenuList {
   path: string;
 }
 
+// 온보딩 관심 자격증 선택 props
+export interface CertificationPriorityProps {
+  onNext?: () => void;
+  onBefore?: () => void;
+}
+
+// 온보딩 관심 자격증 우선순위 선택 props
+export interface ChooseCertificationProps {
+  onNext?: () => void;
+  onBefore?: () => void;
+}
+
 // 온보딩 CertificationClassificationItem 컴포넌트의 Props
 export interface CertificationClassificationItemProps {
   className: string;

@@ -25,7 +25,7 @@ export default function page() {
             홈화면으로 이동하기
           </div>
         </Link>
-        <Link href="/onboarding/choose-certification">
+        <Link href="/onboarding">
           <div
             className="
                     bg-gray2
