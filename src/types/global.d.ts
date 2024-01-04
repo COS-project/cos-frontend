@@ -4,3 +4,12 @@ export interface MenuList {
   name: string;
   path: string;
 }
+
+export interface SubjectInfo {
+  year: number;
+  session: number;
+  subsubject: string[];
+  subsubjectgrade: number[];
+  totalcorrect: number;
+  totalproblem: number;
+}
