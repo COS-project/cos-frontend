@@ -3,15 +3,14 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import CertificationClassificationItem from '@/app/(main)/mypage/components/CertificationClassificationItem';
-import DoneButton from '@/app/(main)/mypage/components/DoneButton';
-
+import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
+import DoneButton from '@/components/onboarding/DoneButton';
 
 const ChooseCertification = () => {
   const router = useRouter();
 
   // 완료 버튼이 눌리면 primary 컬러로 바뀌도록 하는 state
-  const [isClick, setIsClick] = useState(false);
+  const [isClick, setIsClick] = useState<boolean>(false);
 
   // CertificationClassificationItem 컴포넌트 눌렀는지 안눌렀는지 체크하는 State
   // TODO: 백엔드에서 true, false로 받으면 같이 누르는거 해결할 예정.

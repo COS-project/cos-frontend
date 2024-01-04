@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-import CertificationClassificationItem from '@/app/(main)/mypage/components/CertificationClassificationItem';
+import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 
 export default function Community() {
   // CertificationClassificationItem 컴포넌트의 className
@@ -44,7 +44,9 @@ export default function Community() {
     <div className="grid gap-y-8 m-5 mt-6">
       <div className="grid gap-y-2">
         <div className="text-primary text-h4">게시판</div>
-        <div className="text-black text-h1 font-bold">어떤 자격증 정보와 <br /> 소식이 궁금하신가요?</div>
+        <div className="text-black text-h1 font-bold">
+          어떤 자격증 정보와 <br /> 소식이 궁금하신가요?
+        </div>
       </div>
 
       {/* 자격증 선택 */}

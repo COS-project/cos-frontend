@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import React from 'react';
-import CertificationClassificationItem from './(main)/mypage/components/CertificationClassificationItem';
+import CertificationClassificationItem from '../components/onboarding/CertificationClassificationItem';
 
 export default function page() {
   return (

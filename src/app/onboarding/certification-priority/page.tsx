@@ -4,20 +4,22 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
-import DoneButton from '@/app/(main)/mypage/components/DoneButton';
+import DoneButton from '@/components/onboarding/DoneButton';
+import { LicenseInfo } from '@/types/global';
 
 const CertificationPriority = () => {
   const router = useRouter();
+
   // 자격증 데이터
-  // TODO: 백엔드 API 받으면 변경될 예정
-  const [certifications, setCertifications] = useState([
+  const [certifications, setCertifications] = useState<LicenseInfo[]>([
+    // TODO: 백엔드 API 받으면 변경될 예정
     { id: '1', title: '컴퓨터활용능력시험 1급' },
     { id: '2', title: '컴퓨터활용능력시험 2급' },
     { id: '3', title: '정보처리기사' },
   ]);
 
   //완료 버튼이 눌리면 primary 컬러로 바뀌도록 하는 state
-  const [isClick, setIsClick] = useState(false);
+  const [isClick, setIsClick] = useState<boolean>(false);
 
   //완료버튼 눌렀을 시 다음페이지로 이동되는 함수
   const onAfterClick = () => {
@@ -74,7 +76,9 @@ const CertificationPriority = () => {
                         <div>
                           <div className="flex items-center gap-x-3 p-2">
                             <div className="w-12 h-12 rounded-full bg-white">
-                              <div className="p-[10px]"><Icon /></div>
+                              <div className="p-[10px]">
+                                <Icon />
+                              </div>
                             </div>
                             <div className="text-h4 font-semibold">{title}</div>
                           </div>
