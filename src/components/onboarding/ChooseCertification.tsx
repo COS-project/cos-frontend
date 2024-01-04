@@ -5,7 +5,11 @@ import React, { useState } from 'react';
 
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 import DoneButton from '@/components/onboarding/DoneButton';
-import { ChooseCertificationProps } from '@/types/global';
+
+export interface ChooseCertificationProps {
+  onNext?: () => void;
+  onBefore?: () => void;
+}
 
 const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBefore }) => {
   const router = useRouter();

@@ -2,7 +2,15 @@
 
 import React from 'react';
 
-import { CertificationClassificationItemProps } from '@/types/global';
+export interface CertificationClassificationItemProps {
+  className: string;
+  onClickItem?: () => void;
+  icon: JSX.Element; //TODO: svg 변경예정
+  children: React.ReactNode;
+  isMoveButton?: boolean;
+  onClickMoveButton?: () => void;
+}
+
 const CertificationClassificationItem: React.FC<CertificationClassificationItemProps> = ({
   className,
   onClickItem,
@@ -32,7 +40,10 @@ export default CertificationClassificationItem;
 function MoveButtonIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M8.14572 5.5L13.1457 10.5L8.14572 15.5" stroke="#0D0E10" stroke-linecap="round"
+      <path
+        d="M8.14572 5.5L13.1457 10.5L8.14572 15.5"
+        stroke="#0D0E10"
+        stroke-linecap="round"
         stroke-linejoin="round"
       />
     </svg>

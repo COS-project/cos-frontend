@@ -2,7 +2,11 @@
 
 import React, { ReactNode } from 'react';
 
-import { DoneButtonProps } from '@/types/global';
+export interface DoneButtonProps {
+  children: ReactNode;
+  onClick?: () => void;
+  isClick: boolean;
+}
 
 const DoneButton: React.FC<DoneButtonProps> = ({ children, onClick, isClick }) => {
   return (

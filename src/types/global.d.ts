@@ -7,35 +7,6 @@ export interface MenuList {
   path: string;
 }
 
-// 온보딩 관심 자격증 선택 props
-export interface CertificationPriorityProps {
-  onNext?: () => void;
-  onBefore?: () => void;
-}
-
-// 온보딩 관심 자격증 우선순위 선택 props
-export interface ChooseCertificationProps {
-  onNext?: () => void;
-  onBefore?: () => void;
-}
-
-// 온보딩 CertificationClassificationItem 컴포넌트의 Props
-export interface CertificationClassificationItemProps {
-  className: string;
-  onClickItem?: () => void;
-  icon: JSX.Element; //TODO: svg 변경예정
-  children: React.ReactNode;
-  isMoveButton?: boolean;
-  onClickMoveButton?: () => void;
-}
-
-// 온보딩 DoneButton 컴포넌트의 Props
-export interface DoneButtonProps {
-  children: ReactNode;
-  onClick?: () => void;
-  isClick: boolean;
-}
-
 // 온보딩 관심 자격증 리스트
 export const LicenseInfo: Array<License> = [];
 

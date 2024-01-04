@@ -5,7 +5,11 @@ import React, { useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import DoneButton from '@/components/onboarding/DoneButton';
-import { CertificationPriorityProps, LicenseInfo } from '@/types/global';
+
+export interface CertificationPriorityProps {
+  onNext?: () => void;
+  onBefore?: () => void;
+}
 
 const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, onBefore }) => {
   const router = useRouter();
