@@ -1,39 +1,38 @@
 import { SubjectInfo } from '@/types/global';
 
-const SubjectData: SubjectInfo[] = [
+const subjectData: SubjectInfo[] = [
   {
     year: 2022,
-    session: 1,
-    subsubject: ['Math', 'Physics', 'Chemistry'],
-    subsubjectgrade: [80, 90, 85],
-    totalcorrect: 255,
-    totalproblem: 300,
-  },
-  {
-    year: 2022,
-    session: 2,
-    subsubject: ['Math', 'Physics', 'Chemistry'],
-    subsubjectgrade: [85, 88, 92],
-    totalcorrect: 265,
-    totalproblem: 300,
+    sessions: [
+      { sessionNumber: 1, totalcorrect: 10, totalproblem: 50 },
+      { sessionNumber: 2, totalcorrect: 20, totalproblem: 50 },
+      { sessionNumber: 3, totalcorrect: 30, totalproblem: 50 },
+    ],
   },
   {
     year: 2023,
-    session: 1,
-    subsubject: ['Math', 'Physics', 'Chemistry'],
-    subsubjectgrade: [78, 92, 87],
-    totalcorrect: 257,
-    totalproblem: 300,
+    sessions: [
+      { sessionNumber: 1, totalcorrect: 15, totalproblem: 50 },
+      { sessionNumber: 2, totalcorrect: 25, totalproblem: 50 },
+      { sessionNumber: 3, totalcorrect: 35, totalproblem: 50 },
+    ],
   },
   {
-    year: 2023,
-    session: 2,
-    subsubject: ['Math', 'Physics', 'Chemistry'],
-    subsubjectgrade: [90, 85, 88],
-    totalcorrect: 263,
-    totalproblem: 300,
+    year: 2024,
+    sessions: [
+      { sessionNumber: 1, totalcorrect: 18, totalproblem: 50 },
+      { sessionNumber: 2, totalcorrect: 28, totalproblem: 50 },
+      { sessionNumber: 3, totalcorrect: 38, totalproblem: 50 },
+    ],
   },
-  // Add more data as needed
+  {
+    year: 2025,
+    sessions: [
+      { sessionNumber: 1, totalcorrect: 12, totalproblem: 50 },
+      { sessionNumber: 2, totalcorrect: 22, totalproblem: 50 },
+      { sessionNumber: 3, totalcorrect: 32, totalproblem: 50 },
+    ],
+  },
 ];
 
-export default SubjectData;
+export default subjectData;

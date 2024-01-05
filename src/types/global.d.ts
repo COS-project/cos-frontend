@@ -7,9 +7,11 @@ export interface MenuList {
 
 export interface SubjectInfo {
   year: number;
-  session: number;
-  subsubject: string[];
-  subsubjectgrade: number[];
+  sessions: Session[];
+}
+
+export interface Session {
+  sessionNumber: number;
   totalcorrect: number;
   totalproblem: number;
 }
