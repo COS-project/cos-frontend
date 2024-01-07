@@ -1,24 +1,27 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
-export interface CertificationClassificationItemProps {
+export interface Props {
   className: string;
   onClickItem?: () => void;
   icon: JSX.Element; //TODO: svg 변경예정
   children: React.ReactNode;
   isMoveButton?: boolean;
-  onClickMoveButton?: () => void;
+  path: string;
 }
 
-const CertificationClassificationItem: React.FC<CertificationClassificationItemProps> = ({
-  className,
-  onClickItem,
-  icon,
-  children,
-  isMoveButton = false,
-  onClickMoveButton,
-}) => {
+const CertificationClassificationItem = (props: Props) => {
+  const { className, onClickItem, icon, children, isMoveButton = false, path } = props;
+
+  const router = useRouter();
+
+  //CertificationClassificationItem 컴포넌트의 이동버튼 클릭했을 때 함수
+  const onClickMoveButton = () => {
+    router.push(`community/${path}`);
+  };
+
   return (
     <button className={className}>
       <div className="relative flex items-center gap-x-3 p-2">
@@ -34,8 +37,8 @@ const CertificationClassificationItem: React.FC<CertificationClassificationItemP
     </button>
   );
 };
-export default CertificationClassificationItem;
 
+export default CertificationClassificationItem;
 
 function MoveButtonIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
