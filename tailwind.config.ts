@@ -23,6 +23,7 @@ const config: Config = {
       gray1: '#E4E5E7',
       gray0: '#F4F5F7',
       white: '#FFFFFF',
+      blue: '#6283FD',
 
       // 그 외 추가 컬러
       // ...
@@ -35,6 +36,7 @@ const config: Config = {
       h4: '16px', // Title 4, 5, SubTitle 1, Body1
       h5: '15px',
       h6: '14px', // SubTitle 2, Body2, Button
+      h7: '12px',
     },
   },
   plugins: [],
