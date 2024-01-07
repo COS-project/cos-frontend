@@ -9,7 +9,7 @@ export default function CommunityCategoryPage() {
   return (
     <div>
       <p>{pathname} 페이지</p>
-      <button onClick={() => router.replace(`community/${pathname}/1`)}>게시글 상세로 이동하기</button>
+      <button onClick={() => router.replace(`${pathname}/1`)}>게시글 상세로 이동하기</button>
     </div>
   );
 }
