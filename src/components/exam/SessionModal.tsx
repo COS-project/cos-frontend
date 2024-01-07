@@ -1,7 +1,7 @@
 import SubjectGradeCard from './SubjectGradeCard';
 
 // 회차별 모달
-const SessionModal = ({ closeModal }) => {
+const SessionModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
   // 예시 데이터
   const subjects = ['컴퓨터 일반', '스프레드시트', '데이터베이스'];
   const grades = ['4', '6', '2'];

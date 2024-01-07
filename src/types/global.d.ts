@@ -7,15 +7,22 @@ export interface MenuList {
   path: string;
 }
 
+// 과목에 대한 정보
 export interface SubjectInfo {
   year: number;
   sessions: Session[];
 }
 
+// 과목 - 회차에 대한 정보
 export interface Session {
+  // 회차 정보 ex) 2023년 - 1회차
   sessionNumber: number;
+  // 총 맞춘 정답 개수
   totalcorrect: number;
+  // 총 문제 개수
   totalproblem: number;
+}
+
 // 온보딩 관심 자격증 리스트
 export const LicenseInfo: Array<License> = [];
 
