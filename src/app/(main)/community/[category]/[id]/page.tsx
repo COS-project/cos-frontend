@@ -1,5 +1,9 @@
-import React from 'react';
+'use client';
+
+import { usePathname } from 'next/navigation';
 
 export default function CommunityDetailPage() {
-  return <div>커뮤니티 디테일 페이지</div>;
+  const pathname = usePathname();
+
+  return <div>{pathname}번 페이지</div>;
 }

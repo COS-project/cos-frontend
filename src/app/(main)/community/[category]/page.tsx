@@ -1,5 +1,15 @@
-import React from 'react';
+'use client';
+
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function CommunityCategoryPage() {
-  return <div>카테고리별 페이지</div>;
+  const pathname = usePathname();
+  const router = useRouter();
+
+  return (
+    <div>
+      <p>{pathname} 페이지</p>
+      <button onClick={() => router.replace(`community/${pathname}/1`)}>게시글 상세로 이동하기</button>
+    </div>
+  );
 }

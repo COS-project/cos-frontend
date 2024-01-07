@@ -52,7 +52,7 @@ export default function Community() {
           onClickItem={onClick}
           icon={chooseClassificationItemIcon(isCheck)}
           isMoveButton={true}
-          path="컴활1급">
+          path="Comhwal_level1">
           컴퓨터활용능력 1급 게시판
         </CertificationClassificationItem>
         <CertificationClassificationItem
@@ -60,7 +60,7 @@ export default function Community() {
           onClickItem={onClick}
           icon={chooseClassificationItemIcon(isCheck)}
           isMoveButton={true}
-          path="컴활2급 ">
+          path="Comhwal_level2 ">
           컴퓨터활용능력 2급 게시판
         </CertificationClassificationItem>
         <CertificationClassificationItem
@@ -68,7 +68,7 @@ export default function Community() {
           onClickItem={onClick}
           icon={chooseClassificationItemIcon(isCheck)}
           isMoveButton={true}
-          path="정처기">
+          path="JCG">
           정보처리기사 게시판
         </CertificationClassificationItem>
         <CertificationClassificationItem
@@ -76,7 +76,7 @@ export default function Community() {
           onClickItem={onClick}
           icon={chooseClassificationItemIcon(isCheck)}
           isMoveButton={true}
-          path="사조사">
+          path="SJS">
           사회조사분석사 게시판
         </CertificationClassificationItem>
       </div>
