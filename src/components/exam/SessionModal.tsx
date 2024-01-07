@@ -16,9 +16,9 @@ const SessionModal = ({ closeModal }) => {
           <div className="bg-white rounded-3xl">
             <div className="w-[90%] mx-auto">
               <h2 className="flex justify-between text-h4 font-bold p-4">
-                <button>{`<`}</button>
+                <button>{'<'}</button>
                 <div>n회차</div>
-                <button>{`>`}</button>
+                <button>{'>'}</button>
               </h2>
               <div className="border-t border-gray1"></div>
               <div className="flex justify-between my-3">
