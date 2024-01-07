@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
+
+import { Session, SubjectInfo } from '@/types/global';
+
 import SessionModal from './SessionModal';
-import { SubjectInfo } from '@/types/global';
 
 interface SubjectSessionCardProps {
   selectedSubject: SubjectInfo | null;
-  subjectData: SubjectInfo[] | undefined;
 }
 
-const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject, subjectData }) => {
+const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject }) => {
+  const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const openModal = () => {
+  const openModal = (session: Session) => {
+    setSelectedSession(session);
     setModalIsOpen(true);
   };
 
   const closeModal = () => {
+    setSelectedSession(null);
     setModalIsOpen(false);
   };
 
@@ -34,17 +38,18 @@ const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject
             <div className="border-t border-gray1 my-2"></div>
             <div className="text-black text-center text-h7">최근 점수</div>
             <ul className="flex text-center justify-center">
-              <li className="font-bold text-h2">{`${session.totalcorrect}점`}</li>
-              <div className="mt-1 text-gray3">/50점</div>
+              <li className="font-bold text-h2">{`${session.totalCorrect}점`}</li>
+              <div className="mt-1 text-gray3">{`/${session.totalProblem}점`}</div>
             </ul>
-            <button onClick={() => openModal()} className="w-full bg-gray1 rounded-3xl py-3 mt-4 text-h6 font-bold">
+            <button
+              onClick={() => openModal(session)}
+              className="w-full bg-gray1 rounded-3xl py-3 mt-4 text-h6 font-bold">
               시험 보기
             </button>
-
-            {modalIsOpen && <SessionModal closeModal={closeModal} />}
           </div>
         </div>
       ))}
+      {modalIsOpen && selectedSession && <SessionModal closeModal={closeModal} selectedSession={selectedSession} />}
     </>
   );
 };

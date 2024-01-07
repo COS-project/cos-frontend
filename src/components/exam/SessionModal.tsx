@@ -1,10 +1,19 @@
+import React from 'react';
+
+import { Session } from '@/types/global';
+
 import SubjectGradeCard from './SubjectGradeCard';
 
-// 회차별 모달
-const SessionModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
-  // 예시 데이터
-  const subjects = ['컴퓨터 일반', '스프레드시트', '데이터베이스'];
-  const grades = ['4', '6', '2'];
+interface SessionModalProps {
+  closeModal: () => void;
+  selectedSession: Session; // 선택된 회차에 대한 데이터
+}
+
+const SessionModal: React.FC<SessionModalProps> = ({ closeModal, selectedSession }) => {
+  // 세부 과목에 대한 데이터를 더미 데이터 대신에 props로 받은 데이터 사용
+  const subjects = selectedSession.subjects;
+
+  console.log(selectedSession);
 
   return (
     <div>
@@ -17,7 +26,7 @@ const SessionModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
             <div className="w-[90%] mx-auto">
               <h2 className="flex justify-between text-h4 font-bold p-4">
                 <button>{'<'}</button>
-                <div>n회차</div>
+                <div>{`${selectedSession.sessionNumber}회차`}</div>
                 <button>{'>'}</button>
               </h2>
               <div className="border-t border-gray1"></div>
@@ -25,8 +34,8 @@ const SessionModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
                 <div>
                   <div className="font-bold text-h6">최근 점수</div>
                   <div className="flex items-end">
-                    <div className="font-bold text-h1">30점</div>
-                    <div className="mt-1 text-gray3">/50점</div>
+                    <div className="font-bold text-h1">{`${selectedSession.totalCorrect}점`}</div>
+                    <div className="mt-1 text-gray3">/{`${selectedSession.totalProblem}점`}</div>
                   </div>
                 </div>
                 <button className="h-1/2 bg-gray0 rounded-3xl text-h6 font-bold p-2">성적 리포트 ➚</button>
@@ -34,7 +43,12 @@ const SessionModal: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
               <div className="text-h6 font-bold mt-5">과목별 맞춘 문제 수</div>
               <div className="flex my-2">
                 {subjects.map((subject, index) => (
-                  <SubjectGradeCard key={index} subject={subject} grade={grades[index]} />
+                  <SubjectGradeCard
+                    key={index}
+                    name={subject.name}
+                    correctAnswer={subject.correctAnswer}
+                    totalCorrect={subject.totalProblems}
+                  />
                 ))}
               </div>
               <div className="flex justify-center">

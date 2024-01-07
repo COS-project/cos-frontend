@@ -1,14 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import SubjectSessionCard from './SubjectSessionCard';
+
 import { SubjectInfo } from '@/types/global';
 import SubjectData from '@/utils/dummyData'; // Import dummy data
 
-interface SelectSubjectYearComboBoxProps {
-  subjectData: SubjectInfo[] | undefined;
-}
+import SubjectSessionCard from './SubjectSessionCard';
 
-const SelectSubjectYearComboBox: React.FC<SelectSubjectYearComboBoxProps> = ({ subjectData }) => {
+// 과목에 Year를 필터링 해주는 모듈
+const SelectSubjectYearComboBox = ({}) => {
   const [selectedSubject, setSelectedSubject] = useState<SubjectInfo | null>(null);
 
   const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -36,8 +35,7 @@ const SelectSubjectYearComboBox: React.FC<SelectSubjectYearComboBoxProps> = ({ s
       </select>
       <div className="w-[95%] mx-auto">
         <div className="mt-4 flex flex-wrap">
-          {/* SubjectSessionCard 컴포넌트에는 필요한 Props를 전달해주세요 */}
-          <SubjectSessionCard selectedSubject={selectedSubject} subjectData={subjectData} />
+          <SubjectSessionCard selectedSubject={selectedSubject} />
         </div>
       </div>
     </div>

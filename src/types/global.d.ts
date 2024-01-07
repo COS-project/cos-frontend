@@ -9,7 +9,9 @@ export interface MenuList {
 
 // 과목에 대한 정보
 export interface SubjectInfo {
+  // 과목의 연도 정보
   year: number;
+  // 회차 리스트
   sessions: Session[];
 }
 
@@ -18,9 +20,17 @@ export interface Session {
   // 회차 정보 ex) 2023년 - 1회차
   sessionNumber: number;
   // 총 맞춘 정답 개수
-  totalcorrect: number;
+  totalCorrect: number;
   // 총 문제 개수
-  totalproblem: number;
+  totalProblem: number;
+  // 과목내 세부과목에 대한 정보를 담고있음
+  subjects: SpecificSubject[];
+}
+
+export interface SpecificSubject {
+  name: string;
+  correctAnswer: number;
+  totalProblems: number;
 }
 
 // 온보딩 관심 자격증 리스트
