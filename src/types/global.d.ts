@@ -7,6 +7,15 @@ export interface MenuList {
   path: string;
 }
 
+export interface SubjectInfo {
+  year: number;
+  sessions: Session[];
+}
+
+export interface Session {
+  sessionNumber: number;
+  totalcorrect: number;
+  totalproblem: number;
 // 온보딩 관심 자격증 리스트
 export const LicenseInfo: Array<License> = [];
 
