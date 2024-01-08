@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { SubjectInfo } from '@/types/global';
 import SubjectData from '@/utils/dummyData'; // Import dummy data
@@ -10,13 +10,18 @@ import SubjectSessionCard from './SubjectSessionCard';
 const SelectSubjectYearComboBox = ({}) => {
   const [selectedSubject, setSelectedSubject] = useState<SubjectInfo | null>(null);
 
+  useEffect(() => {
+    const defaultYear = SubjectData[0]?.year || null;
+    const defaultSubject = SubjectData.find((subject) => subject.year === defaultYear) || null;
+    setSelectedSubject(defaultSubject);
+  }, []); // 빈 배열을 넣어 처음 렌더링 시에만 실행되도록 설정
+
   const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedYear = parseInt(event.target.value, 10);
     const newSelectedSubject = SubjectData.find((subject) => subject.year === selectedYear) || null;
     setSelectedSubject(newSelectedSubject);
   };
-
-  // Get unique years from SubjectData
+  // 유니크한 연도만 추출
   const uniqueYears = Array.from(new Set(SubjectData.map((subject) => subject.year)));
 
   return (
