@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Session } from '@/types/global';
 
 import SubjectGradeCard from './SubjectGradeCard';
+import TimerModal from './TimerModal';
 
 interface SessionModalProps {
   closeModal: () => void;
@@ -12,6 +13,18 @@ interface SessionModalProps {
 const SessionModal: React.FC<SessionModalProps> = ({ closeModal, selectedSession }) => {
   // 세부 과목에 대한 데이터를 더미 데이터 대신에 props로 받은 데이터 사용
   const subjects = selectedSession.subjects;
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  // 타이머 모달을 오픈하는 함수
+  const openTimerModal = () => {
+    setModalIsOpen(true);
+  };
+
+  // 타이머 모달을 닫는 함수
+  const closeTimerModal = () => {
+    setModalIsOpen(false);
+  };
 
   return (
     <div>
@@ -50,8 +63,14 @@ const SessionModal: React.FC<SessionModalProps> = ({ closeModal, selectedSession
                 ))}
               </div>
               <div className="flex justify-center">
-                <button className="w-full bg-black text-white rounded-3xl text-h5 p-4 my-4">시험 보기</button>
+                <button
+                  onClick={() => openTimerModal()}
+                  className="w-full bg-black text-white rounded-3xl text-h5 p-4 my-4">
+                  시험 보기
+                </button>
               </div>
+
+              {modalIsOpen && <TimerModal closeTimerModal={closeTimerModal} closeModal={closeModal} />}
             </div>
           </div>
         </div>
