@@ -1,9 +1,11 @@
 interface SessionModalProps {
   closeTimerModal: () => void;
-  closeModal: () => void;
+  closeSessionModal: () => void;
 }
 
-const TimerModal: React.FC<SessionModalProps> = ({ closeTimerModal, closeModal }) => {
+const TimerModal: React.FC<SessionModalProps> = ({ closeTimerModal, closeSessionModal }) => {
+  closeSessionModal();
+
   return (
     <div onClick={closeTimerModal} className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30">
       <div className="w-[80%]">

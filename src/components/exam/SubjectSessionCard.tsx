@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Session, SubjectInfo } from '@/types/global';
 
 import SessionModal from './SessionModal';
+import TimerModal from './TimerModal';
 
 interface SubjectSessionCardProps {
   selectedSubject: SubjectInfo | null;
@@ -10,16 +11,25 @@ interface SubjectSessionCardProps {
 
 const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject }) => {
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [sessionModalIsOpen, setSessionModalIsOpen] = useState(false);
+  const [timerModalIsOpen, setTimerModalIsOpen] = useState(false);
 
-  const openModal = (session: Session) => {
+  const openSessionModal = (session: Session) => {
     setSelectedSession(session);
-    setModalIsOpen(true);
+    setSessionModalIsOpen(true);
   };
 
-  const closeModal = () => {
+  const closeSessionModal = () => {
     setSelectedSession(null);
-    setModalIsOpen(false);
+    setSessionModalIsOpen(false);
+  };
+
+  const openTimerModal = () => {
+    setTimerModalIsOpen(true);
+  };
+
+  const closeTimerModal = () => {
+    setTimerModalIsOpen(false);
   };
 
   // 해당 연도의 세션 정보를 가져오기
@@ -42,14 +52,21 @@ const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject
               <div className="mt-1 text-gray3">{`/${session.totalProblem}점`}</div>
             </ul>
             <button
-              onClick={() => openModal(session)}
+              onClick={() => openSessionModal(session)}
               className="w-full bg-gray1 rounded-3xl py-3 mt-4 text-h6 font-bold">
               시험 보기
             </button>
           </div>
         </div>
       ))}
-      {modalIsOpen && selectedSession && <SessionModal closeModal={closeModal} selectedSession={selectedSession} />}
+      {sessionModalIsOpen && selectedSession && (
+        <SessionModal
+          closeModal={closeSessionModal}
+          selectedSession={selectedSession}
+          openTimerModal={openTimerModal}
+        />
+      )}
+      {timerModalIsOpen && <TimerModal closeTimerModal={closeTimerModal} closeSessionModal={closeSessionModal} />}
     </>
   );
 };

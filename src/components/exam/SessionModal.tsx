@@ -7,24 +7,13 @@ import TimerModal from './TimerModal';
 
 interface SessionModalProps {
   closeModal: () => void;
+  openTimerModal: () => void;
   selectedSession: Session; // 선택된 회차에 대한 데이터
 }
 
-const SessionModal: React.FC<SessionModalProps> = ({ closeModal, selectedSession }) => {
+const SessionModal: React.FC<SessionModalProps> = ({ closeModal, selectedSession, openTimerModal }) => {
   // 세부 과목에 대한 데이터를 더미 데이터 대신에 props로 받은 데이터 사용
   const subjects = selectedSession.subjects;
-
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  // 타이머 모달을 오픈하는 함수
-  const openTimerModal = () => {
-    setModalIsOpen(true);
-  };
-
-  // 타이머 모달을 닫는 함수
-  const closeTimerModal = () => {
-    setModalIsOpen(false);
-  };
 
   return (
     <div>
@@ -69,8 +58,6 @@ const SessionModal: React.FC<SessionModalProps> = ({ closeModal, selectedSession
                   시험 보기
                 </button>
               </div>
-
-              {modalIsOpen && <TimerModal closeTimerModal={closeTimerModal} closeModal={closeModal} />}
             </div>
           </div>
         </div>
