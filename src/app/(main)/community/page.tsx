@@ -35,11 +35,6 @@ export default function Community() {
     return CHOOSE_CERTIFICATE_ICON;
   };
 
-  //CertificationClassificationItem 컴포넌트의 이동버튼 클릭했을 때 함수
-  const onClickMoveButton = () => {
-    router.push('/board/1');
-  };
-
   return (
     <div className="grid gap-y-8 m-5 mt-6">
       <div className="grid gap-y-2">
@@ -57,25 +52,31 @@ export default function Community() {
           onClickItem={onClick}
           icon={chooseClassificationItemIcon(isCheck)}
           isMoveButton={true}
-          onClickMoveButton={onClickMoveButton}>
+          path="Comhwal_level1">
           컴퓨터활용능력 1급 게시판
         </CertificationClassificationItem>
         <CertificationClassificationItem
           className={CERTIFICATION_ITEM_STYLE}
           onClickItem={onClick}
-          icon={chooseClassificationItemIcon(isCheck)}>
+          icon={chooseClassificationItemIcon(isCheck)}
+          isMoveButton={true}
+          path="Comhwal_level2 ">
           컴퓨터활용능력 2급 게시판
         </CertificationClassificationItem>
         <CertificationClassificationItem
           className={CERTIFICATION_ITEM_STYLE}
           onClickItem={onClick}
-          icon={chooseClassificationItemIcon(isCheck)}>
+          icon={chooseClassificationItemIcon(isCheck)}
+          isMoveButton={true}
+          path="JCG">
           정보처리기사 게시판
         </CertificationClassificationItem>
         <CertificationClassificationItem
           className={CERTIFICATION_ITEM_STYLE}
           onClickItem={onClick}
-          icon={chooseClassificationItemIcon(isCheck)}>
+          icon={chooseClassificationItemIcon(isCheck)}
+          isMoveButton={true}
+          path="SJS">
           사회조사분석사 게시판
         </CertificationClassificationItem>
       </div>
