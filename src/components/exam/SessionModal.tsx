@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 import { Session } from '@/types/global';
@@ -13,6 +14,8 @@ interface SessionModalProps {
 const SessionModal: React.FC<SessionModalProps> = ({ closeModal, selectedSession, openTimerModal }) => {
   // 세부 과목에 대한 데이터를 더미 데이터 대신에 props로 받은 데이터 사용
   const subjects = selectedSession.subjects;
+
+  const gotoResultPage = () => {};
 
   return (
     <div>
@@ -34,10 +37,12 @@ const SessionModal: React.FC<SessionModalProps> = ({ closeModal, selectedSession
                   <div className="font-bold text-h6">최근 점수</div>
                   <div className="flex items-end">
                     <div className="font-bold text-h1">{`${selectedSession.totalCorrect}점`}</div>
-                    <div className="mt-1 text-gray3">/{`${selectedSession.totalProblem}점`}</div>
+                    <div className="text-gray3 text-h6 mb-1">/{`${selectedSession.totalProblem}점`}</div>
                   </div>
                 </div>
-                <button className="h-1/2 bg-gray0 rounded-3xl text-h6 font-bold p-2">성적 리포트 ➚</button>
+                <Link href={'/exam/result'} className="h-1/2 bg-gray0 rounded-3xl text-h6 font-bold p-2">
+                  성적 리포트 ➚
+                </Link>
               </div>
               <div className="text-h6 font-bold mt-5">과목별 맞춘 문제 수</div>
               <div className="flex my-2">
