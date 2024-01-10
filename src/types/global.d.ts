@@ -27,9 +27,13 @@ export interface Session {
   subjects: SpecificSubject[];
 }
 
+// 과목별 세부 과목 내용을 담는 자료 Ex) 정보처리기사 - 데이터베이스 과목
 export interface SpecificSubject {
+  // 과목명
   name: string;
+  // 정답 개수
   correctAnswer: number;
+  // 전체 문제 수
   totalProblems: number;
 }
 
