@@ -3,12 +3,11 @@ import React, { useState } from 'react';
 import { Session } from '@/types/global';
 
 import SubjectGradeCard from './SubjectGradeCard';
-import TimerModal from './TimerModal';
 
 interface SessionModalProps {
+  selectedSession: Session; // 선택된 회차에 대한 데이터
   closeModal: () => void;
   openTimerModal: () => void;
-  selectedSession: Session; // 선택된 회차에 대한 데이터
 }
 
 const SessionModal: React.FC<SessionModalProps> = ({ closeModal, selectedSession, openTimerModal }) => {

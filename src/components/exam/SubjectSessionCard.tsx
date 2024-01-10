@@ -20,7 +20,6 @@ const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject
   };
 
   const closeSessionModal = () => {
-    setSelectedSession(null);
     setSessionModalIsOpen(false);
   };
 
@@ -29,6 +28,7 @@ const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject
   };
 
   const closeTimerModal = () => {
+    setSelectedSession(null);
     setTimerModalIsOpen(false);
   };
 
@@ -59,14 +59,22 @@ const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject
           </div>
         </div>
       ))}
+      {/* 세션 모달에 대한 코드 */}
       {sessionModalIsOpen && selectedSession && (
         <SessionModal
-          closeModal={closeSessionModal}
           selectedSession={selectedSession}
+          closeModal={closeSessionModal}
           openTimerModal={openTimerModal}
         />
       )}
-      {timerModalIsOpen && <TimerModal closeTimerModal={closeTimerModal} closeSessionModal={closeSessionModal} />}
+      {/* 타이머 모달에 대한 코드 */}
+      {timerModalIsOpen && selectedSession && (
+        <TimerModal
+          selectedSession={selectedSession}
+          closeTimerModal={closeTimerModal}
+          closeSessionModal={closeSessionModal}
+        />
+      )}
     </>
   );
 };
