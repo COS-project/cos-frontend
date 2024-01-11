@@ -15,8 +15,6 @@ const SessionModal: React.FC<SessionModalProps> = ({ closeModal, selectedSession
   // 세부 과목에 대한 데이터를 더미 데이터 대신에 props로 받은 데이터 사용
   const subjects = selectedSession.subjects;
 
-  const gotoResultPage = () => {};
-
   return (
     <div>
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30">
@@ -40,7 +38,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ closeModal, selectedSession
                     <div className="text-gray3 text-h6 mb-1">/{`${selectedSession.totalProblem}점`}</div>
                   </div>
                 </div>
-                <Link href={'/exam/result'} className="h-1/2 bg-gray0 rounded-3xl text-h6 font-bold p-2">
+                <Link href={'/exam/report'} className="h-1/2 bg-gray0 rounded-3xl text-h6 font-bold p-2">
                   성적 리포트 ➚
                 </Link>
               </div>

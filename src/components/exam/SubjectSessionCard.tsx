@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import { Session, SubjectInfo } from '@/types/global';
+import { selectedSessionState } from '@/utils/recoilState';
 
 import SessionModal from './SessionModal';
 import TimerModal from './TimerModal';
@@ -9,12 +11,14 @@ interface SubjectSessionCardProps {
   selectedSubject: SubjectInfo | null;
 }
 
+// 해당하는 연도의 회차별 데이터를 모두 출력
 const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject }) => {
-  const [selectedSession, setSelectedSession] = useState<Session | null>(null);
+  const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
   const [sessionModalIsOpen, setSessionModalIsOpen] = useState(false);
   const [timerModalIsOpen, setTimerModalIsOpen] = useState(false);
 
-  const openSessionModal = (session: Session) => {
+  // 모달이 열릴때 세션 상태 설정
+  const openSessionModal = (session: Session | null) => {
     setSelectedSession(session);
     setSessionModalIsOpen(true);
   };
