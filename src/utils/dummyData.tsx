@@ -12,7 +12,6 @@ const subjectData: SubjectInfo[] = [
           { name: '과목1', correctAnswer: 5, totalProblems: 10 },
           { name: '과목2', correctAnswer: 3, totalProblems: 10 },
           { name: '과목2', correctAnswer: 3, totalProblems: 10 },
-          { name: '과목2', correctAnswer: 3, totalProblems: 10 },
         ],
       },
       {
