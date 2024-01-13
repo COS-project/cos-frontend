@@ -19,10 +19,16 @@ export interface SubjectInfo {
 export interface Session {
   // 회차 정보 ex) 2023년 - 1회차
   sessionNumber: number;
+  // 시험을 응시한적이 있는지 여부 변수
+  isTaken: boolean;
   // 총 맞춘 정답 개수
   totalCorrect: number;
   // 총 문제 개수
   totalProblem: number;
+  // 전체 시험 응시 시간
+  totalTakenTime: string;
+  // 시험 응시 최대 시간
+  totalAllowedTime: string;
   // 과목내 세부과목에 대한 정보를 담고있음
   subjects: SpecificSubject[];
 }
@@ -35,6 +41,10 @@ export interface SpecificSubject {
   correctAnswer: number;
   // 전체 문제 수
   totalProblems: number;
+  // 평균 머문 시간 (기존)
+  averageTime: number;
+  // 과목에 머문 시간
+  takenTime: number;
 }
 
 // 온보딩 관심 자격증 리스트

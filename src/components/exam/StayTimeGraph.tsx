@@ -6,6 +6,7 @@ import { selectedSessionState } from '@/utils/recoilState';
 
 interface StickGraphProps {
   height: number;
+  color: string;
 }
 
 const StayTimeGraph: React.FC = () => {
@@ -14,28 +15,31 @@ const StayTimeGraph: React.FC = () => {
 
   return (
     <div>
-      <div className="bg-white rounded-xl p-3">
+      <div className="bg-white rounded-xl p-3 my-4">
         <div className="font-bold text-h3">머문시간 그래프</div>
         <div className="text-h5 p-2">
           <div>걸린 시간</div>
-          <div className="font-bold">48m</div>
+          <div className="font-bold">{selectedSession?.totalTakenTime}m</div>
         </div>
         <div className="flex items-center space-x-2">
           <div className="w-[85%] border-t border-gray1"></div>
-          <div className="w-[15%] text-gray3 text-h5">90분</div>
+          <div className="w-[15%] text-gray3 text-h5">{selectedSession?.totalAllowedTime}분</div>
         </div>
         <div className="flex items-end space-x-2">
           <div className="w-[85%]">
-            <div className="flex h-20">
-              <div className="w-full flex justify-center">
-                <StickGraph height={10} />
-              </div>
-              <div className="w-full flex justify-center">
-                <StickGraph height={10} />
-              </div>
-              <div className="w-full flex justify-center">
-                <StickGraph height={10} />
-              </div>
+            <div className="flex h-32">
+              {subjects?.map((subject, index) => (
+                <div className="w-full flex justify-center space-x-2" key={index}>
+                  {selectedSession?.isTaken == true ? (
+                    // 시험을 본적이 있을때
+                    <StickGraph height={subject.averageTime} color="gray3" />
+                  ) : (
+                    // 시험을 본적이 없을 경우
+                    <div></div>
+                  )}
+                  <StickGraph height={subject.takenTime} color="blue" />
+                </div>
+              ))}
             </div>
             <div className="border-t border-gray1"></div>
           </div>
@@ -44,7 +48,7 @@ const StayTimeGraph: React.FC = () => {
         <div className="flex space-x-2">
           <div className="w-[85%] flex justify-between">
             {subjects?.map((subject, index) => (
-              <div className="w-full flex justify-center text-h5" key={index}>
+              <div className="w-full flex justify-center text-h6" key={index}>
                 {subject.name}
               </div>
             ))}
@@ -58,6 +62,6 @@ const StayTimeGraph: React.FC = () => {
 
 export default StayTimeGraph;
 
-const StickGraph: React.FC<StickGraphProps> = ({ height }) => {
-  return <div className={'w-[20%] h-1/2 bg-blue rounded-t-full'}></div>;
+const StickGraph: React.FC<StickGraphProps> = ({ height, color }) => {
+  return <div style={{ height: `${height}%` }} className={`w-[20%] mt-auto bg-${color} rounded-t-full`}></div>;
 };

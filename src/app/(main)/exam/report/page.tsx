@@ -2,6 +2,7 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 
+import CorrectRateGraph from '@/components/exam/CorrectRateGraph';
 import ReportCard from '@/components/exam/ReportCard';
 import StayTimeGraph from '@/components/exam/StayTimeGraph';
 import SubjectGradeCard from '@/components/exam/SubjectGradeCard';
@@ -14,7 +15,7 @@ const Report: React.FC = () => {
 
   return (
     <div>
-      <div className="bg-gray1 items-center">
+      <div className="bg-gray0 items-center h-screen">
         <div className="w-[85%] mx-auto">
           <div className="font-bold"> 과목별 맞춘 문제 수 </div>
           <div className="flex bg-white my-2">
@@ -37,6 +38,7 @@ const Report: React.FC = () => {
           </div>
           <div>
             <StayTimeGraph />
+            <CorrectRateGraph />
           </div>
         </div>
       </div>
