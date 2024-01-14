@@ -8,6 +8,7 @@ interface SubjectGradeCardProps {
   totalCorrect: SpecificSubject['totalProblems'];
 }
 
+// 세부 과목별 성적을 나타내는 표 컴포넌트 (이름, 정답개수, 총 문제 수)
 const SubjectGradeCard: React.FC<SubjectGradeCardProps> = ({ name, correctAnswer, totalCorrect }) => {
   return (
     <div className="w-full border border-gray2">
