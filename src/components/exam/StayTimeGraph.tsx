@@ -2,13 +2,10 @@ import { useRecoilState } from 'recoil';
 
 import { Session } from '@/types/global';
 import { selectedSessionState } from '@/utils/recoilState';
+
+import StickGraph from './StickGraph';
+
 // examreportpage에서 머문시간 그래프를 나타내는 컴포넌트
-
-interface StickGraphProps {
-  height: number;
-  color: string;
-}
-
 const StayTimeGraph: React.FC = () => {
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
   const subjects = selectedSession?.subjects;
@@ -61,7 +58,3 @@ const StayTimeGraph: React.FC = () => {
 };
 
 export default StayTimeGraph;
-
-const StickGraph: React.FC<StickGraphProps> = ({ height, color }) => {
-  return <div style={{ height: `${height}%` }} className={`w-[20%] mt-auto bg-${color} rounded-t-full`}></div>;
-};
