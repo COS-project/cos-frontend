@@ -2,17 +2,14 @@ import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { Session, SubjectInfo } from '@/types/global';
-import { selectedSessionState } from '@/utils/recoilState';
+import { selectedSessionState, selectedSubjectState } from '@/utils/recoilState';
 
 import SessionModal from './SessionModal';
 import TimerModal from './TimerModal';
 
-interface SubjectSessionCardProps {
-  selectedSubject: SubjectInfo | null;
-}
-
 // 해당하는 연도의 회차별 데이터를 모두 출력
-const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject }) => {
+const SubjectSessionCard: React.FC = ({}) => {
+  const [selectedSubject, setSelectedSubject] = useRecoilState<SubjectInfo | null>(selectedSubjectState);
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
   const [sessionModalIsOpen, setSessionModalIsOpen] = useState(false);
   const [timerModalIsOpen, setTimerModalIsOpen] = useState(false);
@@ -38,8 +35,6 @@ const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject
 
   // 해당 연도의 세션 정보를 가져오기
   const sessions = selectedSubject?.sessions;
-
-  console.log(sessions);
 
   if (!sessions) {
     return <div>해당 연도의 데이터가 없습니다.</div>;

@@ -7,7 +7,7 @@ const subjectData: SubjectInfo[] = [
       {
         sessionNumber: 1,
         isTaken: true,
-        totalCorrect: 10,
+        totalCorrect: 20,
         totalProblem: 50,
         totalTakenTime: '48',
         totalAllowedTime: '90',
@@ -20,7 +20,7 @@ const subjectData: SubjectInfo[] = [
       {
         sessionNumber: 2,
         isTaken: true,
-        totalCorrect: 10,
+        totalCorrect: 20,
         totalProblem: 50,
         totalTakenTime: '48',
         totalAllowedTime: '90',
@@ -33,7 +33,7 @@ const subjectData: SubjectInfo[] = [
       {
         sessionNumber: 3,
         isTaken: false,
-        totalCorrect: 10,
+        totalCorrect: 20,
         totalProblem: 50,
         totalTakenTime: '58',
         totalAllowedTime: '90',
