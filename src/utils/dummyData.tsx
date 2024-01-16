@@ -9,12 +9,12 @@ const subjectData: SubjectInfo[] = [
         isTaken: true,
         totalCorrect: 20,
         totalProblem: 50,
-        totalTakenTime: '48',
+        totalTakenTime: '68',
         totalAllowedTime: '90',
         subjects: [
-          { name: '컴퓨터 일반', correctAnswer: 5, totalProblems: 10, averageTime: 20, takenTime: 30 },
-          { name: '스프레드 시트', correctAnswer: 3, totalProblems: 10, averageTime: 30, takenTime: 60 },
-          { name: '데이터 베이스', correctAnswer: 3, totalProblems: 10, averageTime: 30, takenTime: 90 },
+          { name: '컴퓨터 일반', correctAnswer: 9, totalProblems: 10, averageTime: 20, takenTime: 30 },
+          { name: '스프레드 시트', correctAnswer: 8, totalProblems: 10, averageTime: 30, takenTime: 60 },
+          { name: '데이터 베이스', correctAnswer: 8, totalProblems: 10, averageTime: 30, takenTime: 90 },
         ],
       },
       {
