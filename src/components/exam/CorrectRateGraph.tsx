@@ -3,7 +3,6 @@ import { useRecoilState } from 'recoil';
 import { Session } from '@/types/global';
 import { selectedSessionState } from '@/utils/recoilState';
 
-import MyResponsiveRadar from './RadarChart';
 import Example from './SimpleChart';
 
 const CorrectRateGraph: React.FC = () => {
