@@ -16,7 +16,7 @@ const SelectSubjectYearComboBox = ({}) => {
     const defaultYear = SubjectData[0]?.year || null;
     const defaultSubject = SubjectData.find((subject) => subject.year === defaultYear) || null;
     setSelectedSubject(defaultSubject);
-  }, []); // 빈 배열을 넣어 처음 렌더링 시에만 실행되도록 설정
+  }, [setSelectedSubject]); // 빈 배열을 넣어 처음 렌더링 시에만 실행되도록 설정
 
   const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedYear = parseInt(event.target.value, 10);
