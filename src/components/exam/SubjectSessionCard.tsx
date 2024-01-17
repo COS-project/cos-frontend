@@ -36,6 +36,8 @@ const SubjectSessionCard: React.FC = ({}) => {
   // 해당 연도의 세션 정보를 가져오기
   const sessions = selectedSubject?.sessions;
 
+  console.log(sessions);
+
   if (!sessions) {
     return <div>해당 연도의 데이터가 없습니다.</div>;
   }
