@@ -40,7 +40,7 @@ const SelectCertification = () => {
           setIsOpen={setIsModalOpen}
           setDataState={setSelectCertification}
           data={CERTIFICATION_CATEGORY}
-          className={'absolute top-[134px] right-[20px]'}
+          className={'absolute top-[134px] w-[90%]'}
         />
       ) : null}
     </div>
