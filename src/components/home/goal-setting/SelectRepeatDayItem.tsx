@@ -1,17 +1,53 @@
+'use client';
+
 import { useState } from 'react';
 import * as React from 'react';
+import { useRecoilState } from 'recoil';
+
+import { mockExamDay, studyTimeDay } from '@/recoil/atom';
+
+interface Props {
+  used: string; // 사용된 용도 (모의고사 MockList, 공부시간 StudyTime)
+}
 
 /**
  * 월, 화, 수, 목, 금, 토, 일 목표를 설정할 수 있는 컴포넌트입니다.
  */
-const SelectRepeatDayItem = () => {
-  const [isMonthClick, setIsMonthClick] = useState(false);
-  const [isTuesClick, setIsTuesClick] = useState(false);
-  const [isWednesClick, setIsWednesClick] = useState(false);
-  const [isThursClick, setIsThursClick] = useState(false);
-  const [isFriClick, setIsFriClick] = useState(false);
-  const [isSaturClick, setIsSaturClick] = useState(false);
-  const [isSunClick, setIsSunClick] = useState(false);
+const SelectRepeatDayItem = (props: Props) => {
+  const { used } = props;
+  //각 버튼을 눌렀을 때, 눌렸는지를 확인하는 state
+  const [isMonthClick, setIsMonthClick] = useState<boolean>(false);
+  const [isTuesClick, setIsTuesClick] = useState<boolean>(false);
+  const [isWednesClick, setIsWednesClick] = useState<boolean>(false);
+  const [isThursClick, setIsThursClick] = useState<boolean>(false);
+  const [isFriClick, setIsFriClick] = useState<boolean>(false);
+  const [isSaturClick, setIsSaturClick] = useState<boolean>(false);
+  const [isSunClick, setIsSunClick] = useState<boolean>(false);
+
+  // 요일 리스트를 담은 state
+  const [mockExamDays, setMockExamDays] = useRecoilState<number[]>(mockExamDay);
+  const [studyTimeDays, setStudyTimeDays] = useRecoilState<number[]>(studyTimeDay);
+
+  /**
+   * 사용된 용도에 따라(모의고사 - MockExam, 공부시간 - StudyTime)
+   * 요일 리스트에 요일을 추가하는 리스트 (2번 클릭 될 경우에는 리스트 제거)
+   */
+  const addList = (index: number) => {
+    if (used == 'MockExam') {
+      if (!mockExamDays.includes(index)) {
+        setMockExamDays((mockExamDays) => [...mockExamDays, index]);
+      } else {
+        setMockExamDays(mockExamDays.filter((day) => day != index));
+      }
+    }
+    if (used == 'StudyTime') {
+      if (!studyTimeDays.includes(index)) {
+        setStudyTimeDays((studyTimeDays) => [...studyTimeDays, index]);
+      } else {
+        setStudyTimeDays(studyTimeDays.filter((day) => day != index));
+      }
+    }
+  };
 
   return (
     <div className="goal-setting-content">
@@ -25,7 +61,10 @@ const SelectRepeatDayItem = () => {
         {/* 월, 화, 수, 목, 금, 토, 일 선택*/}
         <div className="flex gap-x-1">
           <button
-            onClick={() => setIsMonthClick(!isMonthClick)}
+            onClick={() => {
+              setIsMonthClick(!isMonthClick);
+              addList(1);
+            }}
             className={
               isMonthClick
                 ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
@@ -34,7 +73,10 @@ const SelectRepeatDayItem = () => {
             월
           </button>
           <button
-            onClick={() => setIsTuesClick(!isTuesClick)}
+            onClick={() => {
+              setIsTuesClick(!isTuesClick);
+              addList(2);
+            }}
             className={
               isTuesClick
                 ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
@@ -43,7 +85,10 @@ const SelectRepeatDayItem = () => {
             화
           </button>
           <button
-            onClick={() => setIsWednesClick(!isWednesClick)}
+            onClick={() => {
+              setIsWednesClick(!isWednesClick);
+              addList(3);
+            }}
             className={
               isWednesClick
                 ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
@@ -52,7 +97,10 @@ const SelectRepeatDayItem = () => {
             수
           </button>
           <button
-            onClick={() => setIsThursClick(!isThursClick)}
+            onClick={() => {
+              setIsThursClick(!isThursClick);
+              addList(4);
+            }}
             className={
               isThursClick
                 ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
@@ -61,7 +109,10 @@ const SelectRepeatDayItem = () => {
             목
           </button>
           <button
-            onClick={() => setIsFriClick(!isFriClick)}
+            onClick={() => {
+              setIsFriClick(!isFriClick);
+              addList(5);
+            }}
             className={
               isFriClick
                 ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
@@ -70,7 +121,10 @@ const SelectRepeatDayItem = () => {
             금
           </button>
           <button
-            onClick={() => setIsSaturClick(!isSaturClick)}
+            onClick={() => {
+              setIsSaturClick(!isSaturClick);
+              addList(6);
+            }}
             className={
               isSaturClick
                 ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
@@ -79,7 +133,10 @@ const SelectRepeatDayItem = () => {
             토
           </button>
           <button
-            onClick={() => setIsSunClick(!isSunClick)}
+            onClick={() => {
+              setIsSunClick(!isSunClick);
+              addList(0);
+            }}
             className={
               isSunClick
                 ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
