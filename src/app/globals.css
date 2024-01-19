@@ -12,3 +12,10 @@
         @apply bg-white border-gray2 border-[1px] text-black
     }
 }
+
+@layer components {
+    /* 목표 설정 content className */
+    .goal-setting-content {
+        @apply rounded-[16px] bg-gray0 py-3 px-4 w-full
+    }
+}
