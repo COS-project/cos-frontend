@@ -8,10 +8,10 @@ import Button from '@/components/common/Button';
 import ExamInfoItem from '@/components/home/ExamInfoItem';
 import { layoutState } from '@/recoil/atom';
 //TODO: 백엔드에서 과목번호주면 처리
-import { COMPUTER_ABILITY_TEST_LEVEL_1 } from '@/utils/exam-info/ComputerAbilityTestLevel1';
-import { COMPUTER_ABILITY_TEST_LEVEL_2 } from '@/utils/exam-info/ComputerAbilityTestLevel2';
-import { INFORMATION_PROCESSING_ENGINEER_TEST } from '@/utils/exam-info/InformationProcessingEngineerTest';
-import { SOCIAL_RESEARCH_ANALYST_TEST_LEVEL2 } from '@/utils/exam-info/SocialResearchAnalystTestLevel2';
+import { COMPUTER_ABILITY_TEST_LEVEL_1 } from '@/utils/home/exam-info/ComputerAbilityTestLevel1';
+import { COMPUTER_ABILITY_TEST_LEVEL_2 } from '@/utils/home/exam-info/ComputerAbilityTestLevel2';
+
+
 const ExamInfo = () => {
   const [step, setStep] = useRecoilState(layoutState);
   const router = useRouter();
