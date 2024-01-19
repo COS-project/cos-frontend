@@ -1,0 +1,143 @@
+'use client';
+
+import {
+  addDays,
+  addMonths,
+  differenceInCalendarDays,
+  endOfMonth,
+  endOfWeek,
+  format,
+  getMonth,
+  isSaturday,
+  isSunday,
+  startOfMonth,
+  startOfWeek,
+  subMonths,
+} from 'date-fns';
+import dayjs from 'dayjs';
+import React, { useCallback, useMemo, useState } from 'react';
+import { twMerge } from 'tailwind-merge';
+
+interface Props {
+  className: string; // 캘린더 위치 변경
+  setTargetDate: React.Dispatch<React.SetStateAction<string>>; // 시작 날짜, 종료 날짜 설정하는 state 함수
+  // 시작 날짜(or 오늘 날짜) 이전 날짜는 눌리지 않도록 disabled 제어하는 함수
+  setDateStatus: (date: dayjs.Dayjs, settingState: string) => boolean;
+  settingState: string; // 캘린더가 사용된 용도 ('Start, End')
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>; // 캘린더를 키고 끌 수 있게 하는 state 함수
+}
+
+/**
+ * 캘린더
+ */
+const Calendar = (props: Props) => {
+  const { className, setTargetDate, setDateStatus, settingState, setIsModalOpen } = props;
+
+  const now = dayjs();
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const monthStart = startOfMonth(currentDate);
+  const monthEnd = endOfMonth(currentDate);
+  const startDate = startOfWeek(monthStart);
+  const endDate = endOfWeek(monthEnd);
+  const weekMock = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  /**
+   * 다음 달로 넘어가는 함수
+   */
+  const nextMonthHandler = useCallback(() => {
+    setCurrentDate(addMonths(currentDate, 1));
+  }, [currentDate]);
+
+  /**
+   * 이전 달로 넘어가는 함수
+   */
+  const prevMonthHandler = useCallback(() => {
+    setCurrentDate(subMonths(currentDate, 1));
+  }, [currentDate]);
+
+  const createMonth = useMemo(() => {
+    const monthArray = [];
+    let day = startDate;
+    while (differenceInCalendarDays(endDate, day) >= 0) {
+      monthArray.push(day);
+      day = addDays(day, 1);
+    }
+    return monthArray;
+  }, [startDate, endDate]);
+
+  return (
+    <section
+      className={twMerge(
+        'absolute bg-white border-[1px] border-gray2 rounded-[16px] p-2 pt-3 shadow-lg w-[90%]',
+        className,
+      )}>
+      <div className="flex flex-col items-center justify-center gap-y-3">
+        <div className="flex justify-evenly w-full">
+          <button onClick={prevMonthHandler}>
+            <LeftIcon />
+          </button>
+          <div className="flex">
+            <div className="text-h3 font-semibold">{format(currentDate, 'yyyy.')}</div>
+            <div className="text-h3 font-semibold">{format(currentDate, 'MM')}</div>
+          </div>
+          <button onClick={nextMonthHandler}>
+            <RightIcon />
+          </button>
+        </div>
+
+        <div className="flex justify-between text-h6 text-gray3 w-full">
+          {weekMock.map((date, i) => {
+            return (
+              <div key={`day${i}`} className="flex w-full justify-center items-center">
+                {date}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/*날짜*/}
+      <div className="grid grid-cols-7 justify-between items-center gap-y-5 my-3">
+        {createMonth.map((date, i) => {
+          const validation = getMonth(currentDate) === getMonth(date);
+          const today = format(new Date(), 'yyyyMMdd') === format(date, 'yyyyMMdd');
+          return (
+            <button
+              key={`date${i}`}
+              disabled={setDateStatus(date, settingState)}
+              onClick={() => {
+                setTargetDate(now.format(format(date, 'yyyy.MM.dd')));
+                setIsModalOpen(false);
+              }}
+              className={validation ? (setDateStatus(date, settingState) ? 'flex justify-center items-center bg-white text-gray3' : 'flex justify-center items-center bg-white hover:text-gray4') : 'text-white'}>
+              <div>
+                {today ? (
+                  <span className="text-black rounded-[8px] border border-blue py-2 px-3">{format(date, 'd')}</span>
+                ) : (
+                  <span>{format(date, 'd')}</span>
+                )}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </section>
+  );
+};
+
+export default Calendar;
+
+function RightIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M8 5.5l4 4.5-4 4.5" stroke="#000" strokeLinecap="round" />
+    </svg>
+  );
+}
+function LeftIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={20} height={20} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M12 14.5L8 10l4-4.5" stroke="#000" strokeLinecap="round" />
+    </svg>
+  );
+}
