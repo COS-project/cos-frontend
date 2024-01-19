@@ -2,13 +2,19 @@
 
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { mockExamCount } from '@/recoil/atom';
 
 interface Props {
   use: string; // 사용된 컴포넌트를 나타냄 ex) 목표 점수 설정, 공부량 설정, 공부 시간 설정
   ContentIcon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+  //내용
   goalString: string;
   unitString: string;
   actionString: string;
+  //목표 횟수 설정할 때 받는 props
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 /**
@@ -16,8 +22,7 @@ interface Props {
  * '자격증 선택', '매일 목표 설정 - 모의고사, 시간' 컴포넌트에 사용됩니다.
  */
 const SetGoalsItem = (props: Props) => {
-  const { use, ContentIcon, goalString, unitString, actionString } = props;
-  let [count, setCount] = useState<number>(0);
+  let { use, ContentIcon, goalString, unitString, actionString, count, setCount } = props;
   const [downDisabled, setDownDisabled] = useState<boolean>(false);
   const [upDisabled, setUpDisabled] = useState<boolean>(false);
 
@@ -47,7 +52,7 @@ const SetGoalsItem = (props: Props) => {
 
   useEffect(() => {
     // 목표 점수 설정일 때만 upButtonHandler 사용
-    if (use == 'targetScore') {
+    if (use == 'goalScore') {
       UpButtonHandler();
       downButtonHandler();
     } else {
@@ -70,14 +75,14 @@ const SetGoalsItem = (props: Props) => {
           <button
             disabled={upDisabled}
             onClick={() => {
-              use == 'targetTime' ? setCount((count += 10)) : setCount(++count);
+              use == 'goalStudyTime' ? setCount((count += 10)) : setCount(++count);
             }}>
             <UpIcon />
           </button>
           <button
             disabled={downDisabled}
             onClick={() => {
-              use == 'targetTime' ? setCount((count -= 10)) : setCount(--count);
+              use == 'goalStudyTime' ? setCount((count -= 10)) : setCount(--count);
             }}>
             <DownIcon />
           </button>
