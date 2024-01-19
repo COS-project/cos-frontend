@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useState } from 'react';
 
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
 import SetGoalsItem from '@/components/home/goal-setting/SetGoalsItem';
@@ -8,24 +9,28 @@ import SetGoalsItem from '@/components/home/goal-setting/SetGoalsItem';
 /**
  * 목표 점수를 설정하는 컴포넌트
  */
-const SetTargetScore = () => {
+const SetGoalScore = () => {
+  //목표 점수 횟수 증가
+  let [goalScoreCount, setGoalScoreCount] = useState<number>(0);
   return (
     <div className="flex flex-col gap-y-2">
-      <GoalSettingTitle Icon={SetTargetScoreIcon}>목표 점수 설정</GoalSettingTitle>
+      <GoalSettingTitle Icon={SetGoalScoreIcon}>목표 점수 설정</GoalSettingTitle>
 
       <SetGoalsItem
-        use={'targetScore'}
+        use={'goalScore'}
         goalString={'총점'}
         unitString={'점'}
-        actionString={'이상 받기'}
-        ContentIcon={SetTargetScoreContentIcon}
+        actionString={goalScoreCount == 100 ? '받기' : '이상 받기'} // 총점 변경
+        ContentIcon={SetGoalScoreContentIcon}
+        count={goalScoreCount}
+        setCount={setGoalScoreCount}
       />
     </div>
   );
 };
-export default SetTargetScore;
+export default SetGoalScore;
 
-function SetTargetScoreIcon(props: React.SVGProps<SVGSVGElement>) {
+function SetGoalScoreIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg width={24} height={25} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <mask
@@ -50,7 +55,7 @@ function SetTargetScoreIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function SetTargetScoreContentIcon(props: React.SVGProps<SVGSVGElement>) {
+function SetGoalScoreContentIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg width={24} height={24} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <mask
