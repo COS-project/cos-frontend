@@ -21,6 +21,14 @@ export interface Session {
   sessionNumber: number;
   // 시험을 응시한적이 있는지 여부 변수
   isTaken: boolean;
+  // 유저의 응시횟수를 구분하는 변수
+  rounds: Round[];
+}
+
+// 유저의 응시횟수를 구분하기 위한 정보
+export interface Round {
+  // 회차 변수
+  roundNumber: number;
   // 총 맞춘 정답 개수
   totalCorrect: number;
   // 총 문제 개수
@@ -46,7 +54,6 @@ export interface SpecificSubject {
   // 과목에 머문 시간
   takenTime: number;
 }
-
 // 온보딩 관심 자격증 리스트
 export const LicenseInfo: Array<License> = [];
 

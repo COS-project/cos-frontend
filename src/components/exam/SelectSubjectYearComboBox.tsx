@@ -7,7 +7,6 @@ import SubjectData from '@/utils/dummyData'; // Import dummy data
 import { selectedSubjectState } from '@/utils/recoilState';
 
 import SubjectSessionCard from './SubjectSessionCard';
-
 // 과목에 Year를 필터링 해주는 모듈
 const SelectSubjectYearComboBox = ({}) => {
   const [selectedSubject, setSelectedSubject] = useRecoilState<SubjectInfo | null>(selectedSubjectState);

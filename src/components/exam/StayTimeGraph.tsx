@@ -1,14 +1,15 @@
 import { useRecoilState } from 'recoil';
 
-import { Session } from '@/types/global';
-import { selectedSessionState } from '@/utils/recoilState';
+import { Round, Session } from '@/types/global';
+import { selectedRoundState, selectedSessionState } from '@/utils/recoilState';
 
 import StickGraph from './StickGraph';
 
 // examreportpage에서 머문시간 그래프를 나타내는 컴포넌트
 const StayTimeGraph: React.FC = () => {
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
-  const subjects = selectedSession?.subjects;
+  const [selectedRound, setSelectedRound] = useRecoilState<Round | null>(selectedRoundState);
+  const subjects = selectedRound?.subjects;
 
   return (
     <div>
@@ -16,11 +17,11 @@ const StayTimeGraph: React.FC = () => {
         <div className="font-bold text-h3">머문시간 그래프</div>
         <div className="text-h5 p-2">
           <div>걸린 시간</div>
-          <div className="font-bold">{selectedSession?.totalTakenTime}m</div>
+          <div className="font-bold">{selectedRound?.totalTakenTime}m</div>
         </div>
         <div className="flex items-center space-x-2">
           <div className="w-[85%] border-t border-gray1"></div>
-          <div className="w-[15%] text-gray3 text-h5">{selectedSession?.totalAllowedTime}분</div>
+          <div className="w-[15%] text-gray3 text-h5">{selectedRound?.totalAllowedTime}분</div>
         </div>
         <div className="flex items-end space-x-2">
           <div className="w-[85%]">
