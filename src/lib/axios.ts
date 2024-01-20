@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: process.env.REACT_APP_IP,
+  baseURL: 'http://cercat.p-e.kr/api/v1',
   headers: {
     'Content-type': 'application/json',
   },
