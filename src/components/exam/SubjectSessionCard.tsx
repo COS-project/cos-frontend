@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
 
 import { Session, SubjectInfo } from '@/types/global';
-import { selectedSessionState, selectedSubjectState } from '@/utils/recoilState';
 
 import SessionModal from './SessionModal';
 import TimerModal from './TimerModal';
 
-// 해당하는 연도의 회차별 데이터를 모두 출력
-const SubjectSessionCard: React.FC = ({}) => {
-  const [selectedSubject, setSelectedSubject] = useRecoilState<SubjectInfo | null>(selectedSubjectState);
-  const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
+interface SubjectSessionCardProps {
+  selectedSubject: SubjectInfo | null;
+}
+
+const SubjectSessionCard: React.FC<SubjectSessionCardProps> = ({ selectedSubject }) => {
+  const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [sessionModalIsOpen, setSessionModalIsOpen] = useState(false);
   const [timerModalIsOpen, setTimerModalIsOpen] = useState(false);
 
-  // 모달이 열릴때 세션 상태 설정
-  const openSessionModal = (session: Session | null) => {
+  const openSessionModal = (session: Session) => {
     setSelectedSession(session);
     setSessionModalIsOpen(true);
   };
@@ -36,13 +35,10 @@ const SubjectSessionCard: React.FC = ({}) => {
   // 해당 연도의 세션 정보를 가져오기
   const sessions = selectedSubject?.sessions;
 
-  console.log(sessions);
-
   if (!sessions) {
     return <div>해당 연도의 데이터가 없습니다.</div>;
   }
 
-  // 여기서 selectedSession 에 대한 전역 상태가 결정됩니다.
   return (
     <>
       {sessions.map((session, index) => (
@@ -65,11 +61,19 @@ const SubjectSessionCard: React.FC = ({}) => {
       ))}
       {/* 세션 모달에 대한 코드 */}
       {sessionModalIsOpen && selectedSession && (
-        <SessionModal closeModal={closeSessionModal} openTimerModal={openTimerModal} />
+        <SessionModal
+          selectedSession={selectedSession}
+          closeModal={closeSessionModal}
+          openTimerModal={openTimerModal}
+        />
       )}
       {/* 타이머 모달에 대한 코드 */}
       {timerModalIsOpen && selectedSession && (
-        <TimerModal closeTimerModal={closeTimerModal} closeSessionModal={closeSessionModal} />
+        <TimerModal
+          selectedSession={selectedSession}
+          closeTimerModal={closeTimerModal}
+          closeSessionModal={closeSessionModal}
+        />
       )}
     </>
   );

@@ -1,17 +1,15 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
 
 import { Session } from '@/types/global';
-import { selectedSessionState } from '@/utils/recoilState';
 
 interface SessionModalProps {
+  selectedSession: Session;
   closeTimerModal: () => void;
   closeSessionModal: () => void;
 }
 
-const TimerModal: React.FC<SessionModalProps> = ({ closeTimerModal, closeSessionModal }) => {
-  const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
+const TimerModal: React.FC<SessionModalProps> = ({ selectedSession, closeTimerModal, closeSessionModal }) => {
   // 타이머 모달이 나타나면 기존 세션 모달을 종료하기 위한 동작
   useEffect(() => {
     // 타이머 모달이 나타난 후에 실행되는 부분
@@ -34,7 +32,7 @@ const TimerModal: React.FC<SessionModalProps> = ({ closeTimerModal, closeSession
         <div className="bg-white rounded-3xl">
           <div className="w-[90%] mx-auto">
             <h2 className="flex justify-center text-h4 font-bold p-4">
-              <div>{`${selectedSession?.sessionNumber}회차`}</div>
+              <div>{`${selectedSession.sessionNumber}회차`}</div>
             </h2>
             <div className="border-t border-gray1"></div>
             <div className="flex justify-center font-bold my-4">시험 시간 설정</div>
