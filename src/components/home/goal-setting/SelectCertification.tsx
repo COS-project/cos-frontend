@@ -1,25 +1,44 @@
 'use client';
 
 import * as React from 'react';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import SelectCertificationModal from '@/components/common/FilterModal';
 import FilterModal from '@/components/common/FilterModal';
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
-import { CERTIFICATION_CATEGORY } from '@/utils/common/certificationCategory';
+import useGetAllCertifications from '@/lib/hooks/useGetAllCertifications';
 
 /**
  목표 설정 페이지 중 자격증 선택 컴포넌트 입니다.
  */
 const SelectCertification = () => {
+  // 데이터 패칭
+  const { certificationsList, isLoading, isError } = useGetAllCertifications();
   //FilterModal 을 열고 닫는 state
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // 선택된 자격증
-  const [selectCertification, setSelectCertification] = useState<string>('정보처리기사');
+  const [selectedCertification, setSelectedCertification] = useState<string>('정보처리기사');
   //FilterModal 을 열고 닫는 함수
   const modalHandler = () => {
     setIsModalOpen(!isModalOpen);
   };
+
+  // 모든 자격증 리스트 불러오는 함수
+  const getAllCertifications = useCallback(async () => {
+    return certificationsList;
+  }, []);
+
+  useEffect(() => {
+    if (certificationsList) {
+      getAllCertifications();
+    }
+    // if (isLoading) {
+    //
+    // }
+    //
+    // if (isError) {
+    //
+    // }
+  }, []);
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -29,7 +48,7 @@ const SelectCertification = () => {
         <div className="relative flex items-center justify-between">
           <div className="flex gap-x-2 items-center">
             <SelectCertificationContentIcon />
-            <div className="text-h4">{selectCertification}</div>
+            <div className="text-h4">{selectedCertification}</div>
           </div>
           {isModalOpen ? <DropDownOnIcon /> : <DropDownOffIcon />}
         </div>
@@ -38,8 +57,8 @@ const SelectCertification = () => {
       {isModalOpen ? (
         <FilterModal
           setIsOpen={setIsModalOpen}
-          setDataState={setSelectCertification}
-          data={CERTIFICATION_CATEGORY}
+          setDataState={setSelectedCertification}
+          data={certificationsList.result}
           className={'absolute top-[134px] w-[90%]'}
         />
       ) : null}

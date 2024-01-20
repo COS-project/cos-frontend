@@ -37,14 +37,10 @@ export interface SpecificSubject {
   totalProblems: number;
 }
 
-// 온보딩 관심 자격증 리스트
-export const LicenseInfo: Array<License> = [];
-
-// 온보딩 관심 자격증 리스트의 객체 형태 자격증 번호
-interface License {
-  // TODO: 백엔드 API 나오는것 보고 변경될 예정
-  id: string;
-  title: string;
+// 자격증
+interface Certificate {
+  certificateId: number;
+  certificateName: string;
 }
 
 // 자격증 정보 공통 분류
