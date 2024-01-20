@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 
 import CorrectRateGraph from '@/components/exam/CorrectRateGraph';
 import ReportCard from '@/components/exam/ReportCard';
+import RoundFilter from '@/components/exam/RoundFilter';
 import StayTimeGraph from '@/components/exam/StayTimeGraph';
 import SubjectGradeCard from '@/components/exam/SubjectGradeCard';
 import { Session } from '@/types/global'; // Session 타입의 경로에 따라 수정
@@ -16,8 +17,12 @@ const Report: React.FC = () => {
   return (
     <div>
       <div className="bg-gray0 items-center h-screen">
-        <div className="w-[85%] mx-auto">
-          <div className="font-bold"> 과목별 맞춘 문제 수 </div>
+        <div className="w-[85%] mx-auto my-4">
+          <div className="my-2">
+            <div className="font-bold text-h3">모의고사 응시횟수 선택</div>
+            <RoundFilter />
+          </div>
+          <div className="font-bold text-h3"> 과목별 맞춘 문제 수 </div>
           <div className="flex bg-white my-2">
             {subjects?.map((subject, index) => (
               <SubjectGradeCard
