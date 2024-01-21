@@ -71,3 +71,17 @@ interface CommonTitleType {
   qualifications: ExamInfoCommonType;
   criteria: ExamInfoCommonType;
 }
+
+// 목표 설정 type
+interface GoalSettingInfo {
+  goalScore: number;
+  prepareStartDateTime: string;
+  prepareFinishDateTime: string;
+  goalPrepareDays: number;
+  mockExamsPerDay: number;
+  goalMockExams: number;
+  mockExamRepeatDays: number[];
+  studyTimePerDay: number;
+  goalStudyTime: number;
+  studyRepeatDays: number[];
+}

@@ -1,6 +1,9 @@
 'use client';
 
+import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import DescriptionItem from '@/components/home/goal-setting/DescriptionItem';
@@ -8,58 +11,76 @@ import DescriptionTag from '@/components/home/goal-setting/DescriptionTag';
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
 import SelectRepeatDayItem from '@/components/home/goal-setting/SelectRepeatDayItem';
 import SetGoalsItem from '@/components/home/goal-setting/SetGoalsItem';
-import { mockExamDay, preparationPeriod, studyTimeDay, targetEndDate, targetStartDate } from '@/recoil/atom';
-import { format } from 'date-fns';
-import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
+import { goalSettingState } from '@/recoil/home/atom';
 
 /**
  * 매일 목표 설정 컴포넌트입니다.
  * 모의고사 공부량과 공부 시간을 설정할 수 있습니다.
  */
 const SetDailyGoals = () => {
-  //자격증 준비 기간 state
-  const [period, setPeriod] = useRecoilState(preparationPeriod);
-  //목표 시작 날짜 state
-  const [startDate, setStartDate] = useRecoilState(targetStartDate);
-  //목표 종료 널짜 state
-  const [endDate, setEndDate] = useRecoilState(targetEndDate);
-  // 요일 리스트를 담은 state
-  const [mockExamDays, setMockExamDays] = useRecoilState<number[]>(mockExamDay);
-  const [studyTimeDays, setStudyTimeDays] = useRecoilState<number[]>(studyTimeDay);
-
   //설정된 기간동안 모의고사을 설정한 요일이 얼마나 들어있는지 세는 state
   let [mockExamCount, setMockExamCount] = useState<number>(0);
   //설정된 기간동안 공부시간을 설정한 요일이 얼마나 들어있는지 세는 state
   let [studyTimeCount, setStudyTimeCount] = useState<number>(0);
 
-  //데일리로 몇 회(or분)
-  let [goalMockExamCount, setGoalMockExamCount] = useState<number>(0);
-  let [goalStudyTimeCount, setGoalStudyTimeCount] = useState<number>(0);
+  const [goalData, setGoalData] = useRecoilState(goalSettingState);
 
   /**
-   * 목표 기간동안 얼마나 달성할 수 있는지 계산하는 함수
+   * 자격증 준비 기간동안 얼마나 달성할 수 있는지 계산하는 함수
    */
-  const calculateCumulativeStudy = (used: string) => {
-    for (let date = dayjs(startDate).valueOf(); date <= dayjs(endDate).valueOf(); date += 86400000) {
+  const calculateCumulativeStudy = (usage: string) => {
+    if (usage == 'MockExam') {
+      setMockExamCount(0);
+    }
+    if (usage == 'StudyTime') {
+      setStudyTimeCount(0);
+    }
+
+    // 준비 기간 동안 설정한 요일이 얼마나 들어있는지 세기
+    for (
+      let date = dayjs(format(goalData.prepareStartDateTime, 'yyyy.MM.dd')).valueOf();
+      date <= dayjs(format(goalData.prepareFinishDateTime, 'yyyy.MM.dd')).valueOf();
+      date += 86400000
+    ) {
       const day = dayjs(date);
-      //
-      if (used == 'MockExam' && mockExamDays.includes(day.get('day'))) {
+      if (usage == 'MockExam' && goalData.mockExamRepeatDays.includes(day.get('day'))) {
         setMockExamCount((prevCount) => prevCount + 1);
       }
-      if (used == 'StudyTime' && studyTimeDays.includes(day.get('day'))) {
+      if (usage == 'StudyTime' && goalData.studyRepeatDays.includes(day.get('day'))) {
         setStudyTimeCount((prevCount) => prevCount + 1);
       }
     }
   };
 
+  //모의고사 전체 누적 공부량
   useEffect(() => {
     calculateCumulativeStudy('MockExam');
-  }, [mockExamDays, startDate, endDate]);
+    setGoalData((prevGoalSettingData) => ({
+      ...prevGoalSettingData,
+      goalMockExams: mockExamCount * goalData.mockExamsPerDay,
+    }));
+  }, [
+    mockExamCount,
+    goalData.mockExamsPerDay,
+    goalData.mockExamRepeatDays,
+    goalData.prepareFinishDateTime,
+    goalData.prepareStartDateTime,
+  ]);
 
+  //공부시간 전체 누적 공부량
   useEffect(() => {
     calculateCumulativeStudy('StudyTime');
-  }, [studyTimeDays, startDate, endDate]);
+    setGoalData((prevGoalSettingData) => ({
+      ...prevGoalSettingData,
+      goalStudyTime: studyTimeCount * goalData.studyTimePerDay,
+    }));
+  }, [
+    studyTimeCount,
+    goalData.studyTimePerDay,
+    goalData.studyRepeatDays,
+    goalData.prepareFinishDateTime,
+    goalData.prepareStartDateTime,
+  ]);
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -70,19 +91,17 @@ const SetDailyGoals = () => {
         <div className="flex flex-col gap-y-2">
           <DescriptionTag>모의고사 공부 설정</DescriptionTag>
           <SetGoalsItem
-            use="goalMorkExam"
+            usage="goalMockExam"
             ContentIcon={MockExamIcon}
             goalString={'모의고사'}
             unitString={'회'}
             actionString={'풀기'}
-            setCount={setGoalMockExamCount}
-            count={goalMockExamCount}
           />
-          <SelectRepeatDayItem used={'MockExam'} />
+          <SelectRepeatDayItem usage={'MockExam'} />
           <DescriptionItem>
             <div className="text-h6">
-              목표기간 <span className="text-primary">{period}일 동안</span> 모의고사{' '}
-              <span className="text-primary">{mockExamCount * goalMockExamCount}회</span>를 풀어요!
+              목표기간 <span className="text-primary">{goalData.goalPrepareDays}일 동안</span> 모의고사{' '}
+              <span className="text-primary">{mockExamCount * goalData.mockExamsPerDay}회</span>를 풀어요!
             </div>
           </DescriptionItem>
         </div>
@@ -91,19 +110,17 @@ const SetDailyGoals = () => {
         <div className="flex flex-col gap-y-2">
           <DescriptionTag>공부시간 설정</DescriptionTag>
           <SetGoalsItem
-            use="goalStudyTime"
+            usage="goalStudyTime"
             ContentIcon={TimeIcon}
             goalString={'공부시간'}
             unitString={'분'}
             actionString={'공부하기'}
-            setCount={setGoalStudyTimeCount}
-            count={goalStudyTimeCount}
           />
-          <SelectRepeatDayItem used={'StudyTime'} />
+          <SelectRepeatDayItem usage={'StudyTime'} />
           <DescriptionItem>
             <div className="text-h6">
-              목표기간 <span className="text-primary">{period}일 동안</span> 공부시간{' '}
-              <span className="text-primary">{studyTimeCount * goalStudyTimeCount}분</span>을 공부해요!
+              목표기간 <span className="text-primary">{goalData.goalPrepareDays}일 동안</span> 공부시간{' '}
+              <span className="text-primary">{studyTimeCount * goalData.studyTimePerDay}분</span>을 공부해요!
             </div>
           </DescriptionItem>
         </div>
@@ -115,13 +132,7 @@ export default SetDailyGoals;
 
 function SetDailyGoalIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      width={24}
-      height={25}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <svg width={24} height={25} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <mask
         id="prefix__a"
         style={{
@@ -131,8 +142,7 @@ function SetDailyGoalIcon(props: React.SVGProps<SVGSVGElement>) {
         x={0}
         y={0}
         width={24}
-        height={25}
-      >
+        height={25}>
         <path fill="#D9D9D9" d="M0 .5h24v24H0z" />
       </mask>
       <g mask="url(#prefix__a)">
@@ -147,24 +157,17 @@ function SetDailyGoalIcon(props: React.SVGProps<SVGSVGElement>) {
 
 function MockExamIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      width={24}
-      height={24}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <svg width={24} height={24} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <mask
         id="prefix__a"
         style={{
-          maskType: "alpha",
+          maskType: 'alpha',
         }}
         maskUnits="userSpaceOnUse"
         x={0}
         y={0}
         width={24}
-        height={24}
-      >
+        height={24}>
         <path fill="#D9D9D9" d="M0 0h24v24H0z" />
       </mask>
       <g mask="url(#prefix__a)">
@@ -178,24 +181,17 @@ function MockExamIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 function TimeIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      width={24}
-      height={24}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <svg width={24} height={24} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <mask
         id="prefix__a"
         style={{
-          maskType: "alpha",
+          maskType: 'alpha',
         }}
         maskUnits="userSpaceOnUse"
         x={0}
         y={0}
         width={24}
-        height={24}
-      >
+        height={24}>
         <path fill="#D9D9D9" d="M0 0h24v24H0z" />
       </mask>
       <g mask="url(#prefix__a)">

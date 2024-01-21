@@ -16,14 +16,16 @@ import {
 } from 'date-fns';
 import dayjs from 'dayjs';
 import React, { useCallback, useMemo, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
+import { goalSettingState } from '@/recoil/home/atom';
+
 interface Props {
+  usage: string;
   className: string; // 캘린더 위치 변경
-  setTargetDate: React.Dispatch<React.SetStateAction<string>>; // 시작 날짜, 종료 날짜 설정하는 state 함수
   // 시작 날짜(or 오늘 날짜) 이전 날짜는 눌리지 않도록 disabled 제어하는 함수
-  setDateStatus: (date: dayjs.Dayjs, settingState: string) => boolean;
-  settingState: string; // 캘린더가 사용된 용도 ('Start, End')
+  setDateStatus: (date: Date, usage: string) => boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>; // 캘린더를 키고 끌 수 있게 하는 state 함수
 }
 
@@ -31,7 +33,7 @@ interface Props {
  * 캘린더
  */
 const Calendar = (props: Props) => {
-  const { className, setTargetDate, setDateStatus, settingState, setIsModalOpen } = props;
+  const { usage, className, setDateStatus, setIsModalOpen } = props;
 
   const now = dayjs();
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -40,6 +42,8 @@ const Calendar = (props: Props) => {
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
   const weekMock = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  const [goalData, setGoalData] = useRecoilState(goalSettingState);
 
   /**
    * 다음 달로 넘어가는 함수
@@ -104,15 +108,31 @@ const Calendar = (props: Props) => {
           return (
             <button
               key={`date${i}`}
-              disabled={setDateStatus(date, settingState)}
+              disabled={setDateStatus(date, usage)}
               onClick={() => {
-                setTargetDate(now.format(format(date, 'yyyy.MM.dd')));
+                usage == 'Start'
+                  ? setGoalData((prevGoalSettingData) => ({
+                      ...prevGoalSettingData,
+                      prepareStartDateTime: date.toISOString(),
+                    }))
+                  : setGoalData((prevGoalSettingData) => ({
+                      ...prevGoalSettingData,
+                      prepareFinishDateTime: date.toISOString(),
+                    }));
                 setIsModalOpen(false);
               }}
-              className={validation ? (setDateStatus(date, settingState) ? 'flex justify-center items-center bg-white text-gray3' : 'flex justify-center items-center bg-white hover:text-gray4') : 'text-white'}>
+              //이번 달에 해당하지 않는 날짜 style
+              className={
+                validation
+                  ? setDateStatus(date, usage)
+                    ? 'flex justify-center items-center bg-white text-gray3'
+                    : 'flex justify-center items-center bg-white hover:text-gray4'
+                  : 'text-white'
+              }>
               <div>
+                {/*오늘 style*/}
                 {today ? (
-                  <span className="text-black rounded-[8px] border border-blue py-2 px-3">{format(date, 'd')}</span>
+                  <span className="rounded-[8px] border border-blue py-2 px-3">{format(date, 'd')}</span>
                 ) : (
                   <span>{format(date, 'd')}</span>
                 )}
