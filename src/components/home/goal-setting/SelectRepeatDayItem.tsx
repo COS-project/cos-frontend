@@ -4,17 +4,17 @@ import { useState } from 'react';
 import * as React from 'react';
 import { useRecoilState } from 'recoil';
 
-import { mockExamDay, studyTimeDay } from '@/recoil/atom';
+import { goalSettingState } from '@/recoil/home/atom';
 
 interface Props {
-  used: string; // 사용된 용도 (모의고사 MockList, 공부시간 StudyTime)
+  usage: string; // 사용된 용도 (모의고사 MockList, 공부시간 StudyTime)
 }
 
 /**
  * 월, 화, 수, 목, 금, 토, 일 목표를 설정할 수 있는 컴포넌트입니다.
  */
 const SelectRepeatDayItem = (props: Props) => {
-  const { used } = props;
+  const { usage } = props;
   //각 버튼을 눌렀을 때, 눌렸는지를 확인하는 state
   const [isMonthClick, setIsMonthClick] = useState<boolean>(false);
   const [isTuesClick, setIsTuesClick] = useState<boolean>(false);
@@ -25,26 +25,38 @@ const SelectRepeatDayItem = (props: Props) => {
   const [isSunClick, setIsSunClick] = useState<boolean>(false);
 
   // 요일 리스트를 담은 state
-  const [mockExamDays, setMockExamDays] = useRecoilState<number[]>(mockExamDay);
-  const [studyTimeDays, setStudyTimeDays] = useRecoilState<number[]>(studyTimeDay);
+  let [goalSettingData, setGoalSettingData] = useRecoilState(goalSettingState);
 
   /**
    * 사용된 용도에 따라(모의고사 - MockExam, 공부시간 - StudyTime)
    * 요일 리스트에 요일을 추가하는 리스트 (2번 클릭 될 경우에는 리스트 제거)
+   * @param dayOfWeek 요일 [일: 1 ~ 토: 6]
    */
-  const addList = (index: number) => {
-    if (used == 'MockExam') {
-      if (!mockExamDays.includes(index)) {
-        setMockExamDays((mockExamDays) => [...mockExamDays, index]);
+  const addList = (dayOfWeek: number) => {
+    if (usage == 'MockExam') {
+      if (!goalSettingData.mockExamRepeatDays.includes(dayOfWeek)) {
+        setGoalSettingData((prevGoalSettingData) => ({
+          ...prevGoalSettingData,
+          mockExamRepeatDays: [...prevGoalSettingData.mockExamRepeatDays, dayOfWeek],
+        }));
       } else {
-        setMockExamDays(mockExamDays.filter((day) => day != index));
+        setGoalSettingData((prevGoalSettingData) => ({
+          ...prevGoalSettingData,
+          mockExamRepeatDays: [...prevGoalSettingData.mockExamRepeatDays].filter((day) => day != dayOfWeek),
+        }));
       }
     }
-    if (used == 'StudyTime') {
-      if (!studyTimeDays.includes(index)) {
-        setStudyTimeDays((studyTimeDays) => [...studyTimeDays, index]);
+    if (usage == 'StudyTime') {
+      if (!goalSettingData.studyRepeatDays.includes(dayOfWeek)) {
+        setGoalSettingData((prevGoalSettingData) => ({
+          ...prevGoalSettingData,
+          studyRepeatDays: [...prevGoalSettingData.studyRepeatDays, dayOfWeek],
+        }));
       } else {
-        setStudyTimeDays(studyTimeDays.filter((day) => day != index));
+        setGoalSettingData((prevGoalSettingData) => ({
+          ...prevGoalSettingData,
+          studyRepeatDays: [...prevGoalSettingData.studyRepeatDays].filter((day) => day != dayOfWeek),
+        }));
       }
     }
   };

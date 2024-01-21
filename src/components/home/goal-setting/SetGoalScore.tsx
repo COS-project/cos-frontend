@@ -1,29 +1,28 @@
 'use client';
 
 import * as React from 'react';
-import { useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
 import SetGoalsItem from '@/components/home/goal-setting/SetGoalsItem';
+import { goalSettingState } from '@/recoil/home/atom';
 
 /**
  * 목표 점수를 설정하는 컴포넌트
  */
 const SetGoalScore = () => {
-  //목표 점수 횟수 증가
-  let [goalScoreCount, setGoalScoreCount] = useState<number>(0);
+  const goalData = useRecoilValue(goalSettingState);
+
   return (
     <div className="flex flex-col gap-y-2">
       <GoalSettingTitle Icon={SetGoalScoreIcon}>목표 점수 설정</GoalSettingTitle>
 
       <SetGoalsItem
-        use={'goalScore'}
+        usage={'goalScore'}
         goalString={'총점'}
         unitString={'점'}
-        actionString={goalScoreCount == 100 ? '받기' : '이상 받기'} // 총점 변경
+        actionString={goalData.goalScore == 100 ? '받기' : '이상 받기'} // 총점 변경
         ContentIcon={SetGoalScoreContentIcon}
-        count={goalScoreCount}
-        setCount={setGoalScoreCount}
       />
     </div>
   );
