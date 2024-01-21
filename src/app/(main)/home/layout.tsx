@@ -10,7 +10,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
   const [step, setStep] = useRecoilState<'Home' | 'ExamInfo'>(layoutState);
 
   return (
-    <div className="bg-gray0">
+    <div className="">
       {step == 'Home' ? (
         <div>
           <Header /> {children} <NavBar />
