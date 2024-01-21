@@ -17,6 +17,7 @@ const SelectCertification = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // 선택된 자격증
   const [selectedCertification, setSelectedCertification] = useState<string>('정보처리기사');
+
   //FilterModal 을 열고 닫는 함수
   const modalHandler = () => {
     setIsModalOpen(!isModalOpen);
