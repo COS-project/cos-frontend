@@ -65,7 +65,25 @@ const GoalSetting = () => {
 
   return (
     <div className="flex flex-col gap-y-8 mx-5">
-      <Button onClick={() => {postGoalSettingData(goalSettingData);}} className={'absolute right-0 w-fit'}>저장</Button>
+      {goalSettingData ? (
+        //수정버튼
+        <Button
+          onClick={() => {
+            putGoalSettingData(goalData);
+          }}
+          className={'absolute right-0 w-fit'}>
+          저장
+        </Button>
+      ) : (
+        //처음 생성 버튼
+        <Button
+          onClick={() => {
+            postGoalSettingData(goalData);
+          }}
+          className={'absolute right-0 w-fit'}>
+          저장
+        </Button>
+      )}
       {/*자격증 선택*/}
       <SelectCertification />
       {/*목표 점수 설정*/}
