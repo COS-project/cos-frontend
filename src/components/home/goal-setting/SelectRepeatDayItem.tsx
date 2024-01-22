@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -25,7 +25,7 @@ const SelectRepeatDayItem = (props: Props) => {
   const [isSunClick, setIsSunClick] = useState<boolean>(false);
 
   // 요일 리스트를 담은 state
-  let [goalSettingData, setGoalSettingData] = useRecoilState(goalSettingState);
+  let [goalData, setGoalData] = useRecoilState(goalSettingState);
 
   /**
    * 사용된 용도에 따라(모의고사 - MockExam, 공부시간 - StudyTime)
@@ -34,32 +34,90 @@ const SelectRepeatDayItem = (props: Props) => {
    */
   const addList = (dayOfWeek: number) => {
     if (usage == 'MockExam') {
-      if (!goalSettingData.mockExamRepeatDays.includes(dayOfWeek)) {
-        setGoalSettingData((prevGoalSettingData) => ({
+      if (!goalData.mockExamRepeatDays.includes(dayOfWeek)) {
+        setGoalData((prevGoalSettingData) => ({
           ...prevGoalSettingData,
           mockExamRepeatDays: [...prevGoalSettingData.mockExamRepeatDays, dayOfWeek],
         }));
       } else {
-        setGoalSettingData((prevGoalSettingData) => ({
+        setGoalData((prevGoalSettingData) => ({
           ...prevGoalSettingData,
           mockExamRepeatDays: [...prevGoalSettingData.mockExamRepeatDays].filter((day) => day != dayOfWeek),
         }));
       }
     }
     if (usage == 'StudyTime') {
-      if (!goalSettingData.studyRepeatDays.includes(dayOfWeek)) {
-        setGoalSettingData((prevGoalSettingData) => ({
+      if (!goalData.studyRepeatDays.includes(dayOfWeek)) {
+        setGoalData((prevGoalSettingData) => ({
           ...prevGoalSettingData,
           studyRepeatDays: [...prevGoalSettingData.studyRepeatDays, dayOfWeek],
         }));
       } else {
-        setGoalSettingData((prevGoalSettingData) => ({
+        setGoalData((prevGoalSettingData) => ({
           ...prevGoalSettingData,
           studyRepeatDays: [...prevGoalSettingData.studyRepeatDays].filter((day) => day != dayOfWeek),
         }));
       }
     }
   };
+
+  //처음 랜더링 때, 기존의 저장된 요일 버튼 색상 반영되도록 하기
+  const isClickedState = () => {
+    if (usage == 'MockExam') {
+      goalData.mockExamRepeatDays.map((dayOfWeek)=> {
+        if (dayOfWeek == 0) {
+          setIsSunClick(true);
+        }
+        if (dayOfWeek == 1) {
+          setIsMonthClick(true);
+        }
+        if (dayOfWeek == 2) {
+          setIsTuesClick(true);
+        }
+        if (dayOfWeek == 3) {
+          setIsWednesClick(true);
+        }
+        if (dayOfWeek == 4) {
+          setIsThursClick(true);
+        }
+        if (dayOfWeek == 5) {
+          setIsFriClick(true);
+        }
+        if (dayOfWeek == 6) {
+          setIsSaturClick(true);
+        }
+      });
+    }
+    if (usage == 'StudyTime') {
+      goalData.studyRepeatDays.map((dayOfWeek)=> {
+        if (dayOfWeek == 0) {
+          setIsSunClick(true);
+        }
+        if (dayOfWeek == 1) {
+          setIsMonthClick(true);
+        }
+        if (dayOfWeek == 2) {
+          setIsTuesClick(true);
+        }
+        if (dayOfWeek == 3) {
+          setIsWednesClick(true);
+        }
+        if (dayOfWeek == 4) {
+          setIsThursClick(true);
+        }
+        if (dayOfWeek == 5) {
+          setIsFriClick(true);
+        }
+        if (dayOfWeek == 6) {
+          setIsSaturClick(true);
+        }
+      });
+    }
+  };
+
+  useEffect(() => {
+    isClickedState();
+  }, [goalData.studyRepeatDays, goalData.mockExamRepeatDays]);
 
   return (
     <div className="goal-setting-content">
