@@ -37,12 +37,6 @@ export interface SpecificSubject {
   totalProblems: number;
 }
 
-// 자격증
-interface Certificate {
-  certificateId: number;
-  certificateName: string;
-}
-
 // 자격증 정보 공통 분류
 export interface ExamInfoCommonCategory {
   intro: ExamInfoCommonType;
@@ -74,6 +68,7 @@ interface CommonTitleType {
 
 // 목표 설정 type
 interface GoalSettingInfo {
+  certificate?: Certificate;
   goalScore: number;
   prepareStartDateTime: string;
   prepareFinishDateTime: string;
@@ -84,4 +79,10 @@ interface GoalSettingInfo {
   studyTimePerDay: number;
   goalStudyTime: number;
   studyRepeatDays: number[];
+}
+
+// 자격증
+interface Certificate {
+  certificateId: number;
+  certificateName: string;
 }
