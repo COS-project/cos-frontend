@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 import { ExamInfoCommonCategory } from '@/types/global';
-import { CommonTitle } from '@/utils/exam-info/CommonTitle';
+import { CommonTitle } from '@/utils/home/exam-info/CommonTitle';
 
-export const COMPUTER_ABILITY_TEST_LEVEL_1: ExamInfoCommonCategory = {
+export const COMPUTER_ABILITY_TEST_LEVEL_2: ExamInfoCommonCategory = {
   intro: {
     Icon: CommonTitle.intro.Icon,
     title: CommonTitle.intro.title,
@@ -27,8 +27,8 @@ export const COMPUTER_ABILITY_TEST_LEVEL_1: ExamInfoCommonCategory = {
     content: (
       <ul>
         <li>• 컴퓨터일반, 스프레드시트, 데이터 베이스</li>
-        <li>• 1급 필기 : 객관식 60문항</li>
-        <li>• 1급 실기 : 컴퓨터 작업형</li>
+        <li>• 2급 필기 : 객관식 40문항</li>
+        <li>• 2급 실기 : 컴퓨터 작업형</li>
       </ul>
     ),
   },

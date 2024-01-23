@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 export interface MenuList {
   id: number;
@@ -33,10 +33,6 @@ export interface Round {
   totalCorrect: number;
   // 총 문제 개수
   totalProblem: number;
-  // 전체 시험 응시 시간
-  totalTakenTime: string;
-  // 시험 응시 최대 시간
-  totalAllowedTime: string;
   // 과목내 세부과목에 대한 정보를 담고있음
   subjects: SpecificSubject[];
 }
@@ -91,4 +87,25 @@ interface CommonTitleType {
   method: ExamInfoCommonType;
   qualifications: ExamInfoCommonType;
   criteria: ExamInfoCommonType;
+}
+
+// 목표 설정 type
+interface GoalSettingInfo {
+  certificate?: Certificate;
+  goalScore: number;
+  prepareStartDateTime: string;
+  prepareFinishDateTime: string;
+  goalPrepareDays: number;
+  mockExamsPerDay: number;
+  goalMockExams: number;
+  mockExamRepeatDays: number[];
+  studyTimePerDay: number;
+  goalStudyTime: number;
+  studyRepeatDays: number[];
+}
+
+// 자격증
+interface Certificate {
+  certificateId: number;
+  certificateName: string;
 }

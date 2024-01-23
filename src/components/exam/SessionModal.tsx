@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
 
 import { Round, Session } from '@/types/global';
 import { selectedRoundState, selectedSessionState } from '@/utils/recoilState';
@@ -8,6 +7,7 @@ import { selectedRoundState, selectedSessionState } from '@/utils/recoilState';
 import SubjectGradeCard from './SubjectGradeCard';
 
 interface SessionModalProps {
+  selectedSession: Session; // 선택된 회차에 대한 데이터
   closeModal: () => void;
   openTimerModal: () => void;
 }
@@ -29,7 +29,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ closeModal, openTimerModal 
             <div className="w-[90%] mx-auto">
               <h2 className="flex justify-between text-h4 font-bold p-4">
                 <button>{'<'}</button>
-                <div>{`${selectedSession?.sessionNumber}회차`}</div>
+                <div>{`${selectedSession.sessionNumber}회차`}</div>
                 <button>{'>'}</button>
               </h2>
               <div className="border-t border-gray1"></div>
@@ -41,13 +41,13 @@ const SessionModal: React.FC<SessionModalProps> = ({ closeModal, openTimerModal 
                     <div className="text-gray3 text-h6 mb-1">/{`${selectedRound?.totalProblem}점`}</div>
                   </div>
                 </div>
-                <Link href={'/exam/report'} className="h-1/2 bg-gray0 rounded-3xl text-h6 font-bold p-2">
+                <Link href={'/exam/result'} className="h-1/2 bg-gray0 rounded-3xl text-h6 font-bold p-2">
                   성적 리포트 ➚
                 </Link>
               </div>
               <div className="text-h6 font-bold mt-5">과목별 맞춘 문제 수</div>
               <div className="flex my-2">
-                {subjects?.map((subject, index) => (
+                {subjects.map((subject, index) => (
                   <SubjectGradeCard
                     key={index}
                     name={subject.name}

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
 
 import { Round, Session, SubjectInfo } from '@/types/global';
 import { selectedRoundState, selectedSessionState, selectedSubjectState } from '@/utils/recoilState';
@@ -40,7 +39,6 @@ const SubjectSessionCard: React.FC = ({}) => {
     return <div>해당 연도의 데이터가 없습니다.</div>;
   }
 
-  // 여기서 selectedSession 에 대한 전역 상태가 결정됩니다.
   return (
     <>
       {sessions.map((session, index) => {
@@ -70,11 +68,19 @@ const SubjectSessionCard: React.FC = ({}) => {
         }
       })}
       {sessionModalIsOpen && selectedSession && (
-        <SessionModal closeModal={closeSessionModal} openTimerModal={openTimerModal} />
+        <SessionModal
+          selectedSession={selectedSession}
+          closeModal={closeSessionModal}
+          openTimerModal={openTimerModal}
+        />
       )}
       {/* 타이머 모달에 대한 코드 */}
       {timerModalIsOpen && selectedSession && (
-        <TimerModal closeTimerModal={closeTimerModal} closeSessionModal={closeSessionModal} />
+        <TimerModal
+          selectedSession={selectedSession}
+          closeTimerModal={closeTimerModal}
+          closeSessionModal={closeSessionModal}
+        />
       )}
     </>
   );

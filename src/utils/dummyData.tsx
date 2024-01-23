@@ -143,7 +143,6 @@ const subjectData: SubjectInfo[] = [
       },
     ],
   },
-
   // 다른 연도에 대한 데이터도 필요에 따라 추가
 ];
 
