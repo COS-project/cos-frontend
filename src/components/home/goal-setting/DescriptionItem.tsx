@@ -6,7 +6,7 @@ interface Props {
 
 /**
  * 설정된 목표 기간에 따라 누적 공부량을 보여주는 설명 컴포넌트입니다.
- * @param children 에 elemenet를 넣어 내부 값을 다르게 표현할 수 있습니다.
+ * @param props children 에 Element 를 넣어 내부 값을 다르게 표현할 수 있습니다.
  */
 const DescriptionItem = (props: Props) => {
   const { children } = props;

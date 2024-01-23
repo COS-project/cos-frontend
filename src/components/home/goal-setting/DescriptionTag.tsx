@@ -6,7 +6,7 @@ interface Props {
 
 /**
  * 태그 형태의 설명 컴포넌트 입니다.
- * @param children 을 활용하여 안에 들어가는 내용을 설정할 수 있습니다.
+ * @param props children 을 활용하여 안에 들어가는 내용을 설정할 수 있습니다.
  */
 const DescriptionTag = (props: Props) => {
   const { children } = props;

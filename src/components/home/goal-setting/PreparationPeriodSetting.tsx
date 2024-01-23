@@ -1,3 +1,5 @@
+'use client';
+
 import { format } from 'date-fns';
 import dayjs from 'dayjs';
 import * as React from 'react';
@@ -6,26 +8,22 @@ import { useRecoilState } from 'recoil';
 
 import Calendar from '@/components/home/goal-setting/Calendar';
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
-import { preparationPeriod, targetEndDate, targetStartDate } from '@/recoil/atom';
+import { goalSettingState } from '@/recoil/home/atom';
 
 const PreparationPeriodSetting = () => {
-  const [isStartCalendarModalOpen, setIsStartCalendarModalOpen] = useState<boolean>(false);
-  const [isEndCalendarModalOpen, setIsEndCalendarModalOpen] = useState<boolean>(false);
-  //목표 시작 날짜와 종료 날짜
-  const [startDate, setStartDate] = useRecoilState(targetStartDate);
-  const [endDate, setEndDate] = useRecoilState(targetEndDate);
-
-  // 자격증 준비기간
-  const [period, setPeriod] = useRecoilState(preparationPeriod);
+  const [isStartCalendarOpen, setIsStartCalendarOpen] = useState<boolean>(false);
+  const [isFinishCalendarOpen, setIsFinishCalendarOpen] = useState<boolean>(false);
+  //목표 시작 날짜와 종료 날짜, 준비 날짜
+  const [goalData, setGoalData] = useRecoilState(goalSettingState);
 
   /**
    * 자격증 준비 기간을 계산해주는 함수
    */
   const calculatePreparingPeriod = () => {
-    const start = dayjs(startDate);
-    const end = dayjs(endDate);
-    if (start.isAfter(endDate)) {
-      // 시작 일자가 종료 일자를 넘어갈 경우
+    const startDate = dayjs(goalData.prepareStartDateTime, 'YYYY-MM-DD');
+    const finishDate = dayjs(goalData.prepareFinishDateTime, 'YYYY-MM-DD');
+
+    if (startDate.isAfter(finishDate)) {
       return (
         <div className="flex items-center gap-x-2">
           <ScheduleResultIcon />
@@ -33,13 +31,14 @@ const PreparationPeriodSetting = () => {
         </div>
       );
     } else {
-      // 정상 작동 하는 경우
-      setPeriod(end.diff(start, 'day'));
       return (
         <div className="flex items-center gap-x-2">
           <ScheduleResultIcon />
           <div className="flex items-center gap-x-2">
-            <div className="font-bold">{end.diff(start, 'day')}일</div>
+            <div className="font-bold">
+              {/* 시작일 == 종료일 1, 시작일 != 종료일 +2 (시작일과 종료일을 포함해주기 위해서)*/}
+              {finishDate.diff(startDate, 'd') == 0 ? 1 : finishDate.diff(startDate, 'd') + 2}일
+            </div>
             <div className="text-h6">동안 자격증 준비</div>
           </div>
         </div>
@@ -47,20 +46,33 @@ const PreparationPeriodSetting = () => {
     }
   };
 
+  useEffect(() => {
+    // useEffect 내에서 상태 업데이트를 수행
+    const startDate = dayjs(goalData.prepareStartDateTime, 'YYYY-MM-DD');
+    const finishDate = dayjs(goalData.prepareFinishDateTime, 'YYYY-MM-DD');
+
+    if (!startDate.isAfter(finishDate)) {
+      setGoalData((prevGoalSettingData) => ({
+        ...prevGoalSettingData,
+        goalPrepareDays: finishDate.diff(startDate, 'd') == 0 ? 1 : finishDate.diff(startDate, 'd') + 2,
+      }));
+    }
+  }, [goalData.prepareStartDateTime, goalData.prepareFinishDateTime]);
+
   /**
    * 시작 날짜(or 오늘 날짜) 이전 날짜는 눌리지 않도록 disabled 제어하는 함수
-   * @param d 날짜
-   * @param settingState 캘린더가 사용된 용도 (Start, End)
+   * @param date 날짜
+   * @param usage 캘린더가 사용된 용도 (Start, End)
    */
-  const setDateStatus = (d: dayjs.Dayjs, settingState: string) => {
-    let date = dayjs();
-    //StartDate를 설정할 때 disabled 조작
-    if (settingState == 'Start') {
-      return date.format(format(new Date(), 'yyyy.MM.dd')) > date.format(format(d, 'yyyy.MM.dd'));
+  const setDateStatus = (date: Date, usage: string) => {
+    let day = dayjs();
+    //StartDate 를 설정할 때 disabled 조작
+    if (usage == 'Start') {
+      return day.format(format(new Date(), 'yyyy.MM.dd')) > day.format(format(date, 'yyyy.MM.dd'));
     }
-    //EndDate를 설정할 때 disabled 조작
-    if (settingState == 'End') {
-      return startDate > date.format(format(d, 'yyyy.MM.dd'));
+    //EndDate 를 설정할 때 disabled 조작
+    if (usage == 'Finish') {
+      return day.format(format(goalData.prepareStartDateTime, 'yyyy.MM.dd')) > day.format(format(date, 'yyyy.MM.dd'));
     }
   };
 
@@ -78,12 +90,12 @@ const PreparationPeriodSetting = () => {
               <div className="flex items-center gap-x-2">
                 <div
                   onClick={() => {
-                    setIsStartCalendarModalOpen(!isStartCalendarModalOpen);
+                    setIsStartCalendarOpen(!isStartCalendarOpen);
                   }}
                   className="text-h4 font-semibold">
-                  {startDate}
+                  {format(goalData.prepareStartDateTime, 'yyyy.MM.dd')}
                 </div>
-                {isStartCalendarModalOpen ? <UpIcon /> : <DownIcon />}
+                {isStartCalendarOpen ? <UpIcon /> : <DownIcon />}
               </div>
             </div>
           </div>
@@ -98,12 +110,12 @@ const PreparationPeriodSetting = () => {
               <div className="flex items-center gap-x-2">
                 <div
                   onClick={() => {
-                    setIsEndCalendarModalOpen(!isEndCalendarModalOpen);
+                    setIsFinishCalendarOpen(!isFinishCalendarOpen);
                   }}
                   className="text-h4 font-semibold">
-                  {endDate}
+                  {format(goalData.prepareFinishDateTime, 'yyyy.MM.dd')}
                 </div>
-                {isEndCalendarModalOpen ? <UpIcon /> : <DownIcon />}
+                {isFinishCalendarOpen ? <UpIcon /> : <DownIcon />}
               </div>
             </div>
           </div>
@@ -111,23 +123,21 @@ const PreparationPeriodSetting = () => {
       </div>
 
       {/*시작설정 캘린더*/}
-      {isStartCalendarModalOpen ? (
+      {isStartCalendarOpen ? (
         <Calendar
+          usage="Start"
           className={'top-[46%]'}
-          setTargetDate={setStartDate}
           setDateStatus={setDateStatus}
-          settingState={'Start'}
-          setIsModalOpen={setIsStartCalendarModalOpen}
+          setIsModalOpen={setIsStartCalendarOpen}
         />
       ) : null}
       {/*종료설정 캘린더*/}
-      {isEndCalendarModalOpen ? (
+      {isFinishCalendarOpen ? (
         <Calendar
+          usage="Finish"
           className={'top-[46%]'}
-          setTargetDate={setEndDate}
           setDateStatus={setDateStatus}
-          settingState={'End'}
-          setIsModalOpen={setIsEndCalendarModalOpen}
+          setIsModalOpen={setIsFinishCalendarOpen}
         />
       ) : null}
       <div className="goal-setting-content">{calculatePreparingPeriod()}</div>

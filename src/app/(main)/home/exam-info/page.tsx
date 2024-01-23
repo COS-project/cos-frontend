@@ -23,7 +23,7 @@ const ExamInfo = () => {
 
   return (
     <div className="bg-gray0">
-      <Button onStep={setStep('ExamInfo')} Icon={Icon} onMove={onMove}>
+      <Button onStep={setStep('ExamInfo')} Icon={Icon} onClick={onMove}>
         접수하기
       </Button>
       <div className="flex flex-col gap-y-5 m-5 mt-4">
