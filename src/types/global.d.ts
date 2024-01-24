@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 export interface MenuList {
   id: number;
@@ -19,10 +19,24 @@ export interface SubjectInfo {
 export interface Session {
   // 회차 정보 ex) 2023년 - 1회차
   sessionNumber: number;
+  // 시험을 응시한적이 있는지 여부 변수
+  isTaken: boolean;
+  // 유저의 응시횟수를 구분하는 변수
+  rounds: Round[];
+}
+
+// 유저의 응시횟수를 구분하기 위한 정보
+export interface Round {
+  // 회차 변수
+  roundNumber: number;
   // 총 맞춘 정답 개수
   totalCorrect: number;
   // 총 문제 개수
   totalProblem: number;
+  // 전체 시험 응시 시간
+  totalTakenTime: string;
+  // 시험 응시 최대 시간
+  totalAllowedTime: string;
   // 과목내 세부과목에 대한 정보를 담고있음
   subjects: SpecificSubject[];
 }
@@ -35,6 +49,19 @@ export interface SpecificSubject {
   correctAnswer: number;
   // 전체 문제 수
   totalProblems: number;
+  // 평균 머문 시간 (기존)
+  averageTime: number;
+  // 과목에 머문 시간
+  takenTime: number;
+}
+// 온보딩 관심 자격증 리스트
+export const LicenseInfo: Array<License> = [];
+
+// 온보딩 관심 자격증 리스트의 객체 형태 자격증 번호
+interface License {
+  // TODO: 백엔드 API 나오는것 보고 변경될 예정
+  id: string;
+  title: string;
 }
 
 // 자격증 정보 공통 분류
@@ -64,25 +91,4 @@ interface CommonTitleType {
   method: ExamInfoCommonType;
   qualifications: ExamInfoCommonType;
   criteria: ExamInfoCommonType;
-}
-
-// 목표 설정 type
-interface GoalSettingInfo {
-  certificate?: Certificate;
-  goalScore: number;
-  prepareStartDateTime: string;
-  prepareFinishDateTime: string;
-  goalPrepareDays: number;
-  mockExamsPerDay: number;
-  goalMockExams: number;
-  mockExamRepeatDays: number[];
-  studyTimePerDay: number;
-  goalStudyTime: number;
-  studyRepeatDays: number[];
-}
-
-// 자격증
-interface Certificate {
-  certificateId: number;
-  certificateName: string;
 }
