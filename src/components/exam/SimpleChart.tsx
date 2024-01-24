@@ -11,7 +11,7 @@ interface RadarChartExampleProps {
   data: RadarData[] | undefined;
 }
 
-// 정답률 그려주는 그래프
+// 정답률
 const RadarChartExample: React.FC<RadarChartExampleProps> = ({ data }) => {
   return (
     <ResponsiveContainer className="text-h7 text-start font-bold" width="100%" height="100%">

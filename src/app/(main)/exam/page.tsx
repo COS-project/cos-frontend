@@ -1,14 +1,18 @@
 'use client';
 import React from 'react';
 
+import Header from '@/components/common/Header';
+import NavBar from '@/components/common/NavBar';
 import SelectSubjectYearComboBox from '@/components/exam/SelectSubjectYearComboBox';
 import WrongQuestionsSummaryBox from '@/components/exam/WrongAnswerSummaryCard';
 
 const Exam = () => {
   return (
     <div>
+      <Header />
       <WrongQuestionsSummaryBox />
       <SolveExamBox />
+      <NavBar />
     </div>
   );
 };

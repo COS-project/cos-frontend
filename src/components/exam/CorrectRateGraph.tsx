@@ -1,14 +1,15 @@
 import { useRecoilState } from 'recoil';
 
-import { Session } from '@/types/global';
-import { selectedSessionState } from '@/utils/recoilState';
+import { Round, Session } from '@/types/global';
+import { selectedRoundState, selectedSessionState } from '@/utils/recoilState';
 
 import Example from './SimpleChart';
 
 const CorrectRateGraph: React.FC = () => {
   const [selectedSession, setselectedSession] = useRecoilState<Session | null>(selectedSessionState);
+  const [selectedRound, setSelectedRound] = useRecoilState<Round | null>(selectedRoundState);
 
-  const subjects = selectedSession?.subjects;
+  const subjects = selectedRound?.subjects;
 
   const radarChartData = subjects?.map((subject) => {
     return {
@@ -18,11 +19,6 @@ const CorrectRateGraph: React.FC = () => {
       // 다른 필요한 필드가 있다면 추가
     };
   });
-
-  console.log(subjects);
-  if (subjects) {
-    console.log(radarChartData);
-  }
 
   return (
     <div>

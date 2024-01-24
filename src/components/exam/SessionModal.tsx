@@ -2,8 +2,8 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { Session } from '@/types/global';
-import { selectedSessionState } from '@/utils/recoilState';
+import { Round, Session } from '@/types/global';
+import { selectedRoundState, selectedSessionState } from '@/utils/recoilState';
 
 import SubjectGradeCard from './SubjectGradeCard';
 
@@ -14,8 +14,9 @@ interface SessionModalProps {
 
 const SessionModal: React.FC<SessionModalProps> = ({ closeModal, openTimerModal }) => {
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
+  const [selectedRound, setSelectedRound] = useRecoilState<Round | null>(selectedRoundState);
   // 세부 과목에 대한 데이터를 더미 데이터 대신에 props로 받은 데이터 사용
-  const subjects = selectedSession?.subjects;
+  const subjects = selectedRound?.subjects;
 
   return (
     <div>
@@ -36,8 +37,8 @@ const SessionModal: React.FC<SessionModalProps> = ({ closeModal, openTimerModal 
                 <div>
                   <div className="font-bold text-h6">최근 점수</div>
                   <div className="flex items-end">
-                    <div className="font-bold text-h1">{`${selectedSession?.totalCorrect}점`}</div>
-                    <div className="text-gray3 text-h6 mb-1">/{`${selectedSession?.totalProblem}점`}</div>
+                    <div className="font-bold text-h1">{`${selectedRound?.totalCorrect}점`}</div>
+                    <div className="text-gray3 text-h6 mb-1">/{`${selectedRound?.totalProblem}점`}</div>
                   </div>
                 </div>
                 <Link href={'/exam/report'} className="h-1/2 bg-gray0 rounded-3xl text-h6 font-bold p-2">
