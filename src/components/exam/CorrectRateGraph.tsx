@@ -5,6 +5,7 @@ import { selectedRoundState, selectedSessionState } from '@/utils/recoilState';
 
 import Example from './SimpleChart';
 
+// 정답률 그래프
 const CorrectRateGraph: React.FC = () => {
   const [selectedSession, setselectedSession] = useRecoilState<Session | null>(selectedSessionState);
   const [selectedRound, setSelectedRound] = useRecoilState<Round | null>(selectedRoundState);

@@ -4,7 +4,7 @@ interface ReportCard {
   total: string; // 회색 글씨로 표현
 }
 
-// 분명히 리포트 카드가 있는데 왜 안보내짐
+// 분명히 리포트 카드가 있는데 왜 안
 const ReportCard: React.FC<ReportCard> = ({ title, main, total }) => {
   return (
     <div className="w-1/2 bg-white rounded-xl p-3">

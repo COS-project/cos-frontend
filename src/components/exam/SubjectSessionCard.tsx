@@ -44,7 +44,7 @@ const SubjectSessionCard: React.FC = ({}) => {
   return (
     <>
       {sessions.map((session, index) => {
-        // 세션의 rounds 배열이 존재하는지 확인
+        // 세션의 rounds 배열이 존재 확인
         if (session.rounds && session.rounds.length > 0) {
           const lastRound = session.rounds[session.rounds.length - 1]; // 마지막 라운드에 접근
           return (
