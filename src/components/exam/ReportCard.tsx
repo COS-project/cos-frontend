@@ -4,7 +4,7 @@ interface ReportCard {
   total: string; // 회색 글씨로 표현
 }
 
-// 리포트 페이지에서 총점수와 걸린시간을 나타낼 카드 컴포넌트
+// 분명히 리포트 카드가 있는데 왜 안보내짐
 const ReportCard: React.FC<ReportCard> = ({ title, main, total }) => {
   return (
     <div className="w-1/2 bg-white rounded-xl p-3">
