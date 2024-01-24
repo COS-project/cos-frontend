@@ -29,7 +29,7 @@ const StayTimeGraph: React.FC = () => {
               {subjects?.map((subject, index) => (
                 <div className="w-full flex justify-center space-x-2" key={index}>
                   {selectedSession?.isTaken == true ? (
-                    // 시험을 본적이 있을때
+                    // 시험을 본적이 있을 경우
                     <StickGraph height={subject.averageTime} color="gray2" />
                   ) : (
                     // 시험을 본적이 없을 경우

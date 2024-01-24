@@ -15,7 +15,7 @@ interface SessionModalProps {
 const SessionModal: React.FC<SessionModalProps> = ({ closeModal, openTimerModal }) => {
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
   const [selectedRound, setSelectedRound] = useRecoilState<Round | null>(selectedRoundState);
-  // 세부 과목에 대한 데이터를 더미 데이터 대신에 props로 받은 데이터 사용
+  // 세부 과목에 대한 데이터를 더미 데이터 대신 props로 받은 데이터 사용
   const subjects = selectedRound?.subjects;
 
   return (

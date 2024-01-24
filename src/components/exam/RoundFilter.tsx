@@ -8,7 +8,7 @@ const RoundFilter: React.FC = () => {
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
   const [selectedRound, setSelectedRound] = useRecoilState<Round | null>(selectedRoundState);
 
-  // session에서 roundNumber를 추출하여 중복 제거한 배열
+  // session에서 roundNumber를 추출 중복 제거한 배열
   const uniqueRoundNumbers = Array.from(new Set(selectedSession?.rounds.map((round) => round.roundNumber) || []));
 
   const handleRoundChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

@@ -5,7 +5,7 @@ import { SubjectInfo } from '@/types/global';
 import SubjectData from '@/utils/dummyData'; // Import dummy data
 
 import SubjectSessionCard from './SubjectSessionCard';
-// 과목에 Year를 필터링 해주는 모듈
+// 과목에 Year 필터링 해주는 모듈
 const SelectSubjectYearComboBox = ({}) => {
   const [selectedSubject, setSelectedSubject] = useState<SubjectInfo | null>(null);
 
