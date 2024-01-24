@@ -22,7 +22,7 @@ const SelectSubjectYearComboBox = ({}) => {
     const newSelectedSubject = SubjectData.find((subject) => subject.year === selectedYear) || null;
     setSelectedSubject(newSelectedSubject);
   };
-  // 유니크한 연도만 추출
+  // 유니크한 연도 추출
   const uniqueYears = Array.from(new Set(SubjectData.map((subject) => subject.year)));
 
   return (
