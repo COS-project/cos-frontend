@@ -7,7 +7,7 @@ import ReportCard from '@/components/exam/ReportCard';
 import RoundFilter from '@/components/exam/RoundFilter';
 import StayTimeGraph from '@/components/exam/StayTimeGraph';
 import SubjectGradeCard from '@/components/exam/SubjectGradeCard';
-import { Round, Session } from '@/types/global'; // Session 타입의 경로에 따라 수정
+import { Round, Session } from '@/types/global';
 import { selectedRoundState, selectedSessionState } from '@/utils/recoilState';
 
 const Report: React.FC = () => {
