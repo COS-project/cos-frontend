@@ -9,10 +9,8 @@ import WrongQuestionsSummaryBox from '@/components/exam/WrongAnswerSummaryCard';
 const Exam = () => {
   return (
     <div>
-      <Header />
       <WrongQuestionsSummaryBox />
       <SolveExamBox />
-      <NavBar />
     </div>
   );
 };
