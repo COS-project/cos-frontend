@@ -54,6 +54,12 @@ export interface SpecificSubject {
   // 과목에 머문 시간
   takenTime: number;
 }
+
+// api 기준
+export interface ExamInfo {
+  year: string;
+  round: number[];
+}
 // 온보딩 관심 자격증 리스트
 export const LicenseInfo: Array<License> = [];
 

@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-import { Round, Session, SubjectInfo } from '@/types/global';
+import { ExamInfo, Round, Session, SubjectInfo } from '@/types/global';
 
 export const selectedSubjectState = atom<SubjectInfo | null>({
   key: 'selectedSubjectState',
@@ -17,4 +17,9 @@ export const selectedSessionState = atom<Session | null>({
 export const selectedRoundState = atom<Round | null>({
   key: 'selectedRoundState',
   default: null,
+});
+
+export const ExaminfoState = atom<ExamInfo[]>({
+  key: 'examInfoState',
+  default: [],
 });
