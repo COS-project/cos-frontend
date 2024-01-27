@@ -1,14 +1,16 @@
-import { CommonTitleType, ExamInfoCommonType } from '@/types/global';
 import * as React from 'react';
 
-export const CommonTitle: CommonTitleType = {
-  intro: { Icon: IntroIcon, title: '자격증 소개' },
-  schedule: { Icon: ScheduleIcon, title: '시험 일정' },
-  subject: { Icon: SubjectIcon, title: '시험 과목' },
-  fee: { Icon: FeeIcon, title: '응시료' },
-  method: { Icon: MethodIcon, title: '시험 방식' },
-  qualifications: { Icon: QualificationsIcon, title: '응시 자격' },
-  criteria: { Icon: CriteriaIcon, title: '합격 기준' },
+import { CommonTitleType } from '@/types/global';
+
+export const commonTitle: CommonTitleType = {
+  description: { Icon: IntroIcon, title: '자격증 소개' },
+  examFee: { Icon: FeeIcon, title: '응시료' },
+  examSchedule: { Icon: ScheduleIcon, title: '시험 일정' },
+  subjectsInfo: { Icon: SubjectIcon, title: '시험 과목' },
+  examFormat: { Icon: MethodIcon, title: '시험 방식' },
+  examEligibility: { Icon: QualificationsIcon, title: '응시 자격' },
+  examTimeLimit: { Icon: QualificationsIcon, title: '시험 시간' },
+  passingCriteria: { Icon: CriteriaIcon, title: '합격 기준' },
 };
 
 function IntroIcon(props: React.SVGProps<SVGSVGElement>) {

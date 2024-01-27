@@ -37,17 +37,6 @@ export interface SpecificSubject {
   totalProblems: number;
 }
 
-// 자격증 정보 공통 분류
-export interface ExamInfoCommonCategory {
-  intro: ExamInfoCommonType;
-  schedule: ExamInfoCommonType;
-  subject: ExamInfoCommonType;
-  fee: ExamInfoCommonType;
-  method: ExamInfoCommonType;
-  qualifications: ExamInfoCommonType;
-  criteria: ExamInfoCommonType;
-}
-
 // 자격증 응시 정보의 공통 타입
 export interface ExamInfoCommonType {
   Icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
@@ -57,13 +46,40 @@ export interface ExamInfoCommonType {
 
 // 공통 제목 type
 interface CommonTitleType {
-  intro: ExamInfoCommonType;
-  schedule: ExamInfoCommonType;
-  subject: ExamInfoCommonType;
-  fee: ExamInfoCommonType;
-  method: ExamInfoCommonType;
-  qualifications: ExamInfoCommonType;
-  criteria: ExamInfoCommonType;
+  description: ExamInfoCommonType;
+  examFee: ExamInfoCommonType;
+  examSchedule: ExamInfoCommonType;
+  subjectsInfo: ExamInfoCommonType;
+  examFormat: ExamInfoCommonType;
+  examEligibility: ExamInfoCommonType;
+  examTimeLimit: ExamInfoCommonType;
+  passingCriteria: ExamInfoCommonType;
+}
+
+//자격증 응시 정보 type
+interface CertificateInfoType {
+  examSchedule: {
+    applicationStartDateTime: string;
+    applicationDeadlineDateTime: string;
+    examDateTime: string;
+  };
+  examFee: {
+    writtenExamFee: string;
+    practicalExamFee: string;
+  };
+  examTimeLimit: {
+    writtenExamTimeLimit: string;
+    practicalExamTimeLimit: string;
+  };
+  passingCriteria: {
+    subjectPassingCriteria: string;
+    totalAvgCriteria: string;
+    practicalPassingCriteria: string;
+  };
+  subjectsInfo: string;
+  description: string;
+  examFormat: string;
+  examEligibility: string;
 }
 
 // 목표 설정 type
