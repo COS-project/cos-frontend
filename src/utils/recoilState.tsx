@@ -19,7 +19,12 @@ export const selectedRoundState = atom<Round | null>({
   default: null,
 });
 
-export const ExaminfoState = atom<ExamInfo[]>({
+export const examInfoState = atom<ExamInfo[] | null>({
   key: 'examInfoState',
-  default: [],
+  default: null,
+});
+
+export const selectedYearState = atom<Number | null>({
+  key: 'selectedYearState',
+  default: null,
 });

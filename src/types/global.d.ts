@@ -57,9 +57,34 @@ export interface SpecificSubject {
 
 // api 기준
 export interface ExamInfo {
-  year: string;
-  round: number[];
+  responseCode: string;
+  result: {
+    // examYearWithRounds: Record<string, number[]>[];
+    examYearWithRounds: examYearWithRounds[];
+  };
 }
+
+export interface examYearWithRounds {
+  year: string;
+  rounds: number[];
+}
+
+export interface ExamResult {
+  responseCode: string;
+  result: MockExam[];
+}
+
+export interface MockExam {
+  mockExamId: number;
+  round: number;
+  isTake: boolean;
+}
+
+// api를 통해 받아온 year들을 추출해서 담아둘 구조
+export interface examYearList {
+  years: number[];
+}
+
 // 온보딩 관심 자격증 리스트
 export const LicenseInfo: Array<License> = [];
 

@@ -1,36 +1,51 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { SubjectInfo } from '@/types/global';
-import SubjectData from '@/utils/dummyData'; // Import dummy data
-import { selectedSubjectState } from '@/utils/recoilState';
+import { useGetExamInfoData, useGetExamYearData } from '@/lib/hooks/ExamInfoFetcher';
+import { examYearList } from '@/types/global';
+import { selectedYearState } from '@/utils/recoilState';
 
 import SubjectSessionCard from './SubjectSessionCard';
-// 과목에 Year를 필터링 해주는 모듈
+// 과목의 Year를 필터링 해주는 모듈
 const SelectSubjectYearComboBox = ({}) => {
-  const [selectedSubject, setSelectedSubject] = useRecoilState<SubjectInfo | null>(selectedSubjectState);
+  // 과목의 연도의 상태를 관리하는 state
+  const [selectedYear, setSelectedYear] = useRecoilState<Number | null>(selectedYearState);
+  const { Data } = useGetExamInfoData();
+
+  // year정보만 추출하기
+  const yearKeys = Object.keys(Data?.result?.examYearWithRounds || {});
+  // 추출한 데이터 정수형으로 변환하기
+  const yearsAsIntegers = yearKeys.map((year) => parseInt(year, 10));
+
+  // 연도 리스트가 들어간거임
+  const examYears: examYearList = {
+    years: yearsAsIntegers,
+  };
+
+  const defaultYear = examYears.years[1] || null;
+
+  // selectbox에 들어갈 년도 배열 정립
+  const uniqueYears = examYears.years || null;
 
   useEffect(() => {
-    const defaultYear = SubjectData[0]?.year || null;
-    const defaultSubject = SubjectData.find((subject) => subject.year === defaultYear) || null;
-    setSelectedSubject(defaultSubject);
-  }, [setSelectedSubject]); // 빈 배열을 넣어 처음 렌더링 시에만 실행되도록 설정
+    setSelectedYear(defaultYear);
+  }, [setSelectedYear, defaultYear]);
 
+  // 연도 변경하여 상태에 저장하는 함수
   const handleSubjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedYear = parseInt(event.target.value, 10);
-    const newSelectedSubject = SubjectData.find((subject) => subject.year === selectedYear) || null;
-    setSelectedSubject(newSelectedSubject);
+    setSelectedYear(selectedYear);
   };
-  // 유니크한 연도 추출
-  const uniqueYears = Array.from(new Set(SubjectData.map((subject) => subject.year)));
+
+  console.log(selectedYear);
 
   return (
     <div className="mt-2">
       <select
         id="subject"
         name="subject"
-        value={selectedSubject?.year || ''}
+        value={selectedYear?.toString() || ''}
         onChange={handleSubjectChange}
         className="mx-auto mt-1 text-h4 font-bold block w-[90%] p-3 bg-gray0 rounded-xl shadow-sm focus:outline-none focus:ring focus:border-blue-300 sm:text-sm">
         {uniqueYears.map((year, index) => (
