@@ -4,13 +4,13 @@ import { useRecoilState } from 'recoil';
 
 import { useGetExamInfoData, useGetExamYearData } from '@/lib/hooks/ExamInfoFetcher';
 import { examYearList } from '@/types/global';
-import { selectedYearState } from '@/utils/recoilState';
+import { YearState } from '@/utils/recoilState';
 
 import SubjectSessionCard from './SubjectSessionCard';
-// 과목의 Year를 필터링 해주는 모듈
-const SelectSubjectYearComboBox = ({}) => {
+// 과목의 Year를 선택하는 모듈
+const YearSelector = ({}) => {
   // 과목의 연도의 상태를 관리하는 state
-  const [selectedYear, setSelectedYear] = useRecoilState<Number | null>(selectedYearState);
+  const [selectedYear, setSelectedYear] = useRecoilState<Number | undefined>(YearState);
   const { Data } = useGetExamInfoData();
 
   // year정보만 추출하기
@@ -23,7 +23,8 @@ const SelectSubjectYearComboBox = ({}) => {
     years: yearsAsIntegers,
   };
 
-  const defaultYear = examYears.years[1] || null;
+  // 받아온 연도에 첫번째로 set
+  const defaultYear = examYears.years[0] || undefined;
 
   // selectbox에 들어갈 년도 배열 정립
   const uniqueYears = examYears.years || null;
@@ -37,8 +38,6 @@ const SelectSubjectYearComboBox = ({}) => {
     const selectedYear = parseInt(event.target.value, 10);
     setSelectedYear(selectedYear);
   };
-
-  console.log(selectedYear);
 
   return (
     <div className="mt-2">
@@ -63,4 +62,4 @@ const SelectSubjectYearComboBox = ({}) => {
   );
 };
 
-export default SelectSubjectYearComboBox;
+export default YearSelector;

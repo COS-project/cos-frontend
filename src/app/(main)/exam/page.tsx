@@ -3,8 +3,8 @@ import React from 'react';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
-import SelectSubjectYearComboBox from '@/components/exam/SelectSubjectYearComboBox';
 import WrongQuestionsSummaryBox from '@/components/exam/WrongAnswerSummaryCard';
+import YearSelector from '@/components/exam/YearSelector';
 
 const Exam = () => {
   return (
@@ -22,7 +22,7 @@ const SolveExamBox = () => {
     <div>
       <div className="mt-8">
         <div className="w-[85%] mx-auto font-black text-h4">모의고사 풀기</div>
-        <SelectSubjectYearComboBox />
+        <YearSelector />
       </div>
     </div>
   );

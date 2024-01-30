@@ -24,7 +24,14 @@ export const examInfoState = atom<ExamInfo[] | null>({
   default: null,
 });
 
-export const selectedYearState = atom<Number | null>({
+// 연도 데이터 상태 관리
+export const YearState = atom<Number | undefined>({
   key: 'selectedYearState',
+  default: undefined,
+});
+
+// 회차 데이터 상태 관리
+export const selectedRoundsState = atom<Number | null>({
+  key: 'selectedRoundState',
   default: null,
 });

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
+import { useGetExamYearData } from '@/lib/hooks/ExamInfoFetcher';
 import { Round, Session, SubjectInfo } from '@/types/global';
-import { selectedRoundState, selectedSessionState, selectedSubjectState } from '@/utils/recoilState';
+import { selectedRoundState, selectedSessionState, selectedSubjectState, YearState } from '@/utils/recoilState';
 
 import SessionModal from './SessionModal';
 import TimerModal from './TimerModal';
@@ -12,6 +13,16 @@ const SubjectSessionCard: React.FC = ({}) => {
   const [selectedSubject, setSelectedSubject] = useRecoilState<SubjectInfo | null>(selectedSubjectState);
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
   const [selectedRound, setSelectedRound] = useRecoilState<Round | null>(selectedRoundState);
+
+  // 연도 데이터 불러오기
+  const [selectedYear] = useRecoilState<Number | undefined>(YearState);
+
+  // ExamID, round, istake 정보 실려옴
+  const { YearData, isError } = useGetExamYearData(1, selectedYear);
+
+  console.log(YearData);
+
+  // 모달 관련 states
   const [sessionModalIsOpen, setSessionModalIsOpen] = useState(false);
   const [timerModalIsOpen, setTimerModalIsOpen] = useState(false);
 

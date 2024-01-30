@@ -15,8 +15,9 @@ export const useGetExamInfoData = () => {
 };
 
 // id와 연도를 매개변수로 나중에 받아야 할듯
-export const useGetExamYearData = () => {
-  const { data, error } = useSWR<ExamResult>('/1/mock-exams?examYear=2023', swrGetFetcher);
+// (examid, round, istake)
+export const useGetExamYearData = (examId?: Number, examYear?: Number) => {
+  const { data, error } = useSWR<ExamResult>(`/${examId}/mock-exams?examYear=${examYear}`, swrGetFetcher);
 
   return {
     YearData: data,
