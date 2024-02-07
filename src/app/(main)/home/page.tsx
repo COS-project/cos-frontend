@@ -1,8 +1,8 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import Button from '@/components/common/Button';
@@ -11,10 +11,23 @@ import css from 'styled-jsx/css';
 
 export default function Home() {
   const router = useRouter();
+  const parameter = useSearchParams();
+  const accessToken: string | null = parameter.get('accessToken');
+  const refreshToken: string | null = parameter.get('refreshToken');
   const [step, setStep] = useRecoilState(layoutState);
+
   const moveExamInfo = () => {
     router.push('/home/exam-info');
   };
+
+  useEffect(() => {
+    if (accessToken) {
+      localStorage.setItem('accessToken', accessToken);
+    }
+    if (refreshToken) {
+      localStorage.setItem('refreshToken', refreshToken);
+    }
+  }, [accessToken, refreshToken]);
 
   return (
     <div>
@@ -23,6 +36,11 @@ export default function Home() {
       <Button className={'border-gray-button'} onClick={moveExamInfo} Icon={Icon} onStep={setStep('Home')}>
         응시정보 확인
       </Button>
+      <button
+        className={'bg-primary text-white'}
+        onClick={() => {
+          router.push('/home/goal-setting');
+        }}>목표설정</button>
     </div>
   );
 }
