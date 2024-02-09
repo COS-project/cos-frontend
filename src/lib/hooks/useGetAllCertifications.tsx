@@ -10,9 +10,7 @@ const useGetAllCertifications = () => {
   const parseResultList = data?.result.map((item: Certificate) => item).flat();
 
   return {
-    certificationsList: {
-      result: parseResultList ? parseResultList : [],
-    },
+    certificationsList: parseResultList,
     isLoading: !error && !data,
     isError: error,
   };

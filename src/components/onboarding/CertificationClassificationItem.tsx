@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { useRecoilState } from 'recoil';
+import { certificationsListState } from '@/recoil/atom';
 
 export interface Props {
   className: string;

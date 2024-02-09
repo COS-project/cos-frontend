@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 import DoneButton from '@/components/onboarding/DoneButton';
+import { useRecoilState } from 'recoil';
+import { certificationsListState } from '@/recoil/atom';
 
 export interface ChooseCertificationProps {
   onNext?: () => void;
@@ -13,6 +15,8 @@ export interface ChooseCertificationProps {
 
 const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBefore }) => {
   const router = useRouter();
+
+  const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
 
   // 완료 버튼이 눌리면 primary 컬러로 바뀌도록 하는 state
   const [isClick, setIsClick] = useState<boolean>(false);
@@ -75,32 +79,20 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
 
         {/* 자격증 종류 나열 */}
         {/* 백엔드 API 나오면 map 코드로 바꿀 예정 */}
-        <div className="grid gap-y-4">
-          <CertificationClassificationItem
-            className={chooseClassificationItemClassName(isCheck)}
-            onClickItem={onClick}
-            icon={chooseClassificationItemIcon(isCheck)}>
-            컴퓨터활용능력시험 1급
-          </CertificationClassificationItem>
-          <CertificationClassificationItem
-            className={chooseClassificationItemClassName(isCheck)}
-            onClickItem={onClick}
-            icon={chooseClassificationItemIcon(isCheck)}>
-            컴퓨터활용능력시험 2급
-          </CertificationClassificationItem>
-          <CertificationClassificationItem
-            className={chooseClassificationItemClassName(isCheck)}
-            onClickItem={onClick}
-            icon={chooseClassificationItemIcon(isCheck)}>
-            정보처리기사
-          </CertificationClassificationItem>
-          <CertificationClassificationItem
-            className={chooseClassificationItemClassName(isCheck)}
-            onClickItem={onClick}
-            icon={chooseClassificationItemIcon(isCheck)}>
-            사회조사분석사
-          </CertificationClassificationItem>
-        </div>
+        {allCertifications
+          ? allCertifications.map((certification) => {
+              return (
+                <div key={certification.certificateId}>
+                  <CertificationClassificationItem
+                    className={chooseClassificationItemClassName(isCheck)}
+                    onClickItem={onClick}
+                    icon={chooseClassificationItemIcon(isCheck)}>
+                    {certification.certificateName}
+                  </CertificationClassificationItem>
+                </div>
+              );
+            })
+          : console.log(allCertifications)}
       </div>
 
       {/* 완료 버튼 */}
