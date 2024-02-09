@@ -22,43 +22,26 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
   const [isClick, setIsClick] = useState<boolean>(false);
 
   // CertificationClassificationItem 컴포넌트 눌렀는지 안눌렀는지 체크하는 State
-  // TODO: 백엔드에서 true, false로 받으면 같이 누르는거 해결할 예정.
+  // TODO: 자격증 별로 isCheck을 변경
   const [isCheck, setIsCheck] = useState<boolean>(false);
 
-  // CertificationClassificationItem 컴포넌트 클릭했는지 안했는지 판별하는 함수
-  const onClick = () => {
-    setIsCheck(!isCheck);
-  };
-
-  // CertificationClassificationItem 컴포넌트가 클릭됐을 때, 안됐을 때 스타일링
-  const chooseClassificationItemClassName = (isCheck: boolean) => {
-    let CHOOSE_CERTIFICATE_STYLE;
-    if (isCheck) {
-      CHOOSE_CERTIFICATE_STYLE = 'w-full h-16 bg-gray0 rounded-full border-[1px] border-second';
-    } else {
-      CHOOSE_CERTIFICATE_STYLE = 'w-full h-16 bg-gray0 rounded-full';
-    }
-    return CHOOSE_CERTIFICATE_STYLE;
-  };
-
   // CertificationClassificationItem 컴포넌트가 클릭됐을 때, 안됐을 때 아이콘바꾸는 함수
-  //TODO: SVG 파일로 변경될 예정
   const chooseClassificationItemIcon = (isCheck: boolean) => {
-    let CHOOSE_CERTIFICATE_ICON;
+    let icon;
     if (isCheck) {
-      CHOOSE_CERTIFICATE_ICON = (
+      icon = (
         <div className="p-2">
           <CheckIcon />
         </div>
       );
     } else {
-      CHOOSE_CERTIFICATE_ICON = (
+      icon = (
         <div className="p-2">
           <UnCheckIcon />
         </div>
       );
     }
-    return CHOOSE_CERTIFICATE_ICON;
+    return icon;
   };
 
   return (
@@ -77,15 +60,15 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
           <span className="text-h5 text-gray4">마이페이지에서 다시 선택할 수 있어요.</span>
         </div>
 
-        {/* 자격증 종류 나열 */}
         {/* 백엔드 API 나오면 map 코드로 바꿀 예정 */}
         {allCertifications
           ? allCertifications.map((certification) => {
               return (
                 <div key={certification.certificateId}>
                   <CertificationClassificationItem
-                    className={chooseClassificationItemClassName(isCheck)}
-                    onClickItem={onClick}
+                    className={'certificationItem-click'}
+                    onClickItem={setIsCheck}
+                    isClick={isCheck}
                     icon={chooseClassificationItemIcon(isCheck)}>
                     {certification.certificateName}
                   </CertificationClassificationItem>

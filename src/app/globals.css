@@ -3,6 +3,16 @@
 @tailwind utilities;
 
 @layer components {
+    /* 온보딩, 게시판 선택시 사용되는 컴포넌트 스타일 */
+    .certificationItem-click {
+        @apply w-full h-16 bg-gray0 rounded-full border-[1px] border-second
+    }
+    .certificationItem-not-clicked {
+        @apply w-full h-16 bg-gray0 rounded-full
+    }
+}
+
+@layer components {
     /* Button 컴포넌트 backgrond primary인 className */
     .bg-blue-button {
         @apply px-4 py-1 text-h6 bg-primary flex rounded-full text-white

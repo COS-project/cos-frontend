@@ -2,20 +2,20 @@
 
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { useRecoilState } from 'recoil';
-import { certificationsListState } from '@/recoil/atom';
+import { twMerge } from 'tailwind-merge';
 
 export interface Props {
   className: string;
-  onClickItem?: () => void;
+  onClickItem?: React.Dispatch<React.SetStateAction<boolean>>;
+  isClick: boolean;
   icon: JSX.Element; //TODO: svg 변경예정
   children: React.ReactNode;
   isMoveButton?: boolean;
-  path: string;
+  path?: string;
 }
 
 const CertificationClassificationItem = (props: Props) => {
-  const { className, onClickItem, icon, children, isMoveButton = false, path } = props;
+  const { className, onClickItem, isClick, icon, children, isMoveButton = false, path } = props;
 
   const router = useRouter();
 
@@ -25,9 +25,15 @@ const CertificationClassificationItem = (props: Props) => {
   };
 
   return (
-    <button className={className}>
+    <button className={twMerge('certificationItem-not-clicked', isClick && 'certificationItem-click')}>
       <div className="relative flex items-center gap-x-3 p-2">
-        <div onClick={onClickItem} className="left-2 w-12 h-12 rounded-full bg-white">
+        <div
+          onClick={() => {
+            if (onClickItem) {
+              onClickItem(!isClick);
+            }
+          }}
+          className="left-2 w-12 h-12 rounded-full bg-white">
           {/*TODO: 아이콘*/}
           {icon}
         </div>
