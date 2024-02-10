@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ExamInfoCommonCategory } from '@/types/global';
-import { CommonTitle } from '@/utils/exam-info/CommonTitle';
+import { CommonTitle } from '@/utils/home/exam-info/CommonTitle';
 
 export const INFORMATION_PROCESSING_ENGINEER_TEST: ExamInfoCommonCategory = {
   intro: {

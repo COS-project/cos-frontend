@@ -16,7 +16,7 @@ const config: Config = {
       point: '#FF6A3B',
 
       // Achromatic colors
-      black: '#191919',
+      black: '#0D0E10',
       gray4: '#727375',
       gray3: '#9E9FA1',
       gray2: '#CBCCCE',

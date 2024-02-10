@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 export interface MenuList {
   id: number;
@@ -37,27 +37,6 @@ export interface SpecificSubject {
   totalProblems: number;
 }
 
-// 온보딩 관심 자격증 리스트
-export const LicenseInfo: Array<License> = [];
-
-// 온보딩 관심 자격증 리스트의 객체 형태 자격증 번호
-interface License {
-  // TODO: 백엔드 API 나오는것 보고 변경될 예정
-  id: string;
-  title: string;
-}
-
-// 자격증 정보 공통 분류
-export interface ExamInfoCommonCategory {
-  intro: ExamInfoCommonType;
-  schedule: ExamInfoCommonType;
-  subject: ExamInfoCommonType;
-  fee: ExamInfoCommonType;
-  method: ExamInfoCommonType;
-  qualifications: ExamInfoCommonType;
-  criteria: ExamInfoCommonType;
-}
-
 // 자격증 응시 정보의 공통 타입
 export interface ExamInfoCommonType {
   Icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
@@ -67,11 +46,59 @@ export interface ExamInfoCommonType {
 
 // 공통 제목 type
 interface CommonTitleType {
-  intro: ExamInfoCommonType;
-  schedule: ExamInfoCommonType;
-  subject: ExamInfoCommonType;
-  fee: ExamInfoCommonType;
-  method: ExamInfoCommonType;
-  qualifications: ExamInfoCommonType;
-  criteria: ExamInfoCommonType;
+  description: ExamInfoCommonType;
+  examFee: ExamInfoCommonType;
+  examSchedule: ExamInfoCommonType;
+  subjectsInfo: ExamInfoCommonType;
+  examFormat: ExamInfoCommonType;
+  examEligibility: ExamInfoCommonType;
+  examTimeLimit: ExamInfoCommonType;
+  passingCriteria: ExamInfoCommonType;
+}
+
+//자격증 응시 정보 type
+interface CertificateInfoType {
+  examSchedule: {
+    applicationStartDateTime: string;
+    applicationDeadlineDateTime: string;
+    examDateTime: string;
+  };
+  examFee: {
+    writtenExamFee: string;
+    practicalExamFee: string;
+  };
+  examTimeLimit: {
+    writtenExamTimeLimit: string;
+    practicalExamTimeLimit: string;
+  };
+  passingCriteria: {
+    subjectPassingCriteria: string;
+    totalAvgCriteria: string;
+    practicalPassingCriteria: string;
+  };
+  subjectsInfo: string;
+  description: string;
+  examFormat: string;
+  examEligibility: string;
+}
+
+// 목표 설정 type
+interface GoalSettingInfo {
+  certificate?: Certificate;
+  goalScore: number;
+  prepareStartDateTime: string;
+  prepareFinishDateTime: string;
+  goalPrepareDays: number;
+  mockExamsPerDay: number;
+  goalMockExams: number;
+  mockExamRepeatDays: number[];
+  studyTimePerDay: number;
+  goalStudyTime: number;
+  studyRepeatDays: number[];
+}
+
+// 자격증
+interface Certificate {
+  certificateId: number;
+  certificateName: string;
 }
