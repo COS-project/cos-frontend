@@ -1,9 +1,21 @@
 'use client';
 
 import Link from 'next/link';
-import React from 'react';
+import { useSearchParams } from 'next/navigation';
+import React, { useEffect } from 'react';
 
 export default function page() {
+  const parameter = useSearchParams();
+  const accessToken = parameter.get('accessToken');
+  const refreshToken = parameter.get('refreshToken');
+
+  useEffect(() => {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    console.log('액세스 토큰', localStorage.getItem('accessToken'));
+    console.log('리프레시 토큰', localStorage.getItem('refreshToken'));
+  }, [accessToken, refreshToken]);
+
   return (
     <>
       <div className="text-h1 font-bold">자격증이 쉬워지는 서비스</div>
@@ -24,7 +36,7 @@ export default function page() {
             홈화면으로 이동하기
           </div>
         </Link>
-        <Link href="/onboarding">
+        <Link href="http://cercat.p-e.kr/oauth2/authorization/kakao">
           <div
             className="
                     bg-gray2
