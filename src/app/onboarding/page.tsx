@@ -2,11 +2,11 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import CertificationPriority from '@/components/onboarding/CertificationPriority';
 import ChooseCertification from '@/components/onboarding/ChooseCertification';
 import useGetAllCertifications from '@/lib/hooks/useGetAllCertifications';
-import { useRecoilState } from 'recoil';
 import { certificationsListState } from '@/recoil/atom';
 import { Certificate } from '@/types/global';
 
@@ -74,10 +74,10 @@ const OnBoarding = () => {
 
   return (
     <main>
-      {step == 'ChooseCertification' && (
+      {step === 'ChooseCertification' && (
         <ChooseCertification onNext={() => setStep('CertificationPriority')} onBefore={moveUnSignUp} />
       )}
-      {step == 'CertificationPriority' && (
+      {step === 'CertificationPriority' && (
         <CertificationPriority onNext={moveHome} onBefore={() => setStep('CertificationPriority')} />
       )}
     </main>

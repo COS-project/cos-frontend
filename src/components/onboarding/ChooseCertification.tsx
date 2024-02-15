@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
@@ -53,13 +53,11 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
           <span className="text-h5 text-gray4">마이페이지에서 다시 선택할 수 있어요.</span>
         </div>
 
-        {/* 백엔드 API 나오면 map 코드로 바꿀 예정 */}
         <div className="grid gap-y-4">
           {allCertifications
             ? allCertifications.map((certification) => {
                 return (
                   <CertificationClassificationItem
-                    className={'certificationItem-click'}
                     key={certification.certificateId}
                     certificateId={certification.certificateId}
                     certificateName={certification.certificateName}

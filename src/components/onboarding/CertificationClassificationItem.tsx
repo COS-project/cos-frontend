@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
@@ -9,7 +9,6 @@ import { certificationsListState } from '@/recoil/atom';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
 
 export interface Props {
-  className?: string;
   isClickState?: boolean;
   certificateId: number;
   certificateName: string;
@@ -20,7 +19,7 @@ export interface Props {
 }
 
 const CertificationClassificationItem = (props: Props) => {
-  const { className, isClickState, certificateId, certificateName, icon, children, isMoveButton = false, path } = props;
+  const { isClickState, certificateId, certificateName, icon, children, isMoveButton = false, path } = props;
   const router = useRouter();
   const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
   const [interestCertificates, setInterestCertificates] = useRecoilState(interestCertificatesState);
