@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 import useGetInterestCertificates from '@/lib/hooks/useGetInterestCertificates';
-import { FavoriteBoard, InterestCertificate } from '@/types/global';
+import { FavoriteBoard } from '@/types/global';
 
 export default function Community() {
   // 관심 자격증 리스트 데이터 패칭
