@@ -20,8 +20,7 @@ const OnBoarding = () => {
 
   const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
 
-  const [step, setStep] =
-    useState<'ChooseCertification' | 'CertificationPriority'>('ChooseCertification')
+  const [step, setStep] = useState<'ChooseCertification' | 'CertificationPriority'>('ChooseCertification');
   const router = useRouter();
 
   /**
@@ -32,6 +31,7 @@ const OnBoarding = () => {
     return apiResponse.map((res) => ({
       certificateId: res.certificateId,
       certificateName: res.certificateName,
+      isClick: false,
     }));
   };
 
@@ -67,8 +67,10 @@ const OnBoarding = () => {
     if (refreshToken) {
       localStorage.setItem('refreshToken', refreshToken);
     }
-    fetchDataAndUpdateState();
-  }, [accessToken, refreshToken, certificationsList]);
+    if (!isLoading && !isError && certificationsList) {
+      fetchDataAndUpdateState().then((r) => console.log(r));
+    }
+  }, [accessToken, refreshToken, isLoading, isError]);
 
   return (
     <main>

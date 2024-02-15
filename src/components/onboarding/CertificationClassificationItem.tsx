@@ -1,40 +1,72 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
+import { certificationsListState } from '@/recoil/atom';
+import { interestCertificatesState } from '@/recoil/onboarding/atom';
+
 export interface Props {
-  className: string;
-  onClickItem?: React.Dispatch<React.SetStateAction<boolean>>;
-  isClick: boolean;
-  icon: JSX.Element; //TODO: svg 변경예정
-  children: React.ReactNode;
+  className?: string;
+  isClickState?: boolean;
+  certificateId: number;
+  certificateName: string;
+  icon?: JSX.Element; //TODO: svg 변경예정
+  children?: React.ReactNode;
   isMoveButton?: boolean;
   path?: string;
 }
 
 const CertificationClassificationItem = (props: Props) => {
-  const { className, onClickItem, isClick, icon, children, isMoveButton = false, path } = props;
-
+  const { className, isClickState, certificateId, certificateName, icon, children, isMoveButton = false, path } = props;
   const router = useRouter();
+  const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
+  const [interestCertificates, setInterestCertificates] = useRecoilState(interestCertificatesState);
 
   //CertificationClassificationItem 컴포넌트의 이동버튼 클릭했을 때 함수
   const onClickMoveButton = () => {
     router.push(`community/${path}`);
   };
 
+  const handleCertificationClick = (certificateId: number) => {
+    setAllCertifications((currentCertifications) =>
+      currentCertifications.map((certification) => {
+        // interestCertificates의 길이를 기반으로 isClick 상태를 조건적으로 업데이트
+        const shouldUpdateClickState = interestCertificates.length < 3 || certification.isClick;
+        return certification.certificateId === certificateId && shouldUpdateClickState
+          ? { ...certification, isClick: !certification.isClick }
+          : certification;
+      }),
+    );
+  };
+
+  const createInterestCertification = () => {
+    if (interestCertificates.some((item) => item.certificateId === certificateId)) {
+      setInterestCertificates(
+        interestCertificates.filter((interestCertificate) => interestCertificate.certificateId !== certificateId),
+      );
+    } else if (interestCertificates.length < 3) {
+      setInterestCertificates((interestCertificates) => [
+        ...interestCertificates,
+        { certificateId: certificateId, certificateName: certificateName, interestPriority: 'LOW' },
+      ]);
+    } else {
+      //TODO:모달창 디자인되면 변경
+      alert('리스트에 값 3개만 넣어야함');
+    }
+  };
+
   return (
-    <button className={twMerge('certificationItem-not-clicked', isClick && 'certificationItem-click')}>
+    <button className={twMerge('certificationItem-not-clicked', isClickState && 'certificationItem-click')}>
       <div className="relative flex items-center gap-x-3 p-2">
         <div
           onClick={() => {
-            if (onClickItem) {
-              onClickItem(!isClick);
-            }
+            createInterestCertification();
+            handleCertificationClick(certificateId);
           }}
           className="left-2 w-12 h-12 rounded-full bg-white">
-          {/*TODO: 아이콘*/}
           {icon}
         </div>
         <div className="text-h4 font-semibold">{children}</div>
