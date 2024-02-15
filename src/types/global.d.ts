@@ -97,16 +97,24 @@ interface GoalSettingInfo {
   studyRepeatDays: number[];
 }
 
-// 자격증
+//온보딩 자격증
 interface Certificate {
   certificateId: number;
   certificateName: string;
   isClick: boolean; // 자격증을 선택했을 경우
 }
 
-//흥미 자격증 타입
+//온보딩 흥미 자격증 타입
 interface InterestCertificate {
   certificateId: number;
   interestPriority: string;
   certificateName?: string;
+}
+//게시판 즐겨찾기
+interface FavoriteBoard {
+  certificate: {
+    certificateId: number;
+    certificateName: string;
+  };
+  isFavorite: boolean;
 }

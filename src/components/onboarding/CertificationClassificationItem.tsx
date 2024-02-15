@@ -3,37 +3,53 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useRecoilState } from 'recoil';
+import { useSWRConfig } from 'swr';
 import { twMerge } from 'tailwind-merge';
 
+import { postFavoriteBoards } from '@/lib/api/board';
 import { certificationsListState } from '@/recoil/atom';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
 
 export interface Props {
+  usage: string;
+  className?: string;
   isClickState?: boolean;
   certificateId: number;
   certificateName: string;
   icon?: JSX.Element; //TODO: svg 변경예정
   children?: React.ReactNode;
   isMoveButton?: boolean;
-  path?: string;
+  path?: number;
 }
 
 const CertificationClassificationItem = (props: Props) => {
-  const { isClickState, certificateId, certificateName, icon, children, isMoveButton = false, path } = props;
+  const {
+    isClickState,
+    usage,
+    certificateId,
+    certificateName,
+    icon,
+    children,
+    isMoveButton = false,
+    path,
+    className,
+  } = props;
   const router = useRouter();
   const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
-  const [interestCertificates, setInterestCertificates] = useRecoilState(interestCertificatesState);
+  const [interestCertificatesList, setInterestCertificatesList] = useRecoilState(interestCertificatesState);
+  const { mutate } = useSWRConfig();
 
   //CertificationClassificationItem 컴포넌트의 이동버튼 클릭했을 때 함수
   const onClickMoveButton = () => {
     router.push(`community/${path}`);
   };
 
+  //온보딩 아이템을 클릭하면 isClick이 변경되도록하는 함수
   const handleCertificationClick = (certificateId: number) => {
     setAllCertifications((currentCertifications) =>
       currentCertifications.map((certification) => {
         // interestCertificates의 길이를 기반으로 isClick 상태를 조건적으로 업데이트
-        const shouldUpdateClickState = interestCertificates.length < 3 || certification.isClick;
+        const shouldUpdateClickState = interestCertificatesList.length < 3 || certification.isClick;
         return certification.certificateId === certificateId && shouldUpdateClickState
           ? { ...certification, isClick: !certification.isClick }
           : certification;
@@ -41,13 +57,14 @@ const CertificationClassificationItem = (props: Props) => {
     );
   };
 
+  //온보딩 관심 자격증 리스트 만드는 함수
   const createInterestCertification = () => {
-    if (interestCertificates.some((item) => item.certificateId === certificateId)) {
-      setInterestCertificates(
-        interestCertificates.filter((interestCertificate) => interestCertificate.certificateId !== certificateId),
+    if (interestCertificatesList.some((item) => item.certificateId === certificateId)) {
+      setInterestCertificatesList(
+        interestCertificatesList.filter((interestCertificate) => interestCertificate.certificateId !== certificateId),
       );
-    } else if (interestCertificates.length < 3) {
-      setInterestCertificates((interestCertificates) => [
+    } else if (interestCertificatesList.length < 3) {
+      setInterestCertificatesList((interestCertificates) => [
         ...interestCertificates,
         { certificateId: certificateId, certificateName: certificateName, interestPriority: 'LOW' },
       ]);
@@ -57,13 +74,29 @@ const CertificationClassificationItem = (props: Props) => {
     }
   };
 
+  //게시판 아이템을 클릭하면 post 요청이 보내지는 함수
+  const onClickCertification = async (certificateId: number) => {
+    // POST 요청을 통해 즐겨찾기 상태 업데이트
+    await postFavoriteBoards(certificateId);
+    // /boards 경로에 대한 데이터를 새로고침하여 최신 상태 반영
+    mutate('/boards');
+  };
+
   return (
-    <button className={twMerge('certificationItem-not-clicked', isClickState && 'certificationItem-click')}>
+    <button
+      onClick={() => {
+        if (usage === 'onboarding') {
+          createInterestCertification();
+          handleCertificationClick(certificateId);
+        }
+      }}
+      className={twMerge('certificationItem-not-clicked', isClickState && className)}>
       <div className="relative flex items-center gap-x-3 p-2">
         <div
           onClick={() => {
-            createInterestCertification();
-            handleCertificationClick(certificateId);
+            if (usage === 'board') {
+              onClickCertification(certificateId);
+            }
           }}
           className="left-2 w-12 h-12 rounded-full bg-white">
           {icon}

@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 
 import CertificationPriority from '@/components/onboarding/CertificationPriority';
 import ChooseCertification from '@/components/onboarding/ChooseCertification';
-import useGetAllCertifications from '@/lib/hooks/useGetAllCertifications';
+import useGetAllCertificates from '@/lib/hooks/useGetAllCertificates';
 import { certificationsListState } from '@/recoil/atom';
 import { Certificate } from '@/types/global';
 
@@ -16,7 +16,7 @@ const OnBoarding = () => {
   const refreshToken: string | null = parameter.get('refreshToken');
 
   // 데이터 패칭
-  const { certificationsList, isLoading, isError } = useGetAllCertifications();
+  const { certificationsList, isLoading, isError } = useGetAllCertificates();
 
   const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
 

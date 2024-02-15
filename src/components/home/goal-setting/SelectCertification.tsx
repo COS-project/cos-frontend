@@ -5,14 +5,14 @@ import { useCallback, useEffect, useState } from 'react';
 
 import FilterModal from '@/components/common/FilterModal';
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
-import useGetAllCertifications from '@/lib/hooks/useGetAllCertifications';
+import useGetAllCertificates from '@/lib/hooks/useGetAllCertificates';
 
 /**
  목표 설정 페이지 중 자격증 선택 컴포넌트 입니다.
  */
 const SelectCertification = () => {
   // 데이터 패칭
-  const { certificationsList, isLoading, isError } = useGetAllCertifications();
+  const { certificationsList, isLoading, isError } = useGetAllCertificates();
   //FilterModal 을 열고 닫는 state
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // 선택된 자격증

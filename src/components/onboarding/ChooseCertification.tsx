@@ -58,6 +58,8 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
             ? allCertifications.map((certification) => {
                 return (
                   <CertificationClassificationItem
+                    usage={'onboarding'}
+                    className={'certificationItem-click'}
                     key={certification.certificateId}
                     certificateId={certification.certificateId}
                     certificateName={certification.certificateName}
