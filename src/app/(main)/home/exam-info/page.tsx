@@ -41,20 +41,8 @@ export default ExamInfo;
 
 function Icon(props) {
   return (
-    <svg
-      width={16}
-      height={17}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <path
-        d="M5 11.5l6-6M5 5.5h6v6"
-        stroke="#ffffff"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg width={16} height={17} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M5 11.5l6-6M5 5.5h6v6" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
-

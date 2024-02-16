@@ -46,13 +46,13 @@ export interface SpecificSubject {
   // 과목명
   name: string;
   // 정답 개수
-  correctAnswer: number;
+  correctAnswer: Number | null;
   // 전체 문제 수
-  totalProblems: number;
+  totalProblems: Number | null;
   // 평균 머문 시간 (기존)
-  averageTime: number;
+  averageTime: Number | null;
   // 과목에 머문 시간
-  takenTime: number;
+  takenTime: Number | null;
 }
 
 // api 기준

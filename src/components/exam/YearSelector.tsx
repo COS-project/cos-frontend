@@ -6,7 +6,6 @@ import { useGetExamInfoData, useGetExamYearData } from '@/lib/hooks/ExamInfoFetc
 import { examYearList } from '@/types/global';
 import { YearState } from '@/utils/recoilState';
 
-import SubjectSessionCard from './SubjectSessionCard';
 // 과목의 Year를 선택하는 모듈
 const YearSelector = ({}) => {
   // 과목의 연도의 상태를 관리하는 state
@@ -46,18 +45,18 @@ const YearSelector = ({}) => {
         name="subject"
         value={selectedYear?.toString() || ''}
         onChange={handleSubjectChange}
-        className="mx-auto mt-1 text-h4 font-bold block w-[90%] p-3 bg-gray0 rounded-xl shadow-sm focus:outline-none focus:ring focus:border-blue-300 sm:text-sm">
+        className="mx-auto mt-1 text-h4 font-bold block w-[100%] p-3 bg-gray0 rounded-xl shadow-sm focus:outline-none focus:ring focus:border-blue-300 sm:text-sm">
         {uniqueYears.map((year, index) => (
           <option key={index} value={year}>
             {year}년 기출 모의고사
           </option>
         ))}
       </select>
-      <div className="w-[95%] mx-auto">
+      {/* <div>
         <div className="mt-4 flex flex-wrap">
           <SubjectSessionCard />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
