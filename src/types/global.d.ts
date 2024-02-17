@@ -32,9 +32,64 @@ export interface SpecificSubject {
   // 과목명
   name: string;
   // 정답 개수
-  correctAnswer: number;
+  correctAnswer: Number | null;
   // 전체 문제 수
-  totalProblems: number;
+  totalProblems: Number | null;
+  // 평균 머문 시간 (기존)
+  averageTime: Number | null;
+  // 과목에 머문 시간
+  takenTime: Number | null;
+}
+
+// api 기준
+export interface ExamInfo {
+  responseCode: string;
+  result: {
+    // examYearWithRounds: Record<string, number[]>[];
+    examYearWithRounds: examYearWithRounds[];
+  };
+}
+
+export interface examYearWithRounds {
+  year: string;
+  rounds: number[];
+}
+
+export interface ExamResult {
+  responseCode: string;
+  result: MockExam[];
+}
+
+export interface MockExam {
+  mockExamId: number;
+  round: number;
+  isTake: boolean;
+}
+
+// api를 통해 받아온 year들을 추출해서 담아둘 구조
+export interface examYearList {
+  years: number[];
+}
+
+// 온보딩 관심 자격증 리스트
+export const LicenseInfo: Array<License> = [];
+
+// 온보딩 관심 자격증 리스트의 객체 형태 자격증 번호
+interface License {
+  // TODO: 백엔드 API 나오는것 보고 변경될 예정
+  id: string;
+  title: string;
+}
+
+// 자격증 정보 공통 분류
+export interface ExamInfoCommonCategory {
+  intro: ExamInfoCommonType;
+  schedule: ExamInfoCommonType;
+  subject: ExamInfoCommonType;
+  fee: ExamInfoCommonType;
+  method: ExamInfoCommonType;
+  qualifications: ExamInfoCommonType;
+  criteria: ExamInfoCommonType;
 }
 
 // 자격증 응시 정보의 공통 타입
