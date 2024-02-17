@@ -50,4 +50,3 @@ export const studyTimeCount = atom({
   key: 'studyTimeCount',
   default: 0,
 });
-
