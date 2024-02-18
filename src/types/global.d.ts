@@ -66,6 +66,21 @@ export interface MockExam {
   isTake: boolean;
 }
 
+// 진행 바 만들 때 사용합니다.
+export interface ProgressBar {
+  width: number;
+}
+
+export interface ProblemInfo {
+  problemNum: number;
+  choiceAnswer: multipleChoice;
+}
+
+export interface multipleChoice {
+  problem: string;
+  example: string[];
+}
+
 // api를 통해 받아온 year들을 추출해서 담아둘 구조
 export interface examYearList {
   years: number[];
