@@ -24,6 +24,7 @@ const config: Config = {
       gray0: '#F4F5F7',
       white: '#FFFFFF',
       blue: '#6283FD',
+      sky: '#C8D3F9',
 
       // 그 외 추가 컬러
       // ...
