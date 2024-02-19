@@ -3,11 +3,17 @@
 import Link from 'next/link';
 import Swal from 'sweetalert2';
 import React, { useEffect, useState } from 'react';
+import useCalculateScore from '@/hooks/useCalculateScore';
+import { useRecoilState } from 'recoil';
+import { UserAnswerRequests } from '@/types/global';
+import { subjectResultRequestsList } from '@/recoil/exam/atom';
 
 const TestSubmitOrCancle = () => {
   const [count, setCount] = useState(500);
+  const { calculateScore, userAnswerList } = useCalculateScore();
   const maxItem = 60;
   let availabeItem = 32;
+
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -19,6 +25,10 @@ const TestSubmitOrCancle = () => {
     }
     return () => clearInterval(id);
   }, [count]);
+
+  const handleSubmit = async () => {
+    const updatedUserAnswerList = calculateScore(); // 채점 실행
+  };
 
   return (
     <>
@@ -42,7 +52,11 @@ const TestSubmitOrCancle = () => {
           그만두기
         </button>
         <span className={'px-10 rounded-lg bg-white'}>{count}</span>
-        <button className={'py-2 px-3 rounded-3xl text-white bg-primary'}>제출하기</button>
+        <button
+          onClick={() => {
+            handleSubmit();
+          }}
+          className={'py-2 px-3 rounded-3xl text-white bg-primary'}>제출하기</button>
       </div>
     </>
   );
