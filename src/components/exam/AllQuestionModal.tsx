@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Problem from './Problem';
+import Question from './Question';
 import { problemData } from '@/utils/examDummyData';
 
 interface AllQuestionModalProps {
-  closeModal: () => void;
+  toggleQuestionModal: () => void;
 }
 
 export const AllQuestionModal = (props: AllQuestionModalProps) => {
-  const { closeModal } = props;
+  const { toggleQuestionModal } = props;
   const problemLength = problemData?.length;
   const [btnActive, setBtnActive] = useState('');
 
@@ -40,13 +40,13 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
               <div className={'mt-8 grid grid-cols-5'}>
                 {problemData.map((pro, idx) => (
                   <button value={idx}>
-                    {pro.problemNum % 3 === 0 ? (
+                    {pro.questionNum % 3 === 0 ? (
                       <div className={'mx-auto w-[48px] h-[48px] rounded-lg text-white bg-sky mb-4'}>
-                        {pro.problemNum}
+                        {pro.questionNum}
                       </div>
                     ) : (
                       <div className={'mx-auto w-[48px] h-[48px] rounded-lg text-white mb-4 bg-second'}>
-                        {pro.problemNum}
+                        {pro.questionNum}
                       </div>
                     )}
                   </button>
@@ -60,7 +60,7 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
               5. 클릭하면 하나만 클릭되게 해야됨 */}
             </div>
           </div>
-          <button className={'p-3 mt-3 w-full rounded-3xl bg-white '} onClick={closeModal}>
+          <button className={'p-3 mt-3 w-full rounded-3xl bg-white '} onClick={toggleQuestionModal}>
             닫기
           </button>
         </div>

@@ -72,7 +72,7 @@ export interface ProgressBar {
 }
 
 export interface ProblemInfo {
-  problemNum: number;
+  questionNum: number;
   choiceAnswer: multipleChoice;
 }
 
@@ -171,4 +171,19 @@ interface GoalSettingInfo {
 interface Certificate {
   certificateId: number;
   certificateName: string;
+}
+
+//모의고사 시험 문제
+export interface Question {
+  optionSequence: number;
+  optionContent: string;
+  optionImage: string;
+}
+
+//서버에 보낼 모의고사 시험 응시 결과
+export interface UserAnswerRequests {
+  questionId: number;
+  selectOption: number; //1,2,3,4
+  takenTime: number; // 밀리세컨드
+  is_correct: boolean;c
 }

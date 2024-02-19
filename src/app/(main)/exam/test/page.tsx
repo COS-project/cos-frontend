@@ -1,6 +1,6 @@
 'use client';
 
-import Problem from '@/components/exam/Problem';
+import Question from '@/components/exam/Question';
 import TestSubmitOrCancle from '@/components/exam/TestSubmitOrCancle';
 
 const Test = () => {
@@ -8,7 +8,7 @@ const Test = () => {
     <>
       <div>
         <TestSubmitOrCancle />
-        <Problem />
+        <Question />
       </div>
     </>
   );
