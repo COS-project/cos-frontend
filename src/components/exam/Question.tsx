@@ -9,7 +9,6 @@ import { Question, UserAnswerRequests } from '@/types/global';
 import { AllQuestionModal } from './AllQuestionModal';
 
 const Question = () => {
-  //problemidx = 0
   const [questionIdx, setQuestionIdx] = useState<number>(0);
   const [allQuestionModalIsOpen, setAllQuestionModalIsOpen] = useState(false);
 
@@ -23,44 +22,17 @@ const Question = () => {
   };
 
   /**
-   * resultList에 답을 추가하는 함수.
-   * resultList에 questionId가 없어야만 추가될 수 있음.
-   */
-  const addUserAnswerToUserAnswerList = async () => {
-    return new Promise((resolve) => {
-      if (!userAnswerList.map((item) => item.questionId).includes(questionIdx + 1)) {
-        setUserAnswerList((prevState) => {
-          const newState = [...prevState, userAnswer];
-          resolve(newState); // Promise가 resolve되는 시점
-          return newState;
-        });
-      } else {
-        resolve(userAnswerList); // 이미 존재하는 경우 현재 상태를 그대로 resolve
-      }
-    });
-  };
-
-  /**
-   * 다음으로 넘어갈 때, 선택지를 0으로 초기화하는 함수
-   */
-  const resetUserAnswerForNextQuestion = () => {
-    return new Promise((resolve) => {
-      setUserAnswer((prevState) => ({
-        ...prevState,
-        questionId: questionIdx + 2,
-        selectOption: 0,
-      }));
-    });
-  };
-
-  /**
    * 기존에 선택한 답과 현재 선택한 답이 다르면 그 값으로 수정해주는 함수
    */
   const updateUserAnswerInUserAnswerList = () => {
     if (userAnswerList[questionIdx]) {
       if (userAnswer.selectOption !== userAnswerList[questionIdx].selectOption) {
         setUserAnswerList((prevResultList) => {
-          const updatedFirstItem = { ...prevResultList[questionIdx], selectOption: userAnswer.selectOption };
+          const updatedFirstItem = {
+            ...prevResultList[questionIdx],
+            questionId: questionIdx + 1,
+            selectOption: userAnswer.selectOption,
+          };
 
           // 변경된 첫 번째 요소와 나머지 요소들을 포함하는 새로운 배열 생성
           const updatedResultList: UserAnswerRequests[] = [
@@ -76,10 +48,16 @@ const Question = () => {
   };
 
   useEffect(() => {
-    if (userAnswer.selectOption != 0) {
-      addUserAnswerToUserAnswerList();
+    if (questions?.length > 0 && userAnswerList.length === 0) {
+      // userAnswerList가 초기화되지 않았을 때만 실행
+      const initialUserAnswers = questions.map((question, index) => ({
+        questionId: index + 1, // 질문의 고유 ID를 사용하는 것이 더 좋을 수 있습니다.
+        selectOption: 0,
+      }));
+
+      setUserAnswerList(initialUserAnswers);
     }
-  }, [userAnswer]);
+  }, [questions, userAnswerList.length]);
 
   useEffect(() => {
     if (userAnswer.selectOption != 0) {
@@ -111,7 +89,6 @@ const Question = () => {
                       questionImage={option.optionImage ? option.optionImage : null}
                       questionSequence={option.optionSequence}
                       setUserAnswer={setUserAnswer}
-                      addSubjectResultRequests={addUserAnswerToUserAnswerList}
                       clickedSequence={
                         userAnswerList[questionIdx] ? userAnswerList[questionIdx].selectOption : userAnswer.selectOption
                       }></QuestionContent>
@@ -128,10 +105,6 @@ const Question = () => {
           <button
             onClick={() => {
               setQuestionIdx((prev) => prev + 1);
-              resetUserAnswerForNextQuestion();
-              if (userAnswer.selectOption === 0) {
-                addUserAnswerToUserAnswerList();
-              }
             }}
             className={'relative w-full rounded-[16px] bg-blue text-white p-4'}>
             다음
@@ -156,10 +129,6 @@ const Question = () => {
               className={'relative w-full rounded-[16px] bg-blue text-white p-4'}
               onClick={() => {
                 setQuestionIdx((prev) => prev + 1);
-                resetUserAnswerForNextQuestion();
-                if (userAnswer.selectOption === 0) {
-                  addUserAnswerToUserAnswerList();
-                }
               }}>
               다음
               <NextIcon className={'absolute right-5 bottom-[18px]'}></NextIcon>
