@@ -1,30 +1,25 @@
 'use client';
 
-import Link from 'next/link';
-import Swal from 'sweetalert2';
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+
 import useCalculateScore from '@/hooks/useCalculateScore';
-import { useRecoilState } from 'recoil';
-import { UserAnswerRequests } from '@/types/global';
-import { subjectResultRequestsList } from '@/recoil/exam/atom';
 
 const TestSubmitOrCancle = () => {
-  const [count, setCount] = useState(500);
+  const [timeLeft, setTimeLeft] = useState(5400000);
   const { calculateScore, userAnswerList } = useCalculateScore();
-  const maxItem = 60;
-  let availabeItem = 32;
-
+  // 시, 분, 초 계산
+  const hours = String(Math.floor((timeLeft / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+  const minutes = String(Math.floor((timeLeft / (1000 * 60)) % 60)).padStart(2, '0');
+  const seconds = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, '0');
 
   useEffect(() => {
     const id = setInterval(() => {
-      setCount((count) => count - 1);
+      setTimeLeft((prevCount) => (prevCount <= 0 ? 0 : prevCount - 1000)); // 1초(1000밀리초) 감소
     }, 1000);
 
-    if (count === 0) {
-      clearInterval(id);
-    }
-    return () => clearInterval(id);
-  }, [count]);
+    return () => clearInterval(id); // 컴포넌트 언마운트 시 인터벌 클리어
+  }, [timeLeft]);
 
   const handleSubmit = async () => {
     const updatedUserAnswerList = calculateScore(); // 채점 실행
@@ -51,12 +46,16 @@ const TestSubmitOrCancle = () => {
           }>
           그만두기
         </button>
-        <span className={'px-10 rounded-lg bg-white'}>{count}</span>
+        <span className={'px-10 rounded-lg bg-white'}>
+          {hours} : {minutes} : {seconds}
+        </span>
         <button
           onClick={() => {
             handleSubmit();
           }}
-          className={'py-2 px-3 rounded-3xl text-white bg-primary'}>제출하기</button>
+          className={'py-2 px-3 rounded-3xl text-white bg-primary'}>
+          제출하기
+        </button>
       </div>
     </>
   );
