@@ -1,12 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Question from './Question';
-import { problemData } from '@/utils/examDummyData';
-import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
+import React from 'react';
 import { useRecoilState } from 'recoil';
-import { UserAnswerRequests } from '@/types/global';
+
 import { questionIndex, subjectResultRequestsList } from '@/recoil/exam/atom';
+import { UserAnswerRequests } from '@/types/global';
 
 interface AllQuestionModalProps {
   toggleQuestionModal: () => void;
@@ -28,9 +26,7 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
 
             <h2 className={'flex flex-col items-center gap-y-1'}>
               <div className={'font-bold text-h3'}>문항 번호 전체보기</div>
-              <div className={'text-gray4 text-h4 justify-center'}>
-                문제 번호를 눌러 해당 문제로 이동하세요.
-              </div>
+              <div className={'text-gray4 text-h4 justify-center'}>문제 번호를 눌러 해당 문제로 이동하세요.</div>
             </h2>
 
             <div className={'flex gap-x-4'}>
@@ -49,6 +45,7 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
                 ? userAnswerList.map((userAnswer: UserAnswerRequests, index) => {
                     return userAnswer.selectOption == 0 ? (
                       <div
+                        key={userAnswer.questionId}
                         onClick={() => {
                           setQuestionIdx(userAnswer.questionId - 1);
                           toggleQuestionModal();
@@ -56,6 +53,7 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
                         className={'flex justify-center items-center bg-[#6283FD]/30 w-12 h-12 rounded-[8px]'}>{userAnswer.questionId}</div>
                     ) : (
                       <div
+                        key={userAnswer.questionId}
                         onClick={() => {
                           setQuestionIdx(userAnswer.questionId - 1);
                           toggleQuestionModal();

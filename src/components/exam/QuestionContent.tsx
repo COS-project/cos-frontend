@@ -7,7 +7,7 @@ interface Props {
   questionSequence: number;
   questionContent: string;
   questionId: number;
-  questionImage?: string;
+  questionImage: string | null;
   clickedSequence?: number;
   setUserAnswer: React.Dispatch<React.SetStateAction<UserAnswerRequests>>;
 }
@@ -18,7 +18,7 @@ const QuestionContent = (props: Props) => {
    * 눌린 번호로 state를 바꾸는 함수
    */
   const resetUserAnswer = () => {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve: (value?: unknown) => void) => {
       setUserAnswer((prevState) => ({
         ...prevState,
         selectOption: questionSequence,

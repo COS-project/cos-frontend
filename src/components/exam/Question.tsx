@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import QuestionContent from '@/components/exam/QuestionContent';
@@ -50,7 +50,7 @@ const Question = () => {
   useEffect(() => {
     if (questions?.length > 0 && userAnswerList.length === 0) {
       // userAnswerList가 초기화되지 않았을 때만 실행
-      const initialUserAnswers = questions.map((question, index) => ({
+      const initialUserAnswers = questions.map((question: UserAnswerRequests, index: number) => ({
         questionId: index + 1, // 질문의 고유 ID를 사용하는 것이 더 좋을 수 있습니다.
         selectOption: 0,
       }));
