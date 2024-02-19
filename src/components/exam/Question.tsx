@@ -84,7 +84,7 @@ const Question = () => {
                   return (
                     <QuestionContent
                       key={option.optionSequence}
-                      questionId={questions[questionIdx].questionId}
+                      questionId={questions[questionIdx].questionSeq}
                       questionContent={option.optionContent}
                       questionImage={option.optionImage ? option.optionImage : null}
                       questionSequence={option.optionSequence}
