@@ -30,3 +30,8 @@ export let userAnswerRequests = atom<UserAnswerRequests>({
     is_correct: false,
   },
 });
+
+export const questionIndex = atom<number>({
+  key: 'questionIndex',
+  default: 0,
+});

@@ -3,13 +3,13 @@ import { useRecoilState } from 'recoil';
 
 import QuestionContent from '@/components/exam/QuestionContent';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
-import { subjectResultRequestsList, userAnswerRequests } from '@/recoil/exam/atom';
+import { questionIndex, subjectResultRequestsList, userAnswerRequests } from '@/recoil/exam/atom';
 import { Question, UserAnswerRequests } from '@/types/global';
 
 import { AllQuestionModal } from './AllQuestionModal';
 
 const Question = () => {
-  const [questionIdx, setQuestionIdx] = useState<number>(0);
+  const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
   const [allQuestionModalIsOpen, setAllQuestionModalIsOpen] = useState(false);
 
   const { questions, isLoading, isError } = useMockExamQuestions();
