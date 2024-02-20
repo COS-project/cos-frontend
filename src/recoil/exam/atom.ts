@@ -2,11 +2,11 @@
 
 import { atom } from 'recoil';
 
-import { UserAnswerRequests } from '@/types/global';
+import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
+import { extend } from 'dayjs';
+import SubjectList from '@/components/exam/SubjectList';
 
-
-//목표 설정 state
-export let subjectResultRequestsList = atom<UserAnswerRequests[]>({
+export const subjectResultRequestsList = atom<SubjectResultRequests[]>({
   key: 'subjectResultRequestsList',
   default: [],
 });
@@ -25,13 +25,30 @@ export let userAnswerRequests = atom<UserAnswerRequests>({
   key: 'userAnswerRequests',
   default: {
     questionId: 1,
-    selectOption: 0,
+    selectOptionSeq: 0,
     takenTime: 0,
     is_correct: false,
   },
 });
 
+
+//목표 설정 state
+export let userAnswerRequestsList = atom<UserAnswerRequests[]>({
+  key: 'userAnswerRequestsList',
+  default: [],
+});
+
 export const questionIndex = atom<number>({
   key: 'questionIndex',
   default: 0,
+});
+
+export const stopwatchTime = atom<number>({
+  key: 'stopwatchTime',
+  default: 0,
+});
+
+export const stopwatchIsRunning = atom<boolean>({
+  key: 'stopwatchIsRunning',
+  default: true,
 });

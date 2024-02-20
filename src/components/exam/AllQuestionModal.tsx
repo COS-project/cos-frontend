@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 
-import { questionIndex, subjectResultRequestsList } from '@/recoil/exam/atom';
+import { questionIndex, userAnswerRequestsList } from '@/recoil/exam/atom';
 import { UserAnswerRequests } from '@/types/global';
 
 interface AllQuestionModalProps {
@@ -13,12 +13,12 @@ interface AllQuestionModalProps {
 export const AllQuestionModal = (props: AllQuestionModalProps) => {
   const { toggleQuestionModal } = props;
 
-  const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(subjectResultRequestsList);
+  const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
   const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
 
   return (
     <>
-      <div className={'p-5 fixed inset-0 flex justify-center bg-black bg-opacity-60'}>
+      <div className={'p-5 fixed z-20 inset-0 flex justify-center bg-black bg-opacity-60'}>
         <div className={'w-[100%]'}>
           <div className={'flex flex-col bg-white justify-center items-center rounded-3xl p-4 gap-y-7'}>
 
@@ -40,10 +40,10 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
               </div>
             </div>
 
-            <div className={'grid grid-cols-5 gap-x-4 gap-y-4 overflow-y-scroll h-[500px]'}>
+            <div className={'grid grid-cols-5 gap-x-4 gap-y-4 overflow-y-scroll h-[490px]'}>
               {userAnswerList
                 ? userAnswerList.map((userAnswer: UserAnswerRequests, index) => {
-                    return userAnswer.selectOption == 0 ? (
+                    return userAnswer.selectOptionSeq == 0 ? (
                       <div
                         key={userAnswer.questionId}
                         onClick={() => {

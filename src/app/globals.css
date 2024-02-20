@@ -5,11 +5,14 @@
 @layer components {
     /* Button 컴포넌트 backgrond primary인 className */
     .bg-blue-button {
-        @apply px-4 py-1 text-h6 bg-primary flex rounded-full text-white
+        @apply px-4 py-2 text-h6 bg-primary flex rounded-full text-white
     }
     /* Button 컴포넌트 border gray2인 className */
-    .border-gray-button{
+    .border-gray-button {
         @apply bg-white border-gray2 border-[1px] text-black
+    }
+    .border-primary-button {
+        @apply px-4 py-2 text-h6 flex rounded-full bg-white border-primary border-[1px] text-primary
     }
 }
 

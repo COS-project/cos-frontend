@@ -8,23 +8,23 @@ interface Props {
   questionContent: string;
   questionId: number;
   questionImage: string | null;
-  clickedSequence?: number;
+  clickedSequence: number;
+  userAnswer: UserAnswerRequests;
   setUserAnswer: React.Dispatch<React.SetStateAction<UserAnswerRequests>>;
 }
 const QuestionContent = (props: Props) => {
   const { questionSequence, questionId, questionContent, questionImage, setUserAnswer, clickedSequence } = props;
 
   /**
-   * 눌린 번호로 state를 바꾸는 함수
+   * 눌린 번호로 state 를 바꾸는 함수
    */
   const resetUserAnswer = () => {
     return new Promise(async (resolve: (value?: unknown) => void) => {
       setUserAnswer((prevState) => ({
         ...prevState,
-        selectOption: questionSequence,
+        selectOptionSeq: questionSequence,
         questionId: questionId,
       }));
-
       // 상태 업데이트 후 즉시 다음 코드가 실행되기 전에 약간의 지연을 주어
       // 상태 업데이트가 반영될 시간을 제공합니다.
       setTimeout(() => resolve(), 0);
