@@ -72,7 +72,7 @@ export interface ProgressBar {
 }
 
 export interface ProblemInfo {
-  problemNum: number;
+  questionNum: number;
   choiceAnswer: multipleChoice;
 }
 
@@ -171,4 +171,50 @@ interface GoalSettingInfo {
 interface Certificate {
   certificateId: number;
   certificateName: string;
+}
+
+//모의고사 시험 문제 선지
+export interface Question {
+  optionSequence: number;
+  optionContent: string;
+  optionImage: string;
+}
+
+//서버에 보낼 모의고사 시험 응시 결과
+export interface UserAnswerRequests {
+  questionId: number;
+  selectOptionSeq: number; //1,2,3,4
+  takenTime: number; // 밀리세컨드
+  is_correct?: boolean;
+}
+
+//서버에 보낼 과목별 채점 결과
+export interface SubjectResultRequests {
+  subjectId: number;
+  score: number;
+  userAnswerRequests: UserAnswerRequests[];
+}
+
+//모의고사 시험 문제, 선지 전체
+export interface QuestionsResponse {
+  questionId: number;
+  mockExam: {
+    MockExamId: number;
+    examYear: number;
+    round: number;
+    timeLimit: number;
+    certificate: Certificate;
+  };
+  subject: {
+    subjectId: number;
+    subjectName: string;
+    numberOfQuestions: number;
+    totalScore: number;
+  };
+  questionSeq: number;
+  questionText: string;
+  questionImage: string;
+  questionOptions: Question[];
+  correctOption: number;
+  score: number;
 }

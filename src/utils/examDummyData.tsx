@@ -2,7 +2,7 @@ import { ProblemInfo } from '@/types/global';
 
 export const problemData: ProblemInfo[] = [
   {
-    problemNum: 1,
+    questionNum: 1,
     choiceAnswer: {
       problem: '다음 중 컴퓨터 정보 기기에서 사용하는 펌웨어(Firmware)에 관한 설명으로 옳은 것은?',
       example: [
@@ -14,28 +14,28 @@ export const problemData: ProblemInfo[] = [
     },
   },
   {
-    problemNum: 2,
+    questionNum: 2,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 1번이에요.', '이건 2번이에요.', '이건 3번이에요.', '이건 4번이에요.'],
     },
   },
   {
-    problemNum: 3,
+    questionNum: 3,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 5번이에요.', '이건 6번이에요.', '이건 7번이에요.', '이건 8번이에요.'],
     },
   },
   {
-    problemNum: 4,
+    questionNum: 4,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 9번이에요.', '이건 10번이에요.', '이건 11번이에요.', '이건 12번이에요.'],
     },
   },
   {
-    problemNum: 5,
+    questionNum: 5,
     choiceAnswer: {
       problem:
         '안녕하세요. 예시문제입니다 만약에 문제가 매우길어진다면 어떻게될까요@@@@@@@@.만약에 문제가 매우길어진다면 어떻게될까요@@@@@@@@만약에 문제가 매우길어진다면 어떻게될까요@@@@@@@@만약에 문제가 매우길어진다면 어떻게될까요@@@@@@@@',
@@ -48,84 +48,84 @@ export const problemData: ProblemInfo[] = [
     },
   },
   {
-    problemNum: 6,
+    questionNum: 6,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
     },
   },
   {
-    problemNum: 7,
+    questionNum: 7,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
     },
   },
   {
-    problemNum: 8,
+    questionNum: 8,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
     },
   },
   {
-    problemNum: 9,
+    questionNum: 9,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
     },
   },
   {
-    problemNum: 10,
+    questionNum: 10,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
     },
   },
   {
-    problemNum: 11,
+    questionNum: 11,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
     },
   },
   {
-    problemNum: 12,
+    questionNum: 12,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
     },
   },
   {
-    problemNum: 13,
+    questionNum: 13,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
     },
   },
   {
-    problemNum: 14,
+    questionNum: 14,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
     },
   },
   {
-    problemNum: 15,
+    questionNum: 15,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
     },
   },
   {
-    problemNum: 16,
+    questionNum: 16,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
     },
   },
   {
-    problemNum: 17,
+    questionNum: 17,
     choiceAnswer: {
       problem: '안녕하세요. 예시문제입니다.',
       example: ['이건 13번이에요.', '이건 14번이에요.', '이건 15번이에요.', '이건 16번이에요.'],
