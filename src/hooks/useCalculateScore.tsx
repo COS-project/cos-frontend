@@ -23,7 +23,7 @@ const useCalculateScore = () => {
 
     const updatedUserAnswerList = userAnswerList.map((userAnswer, index) => {
       const isCorrect = questions ? questions[index].correctOption === userAnswer.selectOptionSeq : false;
-      return { ...userAnswer, is_correct: isCorrect };
+      return { ...userAnswer, isCorrect: isCorrect };
     });
 
     setUserAnswerList(updatedUserAnswerList);
@@ -45,7 +45,7 @@ const useCalculateScore = () => {
         } else {
           const newSubjectResult: SubjectResultRequests = {
             subjectId: question.subject.subjectId - 1,
-            score: newUserAnswerList.filter((userAnswer) => userAnswer.is_correct).length * questions[index].score,
+            score: newUserAnswerList.filter((userAnswer) => userAnswer.isCorrect).length * questions[index].score,
             userAnswerRequests: newUserAnswerList,
           };
           newSubjectResultList.push(newSubjectResult);
@@ -56,7 +56,7 @@ const useCalculateScore = () => {
           //마지막 인덱스 반영
           const newSubjectResult: SubjectResultRequests = {
             subjectId: question.subject.subjectId,
-            score: newUserAnswerList.filter((userAnswer) => userAnswer.is_correct).length * questions[index].score,
+            score: newUserAnswerList.filter((userAnswer) => userAnswer.isCorrect).length * questions[index].score,
             userAnswerRequests: newUserAnswerList,
           };
           newSubjectResultList.push(newSubjectResult);

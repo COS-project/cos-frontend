@@ -164,6 +164,7 @@ const Question = () => {
                 ? questions[questionIdx].questionOptions.map((option: Question) => {
                     return (
                       <QuestionContent
+                        usage={'mockExam'}
                         key={option.optionSequence}
                         questionId={questions[questionIdx].questionSeq}
                         questionContent={option.optionContent}

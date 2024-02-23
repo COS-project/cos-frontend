@@ -185,7 +185,7 @@ export interface UserAnswerRequests {
   questionId: number;
   selectOptionSeq: number; //1,2,3,4
   takenTime: number; // 밀리세컨드
-  is_correct?: boolean;
+  isCorrect?: boolean;
 }
 
 //서버에 보낼 과목별 채점 결과
@@ -198,13 +198,7 @@ export interface SubjectResultRequests {
 //모의고사 시험 문제, 선지 전체
 export interface QuestionsResponse {
   questionId: number;
-  mockExam: {
-    MockExamId: number;
-    examYear: number;
-    round: number;
-    timeLimit: number;
-    certificate: Certificate;
-  };
+  mockExam: ReviewIncorrectMockExam;
   subject: {
     subjectId: number;
     subjectName: string;
@@ -217,4 +211,57 @@ export interface QuestionsResponse {
   questionOptions: Question[];
   correctOption: number;
   score: number;
+}
+
+export interface Param {
+  page: number;
+  size: number;
+  sort?: [];
+}
+
+export interface ReviewIncorrectAnswers {
+  responseCode: string;
+  message: string;
+  result: {
+    pageable: {
+      pageNumber: number;
+      unpaged: boolean;
+      pageSize: number;
+      paged: boolean;
+      offset: number;
+      sort: {
+        unsorted: boolean;
+        sorted: boolean;
+        empty: boolean;
+      };
+    };
+    numberOfElements: number;
+    size: number;
+    content: ReviewIncorrectAnswersContent[];
+    number: number;
+    sort: {
+      unsorted: boolean;
+      sorted: boolean;
+      empty: boolean;
+    };
+    first: boolean;
+    last: boolean;
+    empty: boolean;
+  };
+}
+
+export interface ReviewIncorrectAnswersContent {
+  question: QuestionsResponse;
+  userAnswerId: number;
+  selectOptionSeq: number;
+  takenTime: number;
+  isCorrect: boolean;
+}
+
+export interface ReviewIncorrectMockExam {
+  MockExamId: number;
+  examYear: number;
+  round: number;
+  timeLimit: number;
+  certificate: Certificate;
 }
