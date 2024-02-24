@@ -1,4 +1,7 @@
 import axios from 'axios';
+import { Param } from '@/types/global';
+import qs from 'qs';
+import { string } from 'prop-types';
 
 const client = axios.create({
   baseURL: 'http://cercat.p-e.kr/api/v1',
@@ -95,9 +98,10 @@ const sendRequest = async (config) => {
   }
 };
 
-export const swrGetFetcher = async (url: string) => {
+export const swrGetFetcher = async (url) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
+
     const response = await sendRequest({
       headers: {
         'Access-Token': localStorage.getItem('accessToken'),

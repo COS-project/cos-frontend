@@ -88,10 +88,10 @@ const TestSubmitOrCancle = () => {
    * prepareAndScoreSubjectResults 를 실행시켜 과목별로 채점 및 post 데이터 정제
    */
   useEffect(() => {
-    if (userAnswerList[0]?.is_correct) {
+    if (userAnswerList[0]?.isCorrect) {
       prepareAndScoreSubjectResults();
     }
-  }, [userAnswerList[0]?.is_correct]);
+  }, [userAnswerList[0]?.isCorrect]);
 
   /**
    * prepareAndScoreSubjectResults 가 다 완료되고, subjectResultList 에 값이 다 저장될 때,

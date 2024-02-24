@@ -27,10 +27,9 @@ export let userAnswerRequests = atom<UserAnswerRequests>({
     questionId: 1,
     selectOptionSeq: 0,
     takenTime: 0,
-    is_correct: false,
+    isCorrect: false,
   },
 });
-
 
 //목표 설정 state
 export let userAnswerRequestsList = atom<UserAnswerRequests[]>({
