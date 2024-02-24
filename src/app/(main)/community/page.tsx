@@ -1,20 +1,32 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
+import useGetInterestCertificates from '@/lib/hooks/useGetInterestCertificates';
+import { FavoriteBoard } from '@/types/global';
 
 export default function Community() {
-  // CertificationClassificationItem 컴포넌트의 className
-  const CERTIFICATION_ITEM_STYLE = 'w-full h-16 bg-gray0 rounded-full';
-  const [isCheck, setIsCheck] = useState<boolean>(false);
-  const router = useRouter();
+  // 관심 자격증 리스트 데이터 패칭
+  const { interestCertificates, isLoading, isError } = useGetInterestCertificates();
 
-  // CertificationClassificationItem 컴포넌트가 클릭하면 true, 클릭되지 않으면 false로 바꿔주는 함수
-  const onClick = () => {
-    setIsCheck(!isCheck);
-  };
+  // 모든 자격증 리스트 불러오는 함수
+  const getInterestCertifications = useCallback(async () => {
+    return interestCertificates;
+  }, []);
+
+  useEffect(() => {
+    if (interestCertificates) {
+      getInterestCertifications();
+    }
+    // if (isLoading) {
+    //
+    // }
+    //
+    // if (isError) {
+    //
+    // }
+  }, []);
 
   // CertificationClassificationItem 컴포넌트가 클릭됐을 때, 안됐을 때 아이콘
   const chooseClassificationItemIcon = (isCheck: boolean) => {
@@ -45,40 +57,24 @@ export default function Community() {
       </div>
 
       {/* 자격증 선택 */}
-      {/* 백엔드 API 나오면 map 코드로 바꿀 예정 */}
       <div className="grid gap-y-4">
-        <CertificationClassificationItem
-          className={CERTIFICATION_ITEM_STYLE}
-          onClickItem={onClick}
-          icon={chooseClassificationItemIcon(isCheck)}
-          isMoveButton={true}
-          path="Comhwal_level1">
-          컴퓨터활용능력 1급 게시판
-        </CertificationClassificationItem>
-        <CertificationClassificationItem
-          className={CERTIFICATION_ITEM_STYLE}
-          onClickItem={onClick}
-          icon={chooseClassificationItemIcon(isCheck)}
-          isMoveButton={true}
-          path="Comhwal_level2 ">
-          컴퓨터활용능력 2급 게시판
-        </CertificationClassificationItem>
-        <CertificationClassificationItem
-          className={CERTIFICATION_ITEM_STYLE}
-          onClickItem={onClick}
-          icon={chooseClassificationItemIcon(isCheck)}
-          isMoveButton={true}
-          path="JCG">
-          정보처리기사 게시판
-        </CertificationClassificationItem>
-        <CertificationClassificationItem
-          className={CERTIFICATION_ITEM_STYLE}
-          onClickItem={onClick}
-          icon={chooseClassificationItemIcon(isCheck)}
-          isMoveButton={true}
-          path="SJS">
-          사회조사분석사 게시판
-        </CertificationClassificationItem>
+        {interestCertificates
+          ? interestCertificates.map((certification: FavoriteBoard) => {
+              return (
+                <CertificationClassificationItem
+                  usage={'board'}
+                  key={certification.certificate.certificateId}
+                  certificateId={certification.certificate.certificateId}
+                  certificateName={certification.certificate.certificateName}
+                  isClickState={certification.isFavorite}
+                  isMoveButton={true}
+                  path={certification.certificate.certificateId}
+                  icon={chooseClassificationItemIcon(certification.isFavorite)}>
+                  {certification.certificate.certificateName}
+                </CertificationClassificationItem>
+              );
+            })
+          : null}
       </div>
     </div>
   );

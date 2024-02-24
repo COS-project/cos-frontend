@@ -115,7 +115,7 @@ export interface ExamInfoCommonType {
 }
 
 // 공통 제목 type
-interface CommonTitleType {
+export interface CommonTitleType {
   description: ExamInfoCommonType;
   examFee: ExamInfoCommonType;
   examSchedule: ExamInfoCommonType;
@@ -127,7 +127,7 @@ interface CommonTitleType {
 }
 
 //자격증 응시 정보 type
-interface CertificateInfoType {
+export interface CertificateInfoType {
   examSchedule: {
     applicationStartDateTime: string;
     applicationDeadlineDateTime: string;
@@ -153,7 +153,7 @@ interface CertificateInfoType {
 }
 
 // 목표 설정 type
-interface GoalSettingInfo {
+export interface GoalSettingInfo {
   certificate?: Certificate;
   goalScore: number;
   prepareStartDateTime: string;
@@ -167,10 +167,34 @@ interface GoalSettingInfo {
   studyRepeatDays: number[];
 }
 
-// 자격증
-interface Certificate {
+//온보딩 자격증
+export interface Certificate {
   certificateId: number;
   certificateName: string;
+  isClick: boolean; // 자격증을 선택했을 경우
+}
+
+//온보딩 흥미 자격증 타입
+export interface InterestCertificate {
+  certificateId: number;
+  interestPriority: string;
+  certificateName?: string;
+}
+//게시판 즐겨찾기
+export interface FavoriteBoard {
+  certificate: {
+    certificateId: number;
+    certificateName: string;
+  };
+  isFavorite: boolean;
+}
+
+//userProfile
+export interface userProfile {
+  userId?: number;
+  nickname: string;
+  email?: string;
+  profileImage: string;
 }
 
 //모의고사 시험 문제 선지

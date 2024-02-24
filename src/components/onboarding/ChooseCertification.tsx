@@ -1,61 +1,79 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 import DoneButton from '@/components/onboarding/DoneButton';
+import { certificationsListState } from '@/recoil/atom';
+import { Certificate } from '@/types/global';
+import useGetAllCertificates from '@/lib/hooks/useGetAllCertificates';
 
 export interface ChooseCertificationProps {
-  onNext?: () => void;
-  onBefore?: () => void;
+  onNext: () => void;
+  onBefore: () => void;
 }
 
 const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBefore }) => {
   const router = useRouter();
+  const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
 
-  // 완료 버튼이 눌리면 primary 컬러로 바뀌도록 하는 state
-  const [isClick, setIsClick] = useState<boolean>(false);
-
-  // CertificationClassificationItem 컴포넌트 눌렀는지 안눌렀는지 체크하는 State
-  // TODO: 백엔드에서 true, false로 받으면 같이 누르는거 해결할 예정.
-  const [isCheck, setIsCheck] = useState<boolean>(false);
-
-  // CertificationClassificationItem 컴포넌트 클릭했는지 안했는지 판별하는 함수
-  const onClick = () => {
-    setIsCheck(!isCheck);
+  // 데이터 패칭
+  const { certificationsList, isLoading, isError } = useGetAllCertificates();
+  /**
+   * Recoil 상태를 초기화하는 함수
+   * @param apiResponse Certification id와 name
+   */
+  const initializeGoalSettingState = (apiResponse: Certificate[]) => {
+    return apiResponse.map((res) => ({
+      certificateId: res.certificateId,
+      certificateName: res.certificateName,
+      isClick: false,
+    }));
   };
 
-  // CertificationClassificationItem 컴포넌트가 클릭됐을 때, 안됐을 때 스타일링
-  const chooseClassificationItemClassName = (isCheck: boolean) => {
-    let CHOOSE_CERTIFICATE_STYLE;
-    if (isCheck) {
-      CHOOSE_CERTIFICATE_STYLE = 'w-full h-16 bg-gray0 rounded-full border-[1px] border-second';
-    } else {
-      CHOOSE_CERTIFICATE_STYLE = 'w-full h-16 bg-gray0 rounded-full';
+  /**
+   * API 에서 데이터를 가져와 Recoil 상태 업데이트 해주는 함수
+   */
+  const fetchDataAndUpdateState = async () => {
+    try {
+      const response = certificationsList;
+      if (response) {
+        const initialState: Certificate[] = initializeGoalSettingState(response);
+        setAllCertifications(initialState); // 여기에서 변환된 배열을 Recoil 상태에 설정
+      } else {
+        console.error('Failed to fetch goal setting data');
+      }
+    } catch (error) {
+      console.error('Error fetching goal setting data:', error);
     }
-    return CHOOSE_CERTIFICATE_STYLE;
   };
 
   // CertificationClassificationItem 컴포넌트가 클릭됐을 때, 안됐을 때 아이콘바꾸는 함수
-  //TODO: SVG 파일로 변경될 예정
   const chooseClassificationItemIcon = (isCheck: boolean) => {
-    let CHOOSE_CERTIFICATE_ICON;
+    let icon;
     if (isCheck) {
-      CHOOSE_CERTIFICATE_ICON = (
+      icon = (
         <div className="p-2">
           <CheckIcon />
         </div>
       );
     } else {
-      CHOOSE_CERTIFICATE_ICON = (
+      icon = (
         <div className="p-2">
           <UnCheckIcon />
         </div>
       );
     }
-    return CHOOSE_CERTIFICATE_ICON;
+    return icon;
   };
+
+  useEffect(() => {
+    if (!isLoading && !isError && certificationsList) {
+      fetchDataAndUpdateState().then((r) => console.log(r));
+    }
+  }, [isLoading, isError]);
 
   return (
     <div>
@@ -73,40 +91,28 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
           <span className="text-h5 text-gray4">마이페이지에서 다시 선택할 수 있어요.</span>
         </div>
 
-        {/* 자격증 종류 나열 */}
-        {/* 백엔드 API 나오면 map 코드로 바꿀 예정 */}
         <div className="grid gap-y-4">
-          <CertificationClassificationItem
-            className={chooseClassificationItemClassName(isCheck)}
-            onClickItem={onClick}
-            icon={chooseClassificationItemIcon(isCheck)}>
-            컴퓨터활용능력시험 1급
-          </CertificationClassificationItem>
-          <CertificationClassificationItem
-            className={chooseClassificationItemClassName(isCheck)}
-            onClickItem={onClick}
-            icon={chooseClassificationItemIcon(isCheck)}>
-            컴퓨터활용능력시험 2급
-          </CertificationClassificationItem>
-          <CertificationClassificationItem
-            className={chooseClassificationItemClassName(isCheck)}
-            onClickItem={onClick}
-            icon={chooseClassificationItemIcon(isCheck)}>
-            정보처리기사
-          </CertificationClassificationItem>
-          <CertificationClassificationItem
-            className={chooseClassificationItemClassName(isCheck)}
-            onClickItem={onClick}
-            icon={chooseClassificationItemIcon(isCheck)}>
-            사회조사분석사
-          </CertificationClassificationItem>
+          {allCertifications
+            ? allCertifications.map((certification) => {
+                return (
+                  <CertificationClassificationItem
+                    usage={'onboarding'}
+                    className={'certificationItem-click'}
+                    key={certification.certificateId}
+                    certificateId={certification.certificateId}
+                    certificateName={certification.certificateName}
+                    isClickState={certification.isClick}
+                    icon={chooseClassificationItemIcon(certification.isClick)}>
+                    {certification.certificateName}
+                  </CertificationClassificationItem>
+                );
+              })
+            : null}
         </div>
       </div>
 
       {/* 완료 버튼 */}
-      <DoneButton onClick={onNext} isClick={isClick}>
-        완료
-      </DoneButton>
+      <DoneButton onNext={onNext}>완료</DoneButton>
     </div>
   );
 };

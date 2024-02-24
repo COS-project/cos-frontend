@@ -3,6 +3,8 @@
 import { format } from 'date-fns';
 import { atom } from 'recoil';
 
+import { Certificate } from '@/types/global';
+
 //자격증 응시 정보를 확인하는 페이지에서 navbar, header가 보이지 않도록 하는 state
 export const layoutState = atom({
   key: 'layoutState',
@@ -51,3 +53,8 @@ export const studyTimeCount = atom({
   default: 0,
 });
 
+//전체 자격증 리스트
+export const certificationsListState = atom<Certificate[]>({
+  key: 'certificationsListState',
+  default: [],
+});
