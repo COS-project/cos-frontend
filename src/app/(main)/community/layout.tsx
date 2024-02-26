@@ -10,9 +10,9 @@ import CommunityNav from '@/components/community/CommunityNav';
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <div>
-      <Header />
+      {/*<Header />*/}
       {children}
-      <NavBar />
+      {/*<NavBar />*/}
     </div>
   );
 }

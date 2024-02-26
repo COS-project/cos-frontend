@@ -1,51 +1,44 @@
-'use client';
-
-import React, { useEffect } from 'react';
-import { twMerge } from 'tailwind-merge';
-
 import { Certificate } from '@/types/global';
+import React from 'react';
 import { PostDataType, YearsAndRounds } from '@/types/community/type';
 
 interface Props {
-  data: [];
-  className?: string;
+  data: YearsAndRounds;
   setDataState: React.Dispatch<React.SetStateAction<PostDataType>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+const MockExamYearsFilter = (props: Props) => {
+  const { data, setDataState, setIsOpen } = props;
 
-/**
- 필터 모달창입니다.
- */
-const FilterModal = (props: Props) => {
-  const { data, className, setDataState, setIsOpen } = props;
-
-  const changePostDataRound = (datum) => {
+  const changePostDataExamYear = (year) => {
     setDataState((prevState) => ({
       ...prevState,
-      round: parseInt(datum),
+      examYear: parseInt(year),
     }));
   };
-
   return (
-    <div className={twMerge('border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10', className)}>
+    <div
+      className={
+        'absolute z-10 w-full top-[100%] border-[1px] border-gray2 bg-white rounded-[16px] py-2 h-[210px] overflow-y-scroll'
+      }>
       {!data || data.length === 0 ? (
         <div>error</div>
       ) : (
-        data.map((datum, index) => {
+        Object.entries(data).map(([year, rounds]) => {
           return (
             <div
-              key={index}
+              key={year}
               className="text-h4 text-gray3 py-3 px-4 hover:text-black transition"
               onClick={() => {
-                changePostDataRound(datum);
+                changePostDataExamYear(year);
                 setIsOpen(false);
               }}>
-              {datum}
+              {year}
             </div>
           );
         })
       )}
     </div>
-  );
-};
-export default FilterModal;
+  )
+}
+export default MockExamYearsFilter;
