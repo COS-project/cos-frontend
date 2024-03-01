@@ -22,12 +22,7 @@ export const postDataState = atom<PostDataType>({
   default: {
     title: '제목',
     content: '내용',
-    tags: [
-      {
-        tagType: 'LECTURE',
-        tagName: 'string',
-      },
-    ],
+    tags: [],
     examYear: 2023,
     round: 1,
     questionSequence: 0,
