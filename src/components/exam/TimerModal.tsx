@@ -12,7 +12,7 @@ interface SessionModalProps {
 
 const TimerModal: React.FC<SessionModalProps> = ({ closeTimerModal, closeSessionModal }) => {
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
-  // 타이머 모달이 나타나면 기존 세션 모달을 종료하기 위한 동작
+  // 타이머 모달이 나타나면 기존 세션 모달을 종료 위한 동작
   useEffect(() => {
     // 타이머 모달이 나타난 후에 실행되는 부분
     closeSessionModal();

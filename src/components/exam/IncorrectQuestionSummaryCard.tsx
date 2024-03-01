@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+// 이후 모듈화
 const WrongQuestionsSummaryBox = () => {
   return (
     <div className="mx-auto mt-4 w-[90%] p-3 rounded-3xl bg-blue">

@@ -1,4 +1,5 @@
 'use client';
+
 import './globals.css';
 
 import type { Metadata } from 'next';
@@ -12,9 +13,9 @@ import { RecoilRoot } from 'recoil';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html className="w-full">
-      <body>
-        <RecoilRoot>{children}</RecoilRoot>
-      </body>
+      <RecoilRoot>
+        <body>{children}</body>
+      </RecoilRoot>
     </html>
   );
 }
