@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: 'http://cercat.p-e.kr/api/v1',
+  baseURL: 'http://cercat.p-e.kr/api/v1/certificates',
   headers: {
     'Content-type': 'application/json',
     'Access-Token':
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0dVRVNUIl0sImVtYWlsIjoidGtkZ2g2NDI3QG5hdmVyLmNvbSIsInN1YiI6InRrZGdoNjQyN0BuYXZlci5jb20iLCJpYXQiOjE3MDgxNzA1OTQsImV4cCI6MTcwODQyOTc5NH0.eqdyAGnWre_Ctfh4VnjIWuLe3yog8npb9d0XvzS2VPY',
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0dVRVNUIl0sImVtYWlsIjoidGtkZ2g2NDI3QG5hdmVyLmNvbSIsInN1YiI6InRrZGdoNjQyN0BuYXZlci5jb20iLCJpYXQiOjE3MDkyOTI4MTQsImV4cCI6MTcwOTU1MjAxNH0.fJ6M1EQpE2Z79w8HLfNeH7aLKDRFSrjIxlyHDp1yl7U',
   },
   withCredentials: true,
 });
