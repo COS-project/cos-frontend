@@ -1,10 +1,10 @@
 import { Certificate } from '@/types/global';
 import React from 'react';
-import { PostDataType, YearsAndRounds } from '@/types/community/type';
+import { CreatePostDataType, YearsAndRounds } from '@/types/community/type';
 
 interface Props {
   data: YearsAndRounds;
-  setDataState: React.Dispatch<React.SetStateAction<PostDataType>>;
+  setDataState: React.Dispatch<React.SetStateAction<CreatePostDataType>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const MockExamYearsFilter = (props: Props) => {

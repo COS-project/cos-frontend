@@ -5,18 +5,18 @@ import FilterModal from '@/components/common/FilterModal';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
 import useGetMockExamYearsAndRounds from '@/lib/hooks/useGetMockExamYearsAndRounds';
 import { useRecoilState } from 'recoil';
-import { imagePreviewsState, imageUrlListState, postDataState } from '@/recoil/community/atom';
+import { imagePreviewsState, imageUrlListState, createPostDataState } from '@/recoil/community/atom';
 import { postCommentary } from '@/lib/api/community';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 
 const WriteExplanationPost = () => {
   const { examYearWithRounds } = useGetMockExamYearsAndRounds();
-  const {questions} = useMockExamQuestions();
+  const { questions } = useMockExamQuestions();
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
 
-  const [postData, setPostData] = useRecoilState(postDataState);
+  const [postData, setPostData] = useRecoilState(createPostDataState);
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState);
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
   const imgRef = useRef<HTMLInputElement>(null);
@@ -231,7 +231,7 @@ const WriteExplanationPost = () => {
             {imagePreviews.map((img, i) => {
               return (
                 <div key={i} className={'relative rounded-[8px]'}>
-                  <ImageDeleteButton i={i} usage={'POST'} />
+                  <ImageDeleteButton i={i} usage={'create'} />
                   <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
                     <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
                   </div>
