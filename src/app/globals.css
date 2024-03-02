@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    /* Button 컴포넌트 backgrond primary인 className */
+    .bg-blue-button {
+        @apply px-4 py-1 text-h6 bg-primary flex rounded-full text-white
+    }
+    /* Button 컴포넌트 border gray2인 className */
+    .border-gray-button{
+        @apply bg-white border-gray2 border-[1px] text-black
+    }
+}
+
+@layer components {
+    /* 목표 설정 content className */
+    .goal-setting-content {
+        @apply rounded-[16px] bg-gray0 py-3 px-4 w-full
+    }
+}
