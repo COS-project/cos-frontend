@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "date-fns": "^3.2.0",
-    "dayjs": "^1.11.10",
     "@nivo/radar": "^0.84.0",
     "axios": "^1.6.5",
+    "chart.js": "^4.4.2",
+    "date-fns": "^3.2.0",
+    "dayjs": "^1.11.10",
     "next": "^14.1.0",
     "react": "latest",
     "react-beautiful-dnd": "^13.1.1",
