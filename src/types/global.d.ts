@@ -66,6 +66,21 @@ export interface MockExam {
   isTake: boolean;
 }
 
+// 진행 바 만들 때 사용합니다.
+export interface ProgressBar {
+  width: number;
+}
+
+export interface ProblemInfo {
+  questionNum: number;
+  choiceAnswer: multipleChoice;
+}
+
+export interface multipleChoice {
+  problem: string;
+  example: string[];
+}
+
 // api를 통해 받아온 year들을 추출해서 담아둘 구조
 export interface examYearList {
   years: number[];
@@ -100,7 +115,7 @@ export interface ExamInfoCommonType {
 }
 
 // 공통 제목 type
-interface CommonTitleType {
+export interface CommonTitleType {
   description: ExamInfoCommonType;
   examFee: ExamInfoCommonType;
   examSchedule: ExamInfoCommonType;
@@ -112,7 +127,7 @@ interface CommonTitleType {
 }
 
 //자격증 응시 정보 type
-interface CertificateInfoType {
+export interface CertificateInfoType {
   examSchedule: {
     applicationStartDateTime: string;
     applicationDeadlineDateTime: string;
@@ -138,7 +153,7 @@ interface CertificateInfoType {
 }
 
 // 목표 설정 type
-interface GoalSettingInfo {
+export interface GoalSettingInfo {
   certificate?: Certificate;
   goalScore: number;
   prepareStartDateTime: string;
@@ -152,8 +167,125 @@ interface GoalSettingInfo {
   studyRepeatDays: number[];
 }
 
-// 자격증
-interface Certificate {
+//온보딩 자격증
+export interface Certificate {
   certificateId: number;
   certificateName: string;
+  isClick: boolean; // 자격증을 선택했을 경우
+}
+
+//온보딩 흥미 자격증 타입
+export interface InterestCertificate {
+  certificateId: number;
+  interestPriority: string;
+  certificateName?: string;
+}
+//게시판 즐겨찾기
+export interface FavoriteBoard {
+  certificate: {
+    certificateId: number;
+    certificateName: string;
+  };
+  isFavorite: boolean;
+}
+
+//userProfile
+export interface userProfile {
+  userId?: number;
+  nickname: string;
+  email?: string;
+  profileImage: string;
+}
+
+//모의고사 시험 문제 선지
+export interface Question {
+  optionSequence: number;
+  optionContent: string;
+  optionImage: string;
+}
+
+//서버에 보낼 모의고사 시험 응시 결과
+export interface UserAnswerRequests {
+  questionId: number;
+  selectOptionSeq: number; //1,2,3,4
+  takenTime: number; // 밀리세컨드
+  isCorrect?: boolean;
+}
+
+//서버에 보낼 과목별 채점 결과
+export interface SubjectResultRequests {
+  subjectId: number;
+  score: number;
+  userAnswerRequests: UserAnswerRequests[];
+}
+
+//모의고사 시험 문제, 선지 전체
+export interface QuestionsResponse {
+  questionId: number;
+  mockExam: ReviewIncorrectMockExam;
+  subject: {
+    subjectId: number;
+    subjectName: string;
+    numberOfQuestions: number;
+    totalScore: number;
+  };
+  questionSeq: number;
+  questionText: string;
+  questionImage: string;
+  questionOptions: Question[];
+  correctOption: number;
+  score: number;
+}
+
+export interface Param {
+  page: number;
+  size: number;
+  sort?: [];
+}
+
+export interface ReviewIncorrectAnswers {
+  responseCode: string;
+  message: string;
+  result: {
+    pageable: {
+      pageNumber: number;
+      unpaged: boolean;
+      pageSize: number;
+      paged: boolean;
+      offset: number;
+      sort: {
+        unsorted: boolean;
+        sorted: boolean;
+        empty: boolean;
+      };
+    };
+    numberOfElements: number;
+    size: number;
+    content: ReviewIncorrectAnswersContent[];
+    number: number;
+    sort: {
+      unsorted: boolean;
+      sorted: boolean;
+      empty: boolean;
+    };
+    first: boolean;
+    last: boolean;
+    empty: boolean;
+  };
+}
+
+export interface ReviewIncorrectAnswersContent {
+  question: QuestionsResponse;
+  userAnswerId: number;
+  selectOptionSeq: number;
+  takenTime: number;
+  isCorrect: boolean;
+}
+
+export interface ReviewIncorrectMockExam {
+  MockExamId: number;
+  examYear: number;
+  round: number;
+  timeLimit: number;
+  certificate: Certificate;
 }
