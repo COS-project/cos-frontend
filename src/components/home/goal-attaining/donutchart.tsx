@@ -7,24 +7,31 @@ interface DonutChartProps {
 
 const DonutChart: React.FC<DonutChartProps> = ({ data }) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
+  const chartInstance = useRef<Chart | null>(null);
 
   useEffect(() => {
     const ctx = chartRef.current?.getContext('2d');
 
+    // 이전 차트 객체가 존재하면 파괴
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+
+    // 차트 객체 생성
     if (ctx) {
-      new Chart(ctx, {
+      chartInstance.current = new Chart(ctx, {
         type: 'doughnut',
         data: {
           labels: [],
           datasets: [
             {
               data: data,
-              backgroundColor: ['gray', 'blue'], // 원하는 색상으로 변경
+              backgroundColor: ['#E4E5E7', '#6283FD'], // 원하는 색상으로 변경
             },
           ],
         } as ChartData<'doughnut'>,
         options: {
-          cutout: '75%', // 도넛 차트의 중앙을 빈 공간으로 만들기 위한 옵션
+          cutout: '80%', // 도넛 차트의 중앙을 빈 공간으로 만들기 위한 옵션
           responsive: true,
           plugins: {
             legend: {
