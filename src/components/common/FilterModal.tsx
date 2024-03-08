@@ -4,12 +4,12 @@ import React, { useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { Certificate } from '@/types/global';
-import { PostDataType, YearsAndRounds } from '@/types/community/type';
+import { CreatePostDataType, YearsAndRounds } from '@/types/community/type';
 
 interface Props {
   data: [];
   className?: string;
-  setDataState: React.Dispatch<React.SetStateAction<PostDataType>>;
+  setDataState: React.Dispatch<React.SetStateAction<CreatePostDataType>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

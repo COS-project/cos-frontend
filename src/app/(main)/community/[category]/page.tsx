@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import WriteExplanationPost from '@/components/community/WriteExplanationPost';
 import WriteTipPost from '@/components/community/WriteTipPost';
 import WriteNormalPost from '@/components/community/WriteNormalPost';
+import EditPost from '@/components/community/EditPost';
 
 export default function CommunityCategoryPage() {
   const pathname = usePathname();
@@ -11,11 +12,12 @@ export default function CommunityCategoryPage() {
 
   return (
     <div>
-      <WriteNormalPost />
+      {/*<EditPost />*/}
+      {/*<WriteNormalPost />*/}
       {/*<WriteTipPost />*/}
       {/*<WriteExplanationPost />*/}
       {/*<p>{pathname} 페이지</p>*/}
-      {/*<button onClick={() => router.replace(`${pathname}/1`)}>게시글 상세로 이동하기</button>*/}
+      <button onClick={() => router.replace(`${pathname}/1`)}>게시글 상세로 이동하기</button>
     </div>
   );
 }
