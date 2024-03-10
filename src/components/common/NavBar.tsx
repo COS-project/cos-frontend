@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-import { MENU_LIST } from '@/utils/nav';
+import { MENU_LIST } from '@/utils/common/nav';
 
 export default function NavBar() {
   return (
