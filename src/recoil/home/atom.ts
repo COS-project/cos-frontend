@@ -49,3 +49,9 @@ export let goalSettingState = atom<GoalSettingInfo>({
     studyRepeatDays: [],
   },
 });
+
+// 성장그래프 자세히 보기
+export const selectedReportTypeState = atom<'WEEK' | 'MONTH' | 'YEAR'>({
+  key: 'selectedReportTypeState',
+  default: 'WEEK',
+});
