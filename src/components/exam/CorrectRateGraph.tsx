@@ -1,16 +1,13 @@
-import { useRecoilState } from 'recoil';
-
-import { Round, Session } from '@/types/global';
-import { selectedRoundState, selectedSessionState } from '@/utils/recoilState';
-
 import Example from './SimpleChart';
 
 // 정답률 그래프
 const CorrectRateGraph: React.FC = () => {
-  const [selectedSession, setselectedSession] = useRecoilState<Session | null>(selectedSessionState);
-  const [selectedRound, setSelectedRound] = useRecoilState<Round | null>(selectedRoundState);
-
-  const subjects = selectedRound?.subjects;
+  const subjects = [
+    { name: 'Math', correctAnswer: 75, totalProblems: 100 },
+    { name: 'Science', correctAnswer: 60, totalProblems: 80 },
+    { name: 'History', correctAnswer: 40, totalProblems: 60 },
+    // ... 다른 과목들
+  ];
 
   const radarChartData = subjects?.map((subject) => {
     return {

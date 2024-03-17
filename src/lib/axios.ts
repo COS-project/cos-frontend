@@ -1,9 +1,14 @@
 import axios from 'axios';
+import { Param } from '@/types/global';
+import qs from 'qs';
+import { string } from 'prop-types';
 
 const client = axios.create({
   baseURL: 'http://cercat.p-e.kr/api/v1',
   headers: {
     'Content-type': 'application/json',
+    'Access-Token':
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0dVRVNUIl0sImVtYWlsIjoidGtkZ2g2NDI3QG5hdmVyLmNvbSIsInN1YiI6InRrZGdoNjQyN0BuYXZlci5jb20iLCJpYXQiOjE3MDc5OTM0NzAsImV4cCI6MTcwODI1MjY3MH0.L6_y1MFe7pEshx5T1ML0ed7S3p_cAWVT98p_x3xP54s',
   },
   withCredentials: true,
 });
@@ -93,9 +98,10 @@ const sendRequest = async (config) => {
   }
 };
 
-export const swrGetFetcher = async (url: string) => {
+export const swrGetFetcher = async (url) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
+
     const response = await sendRequest({
       headers: {
         'Access-Token': localStorage.getItem('accessToken'),

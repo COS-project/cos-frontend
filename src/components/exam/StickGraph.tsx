@@ -1,5 +1,5 @@
 interface StickGraphProps {
-  height: number;
+  height: Number | null;
   color: string;
 }
 
