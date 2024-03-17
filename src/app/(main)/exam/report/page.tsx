@@ -21,9 +21,9 @@ const Report: React.FC = () => {
           </div>
           <div className="font-bold text-h3"> 과목별 맞춘 문제 수 </div>
           <div className="flex bg-white my-2">
-            <SubjectGradeCard name={'데이터베이스'} correctAnswer={selectedRound} totalCorrect={10} />
-            <SubjectGradeCard name={'과학'} correctAnswer={selectedRound} totalCorrect={10} />
-            <SubjectGradeCard name={'과학'} correctAnswer={selectedRound} totalCorrect={10} />
+            <SubjectGradeCard name={'데이터베이스'} correctAnswer={5} totalCorrect={10} />
+            <SubjectGradeCard name={'과학'} correctAnswer={5} totalCorrect={10} />
+            <SubjectGradeCard name={'과학'} correctAnswer={5} totalCorrect={10} />
           </div>
           <div className="flex space-x-2 my-4">
             <ReportCard title="최근 점수" main={50 + '점'} total={100 + '점'} />

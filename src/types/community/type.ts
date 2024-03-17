@@ -8,15 +8,26 @@ export interface YearsAndRounds {
   2023: number[];
 }
 
-export interface PostDataType {
+export interface CreatePostDataType {
   title: string;
   content: string;
   tags?: TipPostTagType[];
-  examYear: number;
-  round: number;
+  examYear?: number;
+  round?: number;
   questionSequence?: number;
 }
-interface TipPostTagType {
+export interface TipPostTagType {
   tagType: string;
   tagName: string;
+}
+
+export interface EditPostDataType {
+  postId: number;
+  title: string;
+  content: string;
+  newTags?: TipPostTagType[];
+  examYear?: number;
+  round?: number;
+  questionSequence?: number;
+  removeImageUrls?: string[];
 }
