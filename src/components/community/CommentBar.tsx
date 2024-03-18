@@ -8,7 +8,7 @@ import DdbongIcon from './DdabongIcon';
 interface Props {
   empathy: number; //공감 수
   comment: number; //댓글 수
-  onClick?: () => void; //추천 버튼 눌렀을 때 동작, "?"경로 설정하면서 수정 필요함
+  onClick?: () => void; //추천 버튼 눌렀을 때 동작
 }
 
 const CommentBar = (props: Props) => {

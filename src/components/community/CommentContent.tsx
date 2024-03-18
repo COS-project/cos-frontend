@@ -11,10 +11,11 @@ interface Props {
   onClick?: () => void; //답글달기 클릭 시 내용 입력 창이 보이도록 설정
   ddabonhNumber: number; //공감 개수
   content: string; //댓글 내용
+  DdabongClick?: () => void; //좋아요 버튼 클릭 시 동작
 }
 
 const CommentContent = (props: Props) => {
-  const { reply, onClick, ddabonhNumber, content } = props;
+  const { reply, onClick, ddabonhNumber, content, DdabongClick } = props;
   return (
     <div>
       <div className="pl-12 justify-between items-start gap-6 flex">
@@ -30,8 +31,8 @@ const CommentContent = (props: Props) => {
             </div>
           ) : null}
         </div>
-        <div className="flex-col justify-center items-center inline-flex">
-          <DdbongIcon width="19" height="17" color="#727375" cursor="cursor-pointer"></DdbongIcon>
+        <div className="flex-col justify-center items-center inline-flex cursor-pointer">
+          <DdbongIcon width="19" height="17" color="#727375" onClick={DdabongClick}></DdbongIcon>
           <div className="text-gray4 text-h7 font-light font-['Inter']">{ddabonhNumber}</div>
         </div>
       </div>
