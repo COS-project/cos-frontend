@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { Round, Session } from '@/types/global';
+import { Session } from '@/types/global';
 import { selectedSessionState } from '@/utils/recoilState';
 
 import SubjectGradeCard from './SubjectGradeCard';

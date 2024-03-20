@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 import { useSWRConfig } from 'swr';
 import { twMerge } from 'tailwind-merge';
 
-import { postFavoriteBoards } from '@/lib/api/board';
+import { postFavoriteBoards } from '@/lib/api/community';
 import { certificationsListState } from '@/recoil/atom';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
 
