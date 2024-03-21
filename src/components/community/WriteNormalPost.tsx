@@ -6,10 +6,10 @@ import { useRecoilState } from 'recoil';
 
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
-import { imagePreviewsState, imageUrlListState, postDataState } from '@/recoil/community/atom';
+import { imagePreviewsState, imageUrlListState, createPostDataState } from '@/recoil/community/atom';
 
 const WriteNormalPost = () => {
-  const [postData, setPostData] = useRecoilState(postDataState);
+  const [postData, setPostData] = useRecoilState(createPostDataState);
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState);
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
   const imgRef = useRef<HTMLInputElement>(null);
@@ -130,7 +130,7 @@ const WriteNormalPost = () => {
             {imagePreviews.map((img, i) => {
               return (
                 <div key={i} className={'relative rounded-[8px]'}>
-                  <ImageDeleteButton i={i} usage={'POST'} />
+                  <ImageDeleteButton i={i} usage={'create'} />
                   <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
                     <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
                   </div>
