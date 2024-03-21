@@ -12,7 +12,7 @@ import { RecoilRoot } from 'recoil';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html className="flex flex-col justify-center">
+    <html className="">
       <RecoilRoot>
         <body>{children}</body>
       </RecoilRoot>
