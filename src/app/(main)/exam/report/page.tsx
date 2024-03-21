@@ -32,7 +32,13 @@ const Report: React.FC = () => {
           <div>
             <div className="mx-auto mt-2 rounded-3xl bg-white py-[6%]">
               <div className="w-[90%] mx-auto">
-                <StayTimeGraph />
+                <StayTimeGraph
+                  title="머문시간"
+                  takenTime={70}
+                  maxTime={100}
+                  subjectTime={[50, 60, 70]}
+                  subjectName={['이산수학', '자료구조', '운영체제']}
+                />
               </div>
             </div>
             <div className="mx-auto mt-2 rounded-3xl bg-white py-[6%]">

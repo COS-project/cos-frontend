@@ -41,7 +41,7 @@ const GoalBox = () => {
                 </div>
               </div>
               <div className="relative">
-                <ScoredDonutChart mainscore={30} totalscore={100} main="61점" total="100점" />
+                <ScoredDonutChart mainscore={30} totalscore={100} unit="점" />
               </div>
             </div>
             <div className="w-[33%]">
@@ -51,7 +51,7 @@ const GoalBox = () => {
                 </div>
               </div>
               <div className="relative">
-                <ScoredDonutChart mainscore={60} totalscore={100} main="61점" total="100점" />
+                <ScoredDonutChart mainscore={60} totalscore={100} unit="분" />
               </div>
             </div>
             <div className="w-[33%]">
@@ -61,7 +61,7 @@ const GoalBox = () => {
                 </div>
               </div>
               <div className="relative">
-                <ScoredDonutChart mainscore={60} totalscore={100} main="61점" total="100점" />
+                <ScoredDonutChart mainscore={10} totalscore={30} unit="회" />
               </div>
             </div>
           </div>
@@ -91,14 +91,14 @@ const TodayGoalBox = () => {
             maintitle=" 공부하기"
             subtitle="오늘 공부한 시간"
             goaltime={60}
-            presenttime={30}
+            presenttime={59}
             unit="분"
           />
           <GoalRunningGraph
             maintitle="분 모의고사 풀기"
             subtitle="오늘 푼 모의고사"
             goaltime={3}
-            presenttime={2}
+            presenttime={0}
             unit="회"
           />
         </div>
@@ -108,10 +108,16 @@ const TodayGoalBox = () => {
 };
 
 const CorrectRateGraphBox = () => {
+  const subjects = [
+    { name: 'Math', correctAnswer: 75, totalProblems: 100 },
+    { name: 'Science', correctAnswer: 60, totalProblems: 80 },
+    { name: 'History', correctAnswer: 40, totalProblems: 60 },
+    // ... 다른 과목들
+  ];
   return (
     <div className="mx-auto mt-2 rounded-3xl bg-white py-[6%]">
       <div className="w-[90%] mx-auto">
-        <CorrectRateGraph />
+        <CorrectRateGraph subjects={subjects} />
       </div>
     </div>
   );
@@ -124,7 +130,7 @@ const StayTimeGraphBox = () => {
         <div className="w-[90%] mx-auto">
           <StayTimeGraph
             title="머문시간"
-            takenTime={70}
+            takenTime={180}
             maxTime={100}
             subjectTime={[50, 60, 70]}
             subjectName={['이산수학', '자료구조', '운영체제']}
