@@ -1,10 +1,11 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import WriteExplanationPost from '@/components/community/WriteExplanationPost';
-import WriteTipPost from '@/components/community/WriteTipPost';
-import WriteNormalPost from '@/components/community/WriteNormalPost';
+
 import EditPost from '@/components/community/EditPost';
+import WriteExplanationPost from '@/components/community/WriteExplanationPost';
+import WriteNormalPost from '@/components/community/WriteNormalPost';
+import WriteTipPost from '@/components/community/WriteTipPost';
 
 export default function CommunityCategoryPage() {
   const pathname = usePathname();

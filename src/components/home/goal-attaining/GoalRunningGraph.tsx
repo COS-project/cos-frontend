@@ -80,7 +80,9 @@ const HorizontalBarChart: React.FC<HorizontalBarChartProps> = ({ score, total, u
           {iconComponent}
           {isHovered && (
             <div
-              className={`absolute bottom-full left-1/2 transform -translate-x-1/2 text-white px-[20%] bg-black rounded-lg mb-[10%]`}
+              className={
+                'absolute bottom-full left-1/2 transform -translate-x-1/2 text-white px-[20%] bg-black rounded-lg mb-[10%]'
+              }
               style={{ zIndex: 1, marginTop: '10px' }}>
               <div className="flex text-h6">
                 <div>{percentage}</div>
