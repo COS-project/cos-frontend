@@ -1,10 +1,42 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-export default function Header() {
+import { HeaderType } from '@/types/global';
+
+interface Props {
+  headerType?: HeaderType;
+  title?: string;
+  rightElement?: ReactNode;
+}
+
+export default function Header(props: Props) {
+  const { headerType = 'static', title, rightElement } = props;
+
+  const renderHeader = (headerType: HeaderType) => {
+    switch (headerType) {
+      case 'static':
+        return (
+          <>
+            <Logo />
+            <AlarmIcon />
+          </>
+        );
+      case 'dynamic':
+        return (
+          <>
+            <PrevArrow />
+            <h1 className="text-black font-h1">{title}</h1>
+            {rightElement ? { rightElement } : <div />}
+          </>
+        );
+
+      default:
+        break;
+    }
+  };
+
   return (
-    <header className="flex justify-between items-center px-[1.25rem] py-[0.25rem]">
-      <Logo />
-      <AlarmIcon />
+    <header className="flex sticky top-0 justify-between items-center px-[1.25rem] py-[0.25rem]">
+      {renderHeader(headerType)}
     </header>
   );
 }
@@ -31,3 +63,9 @@ function AlarmIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+const PrevArrow = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={33} height={32} fill="none" {...props}>
+    <path stroke="#0D0E10" strokeLinecap="round" strokeLinejoin="round" d="m21.646 26-10-10 10-10" />
+  </svg>
+);

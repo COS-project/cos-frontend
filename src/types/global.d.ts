@@ -1,5 +1,7 @@
 import React from 'react';
 
+export type HeaderType = 'static' | 'dynamic';
+
 export interface MenuList {
   id: number;
   Icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
