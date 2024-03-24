@@ -17,14 +17,14 @@ interface HorizontalBarChartProps {
 const GoalRunningGraph: React.FC<GoalRunningGraphProps> = ({ maintitle, subtitle, goaltime, presenttime, unit }) => {
   return (
     <div>
-      <div className="bg-white border border-gray0 rounded-3xl mt-[6%]">
+      <div className="bg-white border border-gray0 rounded-3xl mt-[10%]">
         <div className="flex bg-gray0 rounded-3xl">
           <div className="w-[20%]">
             <div className="w-12 h-12 rounded-full bg-white m-2 flex items-center justify-center">
               <Logo />
             </div>
           </div>
-          <div className="w-[70%] mx-auto flex flex-col justify-center">
+          <div className="w-[65%] mx-auto flex flex-col justify-center">
             <div className="font-extrabold text-h4">
               {goaltime}
               {unit}
@@ -38,7 +38,7 @@ const GoalRunningGraph: React.FC<GoalRunningGraphProps> = ({ maintitle, subtitle
               </div>
             </div>
           </div>
-          <div className="flex justify-end items-center mx-3">{'〉'}</div>
+          <div className="flex justify-end items-center mx-auto">{'>'}</div>
         </div>
         <div className="flex w-[90%] mx-auto mt-[15%] mb-[5%] justify-center ">
           <HorizontalBarChart score={presenttime} total={goaltime} unit={unit} />
@@ -75,12 +75,14 @@ const HorizontalBarChart: React.FC<HorizontalBarChartProps> = ({ score, total, u
   return (
     <div className="w-[100%]">
       <div className="flex">
-        <div className="bg-white h-1" style={{ width: `${widthPercentage - 3}%` }}></div>
+        <div className="bg-white h-1" style={{ width: `${widthPercentage}%` }}></div>
         <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           {iconComponent}
           {isHovered && (
             <div
-              className={`absolute bottom-full left-1/2 transform -translate-x-1/2 text-white px-[20%] bg-black rounded-lg mb-[10%]`}
+              className={
+                'absolute bottom-full left-1/2 transform -translate-x-1/2 text-white px-[20%] bg-black rounded-lg mb-[10%]'
+              }
               style={{ zIndex: 1, marginTop: '10px' }}>
               <div className="flex text-h6">
                 <div>{percentage}</div>
@@ -101,7 +103,7 @@ const HorizontalBarChart: React.FC<HorizontalBarChartProps> = ({ score, total, u
 
         {/* Score and Total labels */}
         <div className="flex justify-end mt-2">
-          <span className="text-gray3 text-h6">
+          <span className="text-gray4 text-h6">
             {total}
             {unit}
           </span>
