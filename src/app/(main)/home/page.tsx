@@ -5,7 +5,6 @@ import * as React from 'react';
 import CorrectRateGraph from '@/components/exam/CorrectRateGraph';
 import StayTimeGraph from '@/components/exam/StayTimeGraph';
 import GoalRunningGraph from '@/components/home/goal-attaining/GoalRunningGraph';
-import GrowthGraph from '@/components/home/goal-attaining/GrowthGraph';
 import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
 
 export default function Home() {

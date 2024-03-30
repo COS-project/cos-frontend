@@ -2,7 +2,6 @@
 
 import './globals.css';
 
-import type { Metadata } from 'next';
 import { RecoilRoot } from 'recoil';
 
 // export const metadata: Metadata = {
