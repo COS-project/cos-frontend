@@ -2,10 +2,11 @@
 //api 연결하면서 pops부분 수정 예정
 'use client';
 
+import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import CommunityProfile from './CommunityProfile';
+
 import CommentContent from './CommentContent';
+import CommunityProfile from './CommunityProfile';
 
 interface Props {}
 

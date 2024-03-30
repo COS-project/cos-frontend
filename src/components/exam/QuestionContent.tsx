@@ -57,21 +57,21 @@ const QuestionContent = (props: Props) => {
         correctAnswer === questionSequence
           ? 'text-left border-[1px] border-primary text-second bg-second/20 rounded-[16px] p-4'
           : correctAnswer !== clickedSequence &&
-              selectedAnswerInThePast === clickedSequence &&
-              clickedSequence === questionSequence &&
-              correctAnswer !== 0
-            ? 'text-left items-start border-[1px] border-point text-second bg-point/20 rounded-[16px] p-4'
-            : selectedAnswerInThePast !== 0 && selectedAnswerInThePast === questionSequence
-              ? 'text-left border-[1px] border-second rounded-[16px] p-4 text-second'
-              : clickedSequence === questionSequence
-                ? usage === 'mockExam'
-                  ? 'text-left border-[1px] border-black bg-gray0 rounded-[16px] p-4'
-                  : correctAnswer !== 0 && correctAnswer === clickedSequence
-                    ? 'flex justify-start items-start border-[1px] border-primary text-second bg-second/20 rounded-[16px] p-4'
-                    : correctAnswer !== 0 && correctAnswer !== clickedSequence
-                      ? 'text-left border-[1px] border-point text-point bg-point/20 rounded-[16px] p-4'
-                      : 'text-left border-[1px] border-black bg-gray0 rounded-[16px] p-4'
-                : 'text-left border-[1px] border-gray1 rounded-[16px] p-4'
+            selectedAnswerInThePast === clickedSequence &&
+            clickedSequence === questionSequence &&
+            correctAnswer !== 0
+          ? 'text-left items-start border-[1px] border-point text-second bg-point/20 rounded-[16px] p-4'
+          : selectedAnswerInThePast !== 0 && selectedAnswerInThePast === questionSequence
+          ? 'text-left border-[1px] border-second rounded-[16px] p-4 text-second'
+          : clickedSequence === questionSequence
+          ? usage === 'mockExam'
+            ? 'text-left border-[1px] border-black bg-gray0 rounded-[16px] p-4'
+            : correctAnswer !== 0 && correctAnswer === clickedSequence
+            ? 'flex justify-start items-start border-[1px] border-primary text-second bg-second/20 rounded-[16px] p-4'
+            : correctAnswer !== 0 && correctAnswer !== clickedSequence
+            ? 'text-left border-[1px] border-point text-point bg-point/20 rounded-[16px] p-4'
+            : 'text-left border-[1px] border-black bg-gray0 rounded-[16px] p-4'
+          : 'text-left border-[1px] border-gray1 rounded-[16px] p-4'
       }>
       <div className="flex gap-x-2 text-h4 items-start">
         {usage === 'mockExam' ? (
@@ -115,13 +115,7 @@ export default QuestionContent;
 
 function SelectedAnswerInThePastPastIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      width={17}
-      height={16}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <svg width={17} height={16} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <rect x={0.146} width={16} height={16} rx={8} fill="#6283FD" />
       <path d="M8.003 4L4.146 8m0 0l3.857 4M4.146 8h8" stroke="#fff" />
     </svg>
@@ -130,13 +124,7 @@ function SelectedAnswerInThePastPastIcon(props: React.SVGProps<SVGSVGElement>) {
 
 function CorrectIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      width={17}
-      height={16}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <svg width={17} height={16} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <rect x={0.146} width={16} height={16} rx={8} fill="#3B3DFF" />
       <path d="M3.646 7.455L6.988 11l5.657-6" stroke="#fff" />
     </svg>
@@ -145,13 +133,7 @@ function CorrectIcon(props: React.SVGProps<SVGSVGElement>) {
 
 function WrongIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      width={17}
-      height={16}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
+    <svg width={17} height={16} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <rect x={0.146} width={16} height={16} rx={8} fill="#FF6A3B" />
       <path d="M4.646 4.5l7 7M11.646 4.5l-7 7" stroke="#fff" />
     </svg>

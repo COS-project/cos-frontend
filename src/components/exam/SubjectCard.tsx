@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { Round, Session, SubjectInfo } from '@/types/global';
+import { Session, SubjectInfo } from '@/types/global';
 import { selectedSessionState, selectedSubjectState } from '@/utils/recoilState';
 
 import SessionModal from './SessionModal';

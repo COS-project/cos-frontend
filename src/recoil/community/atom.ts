@@ -1,11 +1,11 @@
 'use client';
 
+import { extend } from 'dayjs';
 import { atom } from 'recoil';
 
-import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
-import { extend } from 'dayjs';
 import SubjectList from '@/components/exam/SubjectList';
-import { PostDataType } from '@/types/community/type';
+import { CreatePostDataType, EditPostDataType } from '@/types/community/type';
+import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
 
 export const imagePreviewsState = atom<string[]>({
   key: 'imagePreviewsState',
@@ -17,19 +17,28 @@ export const imageUrlListState = atom<File[]>({
   default: [],
 });
 
-export const postDataState = atom<PostDataType>({
-  key: 'postDataState',
+export const pastImageUrlsState = atom<string[]>({
+  key: 'pastImageUrlsState',
+  default: [],
+});
+
+export const createPostDataState = atom<CreatePostDataType>({
+  key: 'createPostDataState',
   default: {
     title: '제목',
     content: '내용',
-    tags: [
-      {
-        tagType: 'LECTURE',
-        tagName: 'string',
-      },
-    ],
+    tags: [],
     examYear: 2023,
     round: 1,
     questionSequence: 0,
+  },
+});
+
+export const editPostDataState = atom<EditPostDataType>({
+  key: 'editPostDataState',
+  default: {
+    postId: 0,
+    title: '제목',
+    content: '내용',
   },
 });
