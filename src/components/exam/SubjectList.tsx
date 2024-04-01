@@ -20,9 +20,9 @@ const SubjectSessionCard: React.FC = ({}) => {
   // const rounds = YearData?.result;
 
   const rounds = [
-    { round: 1, mockExamId: 123, isTake: true },
-    { round: 2, mockExamId: 456, isTake: false },
-    { round: 3, mockExamId: 789, isTake: true },
+    { round: 1, mockExamId: 23, isTake: true },
+    { round: 2, mockExamId: 56, isTake: false },
+    { round: 3, mockExamId: 89, isTake: true },
   ];
 
   console.log(rounds);

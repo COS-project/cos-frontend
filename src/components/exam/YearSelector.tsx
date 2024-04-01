@@ -46,7 +46,7 @@ const YearSelector = ({}) => {
         name="subject"
         value={selectedYear?.toString() || ''}
         onChange={handleSubjectChange}
-        className="mx-auto mt-1 text-h4 font-bold block w-[100%] p-3 bg-gray0 rounded-xl shadow-sm focus:outline-none focus:ring focus:border-blue-300 sm:text-sm">
+        className="mx-auto mt-1 text-h4 font-bold block w-[95%] p-3 bg-gray0 rounded-xl shadow-sm focus:outline-none focus:ring focus:border-blue-300 sm:text-sm">
         {uniqueYears.map((year, index) => (
           <option key={index} value={year}>
             {year}년 기출 모의고사
