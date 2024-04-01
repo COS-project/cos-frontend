@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Header from '@/components/common/Header';
+
 import NavBar from '@/components/common/NavBar';
 import WrongQuestionsSummaryBox from '@/components/exam/IncorrectQuestionSummaryCard';
 import SubjectSessionCard from '@/components/exam/SubjectList';
@@ -12,7 +13,6 @@ const Exam = () => {
       <Header />
       <WrongQuestionsSummaryBox />
       <SolveExamBox />
-      <NavBar />
     </div>
   );
 };

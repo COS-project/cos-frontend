@@ -1,8 +1,9 @@
 //공감수, 댓글 수, 추천버튼 라인
 'use client';
 
+import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { useRouter, useParams } from 'next/navigation';
+
 import DdbongIcon from './DdabongIcon';
 
 interface Props {

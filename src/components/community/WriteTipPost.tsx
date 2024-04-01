@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
-import { imagePreviewsState, imageUrlListState, createPostDataState } from '@/recoil/community/atom';
+import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 
 const WriteTipPost = () => {
   const [postData, setPostData] = useRecoilState(createPostDataState);

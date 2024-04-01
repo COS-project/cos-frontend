@@ -2,14 +2,15 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+
+import Comment from '@/components/community/Comment';
+import CommentBar from '@/components/community/CommentBar';
+import CommentReply from '@/components/community/CommentReply';
+import CommentWriting from '@/components/community/CommentWriting';
 import CommunityNav from '@/components/community/CommunityNav';
+import CommunityPost from '@/components/community/CommunityPost';
 import CommunityProfile from '@/components/community/CommunityProfile';
 import CommunityTag from '@/components/community/CommunityTag';
-import CommunityPost from '@/components/community/CommunityPost';
-import CommentWriting from '@/components/community/CommentWriting';
-import CommentBar from '@/components/community/CommentBar';
-import Comment from '@/components/community/Comment';
-import CommentReply from '@/components/community/CommentReply';
 
 export default function CommunityDetailPage() {
   const [replyOnOff, setReplyOnOff] = useState<boolean>(false);

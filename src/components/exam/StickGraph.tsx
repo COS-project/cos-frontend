@@ -26,10 +26,14 @@ const StickGraph: React.FC<StickGraphProps> = ({ height, color }) => {
       onMouseLeave={handleMouseLeave}
       className={`relative w-[20%] mt-auto bg-${isHovered ? hoverColor : defaultColor} rounded-t-full`}>
       {height != null && isHovered && (
-        <div
-          className={`absolute bottom-full left-1/2 transform -translate-x-1/2 text-white px-2 py-1 bg-black rounded-lg mb-2`}
-          style={{ zIndex: 1, marginTop: '10px' }}>
-          {height}
+        <div>
+          <div
+            className={
+              'absolute bottom-full left-1/2 transform -translate-x-1/2 text-white px-[80%] bg-black rounded-lg mb-[40%]'
+            }
+            style={{ zIndex: 1, marginTop: '10px' }}>
+            {height}
+          </div>
         </div>
       )}
     </div>
