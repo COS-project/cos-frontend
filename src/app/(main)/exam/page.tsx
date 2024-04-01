@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Header from '@/components/common/Header';
+import NavBar from '@/components/common/NavBar';
 import WrongQuestionsSummaryBox from '@/components/exam/IncorrectQuestionSummaryCard';
 import SubjectSessionCard from '@/components/exam/SubjectList';
 import YearSelector from '@/components/exam/YearSelector';
@@ -8,7 +9,6 @@ import YearSelector from '@/components/exam/YearSelector';
 const Exam = () => {
   return (
     <div>
-      <Header />
       <WrongQuestionsSummaryBox />
       <SolveExamBox />
     </div>

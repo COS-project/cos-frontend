@@ -1,6 +1,7 @@
 import React from 'react';
 
 export type Difficulty = '너무 쉬워요' | '쉬워요' | '보통이에요' | '조금 어려워요' | '어려워요';
+export type HeaderType = 'static' | 'dynamic';
 
 export interface MenuList {
   id: number;
