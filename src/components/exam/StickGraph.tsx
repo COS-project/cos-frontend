@@ -28,7 +28,9 @@ const StickGraph: React.FC<StickGraphProps> = ({ height, color }) => {
       {height != null && isHovered && (
         <div>
           <div
-            className={`absolute bottom-full left-1/2 transform -translate-x-1/2 text-white px-[80%] bg-black rounded-lg mb-[40%]`}
+            className={
+              'absolute bottom-full left-1/2 transform -translate-x-1/2 text-white px-[80%] bg-black rounded-lg mb-[40%]'
+            }
             style={{ zIndex: 1, marginTop: '10px' }}>
             {height}
           </div>

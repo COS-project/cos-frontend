@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { Param } from '@/types/global';
-import qs from 'qs';
 import { string } from 'prop-types';
+import qs from 'qs';
+
+import { Param } from '@/types/global';
 
 const client = axios.create({
   baseURL: 'http://cercat.p-e.kr/api/v1/certificates',

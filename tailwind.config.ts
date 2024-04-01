@@ -44,4 +44,4 @@ const config: Config = {
 };
 export default config;
 
-// 주석 
+// 주석

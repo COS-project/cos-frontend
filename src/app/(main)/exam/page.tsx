@@ -1,9 +1,8 @@
 import React from 'react';
 
 import Header from '@/components/common/Header';
-import NavBar from '@/components/common/NavBar';
-import SubjectSessionCard from '@/components/exam/SubjectList';
 import WrongQuestionsSummaryBox from '@/components/exam/IncorrectQuestionSummaryCard';
+import SubjectSessionCard from '@/components/exam/SubjectList';
 import YearSelector from '@/components/exam/YearSelector';
 
 const Exam = () => {
@@ -12,7 +11,6 @@ const Exam = () => {
       <Header />
       <WrongQuestionsSummaryBox />
       <SolveExamBox />
-      <NavBar />
     </div>
   );
 };

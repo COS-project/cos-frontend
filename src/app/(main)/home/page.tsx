@@ -1,12 +1,12 @@
 'use client';
 
+import * as React from 'react';
+
 import CorrectRateGraph from '@/components/exam/CorrectRateGraph';
 import StayTimeGraph from '@/components/exam/StayTimeGraph';
 import CarouselCardView from '@/components/home/goal-attaining/Carousel';
 import GoalRunningGraph from '@/components/home/goal-attaining/GoalRunningGraph';
 import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
-
-import * as React from 'react';
 
 export default function Home() {
   return (

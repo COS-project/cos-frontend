@@ -9,7 +9,7 @@ import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
  */
 const useCalculateScore = () => {
   const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
-  const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList)
+  const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList);
   const { questions, isLoading, isError } = useMockExamQuestions();
 
   /**
