@@ -16,16 +16,24 @@ const SubjectSessionCard: React.FC = ({}) => {
   // ExamID, round, istake 정보 실려옴
   const { YearData } = useGetExamYearData(1, selectedYear);
 
-  const rounds = YearData?.result;
+  // api 살아나면 살릴부분
+  // const rounds = YearData?.result;
+
+  const rounds = [
+    { round: 1, mockExamId: 123, isTake: true },
+    { round: 2, mockExamId: 456, isTake: false },
+    { round: 3, mockExamId: 789, isTake: true },
+  ];
 
   console.log(rounds);
 
-  useEffect(() => {
-    if (rounds) {
-      const roundArray = rounds.map((item) => item.round);
-      setRoundArrays(roundArray);
-    }
-  }, [rounds, setRoundArrays]);
+  // api 살아나면 이부분 살려야함
+  // useEffect(() => {
+  //   if (rounds) {
+  //     const roundArray = rounds.map((item) => item.round);
+  //     setRoundArrays(roundArray);
+  //   }
+  // }, [rounds, setRoundArrays]);
 
   if (!rounds) {
     return (

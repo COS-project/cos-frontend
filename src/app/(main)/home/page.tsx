@@ -2,6 +2,7 @@
 
 import CorrectRateGraph from '@/components/exam/CorrectRateGraph';
 import StayTimeGraph from '@/components/exam/StayTimeGraph';
+import CarouselCardView from '@/components/home/goal-attaining/Carousel';
 import GoalRunningGraph from '@/components/home/goal-attaining/GoalRunningGraph';
 import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
 
@@ -16,6 +17,7 @@ export default function Home() {
         <TodayGoalBox />
         <CorrectRateGraphBox />
         <StayTimeGraphBox />
+        <BestTip />
         <StayTimeGraphBox />
       </div>
     </div>
@@ -31,13 +33,13 @@ const DayBox = () => {
             {/* 내용을 추가할 수도 있습니다. */}
           </div>
         </div>
-        <div className="w-[80%]">
-          <div className="w-full h-16 bg-primary rounded-full flex items-center justify-evenly">
-            <div>
+        <div className="w-[100%]">
+          <div className="w-full h-16 bg-primary rounded-full flex items-center justify-between">
+            <div className="mx-[10%]">
               <div className="text-white font-bold text-h5">안녕하세요, 코어님</div>
               <div className="text-white font-bold text-h7">목표 달성까지 D-29일 남았어요!</div>
             </div>
-            <div className="text-white font-bold text-h7">：</div>
+            <div className="text-white font-bold text-h7 mx-[5%]">：</div>
           </div>
         </div>
       </div>
@@ -159,6 +161,25 @@ const StayTimeGraphBox = () => {
             subjectTime={[50, 60, 70]}
             subjectName={['컴퓨터 일반', '스프레드시트', '데이터베이스']}
           />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const BestTip = () => {
+  return (
+    <div>
+      <div className="mx-auto mt-2 rounded-3xl bg-white py-[3%]">
+        <div className="w-[90%] mx-auto">
+          <div className="flex justify-between my-[1%]">
+            <div className="font-bold text-h3">베스트 꿀팁</div>
+          </div>
+          <div className="flex mx-auto">
+            <div className="w-full">
+              <CarouselCardView />
+            </div>
+          </div>
         </div>
       </div>
     </div>

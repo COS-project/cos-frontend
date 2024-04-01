@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { useGetExamInfoData, useGetExamYearData } from '@/lib/hooks/ExamInfoFetcher';
+import { useGetExamInfoData } from '@/lib/hooks/ExamInfoFetcher';
 import { examYearList } from '@/types/global';
 import { YearState } from '@/utils/recoilState';
 
@@ -13,7 +13,8 @@ const YearSelector = ({}) => {
   const { Data } = useGetExamInfoData();
 
   // year정보만 추출하기
-  const yearKeys = Object.keys(Data?.result?.examYearWithRounds || {});
+  // const yearKeys = Object.keys(Data?.result?.examYearWithRounds || {});
+  const yearKeys = ['2020', '2021', '2023'];
   // 추출한 데이터 정수형으로 변환하기
   const yearsAsIntegers = yearKeys.map((year) => parseInt(year, 10));
 
@@ -52,11 +53,6 @@ const YearSelector = ({}) => {
           </option>
         ))}
       </select>
-      {/* <div>
-        <div className="mt-4 flex flex-wrap">
-          <SubjectSessionCard />
-        </div>
-      </div> */}
     </div>
   );
 };
