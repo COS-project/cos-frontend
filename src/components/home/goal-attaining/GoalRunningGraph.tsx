@@ -38,7 +38,7 @@ const GoalRunningGraph: React.FC<GoalRunningGraphProps> = ({ maintitle, subtitle
               </div>
             </div>
           </div>
-          <div className="flex justify-end items-center mx-auto">{'>'}</div>
+          <div className="flex w-[25%] justify-end items-center mx-3">{'>'}</div>
         </div>
         <div className="flex w-[90%] mx-auto mt-[15%] mb-[5%] justify-center ">
           <HorizontalBarChart score={presenttime} total={goaltime} unit={unit} />
@@ -103,7 +103,7 @@ const HorizontalBarChart: React.FC<HorizontalBarChartProps> = ({ score, total, u
 
         {/* Score and Total labels */}
         <div className="flex justify-end mt-2">
-          <span className="text-gray3 text-h6">
+          <span className="text-gray4 text-h6">
             {total}
             {unit}
           </span>
