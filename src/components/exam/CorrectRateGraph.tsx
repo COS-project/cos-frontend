@@ -24,7 +24,7 @@ const CorrectRateGraph: React.FC<CorrectRateGraphProps> = ({ subjects }) => {
   return (
     <div>
       <div>
-        <div className="font-bold text-h3">과목별 정답률</div>
+        <div className="font-bold text-h3 px-[3%]">과목별 정답률</div>
         <div className="h-60">
           <Example data={radarChartData} />
         </div>

@@ -19,9 +19,9 @@ const StayTimeGraph: React.FC<StayTimeGraphProps> = ({ title, takenTime, maxTime
     <div>
       <div>
         <div className="font-bold text-h3">{title} 그래프</div>
-        <div className="text-h5 p-2">
+        <div className="text-h6 p-2">
           <div>걸린 시간</div>
-          <div className="font-bold">{takenTime}m</div>
+          <div className="font-bold text-h3">{takenTime}m</div>
         </div>
         <div className="flex items-center space-x-2">
           <div className="w-[85%] border-t border-gray1"></div>
@@ -48,9 +48,9 @@ const StayTimeGraph: React.FC<StayTimeGraphProps> = ({ title, takenTime, maxTime
           <div className="w-[15%] text-gray3 text-h5">0분</div>
         </div>
         <div className="flex space-x-2">
-          <div className="w-[85%] flex justify-between">
+          <div className="w-[85%] flex justify-between mt-[2%]">
             {subjectName.map((subject, index) => (
-              <div key={index} className="w-full flex justify-center text-h6">
+              <div key={index} className="w-full flex justify-center text-h7 font-bold">
                 {subject}
               </div>
             ))}

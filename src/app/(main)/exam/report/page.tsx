@@ -11,6 +11,15 @@ import { selectedRoundState } from '@/utils/recoilState';
 
 const Report: React.FC = () => {
   const [selectedRound, setSelectedRound] = useRecoilState<Number | null>(selectedRoundState);
+
+  const subjects = [
+    { name: '컴퓨터 일반', correctAnswer: 75, totalProblems: 100 },
+    { name: '스프레드시트', correctAnswer: 60, totalProblems: 80 },
+    { name: '데이터베이스', correctAnswer: 30, totalProblems: 60 },
+
+    // ... 다른 과목들
+  ];
+
   return (
     <div>
       <div className="bg-gray0 items-center h-screen overflow-y-auto">
@@ -43,7 +52,7 @@ const Report: React.FC = () => {
             </div>
             <div className="mx-auto mt-2 rounded-3xl bg-white py-[6%]">
               <div className="w-[90%] mx-auto">
-                <CorrectRateGraph />
+                <CorrectRateGraph subjects={subjects} />
               </div>
             </div>
           </div>
