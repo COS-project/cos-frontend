@@ -48,26 +48,26 @@ const reviewDummyData: Review[] = [
 
 export default function ReviewCard() {
   return (
-    <>
+    <main className="flex flex-col gap-[1.6rem]">
       {reviewDummyData.map((content, index) => {
         const { userName, preparationPeriod, difficulty, comment, createdAt } = content;
 
         return (
           <article key={index} className="flex flex-col px-[20px] py-[16px] gap-[12px] bg-white rounded-[32px]">
             <div className="flex items-center">
-              <p className="text-h5">{userName}</p>
-              <p className="px-[10px] py-[2px] ml-[9px] mr-[6px] border-1 border-solid border-gray2">
-                {preparationPeriod}
+              <p className="text-h5 text-gray4">{userName}</p>
+              <p className="px-[10px] py-[2px] mx-[6px] border-2 rounded-full border-gray2 text-gray4">
+                준비기간 {preparationPeriod}
               </p>
               <p>{difficulty}</p>
             </div>
             <section className="flex flex-col gap-[4px]">
               <h1 className="text-h4">{comment}</h1>
-              <h2 className="text-h5">작성일 {createdAt}</h2>
+              <h2 className="text-h5 text-gray3">작성일 {createdAt}</h2>
             </section>
           </article>
         );
       })}
-    </>
+    </main>
   );
 }

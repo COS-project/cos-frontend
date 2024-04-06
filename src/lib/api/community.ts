@@ -1,7 +1,3 @@
-import { post } from 'axios';
-
-import { CreatePostDataType } from '@/types/community/type';
-
 import { sendRequest } from '../axios';
 
 export const postFavoriteBoards = async (certificateId: number) => {
