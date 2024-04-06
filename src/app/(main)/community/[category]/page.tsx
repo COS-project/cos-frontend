@@ -2,21 +2,16 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 
-import ReviewCard from '@/components/community/common/ReviewCard';
+import ReviewCard from '@/components/community/review/ReviewCard';
 
 export default function CommunityCategoryPage() {
   const pathname = usePathname();
   const router = useRouter();
 
   return (
-    <div className="bg-gray0 px-[2rem]">
-      {/*<EditPost />*/}
-      {/*<WriteNormalPost />*/}
-      {/*<WriteTipPost />*/}
-      {/* <WriteExplanationPost /> */}
-      {/* <p>{pathname} 페이지</p> */}
+    <main className="bg-gray0 px-[2rem] pb-[8rem]">
       <ReviewCard />
       <button onClick={() => router.replace(`${pathname}/1`)}>게시글 상세로 이동하기</button>
-    </div>
+    </main>
   );
 }
