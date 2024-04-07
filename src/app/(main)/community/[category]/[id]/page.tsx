@@ -62,7 +62,7 @@ const CommunityDetailPage = () => {
                 fontsizing={true} //폰트 크기를 작게
                 date={format(communityPostData.createdAt, 'yy.MM.dd')} //날짜
                 time={format(communityPostData.createdAt, 'HH:mm')} //시간
-                imgSrc={communityPostData.user.profileImag} //프로필 이미지
+                imgSrc={communityPostData.user.profileImage} //프로필 이미지
                 onClick={() => {
                   //...버튼 클릭했을 때 동작
                   setOnPostModal(!onPostModal);
@@ -87,7 +87,7 @@ const CommunityDetailPage = () => {
               <CommentBar
                 empathy={communityPostData.likeCount} //공감수
                 comment={communityPostData.commentCount} //댓글수
-                isLike={communityPostData.isLiked}//사용자 좋아요 클릭 여부
+                isLike={communityPostData.isLiked} //사용자 좋아요 클릭 여부
                 onClick={async () => {
                   //추천버튼 클릭 시 동작
                   await postToggleLikeData(communityPostData.postId, 'POST');

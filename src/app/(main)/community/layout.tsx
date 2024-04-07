@@ -21,7 +21,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
       ) : null}
       {/* 댓글 삭제 모달창 */}
       {onCommentModal ? <PostingModal editOnOff={false}>댓글 메뉴</PostingModal> : null}
-      <Header />
+      
       {/*<Header />*/}
       {children}
       {/*<NavBar />*/}
