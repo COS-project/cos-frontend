@@ -5,41 +5,53 @@ import { useCallback, useEffect, useState } from 'react';
 
 import FilterModal from '@/components/common/FilterModal';
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
-import useGetAllCertificates from '@/lib/hooks/useGetAllCertificates';
+import useGetInterestCertificates from '@/lib/hooks/useGetInterestCertificates';
+import { goalSettingCertificateId, goalSettingCertificateName } from '@/recoil/home/atom';
+import { useRecoilState } from 'recoil';
+import { GoalSettingInfo } from '@/types/global';
 
 /**
  목표 설정 페이지 중 자격증 선택 컴포넌트 입니다.
  */
 const SelectCertification = () => {
-  // 데이터 패칭
-  const { certificationsList, isLoading, isError } = useGetAllCertificates();
+  const { interestCertificates } = useGetInterestCertificates();
   //FilterModal 을 열고 닫는 state
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // 선택된 자격증
-  const [selectedCertification, setSelectedCertification] = useState<string>('정보처리기사');
+  const [selectedCertificationName, setSelectedCertificationName] = useRecoilState<string>(goalSettingCertificateName);
+  // 선택된 자격증 Id
+  const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number>(goalSettingCertificateId);
 
   //FilterModal 을 열고 닫는 함수
   const modalHandler = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  // 모든 자격증 리스트 불러오는 함수
-  const getAllCertifications = useCallback(async () => {
-    return certificationsList;
+  const initializeGoalSettingCertificateIdState = () => {
+    if (interestCertificates) {
+      return interestCertificates[0]?.certificate.certificateId;
+    }
+  };
+
+  const initializeGoalSettingCertificateNameState = () => {
+    if (interestCertificates) {
+      return interestCertificates[0]?.certificate.certificateName;
+    }
+  };
+
+  const fetchDataAndUpdateState = async () => {
+    setSelectedCertificationName(initializeGoalSettingCertificateNameState);
+    setSelectedCertificationId(initializeGoalSettingCertificateIdState);
+  };
+
+  useEffect(() => {
+    fetchDataAndUpdateState();
   }, []);
 
   useEffect(() => {
-    if (certificationsList) {
-      getAllCertifications();
-    }
-    // if (isLoading) {
-    //
-    // }
-    //
-    // if (isError) {
-    //
-    // }
-  }, []);
+    console.log('자격증이름', selectedCertificationName);
+    console.log('자격증 아이디', selectedCertificationId);
+  }, [selectedCertificationName, selectedCertificationId]);
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -49,17 +61,17 @@ const SelectCertification = () => {
         <div className="relative flex items-center justify-between">
           <div className="flex gap-x-2 items-center">
             <SelectCertificationContentIcon />
-            <div className="text-h4">{selectedCertification}</div>
+            <div className="text-h4">{selectedCertificationName}</div>
           </div>
           {isModalOpen ? <DropDownOnIcon /> : <DropDownOffIcon />}
         </div>
       </div>
-
       {isModalOpen ? (
         <FilterModal
           setIsOpen={setIsModalOpen}
-          setDataState={setSelectedCertification}
-          data={certificationsList.result}
+          setIdState={setSelectedCertificationId}
+          setDataState={setSelectedCertificationName}
+          data={interestCertificates}
           className={'absolute top-[134px] w-[90%]'}
         />
       ) : null}

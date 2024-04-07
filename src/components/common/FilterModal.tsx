@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { Certificate } from '@/types/global';
-import { CreatePostDataType, YearsAndRounds } from '@/types/community/type';
+import { CreatePostDataType } from '@/types/community/type';
 
 interface Props {
   data: [];
   className?: string;
-  setDataState: React.Dispatch<React.SetStateAction<CreatePostDataType>>;
+  setIdState?: React.Dispatch<React.SetStateAction<number>>
+  setDataState: React.Dispatch<React.SetStateAction<CreatePostDataType>> | React.Dispatch<React.SetStateAction<string>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -17,7 +17,7 @@ interface Props {
  필터 모달창입니다.
  */
 const FilterModal = (props: Props) => {
-  const { data, className, setDataState, setIsOpen } = props;
+  const { data, className, setIdState, setDataState, setIsOpen } = props;
 
   const changePostDataRound = (datum) => {
     setDataState((prevState) => ({
@@ -37,10 +37,11 @@ const FilterModal = (props: Props) => {
               key={index}
               className="text-h4 text-gray3 py-3 px-4 hover:text-black transition"
               onClick={() => {
-                changePostDataRound(datum);
+                setDataState ? setDataState(datum?.certificate.certificateName) : changePostDataRound(datum);
+                setIdState ? setIdState(datum?.certificate.certificateId) : null;
                 setIsOpen(false);
               }}>
-              {datum}
+              {setDataState ? datum.certificate.certificateName : datum}
             </div>
           );
         })

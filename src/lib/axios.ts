@@ -4,7 +4,7 @@ import qs from 'qs';
 import { string } from 'prop-types';
 
 const client = axios.create({
-  baseURL: 'http://cercat.p-e.kr/api/v1',
+  baseURL: 'http://cercat.o-r.kr/api/v1',
   headers: {
     'Content-type': 'application/json',
     'Access-Token':
