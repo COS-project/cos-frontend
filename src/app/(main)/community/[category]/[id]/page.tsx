@@ -1,16 +1,32 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import CommunityNav from '@/components/community/CommunityNav';
-import CommunityPost from '@/components/community/CommunityPost';
 import CommunityProfile from '@/components/community/CommunityProfile';
 import CommunityTag from '@/components/community/CommunityTag';
-import CommunityPost from '@/components/community/CommunityPost';
+import CommunityPost from '@/components/community/CommunityPosting';
 import CommentWriting from '@/components/community/CommentWriting';
 import CommentBar from '@/components/community/CommentBar';
 import Comment from '@/components/community/Comment';
 import CommentReply from '@/components/community/CommentReply';
+import ImgModal from '@/components/community/ImgModal';
+import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
+import { postingModalState, commentModalState, commentDeleteState, postDeleteState } from '@/recoil/community/atom';
+import { useRecoilState } from 'recoil';
+import { Post, PostComments, RecommendTags } from '@/types/global';
+import { format } from 'date-fns';
+import { postToggleLikeData } from '@/lib/api/communityPost';
+import { AxiosResponse } from 'axios';
+import { useSWRConfig } from 'swr';
 
-export default function CommunityDetailPage() {
+const CommunityDetailPage = () => {
+  //커뮤니티 포스트에 해당하는 데이터를 가져옴
+  const { communityPostData, isLoading, isError, mutate } = useGetCommunityPost();
+  //데이터 잘 들어왔는지 확인
+  useEffect(() => {
+    console.log('communityPostData', communityPostData);
+  }, [communityPostData]);
+
+  //댓글의 답글달기 버튼을 클릭했을 때 사용
   const [replyOnOff, setReplyOnOff] = useState<boolean>(false);
   //몇번째 댓글의 답글달기 버튼이 클릭됐는지 확인하기 위해 사용
   const [commentNumber, setCommentNumber] = useState<number>(0);
@@ -74,7 +90,7 @@ export default function CommunityDetailPage() {
                 onClick={async () => {
                   //추천버튼 클릭 시 동작
                   await postToggleLikeData(communityPostData.postId, 'POST');
-                  await mutate(`/api/v1/POST/likes/${communityPostData.postId}`);
+                  await mutate();
                   //mutete를 사용하여 반영이 바로 되도록 구현
                 }}></CommentBar>
               <CommentWriting postId={communityPostData.postId}></CommentWriting>
@@ -95,7 +111,7 @@ export default function CommunityDetailPage() {
                       //추천버튼 클릭시에 동작
                       DdabongClick={async () => {
                         await postToggleLikeData(postComment.postCommentId, 'COMMENT');
-                        await mutate(`/api/v1/COMMENT/likes/${postComment.postCommentId}`);
+                        await mutate();
                       }}></Comment>
                     {postComment.childPostComments?.map(
                       //대댓글
@@ -113,7 +129,7 @@ export default function CommunityDetailPage() {
                             DdabongClick={async () => {
                               //추천버튼 클릭 시 동작
                               await postToggleLikeData(childPostComment.postCommentId, 'COMMENT');
-                              await mutate(`/api/v1/COMMENT/likes/${childPostComment.postCommentId}`);
+                              await mutate();
                             }}></CommentReply>
                         );
                       },
