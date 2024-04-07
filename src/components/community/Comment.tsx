@@ -7,6 +7,7 @@ import React from 'react';
 import CommentContent from './CommentContent';
 import { PostComments } from '@/types/global';
 import { format } from 'date-fns';
+import CommunityProfile from './CommunityProfile';
 
 interface Props {
   onClick: () => void; //답글달기 버튼 클릭 시 동작

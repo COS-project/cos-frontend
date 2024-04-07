@@ -6,6 +6,7 @@ import React from 'react';
 import CommentContent from './CommentContent';
 import { PostComments } from '@/types/global';
 import { format } from 'date-fns';
+import CommunityProfile from './CommunityProfile';
 
 interface Props {
   info: PostComments; //댓글 정보

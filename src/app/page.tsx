@@ -36,7 +36,7 @@ export default function page() {
             홈화면으로 이동하기
           </div>
         </Link>
-        <Link href="http://cercat.p-e.kr/oauth2/authorization/kakao">
+        <Link href="http://cercat.o-r.kr/oauth2/authorization/kakao">
           <div
             className="
                     bg-gray2

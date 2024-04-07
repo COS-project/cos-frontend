@@ -5,7 +5,7 @@ import qs from 'qs';
 import { Param } from '@/types/global';
 
 const client = axios.create({
-  baseURL: 'http://cercat.p-e.kr/api/v1/certificates',
+  baseURL: 'http://cercat.o-r.kr/api/v1/',
   headers: {
     'Content-type': 'application/json',
     'Access-Token':

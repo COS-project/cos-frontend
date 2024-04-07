@@ -5,7 +5,7 @@ import { Post } from '@/types/global';
 
 //게시글 데이터 가져오는 함수
 const useGetCommunityPost = () => {
-  const { data, error } = useSWR<AxiosResponse<Post>>('/posts/14', swrGetFetcher);
+  const { data, error, mutate } = useSWR<AxiosResponse<Post>>('/posts/1', swrGetFetcher);
   //주소부분 나중에 형겸오빠꺼랑 연계해서 바꾸기
   console.log(data);
 
@@ -13,6 +13,7 @@ const useGetCommunityPost = () => {
     communityPostData: data ? data.result : null,
     isLoading: !error && !data,
     isError: error,
+    mutate: mutate,
   };
 };
 export default useGetCommunityPost;

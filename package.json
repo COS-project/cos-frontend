@@ -9,7 +9,7 @@
     "lint": "eslint --fix '**/*.{ts,tsx}'"
   },
   "dependencies": {
-    "@nivo/radar": "^0.84.0",
+    "@nivo/radar": "^0.85.1",
     "axios": "^1.6.5",
     "chart.js": "^4.4.2",
     "date-fns": "^3.2.0",
