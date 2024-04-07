@@ -87,6 +87,7 @@ const CommunityDetailPage = () => {
               <CommentBar
                 empathy={communityPostData.likeCount} //공감수
                 comment={communityPostData.commentCount} //댓글수
+                isLike={communityPostData.isLiked}//사용자 좋아요 클릭 여부
                 onClick={async () => {
                   //추천버튼 클릭 시 동작
                   await postToggleLikeData(communityPostData.postId, 'POST');

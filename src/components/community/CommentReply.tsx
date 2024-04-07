@@ -28,6 +28,7 @@ const CommentReply = (props: Props) => {
       </CommunityProfile>
       <CommentContent
         reply={false} //답글달기 부분 삭제
+        isLike={info.isLiked}
         ddabonhNumber={info.likeCount}
         content={info.content}
         DdabongClick={DdabongClick}></CommentContent>

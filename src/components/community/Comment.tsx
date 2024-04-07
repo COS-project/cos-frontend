@@ -34,6 +34,7 @@ const Comment = (props: Props) => {
         onClick={onClick} //답글달기 버튼 클릭 시 동작
         ddabonhNumber={info.likeCount} //댓글 좋아요 수
         content={info.content} //내용
+        isLike={info.isLiked} //사용자 좋아요 클릭 여부
         DdabongClick={DdabongClick}>
         {/* 좋아요 버튼 클릭 시 동작 */}
       </CommentContent>

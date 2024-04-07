@@ -338,6 +338,7 @@ export interface Post {
   user: User;
   postImages: string[];
   likeCount: number;
+  isLiked: boolean;
   commentCount: number;
   recommendTags: RecommendTags[];
   question: Question;
@@ -366,6 +367,7 @@ interface PostComments {
   createdAt: string;
   parentCommentId: number;
   likeCount: number;
+  isLiked: boolean;
   content: string;
 }
 
