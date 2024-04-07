@@ -1,10 +1,11 @@
 //커뮤니티 댓글 내용부분(프로필과 댓글 내용을 분리해놓음, 댓글과 대댓글 컴포넌트는 따로 구현돼있음)
 'use client';
 
+import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import DdbongIcon from './DdabongIcon';
+
 import CommentWriting from './CommentWriting';
+import DdbongIcon from './DdabongIcon';
 
 interface Props {
   reply: boolean; //답글달기 유무

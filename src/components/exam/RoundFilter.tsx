@@ -1,14 +1,15 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { Session } from '@/types/global';
 
+import { Session } from '@/types/global';
 import { roundsArrayState, selectedRoundState, selectedSessionState } from '@/utils/recoilState';
 
 const RoundFilter: React.FC = () => {
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
   // session에서 roundNumber를 추출 중복 제거한 배열
   const uniqueRoundNumbers = Array.from(new Set(selectedSession?.rounds.map((round) => round.roundNumber) || []));
-  const [roundArrays] = useRecoilState<number[] | undefined>(roundsArrayState);
+  // const [roundArrays] = useRecoilState<number[] | undefined>(roundsArrayState);
+  const roundArrays = ['1', '2', '3'];
   const [selectedRound, setSelectedRound] = useRecoilState<Number | null>(selectedRoundState);
 
   const handleRoundChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

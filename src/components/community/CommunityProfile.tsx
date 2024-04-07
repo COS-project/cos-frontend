@@ -2,7 +2,6 @@
 //닉네임 폰트 크기 설정
 'use client';
 
-import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 

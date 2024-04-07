@@ -1,7 +1,6 @@
 //커뮤니티 포스팅 양식: 제목, 내용, 사진
 //사진 입력받는 부분 api 연결하면서 수정 필요
 
-import React from 'react';
 import { useRouter } from 'next/navigation';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 

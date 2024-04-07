@@ -1,8 +1,8 @@
 //커뮤니티 < "게시판 이름" 검색 아이콘 Nav
 'use client';
 
-import React from 'react';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
 interface Props {
   children: React.ReactNode; //게시판 이름

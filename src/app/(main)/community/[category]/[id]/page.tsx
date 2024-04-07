@@ -1,33 +1,16 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import CommunityNav from '@/components/community/CommunityNav';
+import CommunityPost from '@/components/community/CommunityPost';
 import CommunityProfile from '@/components/community/CommunityProfile';
 import CommunityTag from '@/components/community/CommunityTag';
-import CommunityPost from '@/components/community/CommunityPosting';
+import CommunityPost from '@/components/community/CommunityPost';
 import CommentWriting from '@/components/community/CommentWriting';
 import CommentBar from '@/components/community/CommentBar';
 import Comment from '@/components/community/Comment';
 import CommentReply from '@/components/community/CommentReply';
-import ImgModal from '@/components/community/ImgModal';
-import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
-import { postingModalState, commentModalState, commentDeleteState, postDeleteState } from '@/recoil/community/atom';
-import { useRecoilState } from 'recoil';
-import { Post, PostComments, RecommendTags } from '@/types/global';
-import { format } from 'date-fns';
-import { postToggleLikeData } from '@/lib/api/communityPost';
-import { AxiosResponse } from 'axios';
-import { useSWRConfig } from 'swr';
 
-const CommunityDetailPage = () => {
-  //커뮤니티 포스트에 해당하는 데이터를 가져옴
-  const { communityPostData, isLoading, isError } = useGetCommunityPost();
-  const { mutate } = useSWRConfig();
-  //데이터 잘 들어왔는지 확인
-  useEffect(() => {
-    console.log('communityPostData', communityPostData);
-  }, [communityPostData]);
-
-  //댓글의 답글달기 버튼을 클릭했을 때 사용
+export default function CommunityDetailPage() {
   const [replyOnOff, setReplyOnOff] = useState<boolean>(false);
   //몇번째 댓글의 답글달기 버튼이 클릭됐는지 확인하기 위해 사용
   const [commentNumber, setCommentNumber] = useState<number>(0);

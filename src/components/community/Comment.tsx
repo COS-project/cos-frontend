@@ -2,9 +2,8 @@
 
 'use client';
 
+import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import CommunityProfile from './CommunityProfile';
 import CommentContent from './CommentContent';
 import { PostComments } from '@/types/global';
 import { format } from 'date-fns';

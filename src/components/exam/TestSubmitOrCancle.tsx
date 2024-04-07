@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 
 import useCalculateScore from '@/hooks/useCalculateScore';
 import { postSubjectResultRequestsList } from '@/lib/api/exam';
+import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import {
   questionIndex,
   stopwatchIsRunning,
@@ -14,7 +15,6 @@ import {
   userAnswerRequestsList,
 } from '@/recoil/exam/atom';
 import { UserAnswerRequests } from '@/types/global';
-import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 
 const TestSubmitOrCancle = () => {
   const { calculateScore, prepareAndScoreSubjectResults } = useCalculateScore();
@@ -25,7 +25,7 @@ const TestSubmitOrCancle = () => {
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);
   const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
   const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
-  const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList)
+  const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList);
   // 제출버튼을 눌렀을 때 제출버튼을 누르는 페이지의 머문 시간까지 기록하기위한 트릭
   const [sessionRecorded, setSessionRecorded] = useState(false);
   // 시, 분, 초 계산

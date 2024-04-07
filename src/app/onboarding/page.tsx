@@ -30,7 +30,6 @@ const OnBoarding = () => {
     router.push('/home');
   };
 
-
   useEffect(() => {
     if (accessToken) {
       localStorage.setItem('accessToken', accessToken);
