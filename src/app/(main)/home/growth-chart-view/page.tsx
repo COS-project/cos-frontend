@@ -17,6 +17,7 @@ import {
 import GoalPeriodFilter from '@/components/home/GoalPeriodFilter';
 import useGetMockExamDetail from '@/lib/hooks/useGetMockExamDetail';
 import { ScoreAVGListType } from '@/types/home/type';
+import UserCertGoalPeriods from '@/components/home/UserCertGoalPeriods';
 
 const GrowthChartView = () => {
   const { userGoals } = useGetUserGoals(1);
@@ -58,7 +59,7 @@ const GrowthChartView = () => {
     return date.getFullYear().toString().slice(-4);
   };
 
-  const convertDayOfWeekToKorean = (scoreAVG) => {
+  const convertDayOfWeekToKorean = (scoreAVG: ScoreAVGListType) => {
     if (scoreAVG.dayOfWeek === 'MONDAY') {
       return '월요일';
     }
@@ -81,64 +82,12 @@ const GrowthChartView = () => {
       return '일요일';
     }
   };
-  const convertWeekOfMonth = (scoreAVG) => {
-    if (scoreAVG.weekOfMonth === 1) {
-      return '1주차';
-    }
-    if (scoreAVG.weekOfMonth === 2) {
-      return '2주차';
-    }
-    if (scoreAVG.weekOfMonth === 3) {
-      return '3주차';
-    }
-    if (scoreAVG.weekOfMonth === 4) {
-      return '4주차';
-    }
-    if (scoreAVG.weekOfMonth === 5) {
-      return '5주차';
-    }
-    if (scoreAVG.weekOfMonth === 6) {
-      return '6주차';
-    }
+  const convertWeekOfMonth = (scoreAVG: ScoreAVGListType) => {
+    return `${scoreAVG.weekOfMonth}주차`;
   };
 
-  const convertMonth = (scoreAVG) => {
-    if (scoreAVG.month === 1) {
-      return '1월';
-    }
-    if (scoreAVG.month === 2) {
-      return '2월';
-    }
-    if (scoreAVG.month === 3) {
-      return '3월';
-    }
-    if (scoreAVG.month === 4) {
-      return '4월';
-    }
-    if (scoreAVG.month === 5) {
-      return '5월';
-    }
-    if (scoreAVG.month === 6) {
-      return '6월';
-    }
-    if (scoreAVG.month === 7) {
-      return '7월';
-    }
-    if (scoreAVG.month === 8) {
-      return '8월';
-    }
-    if (scoreAVG.month === 9) {
-      return '9월';
-    }
-    if (scoreAVG.month === 10) {
-      return '10월';
-    }
-    if (scoreAVG.month === 11) {
-      return '11월';
-    }
-    if (scoreAVG.month === 12) {
-      return '12월';
-    }
+  const convertMonth = (scoreAVG: ScoreAVGListType) => {
+    return `${scoreAVG.month}월`;
   };
 
   return (
@@ -150,12 +99,7 @@ const GrowthChartView = () => {
           <div className={'text-h6'}>{goalPeriod}</div> {isFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
         </div>
         {isFilterOpen ? (
-          <GoalPeriodFilter
-            usage={'overallGoalPeriod'}
-            data={userGoals}
-            setIsOpen={setIsFilterOpen}
-            setDataState={setGoalPeriod}
-          />
+          <UserCertGoalPeriods setIsOpen={setIsFilterOpen} data={userGoals} setDataState={setGoalPeriod} />
         ) : null}
         <GrowthChart />
         <div className={'flex flex-col gap-y-[8px]'}>

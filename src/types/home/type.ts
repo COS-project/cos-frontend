@@ -3,9 +3,9 @@ import { ReviewIncorrectMockExam } from '@/types/global';
 export interface AxiosResponseUserGoalsType {
   responseCode: string;
   message: string;
-  result: UserGoalsType[];
+  result: UserCertGoalPeriodType[];
 }
-export interface UserGoalsType {
+export interface UserCertGoalPeriodType {
   goalId: number;
   prepareStartDateTime: string;
   prepareFinishDateTime: string;
@@ -13,12 +13,12 @@ export interface UserGoalsType {
 /**
  * 목표 기간 내 전체 주간
  */
-export interface eachGoalPeriodType {
+export interface WeeklyGoalPeriodType {
   prepareDate: string;
-  prepareYear: number;
+  prepareYear: string;
   prepareMonth: number;
-  prepareWeek: number;
-  prepareWeekString: string;
+  prepareWeekly: number;
+  formattedWeeklyPrepTime: string;
 }
 
 /**
@@ -39,8 +39,6 @@ export interface ScoreAVGListType {
   date: string;
   month?: number;
 }
-
-
 
 /**
  * 성장그래프 디테일 report 데이터 타입

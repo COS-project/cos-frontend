@@ -1,12 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import StickGraph from '@/components/exam/StickGraph';
-import GoalPeriodFilter from '@/components/home/GoalPeriodFilter';
+import WeeklyGoalPeriodFilter from '@/components/home/WeeklyGoalPeriodFilter';
 import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
-import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import {
   selectedDateTypeState,
   selectedPrepareTimeState,
@@ -30,37 +29,27 @@ const GrowthChart = () => {
     selectedReportType,
     selectedPrepareWeeksBetween.prepareYear,
     selectedPrepareWeeksBetween.prepareMonth,
-    selectedPrepareWeeksBetween.prepareWeek,
+    selectedPrepareWeeksBetween.prepareWeekly,
   );
-  const { userGoals } = useGetUserGoals(1);
-  const [goalDate, setGoalDate] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  useEffect(() => {
-    // console.log('선택된 목표 기간 시작 날짜', selectedPrepareTime.prepareStartDateTime);
-    // console.log('선택된 목표 기간 종료 날짜', selectedPrepareTime.prepareFinishDateTime);
-    console.log(
-      '주차 계산',
-      getWeeksBetween(
-        new Date(selectedPrepareTime.prepareStartDateTime),
-        new Date(selectedPrepareTime.prepareFinishDateTime),
-      ),
-    );
-  }, [selectedPrepareTime]);
-
-  const getWeek = (date: Date) => {
+  const getWeekly = (date: Date) => {
     const currentDate = date.getDate();
     const firstDay = new Date(date.setDate(1)).getDay();
 
     return Math.ceil((currentDate + firstDay) / 7);
   };
 
+  /**
+   * 목표 기간의 월(달)을 계산해주는 함수
+   * @param date 목표 날짜
+   */
   const getMonth = (date: Date) => {
     return date.getMonth() + 1;
   };
 
   /**
-   * 목표 년도 계산해주는 함수
+   * 목표 기간의 년도 계산해주는 함수
    * @param date 목표 날짜
    */
   const getYear = (date: Date) => {
@@ -68,7 +57,7 @@ const GrowthChart = () => {
   };
 
   /**
-   * 목표기간중 주차가 얼마나 있는지 계산해주는 함수
+   * 목표 기간중 주차가 얼마나 있는지 계산해주는 함수 ex) 3월이면 1주차, 2주차, 3주차, 4주차, 5주차, 6주차
    * @param startDate 목표 시작날짜 Date 객체
    * @param endDate 목표 종료날짜 Date 객체
    */
@@ -87,13 +76,16 @@ const GrowthChart = () => {
       return {
         prepareYear: getYear(new Date(weekStart.toISOString().slice(0, 10))), //몇 년인지
         prepareMonth: getMonth(new Date(weekStart.toISOString().slice(0, 10))), //몇 월인지
-        prepareWeek: getWeek(new Date(weekStart.toISOString().slice(0, 10))), //몇 주인지
+        prepareWeekly: getWeekly(new Date(weekStart.toISOString().slice(0, 10))), //몇 주인지
         prepareDate: new Date(weekStart.toISOString().slice(0, 10)).toISOString(), //몇 주인지
-        prepareWeekString: `${getMonth(new Date(weekStart.toISOString().slice(0, 10)))}월 ${getWeek(new Date(weekStart.toISOString().slice(0, 10)))}주차`, //00월 00주
+        formattedWeeklyPrepTime: `${getMonth(new Date(weekStart.toISOString().slice(0, 10)))}월 ${getWeekly(new Date(weekStart.toISOString().slice(0, 10)))}주차`, //00월 00주
       };
     });
   };
 
+  /**
+   * 주차별 성장 막대그래프 (x축 월, 화, 수, 목, 금, 토, 일)
+   */
   const weeklyGraph = () => {
     const dayOfWeek = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
 
@@ -101,8 +93,6 @@ const GrowthChart = () => {
     return dayOfWeek.map((day, dayIndex) => {
       // 해당 요일에 해당하는 데이터가 있는지 확인합니다.
       const scoreAVG = statisticsData?.scoreAVGList.find((score: ScoreAVGListType) => score.dayOfWeek === day);
-
-      console.log('scoreAVG', scoreAVG);
       const height = scoreAVG ? scoreAVG.scoreAverage : 0;
       return (
         <div key={dayIndex} className="w-full flex justify-center">
@@ -112,6 +102,9 @@ const GrowthChart = () => {
     });
   };
 
+  /**
+   * 월별 성장 막대그래프 (x축 1주차 ~ 6주차)
+   */
   const monthlyGraph = () => {
     const weekOfMonth = [1, 2, 3, 4, 5, 6];
 
@@ -129,6 +122,9 @@ const GrowthChart = () => {
     });
   };
 
+  /**
+   * 필터값에 따라서 성장그래프의 막대그래프를 그려주는 함수 WEEK, MONTH, YEAR
+   */
   const renderGraphLabelsByReportType = () => {
     if (selectedReportType === 'WEEK') {
       return weeklyGraph();
@@ -148,92 +144,22 @@ const GrowthChart = () => {
     }
   };
 
+  /**
+   * 년도 성장그래프 X축 라벨
+   * @param scoreAVG
+   * @param index
+   */
   const xAxisLabelYear = (scoreAVG: ScoreAVGListType, index: number) => {
-    if (scoreAVG.month === 1) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'1월'}
-        </div>
-      );
-    }
-    if (scoreAVG.month === 2) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'2월'}
-        </div>
-      );
-    }
-    if (scoreAVG.month === 3) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'3월'}
-        </div>
-      );
-    }
-    if (scoreAVG.month === 4) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'4월'}
-        </div>
-      );
-    }
-    if (scoreAVG.month === 5) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'5월'}
-        </div>
-      );
-    }
-    if (scoreAVG.month === 6) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'6월'}
-        </div>
-      );
-    }
-    if (scoreAVG.month === 7) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'7월'}
-        </div>
-      );
-    }
-    if (scoreAVG.month === 8) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'8월'}
-        </div>
-      );
-    }
-    if (scoreAVG.month === 9) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'9월'}
-        </div>
-      );
-    }
-    if (scoreAVG.month === 10) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'10월'}
-        </div>
-      );
-    }
-    if (scoreAVG.month === 11) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'11월'}
-        </div>
-      );
-    }
-    if (scoreAVG.month === 12) {
-      return (
-        <div key={index} className="w-full flex justify-center text-h6">
-          {'12월'}
-        </div>
-      );
-    }
+    return (
+      <div key={index} className="w-full flex justify-center text-h6">
+        {`${scoreAVG.month}월`}
+      </div>
+    );
   };
+
+  /**
+   * 월별 성장그래프 X축 라벨
+   */
   const xAxisLabelMonth = () => {
     return (
       <div className={'w-[85%] flex justify-between'}>
@@ -246,7 +172,11 @@ const GrowthChart = () => {
       </div>
     );
   };
-  const xAxisLabelWeek = () => {
+
+  /**
+   * 주차별 성장 그래프 X축 라벨
+   */
+  const xAxisLabelWeekly = () => {
     return (
       <div className={'w-[85%] flex justify-between'}>
         <div className="w-full flex justify-center text-h6">{'월'}</div>
@@ -260,9 +190,13 @@ const GrowthChart = () => {
     );
   };
 
+  /**
+   * 필터값에 따라서 성장그래프의 라벨을 그려주는 함수 WEEK, MONTH, YEAR
+   * @param selectedReportType
+   */
   const renderLabelComponent = (selectedReportType: string) => {
     if (selectedReportType === 'WEEK') {
-      return xAxisLabelWeek();
+      return xAxisLabelWeekly();
     } else if (selectedReportType === 'MONTH') {
       return xAxisLabelMonth();
     } else if (selectedReportType === 'YEAR' && statisticsData?.scoreAVGList) {
@@ -320,12 +254,12 @@ const GrowthChart = () => {
           </div>
         </div>
 
-        {/*  */}
+        {/* 필터 */}
         <div className={'flex text-h6 gap-x-1 relative'}>
           <div onClick={() => setIsFilterOpen(!isFilterOpen)} className={'flex'}>
             <div>
               {selectedReportType === 'WEEK'
-                ? selectedPrepareWeeksBetween.prepareWeekString
+                ? selectedPrepareWeeksBetween.formattedWeeklyPrepTime
                 : selectedReportType === 'MONTH'
                   ? `${selectedPrepareWeeksBetween.prepareMonth}월`
                   : selectedReportType === 'YEAR'
@@ -335,16 +269,15 @@ const GrowthChart = () => {
             {isFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
           </div>
           {isFilterOpen ? (
-            <GoalPeriodFilter
-              usage={'eachGoalPeriod'}
-              reportType={selectedReportType}
-              className={'absolute z-10 top-5'}
-              setDataState={setSelectedPrepareWeeksBetweenState}
+            <WeeklyGoalPeriodFilter
               data={getWeeksBetween(
                 new Date(selectedPrepareTime.prepareStartDateTime),
                 new Date(selectedPrepareTime.prepareFinishDateTime),
               )}
               setIsOpen={setIsFilterOpen}
+              className={'absolute z-10 top-5'}
+              setDataState={setSelectedPrepareWeeksBetweenState}
+              reportType={selectedReportType}
             />
           ) : null}
           <div>평균 점수</div>

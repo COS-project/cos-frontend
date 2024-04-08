@@ -5,27 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/home/GoalPeriodFilter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/home/UserCertGoalPeriods.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/home/WeeklyGoalPeriodFilter.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/home/goal-setting/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/goal-setting/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/home/growth-chart-view/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/growth-chart-view/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/onboarding/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/onboarding/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/FilterModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/FilterModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/home/DetailedGradeReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/DetailedGradeReport.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/GoalPeriodFilter.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/home/GrowthChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/GrowthChart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/goal-setting/SelectCertification.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-setting/SelectCertification.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/goal-setting/SelectRepeatDayItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-setting/SelectRepeatDayItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/api/home.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/home.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/axios.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/axios.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetGoalSettingData.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetGoalSettingData.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetUserGoals.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetUserGoals.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamStatistics.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamStatistics.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/recoil/home/atom.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/recoil/home/atom.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/global.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/home/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/home/type.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +105,7 @@
       <workItem from="1711977024625" duration="1555000" />
       <workItem from="1712205240660" duration="378000" />
       <workItem from="1712205874658" duration="496000" />
-      <workItem from="1712482242705" duration="12476000" />
+      <workItem from="1712482242705" duration="20698000" />
     </task>
     <servers />
   </component>

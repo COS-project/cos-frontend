@@ -1,10 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import useGetMockExamDetail from '@/lib/hooks/useGetMockExamDetail';
-import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
 import {
   selectedDateTypeState,
   selectedPrepareTimeState,
@@ -45,7 +43,7 @@ const DetailedGradeReport = (props: Props) => {
         </div>
         {/* 주간 성적 */}
         <div>
-          {statisticsDetailData?.content.map((detail: DetailGradeReportType, index) => {
+          {statisticsDetailData?.content.map((detail: DetailGradeReportType, index: number) => {
             return (
               <div key={index} className={'flex justify-around py-4 text-h6'}>
                 <div>{index + 1}</div>

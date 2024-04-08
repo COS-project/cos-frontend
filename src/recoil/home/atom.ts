@@ -3,8 +3,7 @@
 import { atom } from 'recoil';
 
 import { CertificateInfoType, GoalSettingInfo } from '@/types/global';
-import { string } from 'prop-types';
-import { eachGoalPeriodType, GoalPeriodType, UserGoalsType } from '@/types/home/type';
+import { UserCertGoalPeriodType, WeeklyGoalPeriodType } from '@/types/home/type';
 
 //자격증 응시 정보 state
 export const certificationInfoState = atom<CertificateInfoType>({
@@ -63,7 +62,7 @@ export const selectedDateTypeState = atom<'DATE' | 'WEEK_OF_MONTH' | 'MONTH'>({
   key: 'selectedDateTypeState',
   default: 'DATE',
 });
-export const selectedPrepareTimeState = atom<UserGoalsType>({
+export const selectedPrepareTimeState = atom<UserCertGoalPeriodType>({
   key: 'selectedPrepareTime',
   default: {
     goalId: 0,
@@ -72,13 +71,14 @@ export const selectedPrepareTimeState = atom<UserGoalsType>({
   },
 });
 
-export const selectedPrepareWeeksBetweenState = atom<eachGoalPeriodType>({
+export const selectedPrepareWeeksBetweenState = atom<WeeklyGoalPeriodType>({
   key: 'selectedPrepareWeeksBetweenState',
   default: {
-    prepareYear: 0,
+    prepareYear: '',
     prepareMonth: 0,
-    prepareWeek: 0,
-    prepareWeekString: '',
+    prepareWeekly: 0,
+    prepareDate: '',
+    formattedWeeklyPrepTime: '',
   },
 });
 //목표 설정 자격증 name 선택
