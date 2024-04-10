@@ -3,6 +3,7 @@ import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { WeeklyGoalPeriodType } from '@/types/home/type';
+import { da } from 'date-fns/locale';
 
 interface Props {
   className?: string;
@@ -33,10 +34,15 @@ const WeeklyGoalPeriodFilter = (props: Props) => {
 
   return (
     <div
-      className={twMerge(
-        'border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 h-[250px] overflow-y-scroll',
-        className,
-      )}>
+      className={data.length >= 5 ? twMerge(
+              'border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 h-[250px] overflow-y-scroll',
+              className,
+            )
+          : twMerge(
+              'border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 overflow-y-scroll',
+              className,
+            )
+      }>
       {!data || data.length === 0 ? (
         <div>error</div>
       ) : (
