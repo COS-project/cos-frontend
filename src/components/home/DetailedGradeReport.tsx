@@ -1,26 +1,22 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import useGetMockExamDetail from '@/lib/hooks/useGetMockExamDetail';
-import {
-  selectedDateTypeState,
-  selectedPrepareTimeState,
-  selectedPrepareWeeksBetweenState,
-  selectedReportTypeState,
-} from '@/recoil/home/atom';
+import { selectedDateTypeState } from '@/recoil/home/atom';
 import { DetailGradeReportType } from '@/types/home/type';
 
 interface Props {
-  prepareYear: number;
-  prepareMonth: number;
-  prepareWeek: number;
-  prepareDate: string;
+  prepareYear: string;
+  prepareMonth: number | undefined;
+  prepareWeekly: number | undefined;
+  prepareDate: string | undefined;
   scoreAverage: number;
-  dayOfWeek: string;
+  dayOfWeek: string | undefined; //주차면 요일, 월별 몇주차, 년도 몇월
 }
 const DetailedGradeReport = (props: Props) => {
-  const { scoreAverage, dayOfWeek, prepareYear, prepareMonth, prepareWeek, prepareDate } = props;
+  const { scoreAverage, dayOfWeek, prepareYear, prepareMonth, prepareWeekly, prepareDate } = props;
   const [selectedDateType, setSelectedDateType] = useRecoilState<'DATE' | 'WEEK_OF_MONTH' | 'MONTH'>(
     selectedDateTypeState,
   );
@@ -29,7 +25,7 @@ const DetailedGradeReport = (props: Props) => {
     selectedDateType,
     prepareYear,
     prepareMonth,
-    prepareWeek,
+    prepareWeekly,
     prepareDate,
   );
 

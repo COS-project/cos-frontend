@@ -12,7 +12,7 @@ import {
   selectedPrepareWeeksBetweenState,
   selectedReportTypeState,
 } from '@/recoil/home/atom';
-import { ScoreAVGListType } from '@/types/home/type';
+import { ScoreAVGListType, WeeklyGoalPeriodType } from '@/types/home/type';
 
 const GrowthChart = () => {
   const [selectedReportType, setSelectedReportType] = useRecoilState<'WEEK' | 'MONTH' | 'YEAR'>(
@@ -82,6 +82,40 @@ const GrowthChart = () => {
       };
     });
   };
+
+  /**
+   * 월간 중복을 제거하는 함수
+   * @param preparationData 목표 기간 동안 주차 계산된 값
+   */
+  function removeDuplicatesByMonth(preparationData: WeeklyGoalPeriodType[]) {
+    const filteredData: WeeklyGoalPeriodType[] = preparationData.reduce((acc: WeeklyGoalPeriodType[], current) => {
+      const x = acc.find((item: WeeklyGoalPeriodType) => item.prepareMonth === current.prepareMonth);
+      if (!x) {
+        return acc.concat([current]);
+      } else {
+        return acc;
+      }
+    }, []);
+
+    return filteredData;
+  }
+
+  /**
+   * 년간 중복을 제거하는 함수
+   * @param preparationData 목표 기간 동안 주차 계산된 값
+   */
+  function removeDuplicatesByYear(preparationData: WeeklyGoalPeriodType[]) {
+    const filteredData: WeeklyGoalPeriodType[] = preparationData.reduce((acc: WeeklyGoalPeriodType[], current) => {
+      const x = acc.find((item: WeeklyGoalPeriodType) => item.prepareYear === current.prepareYear);
+      if (!x) {
+        return acc.concat([current]);
+      } else {
+        return acc;
+      }
+    }, []);
+
+    return filteredData;
+  }
 
   /**
    * 주차별 성장 막대그래프 (x축 월, 화, 수, 목, 금, 토, 일)
@@ -270,10 +304,31 @@ const GrowthChart = () => {
           </div>
           {isFilterOpen ? (
             <WeeklyGoalPeriodFilter
-              data={getWeeksBetween(
-                new Date(selectedPrepareTime.prepareStartDateTime),
-                new Date(selectedPrepareTime.prepareFinishDateTime),
-              )}
+              data={
+                selectedReportType === 'WEEK'
+                  ? getWeeksBetween(
+                      new Date(selectedPrepareTime.prepareStartDateTime),
+                      new Date(selectedPrepareTime.prepareFinishDateTime),
+                    )
+                  : selectedReportType === 'MONTH'
+                    ? removeDuplicatesByMonth(
+                        getWeeksBetween(
+                          new Date(selectedPrepareTime.prepareStartDateTime),
+                          new Date(selectedPrepareTime.prepareFinishDateTime),
+                        ),
+                      )
+                    : selectedReportType === 'YEAR'
+                      ? removeDuplicatesByYear(
+                          getWeeksBetween(
+                            new Date(selectedPrepareTime.prepareStartDateTime),
+                            new Date(selectedPrepareTime.prepareFinishDateTime),
+                          ),
+                        )
+                      : getWeeksBetween(
+                          new Date(selectedPrepareTime.prepareStartDateTime),
+                          new Date(selectedPrepareTime.prepareFinishDateTime),
+                        )
+              }
               setIsOpen={setIsFilterOpen}
               className={'absolute z-10 top-5'}
               setDataState={setSelectedPrepareWeeksBetweenState}

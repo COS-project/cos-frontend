@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import FilterModal from '@/components/common/FilterModal';
 import DetailedGradeReport from '@/components/home/DetailedGradeReport';
 import GrowthChart from '@/components/home/GrowthChart';
+import UserCertGoalPeriods from '@/components/home/UserCertGoalPeriods';
 import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import {
@@ -14,28 +15,22 @@ import {
   selectedPrepareWeeksBetweenState,
   selectedReportTypeState,
 } from '@/recoil/home/atom';
-import GoalPeriodFilter from '@/components/home/GoalPeriodFilter';
-import useGetMockExamDetail from '@/lib/hooks/useGetMockExamDetail';
 import { ScoreAVGListType } from '@/types/home/type';
-import UserCertGoalPeriods from '@/components/home/UserCertGoalPeriods';
 
 const GrowthChartView = () => {
   const { userGoals } = useGetUserGoals(1);
   const [selectedPrepareWeeksBetween, setSelectedPrepareWeeksBetweenState] = useRecoilState(
     selectedPrepareWeeksBetweenState,
   );
-  const [selectedPrepareTime, setSelectedPrepareTime] = useRecoilState(selectedPrepareTimeState);
   const [selectedReportType, setSelectedReportType] = useRecoilState<'WEEK' | 'MONTH' | 'YEAR'>(
     selectedReportTypeState,
   );
-  const [selectedDateType, setSelectedDateType] = useRecoilState<'DATE' | 'WEEK_OF_MONTH' | 'MONTH'>(
-    selectedDateTypeState,
-  );
+
   const { statisticsData } = useGetMockExamStatistics(
     selectedReportType,
     selectedPrepareWeeksBetween.prepareYear,
     selectedPrepareWeeksBetween.prepareMonth,
-    selectedPrepareWeeksBetween.prepareWeek,
+    selectedPrepareWeeksBetween.prepareWeekly,
   );
   const [goalPeriod, setGoalPeriod] = useState<string>('목표 기간 선택');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
@@ -93,6 +88,7 @@ const GrowthChartView = () => {
   return (
     <div className={'bg-gray0'}>
       <div className={'m-5 flex flex-col gap-y-[24px]'}>
+        {/*유저별 목표 기간 전체 필터*/}
         <div
           onClick={() => setIsFilterOpen(!isFilterOpen)}
           className={'flex items-center gap-x-1 bg-white py-[6px] px-[12px] w-fit rounded-full'}>
@@ -101,21 +97,25 @@ const GrowthChartView = () => {
         {isFilterOpen ? (
           <UserCertGoalPeriods setIsOpen={setIsFilterOpen} data={userGoals} setDataState={setGoalPeriod} />
         ) : null}
+
+        {/*막대 그래프*/}
         <GrowthChart />
+
+        {/*주간 성적 자세히 보기*/}
         <div className={'flex flex-col gap-y-[8px]'}>
           <div className={'text-h3 font-bold ml-2'}>주간 성적 자세히 보기</div>
           <div className={'flex flex-col gap-y-[12px]'}>
-            {statisticsData?.scoreAVGList.map((scoreAVG: ScoreAVGListType, index) => {
+            {statisticsData?.scoreAVGList.map((scoreAVG: ScoreAVGListType, index: number) => {
               return (
                 <DetailedGradeReport
                   prepareYear={
                     selectedReportType === 'WEEK'
-                      ? parseInt(getYear(new Date(scoreAVG.date)))
+                      ? getYear(new Date(scoreAVG.date))
                       : selectedReportType === 'MONTH'
-                        ? selectedPrepareWeeksBetween.prepareYear
+                        ? selectedPrepareWeeksBetween.prepareYear.toString()
                         : selectedReportType === 'YEAR'
-                          ? selectedPrepareWeeksBetween.prepareYear
-                          : 0
+                          ? selectedPrepareWeeksBetween.prepareYear.toString()
+                          : ''
                   }
                   prepareMonth={
                     selectedReportType === 'WEEK'
@@ -124,16 +124,16 @@ const GrowthChartView = () => {
                         ? selectedPrepareWeeksBetween.prepareMonth
                         : selectedReportType === 'YEAR'
                           ? scoreAVG.month
-                          : 0
+                          : undefined
                   }
-                  prepareWeek={
+                  prepareWeekly={
                     selectedReportType === 'WEEK'
                       ? getWeek(new Date(scoreAVG.date))
                       : selectedReportType === 'MONTH'
                         ? scoreAVG.weekOfMonth
-                        : 0
+                        : undefined
                   }
-                  prepareDate={selectedReportType === 'WEEK' ? new Date(scoreAVG.date).toISOString() : ''}
+                  prepareDate={selectedReportType === 'WEEK' ? new Date(scoreAVG.date).toISOString() : undefined}
                   key={index}
                   dayOfWeek={
                     selectedReportType === 'WEEK'
