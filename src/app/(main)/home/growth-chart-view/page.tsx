@@ -103,7 +103,9 @@ const GrowthChartView = () => {
 
         {/*주간 성적 자세히 보기*/}
         <div className={'flex flex-col gap-y-[8px]'}>
-          <div className={'text-h3 font-bold ml-2'}>주간 성적 자세히 보기</div>
+          <div className={'text-h3 font-bold ml-2'}>
+            {selectedReportType === 'WEEK' ? '주간' : selectedReportType === 'MONTH' ? '월간' : '년간'} 성적 자세히 보기
+          </div>
           <div className={'flex flex-col gap-y-[12px]'}>
             {statisticsData?.scoreAVGList.map((scoreAVG: ScoreAVGListType, index: number) => {
               return (

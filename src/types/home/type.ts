@@ -48,4 +48,5 @@ export interface DetailGradeReportType {
   round: number;
   mockExam: ReviewIncorrectMockExam;
   totalScore: number;
+  createdAt: string;
 }

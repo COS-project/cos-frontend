@@ -29,6 +29,21 @@ const DetailedGradeReport = (props: Props) => {
     prepareDate,
   );
 
+  /**
+   * 모의고사 응시 날짜를 format 하는 함수
+   * @param date 모의고사 응시 날짜
+   */
+  const formattedDate = (date: Date) => {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    month = ('0' + month).slice(-2);
+    day = ('0' + day).slice(-2);
+
+    let formattedDate = month + '.' + day;
+    return formattedDate;
+  };
+
   return (
     <>
       <div className={'rounded-[24px] border-[1px] border-gray2 bg-white'}>
@@ -42,7 +57,7 @@ const DetailedGradeReport = (props: Props) => {
           {statisticsDetailData?.content.map((detail: DetailGradeReportType, index: number) => {
             return (
               <div key={index} className={'flex justify-around py-4 text-h6'}>
-                <div>{index + 1}</div>
+                <div>{formattedDate(new Date(detail.createdAt))}</div>
                 <div>
                   {detail.mockExam.examYear}년도 {detail.mockExam.round}회차
                 </div>
