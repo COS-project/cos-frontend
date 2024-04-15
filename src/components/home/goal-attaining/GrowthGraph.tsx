@@ -1,7 +1,7 @@
 import { useRecoilState } from 'recoil';
 
-import { selectedRoundState } from '@/utils/recoilState';
 import StickGraph from '@/components/exam/StickGraph';
+import { selectedRoundState } from '@/utils/recoilState';
 
 // examreportpage에서 머문시간 그래프를 나타내는 컴포넌트
 const GrowthGraph: React.FC = () => {

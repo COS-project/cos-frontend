@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint --fix '**/*.{ts,tsx}'"
   },
   "dependencies": {
     "@nivo/radar": "^0.84.0",
@@ -14,13 +14,19 @@
     "chart.js": "^4.4.2",
     "date-fns": "^3.2.0",
     "dayjs": "^1.11.10",
+    "gsap": "^3.12.5",
     "next": "^14.1.0",
     "react": "latest",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "latest",
+    "react-icons": "^5.0.1",
+    "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.21.1",
+    "react-slick": "^0.30.2",
     "recharts": "^2.10.4",
     "recoil": "^0.7.7",
+    "slick-carousel": "^1.8.1",
+    "swiper": "^11.1.0",
     "swr": "^2.2.4",
     "tailwind-merge": "^2.2.0"
   },
