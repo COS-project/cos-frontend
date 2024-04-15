@@ -1,8 +1,29 @@
+'use client';
+
 import React from 'react';
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { userProfile } from '@/types/global';
+import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 
 export default function MyPage() {
+  const { userProfile, isLoading, isError } = useGetUserProfile();
+
+  // 모든 자격증 리스트 불러오는 함수
+  const getUserProfile = useCallback(async () => {
+    return userProfile;
+  }, []);
+
+  useEffect(() => {
+    if (userProfile) {
+      console.log('데이터는 들어온다1');
+      getUserProfile();
+    }
+  }, []);
+
   return (
     <>
       <div className="w-full">
@@ -10,8 +31,13 @@ export default function MyPage() {
       </div>
 
       <div className="w-full flex justify-start items-center mx-2">
-        <img src="" alt="없음" className="w-16 h-16 bg-gray4 object-cover rounded-full" />
-        <span className="text-h4 ml-3">nickname {'>'}</span>
+        <img
+          src={userProfile ? userProfile.profileImage : '없'}
+          className="w-16 h-16 bg-gray4 object-cover rounded-full"
+        />
+        <span className="text-h4 ml-3">
+          {userProfile ? userProfile.nickname : '없지롱'} {'>'}
+        </span>
       </div>
       <div className="w-full mt-3 flex justify-between mx-2">
         <div className="font-bold">나의 관심 종목</div>
