@@ -19,7 +19,7 @@ export default function MyPage() {
 
   useEffect(() => {
     if (userProfile) {
-      console.log('데이터는 들어온다1');
+      // console.log('데이터는 들어온다1'); <왜출력안되는거징
       getUserProfile();
     }
   }, []);
@@ -36,7 +36,8 @@ export default function MyPage() {
           className="w-16 h-16 bg-gray4 object-cover rounded-full"
         />
         <span className="text-h4 ml-3">
-          {userProfile ? userProfile.nickname : '없지롱'} {'>'}
+          {userProfile ? userProfile.nickname : '없지롱'}
+          <a href="mypage/profileSetting">{'>'}</a>
         </span>
       </div>
       <div className="w-full mt-3 flex justify-between mx-2">
