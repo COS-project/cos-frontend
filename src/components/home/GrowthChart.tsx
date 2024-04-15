@@ -33,6 +33,10 @@ const GrowthChart = () => {
   );
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  /**
+   * 목표 기간의 주차를 계산해주는 함수
+   * @param date 목표 날짜
+   */
   const getWeekly = (date: Date) => {
     const currentDate = date.getDate();
     const firstDay = new Date(date.setDate(1)).getDay();
@@ -157,6 +161,30 @@ const GrowthChart = () => {
   };
 
   /**
+   * 년별 성장 막대그래프 (x축 1월 ~ 12월)
+   */
+  const yearGraph = () => {
+    const monthOfYear = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+    // Month 배열을 기반으로 월별 StickGraph를 렌더링합니다.
+    return (
+      <div className="flex">
+        {monthOfYear.map((month, monthIndex) => {
+          // 해당 월에 해당하는 데이터가 있는지 확인합니다.
+          const scoreAVG = statisticsData?.scoreAVGList.find((score: ScoreAVGListType) => score.month === month);
+          const height = scoreAVG ? scoreAVG.scoreAverage : 0;
+
+          return (
+            <div key={monthIndex} className="flex w-[40px] overflow-x-auto justify-center">
+              <StickGraph height={height} color="blue" />
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  /**
    * 필터값에 따라서 성장그래프의 막대그래프를 그려주는 함수 WEEK, MONTH, YEAR
    */
   const renderGraphLabelsByReportType = () => {
@@ -165,14 +193,7 @@ const GrowthChart = () => {
     } else if (selectedReportType === 'MONTH') {
       return monthlyGraph();
     } else if (selectedReportType === 'YEAR' && statisticsData?.scoreAVGList) {
-      // JSX 배열을 반환하도록 수정
-      return statisticsData.scoreAVGList.map((scoreAVG: ScoreAVGListType, index: number) => {
-        return (
-          <div key={index} className="w-full flex justify-center">
-            <StickGraph height={scoreAVG.scoreAverage} color="blue" />
-          </div>
-        );
-      });
+      return yearGraph();
     } else {
       return <div />;
     }
@@ -180,13 +201,12 @@ const GrowthChart = () => {
 
   /**
    * 년도 성장그래프 X축 라벨
-   * @param scoreAVG
-   * @param index
+   * @param item 1~12월
    */
-  const xAxisLabelYear = (scoreAVG: ScoreAVGListType, index: number) => {
+  const xAxisLabelYear = (item: number) => {
     return (
-      <div key={index} className="w-full flex justify-center text-h6">
-        {`${scoreAVG.month}월`}
+      <div key={item} className="flex border-t border-gray1 w-[44px] overflow-x-auto justify-center text-h6">
+        {`${item}`}
       </div>
     );
   };
@@ -196,7 +216,7 @@ const GrowthChart = () => {
    */
   const xAxisLabelMonth = () => {
     return (
-      <div className={'w-[85%] flex justify-between'}>
+      <div className={'w-[288px] flex justify-between border-t border-gray1'}>
         <div className="w-full flex justify-center text-h6">{'1주'}</div>
         <div className="w-full flex justify-center text-h6">{'2주'}</div>
         <div className="w-full flex justify-center text-h6">{'3주'}</div>
@@ -212,7 +232,7 @@ const GrowthChart = () => {
    */
   const xAxisLabelWeekly = () => {
     return (
-      <div className={'w-[85%] flex justify-between'}>
+      <div className={'w-[288px] flex justify-between border-t border-gray1'}>
         <div className="w-full flex justify-center text-h6">{'월'}</div>
         <div className="w-full flex justify-center text-h6">{'화'}</div>
         <div className="w-full flex justify-center text-h6">{'수'}</div>
@@ -229,14 +249,14 @@ const GrowthChart = () => {
    * @param selectedReportType
    */
   const renderLabelComponent = (selectedReportType: string) => {
+    const monthOfYear = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     if (selectedReportType === 'WEEK') {
       return xAxisLabelWeekly();
     } else if (selectedReportType === 'MONTH') {
       return xAxisLabelMonth();
     } else if (selectedReportType === 'YEAR' && statisticsData?.scoreAVGList) {
-      // map 함수의 결과를 직접 반환합니다.
-      return statisticsData.scoreAVGList.map((scoreAVG: ScoreAVGListType, index: number) => {
-        return xAxisLabelYear(scoreAVG, index);
+      return monthOfYear.map((item: number) => {
+        return xAxisLabelYear(item);
       });
     } else {
       return <div />;
@@ -245,7 +265,7 @@ const GrowthChart = () => {
 
   return (
     <div>
-      <div className="bg-white rounded-[32px] p-4 border-[1px] border-gray2">
+      <div className="flex flex-col gap-y-3 bg-white rounded-[32px] p-4 border-[1px] border-gray2">
         <div className="font-bold text-h3">성장그래프</div>
 
         {/*주간, 월간, 연간 필터 session*/}
@@ -289,73 +309,92 @@ const GrowthChart = () => {
         </div>
 
         {/* 필터 */}
-        <div className={'flex text-h6 gap-x-1 relative'}>
-          <div onClick={() => setIsFilterOpen(!isFilterOpen)} className={'flex'}>
-            <div>
-              {selectedReportType === 'WEEK'
-                ? selectedPrepareWeeksBetween.formattedWeeklyPrepTime
-                : selectedReportType === 'MONTH'
-                  ? `${selectedPrepareWeeksBetween.prepareMonth}월`
-                  : selectedReportType === 'YEAR'
-                    ? `${selectedPrepareWeeksBetween.prepareYear}년`
-                    : null}
-            </div>
-            {isFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
-          </div>
-          {isFilterOpen ? (
-            <WeeklyGoalPeriodFilter
-              data={
-                selectedReportType === 'WEEK'
-                  ? getWeeksBetween(
-                      new Date(selectedPrepareTime.prepareStartDateTime),
-                      new Date(selectedPrepareTime.prepareFinishDateTime),
-                    )
+        <div className={'flex flex-col gap-y-1'}>
+          <div className={'flex text-h6 gap-x-1 relative'}>
+            {/*주차, 월간, 년도 선택 버튼*/}
+            <div onClick={() => setIsFilterOpen(!isFilterOpen)} className={'flex ml-2'}>
+              <div>
+                {selectedReportType === 'WEEK'
+                  ? selectedPrepareWeeksBetween.formattedWeeklyPrepTime
                   : selectedReportType === 'MONTH'
-                    ? removeDuplicatesByMonth(
-                        getWeeksBetween(
-                          new Date(selectedPrepareTime.prepareStartDateTime),
-                          new Date(selectedPrepareTime.prepareFinishDateTime),
-                        ),
-                      )
+                    ? `${selectedPrepareWeeksBetween.prepareMonth}월`
                     : selectedReportType === 'YEAR'
-                      ? removeDuplicatesByYear(
+                      ? `${selectedPrepareWeeksBetween.prepareYear}년`
+                      : null}
+              </div>
+              {isFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
+            </div>
+
+            {/*목표 기간 동안 각 주차 or 월 or 년도를 선택할 수 있는 필터*/}
+            {isFilterOpen ? (
+              <WeeklyGoalPeriodFilter
+                data={
+                  selectedReportType === 'WEEK'
+                    ? getWeeksBetween(
+                        new Date(selectedPrepareTime.prepareStartDateTime),
+                        new Date(selectedPrepareTime.prepareFinishDateTime),
+                      )
+                    : selectedReportType === 'MONTH'
+                      ? removeDuplicatesByMonth(
                           getWeeksBetween(
                             new Date(selectedPrepareTime.prepareStartDateTime),
                             new Date(selectedPrepareTime.prepareFinishDateTime),
                           ),
                         )
-                      : getWeeksBetween(
-                          new Date(selectedPrepareTime.prepareStartDateTime),
-                          new Date(selectedPrepareTime.prepareFinishDateTime),
-                        )
-              }
-              setIsOpen={setIsFilterOpen}
-              className={'absolute z-10 top-5'}
-              setDataState={setSelectedPrepareWeeksBetweenState}
-              reportType={selectedReportType}
-            />
-          ) : null}
-          <div>평균 점수</div>
-        </div>
-
-        <div className={'font-semibold text-h3'}>{statisticsData?.average}점</div>
-
-        <div className="flex items-center space-x-1">
-          <div className="w-[86%] border-t border-gray1"></div>
-          <div className="text-gray3 text-h5">100점</div>
-        </div>
-
-        <div className="flex items-end">
-          <div className="w-[100%] justify-between">
-            <div className="flex h-32">{renderGraphLabelsByReportType()}</div>
-            <div className="border-t border-gray1"></div>
+                      : selectedReportType === 'YEAR'
+                        ? removeDuplicatesByYear(
+                            getWeeksBetween(
+                              new Date(selectedPrepareTime.prepareStartDateTime),
+                              new Date(selectedPrepareTime.prepareFinishDateTime),
+                            ),
+                          )
+                        : getWeeksBetween(
+                            new Date(selectedPrepareTime.prepareStartDateTime),
+                            new Date(selectedPrepareTime.prepareFinishDateTime),
+                          )
+                }
+                setIsOpen={setIsFilterOpen}
+                className={'absolute z-10 top-6'}
+                setDataState={setSelectedPrepareWeeksBetweenState}
+                reportType={selectedReportType}
+              />
+            ) : null}
+            <div>평균 점수</div>
           </div>
-          <div className="w-[15%] text-gray3 text-h5">0점</div>
+          <div className={'font-semibold text-h3 ml-2'}>{statisticsData?.average}점</div>
         </div>
 
-        <div className="flex w-[102%] justify-between">
-          {renderLabelComponent(selectedReportType)}
-          <div className="w-[15%] text-white text-h5">0분</div>
+        {/* 그래프 */}
+        <div className={''}>
+          <div>
+            <div className={'relative'}>
+              <div className="flex items-center space-x-1">
+                <div className="w-[86%] border-t border-gray1"></div>
+                <div className="text-gray3 text-h5">100점</div>
+              </div>
+
+              <div
+                style={{ bottom: `${6 + statisticsData?.average}%` }}
+                className={'absolute flex items-center space-x-1'}>
+                <div className="w-[258px] border-t border-dashed border-primary"></div>
+                <div className="text-primary text-h5">평균</div>
+              </div>
+
+              <div className="flex items-end overflow-x-scroll" style={{ width: '100%' }}>
+                <div className={'flex flex-col'}>
+                  <div className="w-[264px] justify-between">
+                    <div className="flex h-32">{renderGraphLabelsByReportType()}</div>
+                  </div>
+                  <div className="flex w-[102%] justify-between">
+                    {renderLabelComponent(selectedReportType)}
+                    <div className="w-[15%] text-white text-h5">0분</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
         </div>
       </div>
     </div>
