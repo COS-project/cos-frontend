@@ -37,8 +37,8 @@ const DetailedGradeReport = (props: Props) => {
     let month = date.getMonth() + 1;
     let day = date.getDate();
 
-    month = ('0' + month).slice(-2);
-    day = ('0' + day).slice(-2);
+    month = parseInt(('0' + month).slice(-2));
+    day = parseInt(('0' + day).slice(-2));
 
     let formattedDate = month + '.' + day;
     return formattedDate;

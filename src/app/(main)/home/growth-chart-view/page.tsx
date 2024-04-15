@@ -1,20 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import FilterModal from '@/components/common/FilterModal';
 import DetailedGradeReport from '@/components/home/DetailedGradeReport';
 import GrowthChart from '@/components/home/GrowthChart';
 import UserCertGoalPeriods from '@/components/home/UserCertGoalPeriods';
 import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
-import {
-  selectedDateTypeState,
-  selectedPrepareTimeState,
-  selectedPrepareWeeksBetweenState,
-  selectedReportTypeState,
-} from '@/recoil/home/atom';
+import { selectedPrepareWeeksBetweenState, selectedReportTypeState } from '@/recoil/home/atom';
 import { ScoreAVGListType } from '@/types/home/type';
 
 const GrowthChartView = () => {
@@ -35,6 +29,10 @@ const GrowthChartView = () => {
   const [goalPeriod, setGoalPeriod] = useState<string>('목표 기간 선택');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
 
+  /**
+   * 목표 주차 계산해주는 함수
+   * @param date 목표 날짜
+   */
   const getWeek = (date: Date) => {
     const currentDate = date.getDate();
     const firstDay = new Date(date.setDate(1)).getDay();
@@ -42,6 +40,10 @@ const GrowthChartView = () => {
     return Math.ceil((currentDate + firstDay) / 7);
   };
 
+  /**
+   * 목표 월 계산해주는 함수
+   * @param date 목표 날짜
+   */
   const getMonth = (date: Date) => {
     return date.getMonth() + 1;
   };
@@ -54,6 +56,9 @@ const GrowthChartView = () => {
     return date.getFullYear().toString().slice(-4);
   };
 
+  /**
+   * 요일 영어 값을 한국어로 바꿔주는 함수
+   */
   const convertDayOfWeekToKorean = (scoreAVG: ScoreAVGListType) => {
     if (scoreAVG.dayOfWeek === 'MONDAY') {
       return '월요일';
@@ -77,17 +82,24 @@ const GrowthChartView = () => {
       return '일요일';
     }
   };
+
+  /**
+   * 주차 변경해주는 함수
+   */
   const convertWeekOfMonth = (scoreAVG: ScoreAVGListType) => {
     return `${scoreAVG.weekOfMonth}주차`;
   };
 
+  /**
+   * 월 변경해주는 함수
+   */
   const convertMonth = (scoreAVG: ScoreAVGListType) => {
     return `${scoreAVG.month}월`;
   };
 
   return (
     <div className={'bg-gray0'}>
-      <div className={'m-5 flex flex-col gap-y-[24px]'}>
+      <div className={'relative m-5 flex flex-col gap-y-[24px]'}>
         {/*유저별 목표 기간 전체 필터*/}
         <div
           onClick={() => setIsFilterOpen(!isFilterOpen)}
@@ -95,7 +107,12 @@ const GrowthChartView = () => {
           <div className={'text-h6'}>{goalPeriod}</div> {isFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
         </div>
         {isFilterOpen ? (
-          <UserCertGoalPeriods setIsOpen={setIsFilterOpen} data={userGoals} setDataState={setGoalPeriod} />
+          <UserCertGoalPeriods
+            setIsOpen={setIsFilterOpen}
+            data={userGoals}
+            setDataState={setGoalPeriod}
+            className={'absolute top-10 h-fit'}
+          />
         ) : null}
 
         {/*막대 그래프*/}
