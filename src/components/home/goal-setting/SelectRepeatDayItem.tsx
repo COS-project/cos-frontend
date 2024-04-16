@@ -64,7 +64,7 @@ const SelectRepeatDayItem = (props: Props) => {
   //처음 랜더링 때, 기존의 저장된 요일 버튼 색상 반영되도록 하기
   const isClickedState = () => {
     if (usage == 'MockExam') {
-      goalData.mockExamRepeatDays.map((dayOfWeek)=> {
+      goalData.mockExamRepeatDays.map((dayOfWeek) => {
         if (dayOfWeek == 0) {
           setIsSunClick(true);
         }
@@ -89,7 +89,7 @@ const SelectRepeatDayItem = (props: Props) => {
       });
     }
     if (usage == 'StudyTime') {
-      goalData.studyRepeatDays.map((dayOfWeek)=> {
+      goalData.studyRepeatDays.map((dayOfWeek) => {
         if (dayOfWeek == 0) {
           setIsSunClick(true);
         }

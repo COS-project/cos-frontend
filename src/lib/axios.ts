@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { Param } from '@/types/global';
-import qs from 'qs';
 import { string } from 'prop-types';
+
 import { atom } from 'recoil';
+import qs from 'qs';
+
+import { Param } from '@/types/global';
 
 const client = axios.create({
   baseURL: 'http://cercat.o-r.kr/api/v1',

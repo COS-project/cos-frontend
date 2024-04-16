@@ -2,8 +2,8 @@
 //닉네임 폰트 크기 설정
 'use client';
 
-import React from 'react';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
 interface Props {
   children?: React.ReactNode; //회원 닉네임

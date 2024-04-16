@@ -3,8 +3,8 @@
 import React, { useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { Certificate } from '@/types/global';
 import { CreatePostDataType, YearsAndRounds } from '@/types/community/type';
+import { Certificate } from '@/types/global';
 
 interface Props {
   data: [];
