@@ -1,13 +1,12 @@
 'use client';
 
 import React from 'react';
-import Header from '@/components/common/Header';
-import NavBar from '@/components/common/NavBar';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { userProfile } from '@/types/global';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
+import { certificationInfoState } from '@/recoil/home/atom';
 
 export default function MyPage() {
   const { userProfile, isLoading, isError } = useGetUserProfile();
@@ -26,10 +25,6 @@ export default function MyPage() {
 
   return (
     <>
-      <div className="w-full">
-        <Header />
-      </div>
-
       <div className="w-full flex justify-start items-center mx-2">
         <img
           src={userProfile ? userProfile.profileImage : '없'}
@@ -37,6 +32,7 @@ export default function MyPage() {
         />
         <span className="text-h4 ml-3">
           {userProfile ? userProfile.nickname : '없지롱'}
+          {/*프로필 설정화면으로 이동*/}
           <a href="mypage/profileSetting">{'>'}</a>
         </span>
       </div>
@@ -92,7 +88,6 @@ export default function MyPage() {
           </button>
         </div>
       </div>
-      <NavBar />
     </>
   );
 }

@@ -1,11 +1,13 @@
 'use client';
 import React from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
+import CommunityNav from '@/components/community/CommunityNav';
+import Button from '@/components/common/Button';
 
 export default function ProfileSetting() {
   const { userProfile, isLoading, isError } = useGetUserProfile();
-  const [id, setId] = useState('');
   const [nickname, setNickname] = useState('');
 
   //const handlerChangeId
@@ -24,10 +26,7 @@ export default function ProfileSetting() {
 
   return (
     <>
-      <div className="w-full h-[60px] flex justify-center items-center py-3">
-        <div className="text-h4 font-bold">{'<'}</div>
-        <div className="text-h6"> 프로필 변경 </div>
-      </div>
+      <CommunityNav Icon={false}>프로필 변경</CommunityNav>
 
       <div className=" bg-gray0">
         <div className="flex justify-center">
@@ -35,17 +34,21 @@ export default function ProfileSetting() {
             src={userProfile ? userProfile.profileImage : '없'}
             className="w-16 h-16 bg-gray4 object-cover rounded-full"
           />
-          <button></button>
         </div>
-        <form>
-          <div className="mt-[30px]">이름</div>
-          <input type="text" className="rounded-xl bg-white text-black font-bold" placeholder={userProfile.userId} />
-          <div className="mt-[30px]">닉네임</div>
-          <input type="text" className="rounded-xl bg-white text-black font-bold" placeholder={userProfile.nickname} />
-        </form>
+        <div className="flex justify-center">
+          <form>
+            <div className="mt-[30px] font-bold">닉네임</div>
+            <input
+              type="text"
+              className="rounded-xl px-2 py-1 bg-white font-bold placeholder-black placeholder"
+              placeholder={userProfile != null ? userProfile.nickname : '닉네임'}
+            />
+          </form>
+        </div>
+        <button className="w-full px-2 py-2 rounded-t-2xl text-white bg-primary mt-10">완료</button>
       </div>
 
-      <div className="border rounded-t-xl bg-primary font-bold text-white text-center">완료</div>
+      {/*<Button>완료</Button>*/}
     </>
   );
 }
