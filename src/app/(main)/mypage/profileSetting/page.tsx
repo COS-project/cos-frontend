@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { patchProfileData } from '@/lib/api/onboarding';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
+import Banner from '@/components/common/Banner';
 
 interface Props {
   onNext: () => void;
@@ -61,11 +62,18 @@ const ProfileSettings = (props: Props) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <button onClick={onBefore}>이전</button>
+      <header className="flex justify-between items-end px-[1.25rem] py-[0.25rem] text-h4 mt-2">
+        <button onClick={onBefore} className="text-h2">
+          {'<'}
+        </button>
+        <div>내가 쓴 댓글</div>
+        <div>...</div> {/* 얘가 없으면 정렬이 안돼... */}
+      </header>
+      <form onSubmit={handleSubmit} className="bg-gray0 min-h-screen">
+        <div className="w-full mt-2"></div>
         <div className="flex flex-col gap-y-5 m-5">
           {/* 프로필 사진 설정 섹션 */}
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center mt-5">
             <div className="relative w-fit">
               <div className="relative w-[100px] h-[100px] object-cover overflow-hidden rounded-full">
                 <Image
