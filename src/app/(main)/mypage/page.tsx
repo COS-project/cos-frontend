@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { userProfile } from '@/types/global';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
-import { certificationInfoState } from '@/recoil/home/atom';
+import NavBar from '@/components/common/NavBar';
 
 export default function MyPage() {
   const { userProfile, isLoading, isError } = useGetUserProfile();
@@ -88,6 +88,7 @@ export default function MyPage() {
           </button>
         </div>
       </div>
+      <NavBar />
     </>
   );
 }
