@@ -5,9 +5,9 @@ import { SVGProps, useEffect, useState } from 'react';
 import * as React from 'react';
 
 import AutoCompleteSearchKeywords from '@/components/community/AutoCompleteSearchKeywords';
+import RecentSearchKeywords from '@/components/community/RecentSearchKeywords';
 import SearchInput from '@/components/community/SearchInput';
 import useGetSearchResults from '@/lib/hooks/useGetAutoCompleteSearchKeywords';
-import RecentSearchKeywords from '@/components/community/RecentSearchKeywords';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
 const Search = () => {
   const parameter = useSearchParams();
@@ -18,7 +18,7 @@ const Search = () => {
   return (
     <div className={'bg-gray0 min-h-screen'}>
       {/*input*/}
-      <SearchInput setIsClickedAutoCompleteSearchKeywords={setIsClickedAutoCompleteSearchKeywords}/>
+      <SearchInput setIsClickedAutoCompleteSearchKeywords={setIsClickedAutoCompleteSearchKeywords} />
 
       {/*자동완성 필터*/}
       {isClickedAutoCompleteSearchKeywords ? (

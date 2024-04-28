@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { SVGProps, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 
 import { deleteAllSearchResults, deleteEachSearchResult } from '@/lib/api/community';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
-import { useRecoilState } from 'recoil';
-import { recentSearchResultState } from '@/recoil/community/atom';
+import { autoCompleteSearchKeywordState, recentSearchResultState } from '@/recoil/community/atom';
 import { RecentSearchResult } from '@/types/community/type';
 
 interface Props {
@@ -15,11 +15,12 @@ const RecentSearchKeywords = (props: Props) => {
   const { keywords } = props;
   const { mutate } = useGetRecentSearchResults();
   const [recentSearchResult, setRecentSearchResult] = useRecoilState(recentSearchResultState);
+  const [searchValue, setSearchValue] = useRecoilState<string>(autoCompleteSearchKeywordState);
 
   useEffect(() => {
-    console.log(recentSearchResult);
     deleteEachSearchResult(recentSearchResult.keyword, recentSearchResult.createdAt).then(() => mutate());
   }, [recentSearchResult]);
+
   return (
     <>
       <div className={'flex flex-col gap-y-3'}>
@@ -42,7 +43,9 @@ const RecentSearchKeywords = (props: Props) => {
                   <div
                     key={index}
                     className={'flex items-center gap-x-1 flex-shrink-0 py-1 px-3 rounded-[8px] bg-white w-fit'}>
-                    <div className={'text-gray4 text-h4'}>{keyword.keyword}</div>
+                    <div onClick={() => setSearchValue(keyword.keyword)} className={'text-gray4 text-h4'}>
+                      {keyword.keyword}
+                    </div>
                     <DeleteButton
                       className={'cursor-pointer'}
                       onClick={() => {
