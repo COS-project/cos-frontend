@@ -3,13 +3,13 @@
 import { useRouter } from 'next/navigation';
 import qs from 'query-string';
 import * as React from 'react';
-import { SVGProps, useEffect, useState } from 'react';
+import { SVGProps, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import useDebounce from '@/hooks/useDebounce';
 import { getSearchResults } from '@/lib/api/community';
-import { autoCompleteSearchKeywordState } from '@/recoil/community/atom';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
+import { autoCompleteSearchKeywordState } from '@/recoil/community/atom';
 
 interface Props {
   setIsClickedAutoCompleteSearchKeywords: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,7 +41,7 @@ const SearchInput = (props: Props) => {
   }, [debouncedValue, router]);
 
   return (
-    <div className={'bg-white my-[6px]'}>
+    <div className={'bg-white my-[6px] px-5 py-[10px]'}>
       <div className={'flex gap-x-3  items-center'}>
         <BackIcon />
         <form

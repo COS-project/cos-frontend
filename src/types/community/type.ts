@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface YearsAndRounds {
   2017: number[];
   2018: number[];
@@ -35,4 +37,10 @@ export interface EditPostDataType {
 export interface RecentSearchResult {
   keyword: string;
   createdAt: string;
+}
+
+export interface PopularSearchKeyword {
+  sequence: number;
+  keyword: string;
+  icon: React.JSX.Element;
 }

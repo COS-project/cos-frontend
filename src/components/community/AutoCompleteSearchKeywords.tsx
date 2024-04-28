@@ -16,7 +16,7 @@ const AutoCompleteSearchKeywords = (props: Props) => {
 
   return (
     <>
-      <div className={'rounded-[16px] bg-white border-[1px] border-gray2 '}>
+      <div className={'absolute top-16 left-14 w-[80%] rounded-[16px] bg-white border-[1px] border-gray2 '}>
         {keywords
           ? keywords.map((keyword: string, index: number) => {
               return (

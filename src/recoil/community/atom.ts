@@ -2,10 +2,7 @@
 
 import { atom } from 'recoil';
 
-import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
-import { extend } from 'dayjs';
-import SubjectList from '@/components/exam/SubjectList';
-import { CreatePostDataType, EditPostDataType, RecentSearchResult } from '@/types/community/type';
+import { CreatePostDataType, EditPostDataType, PopularSearchKeyword, RecentSearchResult } from '@/types/community/type';
 
 export const imagePreviewsState = atom<string[]>({
   key: 'imagePreviewsState',
@@ -56,4 +53,10 @@ export const recentSearchResultState = atom<RecentSearchResult>({
     keyword: '',
     createdAt: '',
   },
+});
+
+//최근 검색 기록
+export const popularSearchKeywordState = atom<PopularSearchKeyword[]>({
+  key: 'popularSearchKeywordState',
+  default: [],
 });
