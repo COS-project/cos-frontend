@@ -31,3 +31,8 @@ export interface EditPostDataType {
   questionSequence?: number;
   removeImageUrls?: string[];
 }
+
+export interface RecentSearchResult {
+  keyword: string;
+  createdAt: string;
+}

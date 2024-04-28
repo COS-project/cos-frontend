@@ -4,14 +4,28 @@ import { useRouter } from 'next/navigation';
 import qs from 'query-string';
 import * as React from 'react';
 import { SVGProps, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import useDebounce from '@/hooks/useDebounce';
+import { getSearchResults } from '@/lib/api/community';
+import { autoCompleteSearchKeywordState } from '@/recoil/community/atom';
+import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
 
-const SearchInput = () => {
+interface Props {
+  setIsClickedAutoCompleteSearchKeywords: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const SearchInput = (props: Props) => {
+  const { setIsClickedAutoCompleteSearchKeywords } = props;
   const router = useRouter();
-  const [value, setValue] = useState<string>('');
-  const debouncedValue = useDebounce<string>(value, 500);
+  const [searchValue, setSearchValue] = useRecoilState<string>(autoCompleteSearchKeywordState);
+  const debouncedValue = useDebounce<string>(searchValue, 100);
+  const { recentSearchResults, mutate } = useGetRecentSearchResults();
 
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await getSearchResults(1, 'COMMENTARY', debouncedValue).then((r) => console.log(r.result.content));
+    await mutate();
+  };
 
   useEffect(() => {
     const query = {
@@ -30,14 +44,21 @@ const SearchInput = () => {
     <div className={'bg-white my-[6px]'}>
       <div className={'flex gap-x-3  items-center'}>
         <BackIcon />
-        <div className={'flex gap-x-1 py-2 px-3 border-[1px] border-gray2 rounded-[16px] w-full'}>
+        <form
+          onSubmit={(e) => {
+            handleFormSubmit(e);
+          }}
+          className={'flex gap-x-1 py-2 px-3 border-[1px] border-gray2 rounded-[16px] w-full'}>
           <SearchIcon />
           <input
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+              setIsClickedAutoCompleteSearchKeywords(true);
+            }}
             className={'text-h4 text-gray4 outline-none'}
             placeholder={'궁금한 것을 검색해보세요.'}></input>
-        </div>
+        </form>
       </div>
     </div>
   );

@@ -1,34 +1,36 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { SVGProps } from 'react';
+import { SVGProps, useEffect, useState } from 'react';
 import * as React from 'react';
 
+import AutoCompleteSearchKeywords from '@/components/community/AutoCompleteSearchKeywords';
 import SearchInput from '@/components/community/SearchInput';
-import useGetSearchResults from '@/lib/hooks/useGetSearchResults';
+import useGetSearchResults from '@/lib/hooks/useGetAutoCompleteSearchKeywords';
+import RecentSearchKeywords from '@/components/community/RecentSearchKeywords';
+import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
 const Search = () => {
   const parameter = useSearchParams();
-  const { searchResults } = useGetSearchResults(parameter.get('keyword'));
+  const { autoCompleteKeywords } = useGetSearchResults(parameter.get('keyword'));
+  const { recentSearchResults, mutate } = useGetRecentSearchResults();
+  const [isClickedAutoCompleteSearchKeywords, setIsClickedAutoCompleteSearchKeywords] = useState(true);
 
   return (
-    <div className={'mx-5 bg-gray0'}>
+    <div className={'bg-gray0 min-h-screen'}>
       {/*input*/}
-      <SearchInput />
+      <SearchInput setIsClickedAutoCompleteSearchKeywords={setIsClickedAutoCompleteSearchKeywords}/>
+
+      {/*자동완성 필터*/}
+      {isClickedAutoCompleteSearchKeywords ? (
+        <AutoCompleteSearchKeywords
+          setIsClickedAutoCompleteSearchKeywords={setIsClickedAutoCompleteSearchKeywords}
+          keywords={autoCompleteKeywords}
+        />
+      ) : null}
 
       <div className={'flex flex-col gap-y-8'}>
         {/*최근 검색어*/}
-        <div className={'flex flex-col gap-y-3'}>
-          <div className={'flex justify-between'}>
-            <div className={'text-h4 font-semibold ml-2'}>최근 검색어</div>
-            <div className={'text-gray4 text-h6'}>전체삭제</div>
-          </div>
-
-          <div className={'flex gap-x-2'}>
-            <div className={'text-gray4 text-h4 py-1 px-3 rounded-[8px] bg-white w-fit '}>2023년도</div>
-            <div className={'text-gray4 text-h4 py-1 px-3 rounded-[8px] bg-white w-fit '}>시험일정</div>
-            <div className={'text-gray4 text-h4 py-1 px-3 rounded-[8px] bg-white w-fit '}>23번 해설</div>
-          </div>
-        </div>
+        <RecentSearchKeywords keywords={recentSearchResults} />
 
         {/*인기 검색어*/}
         <div className={'flex flex-col gap-y-3'}>

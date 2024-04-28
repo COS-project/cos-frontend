@@ -5,7 +5,7 @@ import { atom } from 'recoil';
 import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
 import { extend } from 'dayjs';
 import SubjectList from '@/components/exam/SubjectList';
-import { CreatePostDataType, EditPostDataType } from '@/types/community/type';
+import { CreatePostDataType, EditPostDataType, RecentSearchResult } from '@/types/community/type';
 
 export const imagePreviewsState = atom<string[]>({
   key: 'imagePreviewsState',
@@ -40,5 +40,20 @@ export const editPostDataState = atom<EditPostDataType>({
     postId: 0,
     title: '제목',
     content: '내용',
+  },
+});
+
+//검색 키워드 자동완성 데이터
+export const autoCompleteSearchKeywordState = atom<string>({
+  key: 'autoCompleteSearchKeywordState',
+  default: '',
+});
+
+//최근 검색 기록
+export const recentSearchResultState = atom<RecentSearchResult>({
+  key: 'recentSearchResultState',
+  default: {
+    keyword: '',
+    createdAt: '',
   },
 });
