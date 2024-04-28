@@ -8,7 +8,6 @@ import YearSelector from '@/components/exam/YearSelector';
 const Exam = () => {
   return (
     <div>
-      <Header />
       <SolveExamBox />
     </div>
   );
