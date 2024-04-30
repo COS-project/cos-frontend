@@ -30,7 +30,7 @@ export const useGetCertificateYearListData = () => {
 // 연도 데이터, 그 연도에 해당하는 round와 응시 여부 받아온다
 // (examid, round, istake)
 export const useGetExamYearData = (examId?: Number, examYear?: Number) => {
-  const { data, error } = useSWR<ExamResult>(`/${examId}/mock-exams?examYear=${examYear}`, swrGetFetcher);
+  const { data, error } = useSWR<ExamResult>(`certificates/${examId}/mock-exams?examYear=${examYear}`, swrGetFetcher);
 
   return {
     YearData: data,

@@ -10,18 +10,13 @@ import { YearState } from '@/utils/recoilState';
 const YearSelector = ({}) => {
   // 과목의 연도의 상태를 관리하는 state
   const [selectedYear, setSelectedYear] = useRecoilState<Number | undefined>(YearState);
-  // const { Data } = useGetExamInfoData();
   const { Data } = useGetCertificateYearListData();
 
-  console.log(Data);
-
   // year정보만 추출하기
-  const yearKeys = Object.keys(Data?.result || {});
+  const yearKeys = Data?.result;
 
-  console.log(yearKeys);
-  // const yearKeys = ['2020', '2021', '2023'];
   // 추출한 데이터 정수형으로 변환하기
-  const yearsAsIntegers = yearKeys.map((year) => parseInt(year, 10));
+  const yearsAsIntegers = yearKeys?.map((year) => parseInt(year, 10));
 
   // 연도 리스트가 들어간거임
   const examYears: examYearList = {
@@ -29,7 +24,7 @@ const YearSelector = ({}) => {
   };
 
   // 받아온 연도에 첫번째로 set
-  const defaultYear = examYears.years[0] || undefined;
+  const defaultYear = examYears?.years?.[0] !== undefined ? examYears.years[0] : undefined;
 
   // selectbox에 들어갈 년도 배열 정립
   const uniqueYears = examYears.years || null;
@@ -52,7 +47,7 @@ const YearSelector = ({}) => {
         value={selectedYear?.toString() || ''}
         onChange={handleSubjectChange}
         className="mx-auto mt-1 text-h4 font-bold block w-[95%] p-3 bg-gray0 rounded-xl shadow-sm focus:outline-none focus:ring focus:border-blue-300 sm:text-sm">
-        {uniqueYears.map((year, index) => (
+        {uniqueYears?.map((year, index) => (
           <option key={index} value={year}>
             {year}년 기출 모의고사
           </option>

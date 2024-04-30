@@ -71,15 +71,12 @@ export interface MockExam {
 // 자격증별 시험년도 리스트를 받기 위한 데이터 타입 정의
 export interface certificateYearList {
   responseCode: string;
-  result: {
-    examYearList: certificateYear[];
-  };
+  result: string[];
 }
 
-// 자격증 시험의 연도 타입 정의
-export interface certificateYear {
-  year: string;
-  result: number[];
+// api를 통해 받아온 year들을 추출해서 정수형으로 변경 후 담아둘 구조
+export interface examYearList {
+  years: number[] | undefined;
 }
 
 // 진행 바 만들 때 사용합니다.
@@ -95,11 +92,6 @@ export interface ProblemInfo {
 export interface multipleChoice {
   problem: string;
   example: string[];
-}
-
-// api를 통해 받아온 year들을 추출해서 담아둘 구조
-export interface examYearList {
-  years: number[];
 }
 
 // 온보딩 관심 자격증 리스트

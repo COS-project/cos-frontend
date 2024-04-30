@@ -19,6 +19,9 @@ const SubjectSessionCard: React.FC = ({}) => {
   // api 살아나면 살릴부분
   // const rounds = YearData?.result;
 
+  console.log(YearData);
+  console.log(selectedYear);
+
   const rounds = [
     { round: 1, mockExamId: 23, isTake: true },
     { round: 2, mockExamId: 56, isTake: false },
