@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-import { ExamInfo, Session, SubjectInfo } from '@/types/global';
+import { certificateYear, ExamInfo, Session, SubjectInfo } from '@/types/global';
 
 export const selectedSubjectState = atom<SubjectInfo | null>({
   key: 'selectedSubjectState',
@@ -12,12 +12,6 @@ export const selectedSessionState = atom<Session | null>({
   key: 'selectedSessionState',
   default: null,
 });
-
-// 유저의 응시 횟수에 대한 상태
-// export const selectedRoundState = atom<Round | null>({
-//   key: 'selectedRoundState',
-//   default: null,
-// });
 
 export const examInfoState = atom<ExamInfo[] | null>({
   key: 'examInfoState',
@@ -40,4 +34,10 @@ export const selectedRoundState = atom<Number | null>({
 export const roundsArrayState = atom<number[] | undefined>({
   key: 'roundsArrayState',
   default: undefined,
+});
+
+// 자격증의 현재 선택된 연도 상태 관리
+export const certificateYearState = atom<certificateYear>({
+  key: 'certificateYearState',
+  default: { year: 0 },
 });

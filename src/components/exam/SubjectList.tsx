@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { useGetExamYearData } from '@/lib/hooks/ExamInfoFetcher';
+import { useGetExamYearData } from '@/lib/hooks/useGetExamInfoFetcher';
 import { roundsArrayState, YearState } from '@/utils/recoilState';
 
 import SubjectCard from './SubjectCard';
@@ -24,8 +24,6 @@ const SubjectSessionCard: React.FC = ({}) => {
     { round: 2, mockExamId: 56, isTake: false },
     { round: 3, mockExamId: 89, isTake: true },
   ];
-
-  console.log(rounds);
 
   // api 살아나면 이부분 살려야함
   // useEffect(() => {

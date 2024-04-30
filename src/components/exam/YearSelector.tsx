@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { useGetExamInfoData } from '@/lib/hooks/ExamInfoFetcher';
+import { useGetCertificateYearListData, useGetExamInfoData } from '@/lib/hooks/useGetExamInfoFetcher';
 import { examYearList } from '@/types/global';
 import { YearState } from '@/utils/recoilState';
 
@@ -10,11 +10,16 @@ import { YearState } from '@/utils/recoilState';
 const YearSelector = ({}) => {
   // 과목의 연도의 상태를 관리하는 state
   const [selectedYear, setSelectedYear] = useRecoilState<Number | undefined>(YearState);
-  const { Data } = useGetExamInfoData();
+  // const { Data } = useGetExamInfoData();
+  const { Data } = useGetCertificateYearListData();
+
+  console.log(Data);
 
   // year정보만 추출하기
-  // const yearKeys = Object.keys(Data?.result?.examYearWithRounds || {});
-  const yearKeys = ['2020', '2021', '2023'];
+  const yearKeys = Object.keys(Data?.result || {});
+
+  console.log(yearKeys);
+  // const yearKeys = ['2020', '2021', '2023'];
   // 추출한 데이터 정수형으로 변환하기
   const yearsAsIntegers = yearKeys.map((year) => parseInt(year, 10));
 

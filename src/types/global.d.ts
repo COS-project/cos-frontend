@@ -47,7 +47,6 @@ export interface SpecificSubject {
 export interface ExamInfo {
   responseCode: string;
   result: {
-    // examYearWithRounds: Record<string, number[]>[];
     examYearWithRounds: examYearWithRounds[];
   };
 }
@@ -66,6 +65,21 @@ export interface MockExam {
   mockExamId: number;
   round: number;
   isTake: boolean;
+}
+
+// 여기부터
+// 자격증별 시험년도 리스트를 받기 위한 데이터 타입 정의
+export interface certificateYearList {
+  responseCode: string;
+  result: {
+    examYearList: certificateYear[];
+  };
+}
+
+// 자격증 시험의 연도 타입 정의
+export interface certificateYear {
+  year: string;
+  result: number[];
 }
 
 // 진행 바 만들 때 사용합니다.

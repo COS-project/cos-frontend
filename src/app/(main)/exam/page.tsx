@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Banner from '@/components/common/Banner';
-import Header from '@/components/common/Header';
 import SubjectSessionCard from '@/components/exam/SubjectList';
 import YearSelector from '@/components/exam/YearSelector';
 

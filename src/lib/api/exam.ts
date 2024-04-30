@@ -1,5 +1,5 @@
 import { sendRequest } from '@/lib/axios';
-import { SubjectResultRequests } from '@/types/global';
+import { certificateYearList, SubjectResultRequests } from '@/types/global';
 
 export const postSubjectResultRequestsList = async (subjectResultRequestsList: SubjectResultRequests[]) => {
   try {

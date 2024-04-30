@@ -2,11 +2,22 @@ import { AxiosResponse } from 'axios';
 import useSWR from 'swr';
 
 import { client, swrGetFetcher } from '@/lib/axios';
-import { ExamInfo, ExamResult } from '@/types/global';
+import { certificateYearList, ExamInfo, ExamResult } from '@/types/global';
 
 // 모의고사 연도와 회차 정보를 담은 데이터 (연도,회차)
 export const useGetExamInfoData = () => {
   const { data, error } = useSWR<ExamInfo>('/1/mock-exam-infos', swrGetFetcher);
+
+  return {
+    Data: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+};
+
+// 특정 자격증의 연도리스트 데이터 get하는 함수
+export const useGetCertificateYearListData = () => {
+  const { data, error } = useSWR<certificateYearList>('certificates/1/exam-years', swrGetFetcher);
 
   return {
     Data: data,

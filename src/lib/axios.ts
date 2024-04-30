@@ -1,17 +1,9 @@
 import axios from 'axios';
-import { string } from 'prop-types';
-
-import { atom } from 'recoil';
-import qs from 'qs';
-
-import { Param } from '@/types/global';
 
 const client = axios.create({
-  baseURL: 'http://cercat.o-r.kr/api/v1',
+  baseURL: 'http://cercat.o-r.kr/api/v2',
   headers: {
     'Content-type': 'application/json',
-    'Access-Token':
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0dVRVNUIl0sImVtYWlsIjoidGtkZ2g2NDI3QG5hdmVyLmNvbSIsInN1YiI6InRrZGdoNjQyN0BuYXZlci5jb20iLCJpYXQiOjE3MDk0NjEwNDUsImV4cCI6MTcwOTcyMDI0NX0.u_S6efRZoZUBcCxLcGG2Szio20CUMn2qsVLgNl5TCB8',
   },
   withCredentials: true,
 });
@@ -101,13 +93,15 @@ const sendRequest = async (config) => {
   }
 };
 
-export const swrGetFetcher = async (url) => {
+export const swrGetFetcher = async (url: string) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
 
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        // 'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token':
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzE0NDU2Nzk2LCJleHAiOjE3MTQ3MTU5OTZ9.ShOh3LgZPRa5vJJc3gdvcJ95z6qFBR71bJojyn1a2GE',
       },
       method: 'GET',
       url: url,
