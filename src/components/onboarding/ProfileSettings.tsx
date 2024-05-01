@@ -28,7 +28,7 @@ const ProfileSettings = (props: Props) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
     const formData = new FormData();
-    
+
     formData.append('file', imgRef.current.files[0]); // 파일을 formData에 추가
 
     const json = { nickname: e.target.nickname.value };
