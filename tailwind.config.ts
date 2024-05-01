@@ -43,3 +43,5 @@ const config: Config = {
   plugins: [],
 };
 export default config;
+
+// 주석

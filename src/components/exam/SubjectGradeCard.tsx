@@ -4,8 +4,10 @@ import { SpecificSubject } from '@/types/global';
 
 interface SubjectGradeCardProps {
   name: SpecificSubject['name'];
-  correctAnswer: SpecificSubject['correctAnswer'];
-  totalCorrect: SpecificSubject['totalProblems'];
+  // correctAnswer: SpecificSubject['correctAnswer'];
+  correctAnswer: number;
+  // totalCorrect: SpecificSubject['totalProblems'];
+  totalCorrect: number;
 }
 
 // 세부 과목별 성적을 나타내는 표 컴포넌트

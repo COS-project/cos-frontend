@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import { FormEvent, useEffect, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import FilterModal from '@/components/common/FilterModal';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
-import useGetMockExamYearsAndRounds from '@/lib/hooks/useGetMockExamYearsAndRounds';
-import { useRecoilState } from 'recoil';
-import { imagePreviewsState, imageUrlListState, createPostDataState } from '@/recoil/community/atom';
-import { postCommentary } from '@/lib/api/community';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
+import { postCommentary } from '@/lib/api/community';
+import useGetMockExamYearsAndRounds from '@/lib/hooks/useGetMockExamYearsAndRounds';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
+import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 
 const WriteExplanationPost = () => {
   const { examYearWithRounds } = useGetMockExamYearsAndRounds();
@@ -22,7 +22,7 @@ const WriteExplanationPost = () => {
   const imgRef = useRef<HTMLInputElement>(null);
 
   const [isEmpty, setIsEmpty] = useState(true);
-  const [isQuestionSequenceNumeric, setIsQuestionSequenceNumeric] = useState(true)
+  const [isQuestionSequenceNumeric, setIsQuestionSequenceNumeric] = useState(true);
   const [questionSequence, setQuestionSequence] = useState(0);
 
   /**

@@ -2,8 +2,8 @@
 
 'use client';
 
+import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { useRouter, useParams } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {

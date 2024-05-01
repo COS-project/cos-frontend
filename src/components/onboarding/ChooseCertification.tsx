@@ -6,9 +6,9 @@ import { useRecoilState } from 'recoil';
 
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 import DoneButton from '@/components/onboarding/DoneButton';
+import useGetAllCertificates from '@/lib/hooks/useGetAllCertificates';
 import { certificationsListState } from '@/recoil/atom';
 import { Certificate } from '@/types/global';
-import useGetAllCertificates from '@/lib/hooks/useGetAllCertificates';
 
 export interface ChooseCertificationProps {
   onNext: () => void;

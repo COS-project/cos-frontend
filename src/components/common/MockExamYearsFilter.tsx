@@ -1,6 +1,7 @@
-import { Certificate } from '@/types/global';
 import React from 'react';
+
 import { CreatePostDataType, YearsAndRounds } from '@/types/community/type';
+import { Certificate } from '@/types/global';
 
 interface Props {
   data: YearsAndRounds;
@@ -39,6 +40,6 @@ const MockExamYearsFilter = (props: Props) => {
         })
       )}
     </div>
-  )
-}
+  );
+};
 export default MockExamYearsFilter;
