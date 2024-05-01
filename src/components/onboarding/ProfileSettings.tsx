@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 
 import { patchProfileData } from '@/lib/api/onboarding';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
@@ -10,14 +10,9 @@ interface Props {
 }
 const ProfileSettings = (props: Props) => {
   const { onNext, onBefore } = props;
-  const { userProfile, isLoading, isError } = useGetUserProfile();
+  const { userProfile } = useGetUserProfile();
   const imgRef = useRef<HTMLInputElement>(null);
   const [uploadImage, setUploadImage] = useState();
-
-  // 모든 자격증 리스트 불러오는 함수
-  const getUserProfile = useCallback(async () => {
-    return userProfile;
-  }, []);
 
   // 이미지 미리보기 설정
   const handleImagePreview = async () => {
@@ -33,7 +28,7 @@ const ProfileSettings = (props: Props) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
     const formData = new FormData();
-
+    
     formData.append('file', imgRef.current.files[0]); // 파일을 formData에 추가
 
     const json = { nickname: e.target.nickname.value };
@@ -51,12 +46,6 @@ const ProfileSettings = (props: Props) => {
       console.error('폼 제출 중 오류 발생:', error);
     }
   };
-
-  useEffect(() => {
-    if (userProfile) {
-      getUserProfile();
-    }
-  }, []);
 
   return (
     <div>
