@@ -180,6 +180,9 @@ export interface InterestCertificate {
   interestPriority: string;
   certificateName?: string;
 }
+export interface PostInterestCertificate {
+  interestTargetList: InterestCertificate[];
+}
 //게시판 즐겨찾기
 export interface FavoriteBoard {
   certificate: {

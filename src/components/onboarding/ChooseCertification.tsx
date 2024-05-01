@@ -1,14 +1,15 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
-import DoneButton from '@/components/onboarding/DoneButton';
+import Max3ErrorModal from '@/components/onboarding/Max3ErrorModal';
+import NullErrorModal from '@/components/onboarding/NullErrorModal';
+import useGetAllCertificates from '@/lib/hooks/useGetAllCertificates';
 import { certificationsListState } from '@/recoil/atom';
 import { Certificate } from '@/types/global';
-import useGetAllCertificates from '@/lib/hooks/useGetAllCertificates';
 
 export interface ChooseCertificationProps {
   onNext: () => void;
@@ -18,9 +19,19 @@ export interface ChooseCertificationProps {
 const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBefore }) => {
   const router = useRouter();
   const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
-
+  const [isNullErrorModalOpen, setIsNullErrorModalOpen] = useState(false);
+  const [isMax3ErrorModalOpen, setIsMax3ErrorModalOpen] = useState(false);
   // 데이터 패칭
   const { certificationsList, isLoading, isError } = useGetAllCertificates();
+
+  /**
+   * 선택된 자격증이 하나도 없는지 검사하는 함수 -> 하나도 없으면 에러 발생
+   * @param certificates 선택된 자격증이 담긴 리스트
+   */
+  const allIsClickFalse = (certificates: Certificate[]) => {
+    return certificates.every((certificate) => !certificate.isClick);
+  };
+
   /**
    * Recoil 상태를 초기화하는 함수
    * @param apiResponse Certification id와 name
@@ -76,7 +87,15 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
   }, [isLoading, isError]);
 
   return (
-    <div>
+    <div className={'relative'}>
+      {isNullErrorModalOpen ? (
+        <NullErrorModal isErrorModalOpen={isNullErrorModalOpen} setIsErrorModalOpen={setIsNullErrorModalOpen} />
+      ) : null}
+      {isMax3ErrorModalOpen ? (
+        <Max3ErrorModal
+          isErrorModalOpen={isMax3ErrorModalOpen}
+          setIsErrorModalOpen={setIsMax3ErrorModalOpen}></Max3ErrorModal>
+      ) : null}
       {/* TODO: Header */}
       <div className="flex justify-between">
         <button onClick={onBefore}>이전</button>
@@ -102,6 +121,8 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
                     certificateId={certification.certificateId}
                     certificateName={certification.certificateName}
                     isClickState={certification.isClick}
+                    isErrorModalOpen={isMax3ErrorModalOpen}
+                    setIsErrorModalOpen={setIsMax3ErrorModalOpen}
                     icon={chooseClassificationItemIcon(certification.isClick)}>
                     {certification.certificateName}
                   </CertificationClassificationItem>
@@ -112,11 +133,24 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
       </div>
 
       {/* 완료 버튼 */}
-      <DoneButton onNext={onNext}>완료</DoneButton>
+      <button
+        className={
+          'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0 hover:bg-primary transition'
+        }
+        onClick={() => {
+          if (allIsClickFalse(allCertifications)) {
+            setIsNullErrorModalOpen(!isNullErrorModalOpen);
+          } else {
+            onNext();
+          }
+        }}>
+        <div className="text-white text-h3 py-[25px]">완료</div>
+      </button>
     </div>
   );
 };
 export default ChooseCertification;
+
 function CheckIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
