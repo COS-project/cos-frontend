@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { Round, Session, SubjectInfo } from '@/types/global';
+import { Session, SubjectInfo } from '@/types/global';
 import { selectedSessionState, selectedSubjectState } from '@/utils/recoilState';
 
 import SessionModal from './SessionModal';
@@ -44,14 +44,18 @@ const SubjectCard: React.FC<SubjectCard> = ({ round, score, total, isTaken }) =>
 
   return (
     <div>
-      <div className="w-[90%] mx-auto p-3 border border-gray2 rounded-3xl">
+      <div className="mx-2 p-3 border border-gray2 rounded-3xl">
         <div className="text-black font-bold text-center">{`${round}회차`}</div>
         <div className="border-t border-gray1 my-2"></div>
         <div className="text-black text-center text-h7">최근 점수</div>
-        <ul className="flex text-center justify-center">
-          <li className="font-bold text-h2">{`${score}점`}</li>
-          <div className="mt-1 text-gray3">{`/${total}점`}</div>
-        </ul>
+        {isTaken ? (
+          <ul className="flex text-center justify-center">
+            <li className="font-bold text-h2">{`${score}점`}</li>
+            <div className="mt-1 text-gray3">{`/${total}점`}</div>
+          </ul>
+        ) : (
+          <p className="text-center text-h2 font-bold">미응시</p>
+        )}
         <button onClick={() => openSessionModal()} className="w-full bg-gray1 rounded-3xl py-3 mt-4 text-h6 font-bold">
           시험 보기
         </button>

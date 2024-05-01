@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
-
-import { CreatePostDataType } from '@/types/community/type';
+import { CreatePostDataType, YearsAndRounds } from '@/types/community/type';
+import { Certificate } from '@/types/global';
 
 interface Props {
   data: [];

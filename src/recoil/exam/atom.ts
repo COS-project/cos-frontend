@@ -1,10 +1,10 @@
 'use client';
 
+import { extend } from 'dayjs';
 import { atom } from 'recoil';
 
-import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
-import { extend } from 'dayjs';
 import SubjectList from '@/components/exam/SubjectList';
+import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
 
 export const subjectResultRequestsList = atom<SubjectResultRequests[]>({
   key: 'subjectResultRequestsList',

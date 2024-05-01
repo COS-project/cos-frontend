@@ -5,7 +5,7 @@ import { swrGetFetcher } from '@/lib/axios';
 import { userProfile } from '@/types/global';
 
 const useGetUserProfile = () => {
-  const { data, error } = useSWR<AxiosResponse<userProfile>>('/user/me', swrGetFetcher);
+  const { data, error } = useSWR<AxiosResponse<userProfile>>('/users/me', swrGetFetcher);
   return {
     userProfile: data ? data.result : null,
     isLoading: !error && !data,

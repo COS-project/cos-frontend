@@ -3,10 +3,11 @@
 
 'use client';
 
+import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import CommunityProfile from './CommunityProfile';
+
 import CommentContent from './CommentContent';
+import CommunityProfile from './CommunityProfile';
 
 interface Props {
   onClick: () => void;
