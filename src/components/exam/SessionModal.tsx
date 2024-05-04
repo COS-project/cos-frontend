@@ -50,9 +50,9 @@ const SessionModal: React.FC<SessionModalProps> = ({ closeModal, openTimerModal,
                 {/* {subjects?.map((subject, index) => (
                   <SubjectGradeCard key={index} name={'하이'} correctAnswer={12} totalCorrect={50} />
                 ))} */}
-                <SubjectGradeCard name={'하이'} correctAnswer={12} totalCorrect={50} />
-                <SubjectGradeCard name={'하이'} correctAnswer={12} totalCorrect={50} />
-                <SubjectGradeCard name={'하이'} correctAnswer={12} totalCorrect={50} />
+                <SubjectGradeCard name={'데이터 베이스'} correctAnswer={12} totalCorrect={50} />
+                <SubjectGradeCard name={'소프트웨어'} correctAnswer={12} totalCorrect={50} />
+                <SubjectGradeCard name={'네트워크'} correctAnswer={12} totalCorrect={50} />
               </div>
               <div className="flex justify-center">
                 <button

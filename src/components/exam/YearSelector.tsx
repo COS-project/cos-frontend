@@ -10,7 +10,7 @@ import { YearState } from '@/utils/recoilState';
 const YearSelector = ({}) => {
   // 과목의 연도의 상태를 관리하는 state
   const [selectedYear, setSelectedYear] = useRecoilState<Number | undefined>(YearState);
-  const { Data } = useGetCertificateYearListData();
+  const { Data } = useGetCertificateYearListData(1);
 
   // year정보만 추출하기
   const yearKeys = Data?.result;

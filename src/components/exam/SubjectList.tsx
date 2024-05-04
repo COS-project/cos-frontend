@@ -19,22 +19,10 @@ const SubjectSessionCard: React.FC = ({}) => {
   // api 살아나면 살릴부분
   // const rounds = YearData?.result;
 
-  console.log(YearData);
+  console.log(YearData?.result[0]);
   console.log(selectedYear);
 
-  const rounds = [
-    { round: 1, mockExamId: 23, isTake: true },
-    { round: 2, mockExamId: 56, isTake: false },
-    { round: 3, mockExamId: 89, isTake: true },
-  ];
-
-  // api 살아나면 이부분 살려야함
-  // useEffect(() => {
-  //   if (rounds) {
-  //     const roundArray = rounds.map((item) => item.round);
-  //     setRoundArrays(roundArray);
-  //   }
-  // }, [rounds, setRoundArrays]);
+  const rounds = YearData?.result;
 
   if (!rounds) {
     return (

@@ -16,8 +16,8 @@ export const useGetExamInfoData = () => {
 };
 
 // 특정 자격증의 연도리스트 데이터 get하는 함수
-export const useGetCertificateYearListData = () => {
-  const { data, error } = useSWR<certificateYearList>('certificates/1/exam-years', swrGetFetcher);
+export const useGetCertificateYearListData = (examId?: Number) => {
+  const { data, error } = useSWR<certificateYearList>(`certificates/${examId}/exam-years`, swrGetFetcher);
 
   return {
     Data: data,
