@@ -21,8 +21,7 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
       <div className={'p-5 fixed z-20 inset-0 flex justify-center bg-black bg-opacity-60'}>
         <div className={'w-[100%]'}>
           <div className={'flex flex-col bg-white justify-center items-center rounded-3xl p-4 gap-y-7'}>
-
-            <div className={'rounded-full bg-gray2 w-[100px] h-[6px]'}/>
+            <div className={'rounded-full bg-gray2 w-[100px] h-[6px]'} />
 
             <h2 className={'flex flex-col items-center gap-y-1'}>
               <div className={'font-bold text-h3'}>문항 번호 전체보기</div>
@@ -50,7 +49,9 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
                           setQuestionIdx(userAnswer.questionId - 1);
                           toggleQuestionModal();
                         }}
-                        className={'flex justify-center items-center bg-[#6283FD]/30 w-12 h-12 rounded-[8px]'}>{userAnswer.questionId}</div>
+                        className={'flex justify-center items-center bg-[#6283FD]/30 w-12 h-12 rounded-[8px]'}>
+                        {userAnswer.questionId}
+                      </div>
                     ) : (
                       <div
                         key={userAnswer.questionId}
@@ -58,7 +59,9 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
                           setQuestionIdx(userAnswer.questionId - 1);
                           toggleQuestionModal();
                         }}
-                        className={'flex justify-center items-center bg-second text-white w-12 h-12 rounded-[8px]'}>{userAnswer.questionId}</div>
+                        className={'flex justify-center items-center bg-second text-white w-12 h-12 rounded-[8px]'}>
+                        {userAnswer.questionId}
+                      </div>
                     );
                   })
                 : null}

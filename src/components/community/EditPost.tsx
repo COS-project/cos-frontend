@@ -364,8 +364,8 @@ const EditPost = () => {
           !postDetailData?.hasOwnProperty('mockExam') && !postDetailData?.hasOwnProperty('recommendTags')
             ? handleNormalAndCommentarySubmit
             : postDetailData?.hasOwnProperty('mockExam')
-              ? handleNormalAndCommentarySubmit
-              : handleTipSubmit
+            ? handleNormalAndCommentarySubmit
+            : handleTipSubmit
         }>
         <button type={'submit'} className={'p-3 bg-second text-white'}>
           저장

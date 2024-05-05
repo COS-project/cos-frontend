@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 
 import useCalculateScore from '@/hooks/useCalculateScore';
 import { postSubjectResultRequestsList } from '@/lib/api/exam';
+import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import {
   questionIndex,
   stopwatchIsPaused,

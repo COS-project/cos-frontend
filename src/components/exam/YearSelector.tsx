@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { useGetExamInfoData, useGetExamYearData } from '@/lib/hooks/ExamInfoFetcher';
+import { useGetExamInfoData } from '@/lib/hooks/ExamInfoFetcher';
 import { examYearList } from '@/types/global';
 import { YearState } from '@/utils/recoilState';
 
@@ -13,7 +13,8 @@ const YearSelector = ({}) => {
   const { Data } = useGetExamInfoData();
 
   // year정보만 추출하기
-  const yearKeys = Object.keys(Data?.result?.examYearWithRounds || {});
+  // const yearKeys = Object.keys(Data?.result?.examYearWithRounds || {});
+  const yearKeys = ['2020', '2021', '2023'];
   // 추출한 데이터 정수형으로 변환하기
   const yearsAsIntegers = yearKeys.map((year) => parseInt(year, 10));
 
@@ -45,18 +46,13 @@ const YearSelector = ({}) => {
         name="subject"
         value={selectedYear?.toString() || ''}
         onChange={handleSubjectChange}
-        className="mx-auto mt-1 text-h4 font-bold block w-[100%] p-3 bg-gray0 rounded-xl shadow-sm focus:outline-none focus:ring focus:border-blue-300 sm:text-sm">
+        className="mx-auto mt-1 text-h4 font-bold block w-[95%] p-3 bg-gray0 rounded-xl shadow-sm focus:outline-none focus:ring focus:border-blue-300 sm:text-sm">
         {uniqueYears.map((year, index) => (
           <option key={index} value={year}>
             {year}년 기출 모의고사
           </option>
         ))}
       </select>
-      {/* <div>
-        <div className="mt-4 flex flex-wrap">
-          <SubjectSessionCard />
-        </div>
-      </div> */}
     </div>
   );
 };
