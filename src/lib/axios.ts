@@ -101,7 +101,7 @@ export const swrGetFetcher = async (url: string) => {
       headers: {
         // 'Access-Token': localStorage.getItem('accessToken'),
         'Access-Token':
-          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzE0Nzk1NzMyLCJleHAiOjE3MTUwNTQ5MzJ9.jD98o2eyV_m0x9h90ssz775jcMteJTqeRkvAbgxn5Co',
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzE0OTA5NjMwLCJleHAiOjE3MTUxNjg4MzB9.P_yc6-nd9k_O4sl4wTDvRW15FKGOOAF51X_ilhQJXJY',
       },
       method: 'GET',
       url: url,
