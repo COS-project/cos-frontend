@@ -1,14 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import FilterModal from '@/components/common/FilterModal';
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
 import useGetInterestCertificates from '@/lib/hooks/useGetInterestCertificates';
 import { goalSettingCertificateId, goalSettingCertificateName } from '@/recoil/home/atom';
-import { useRecoilState } from 'recoil';
-import { GoalSettingInfo } from '@/types/global';
 
 /**
  목표 설정 페이지 중 자격증 선택 컴포넌트 입니다.
@@ -47,11 +46,6 @@ const SelectCertification = () => {
   useEffect(() => {
     fetchDataAndUpdateState();
   }, []);
-
-  useEffect(() => {
-    console.log('자격증이름', selectedCertificationName);
-    console.log('자격증 아이디', selectedCertificationId);
-  }, [selectedCertificationName, selectedCertificationId]);
 
   return (
     <div className="flex flex-col gap-y-2">

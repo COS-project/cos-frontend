@@ -3,8 +3,6 @@
 import { GoalSettingInfo } from '@/types/global';
 
 import { sendRequest } from '../axios';
-import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
-import { useEffect } from 'react';
 
 export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo, certificateId: number) => {
   try {

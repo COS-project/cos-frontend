@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/home/goal-setting/SettingNewGoalModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/onboarding/CertificationClassificationItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/onboarding/CertificationClassificationItem.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/onboarding/CertificationPriority.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/onboarding/CertificationPriority.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/onboarding/ChooseCertification.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/onboarding/ChooseCertification.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/onboarding/ProfileSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/onboarding/ProfileSettings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/api/onboarding.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/onboarding.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetUserProfile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetUserProfile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/recoil/onboarding/atom.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/recoil/onboarding/atom.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/global.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/home/goal-setting/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/goal-setting/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/goal-setting/SelectCertification.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-setting/SelectCertification.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/home.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/home.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +34,7 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;bug-onboarding&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;bug-goal__setting&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -107,6 +103,9 @@
       <workItem from="1712482242705" duration="20698000" />
       <workItem from="1712878931687" duration="11236000" />
       <workItem from="1714503983170" duration="6598000" />
+      <workItem from="1714562222791" duration="8739000" />
+      <workItem from="1714611962110" duration="1329000" />
+      <workItem from="1714820712763" duration="6383000" />
     </task>
     <servers />
   </component>
