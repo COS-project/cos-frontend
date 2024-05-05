@@ -16,7 +16,7 @@ const SettingNewGoalModal = (props: Props) => {
     <>
       <div
         className={
-          'absolute left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-black bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
+          'absolute left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
         }>
         <div onClick={() => setIsSettingNewModal(!isSettingNewGoalModal)} className={'flex justify-end items-center'}>
           <div className={'text-white text-h6'}>닫기</div>
