@@ -109,8 +109,8 @@ const GoalSetting = () => {
           fetchDataAndUpdateState={fetchDataAndUpdateState}
           setIsResetButtonClick={setIsResetButtonClick}
           resetData={resetData}
-          isSettingNewGoalModal={isSettingNewGoalModalOpen}
-          setIsSettingNewModal={setIsSettingNewGoalModalOpen}
+          isSubmitConfirmationModalOpen={isSettingNewGoalModalOpen}
+          setIsSubmitConfirmationModalOpen={setIsSettingNewGoalModalOpen}
         />
       ) : null}
       {isResetButtonClick ? (

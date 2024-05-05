@@ -219,7 +219,7 @@ export interface UserAnswerRequests {
 export interface SubjectResultRequests {
   subjectId: number;
   score: number;
-  userAnswerRequests: UserAnswerRequests[];
+  createUserAnswerRequests: UserAnswerRequests[];
 }
 
 //모의고사 시험 문제, 선지 전체

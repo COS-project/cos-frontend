@@ -1,10 +1,10 @@
 'use client';
 
+import { extend } from 'dayjs';
 import { atom } from 'recoil';
 
-import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
-import { extend } from 'dayjs';
 import SubjectList from '@/components/exam/SubjectList';
+import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
 
 export const subjectResultRequestsList = atom<SubjectResultRequests[]>({
   key: 'subjectResultRequestsList',
@@ -50,4 +50,14 @@ export const stopwatchTime = atom<number>({
 export const stopwatchIsRunning = atom<boolean>({
   key: 'stopwatchIsRunning',
   default: true,
+});
+
+export const timerIsPaused = atom<boolean>({
+  key: 'timerIsPaused',
+  default: false,
+});
+
+export const stopwatchIsPaused = atom<boolean>({
+  key: 'stopwatchIsPaused',
+  default: false,
 });
