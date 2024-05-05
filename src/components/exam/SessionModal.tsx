@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 
 import { Session } from '@/types/global';
@@ -13,9 +13,10 @@ interface SessionModalProps {
   round: number;
   main: number;
   total: number;
+  isTaken: boolean;
 }
 
-const SessionModal: React.FC<SessionModalProps> = ({ closeModal, openTimerModal, round, main, total }) => {
+const SessionModal: React.FC<SessionModalProps> = ({ closeModal, openTimerModal, round, main, total, isTaken }) => {
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
 
   return (
@@ -36,10 +37,14 @@ const SessionModal: React.FC<SessionModalProps> = ({ closeModal, openTimerModal,
               <div className="flex justify-between my-3">
                 <div>
                   <div className="font-bold text-h6">최근 점수</div>
-                  <div className="flex items-end">
-                    <div className="font-bold text-h1">{`${main}점`}</div>
-                    <div className="text-gray3 text-h6 mb-1">/{`${total}점`}</div>
-                  </div>
+                  {isTaken ? (
+                    <div className="flex items-end">
+                      <div className="font-bold text-h1">{`${main}점`}</div>
+                      <div className="text-gray3 text-h6 mb-1">/{`${total}점`}</div>
+                    </div>
+                  ) : (
+                    <div className="font-bold text-h1">미응시</div>
+                  )}
                 </div>
                 <Link href={'/exam/report'} className="h-1/2 bg-gray0 rounded-3xl text-h6 font-bold p-2">
                   성적 리포트 ➚

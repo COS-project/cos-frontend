@@ -67,6 +67,7 @@ const SubjectCard: React.FC<SubjectCard> = ({ round, score, total, isTaken }) =>
           round={round}
           main={score}
           total={total}
+          isTaken={false}
         />
       )}
       {/* 타이머 모달에 대한 코드 */}
