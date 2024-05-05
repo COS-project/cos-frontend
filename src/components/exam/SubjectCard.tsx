@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { Session, SubjectInfo } from '@/types/global';
-import { selectedSessionState, selectedSubjectState } from '@/utils/recoilState';
+import { selectedSessionState } from '@/utils/recoilState';
 
 import SessionModal from './SessionModal';
 import TimerModal from './TimerModal';
@@ -15,17 +14,12 @@ interface SubjectCard {
 }
 
 const SubjectCard: React.FC<SubjectCard> = ({ round, score, total, isTaken }) => {
-  const [selectedSubject, setSelectedSubject] = useRecoilState<SubjectInfo | null>(selectedSubjectState);
-  const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
-
   // 모달 관련 states
   const [sessionModalIsOpen, setSessionModalIsOpen] = useState(false);
   const [timerModalIsOpen, setTimerModalIsOpen] = useState(false);
 
   // 모달이 열릴때 세션 상태 설정
   const openSessionModal = () => {
-    // setSelectedSession(session);
-    // setSelectedRound(round);
     setSessionModalIsOpen(true);
   };
 
@@ -38,7 +32,6 @@ const SubjectCard: React.FC<SubjectCard> = ({ round, score, total, isTaken }) =>
   };
 
   const closeTimerModal = () => {
-    setSelectedSession(null);
     setTimerModalIsOpen(false);
   };
 

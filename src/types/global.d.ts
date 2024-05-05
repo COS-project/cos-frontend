@@ -9,64 +9,6 @@ export interface MenuList {
   path: string;
 }
 
-// 과목에 대한 정보
-export interface SubjectInfo {
-  // 과목의 연도 정보
-  year: number;
-  // 회차 리스트
-  sessions: Session[];
-}
-
-// 과목 - 회차에 대한 정보
-export interface Session {
-  // 회차 정보 ex) 2023년 - 1회차
-  sessionNumber: number;
-  // 총 맞춘 정답 개수
-  totalCorrect: number;
-  // 총 문제 개수
-  totalProblem: number;
-  // 과목내 세부과목에 대한 정보를 담고있음
-  subjects: SpecificSubject[];
-}
-
-// 과목별 세부 과목 내용을 담는 자료 Ex) 정보처리기사 - 데이터베이스 과목
-export interface SpecificSubject {
-  // 과목명
-  name: string;
-  // 정답 개수
-  correctAnswer: Number | null;
-  // 전체 문제 수
-  totalProblems: Number | null;
-  // 평균 머문 시간 (기존)
-  averageTime: Number | null;
-  // 과목에 머문 시간
-  takenTime: Number | null;
-}
-
-// api 기준
-export interface ExamInfo {
-  responseCode: string;
-  result: {
-    examYearWithRounds: examYearWithRounds[];
-  };
-}
-
-export interface examYearWithRounds {
-  year: string;
-  rounds: number[];
-}
-
-export interface ExamResult {
-  responseCode: string;
-  result: MockExam[];
-}
-
-export interface MockExam {
-  mockExamId: number;
-  round: number;
-  isTake: boolean;
-}
-
 // 여기부터
 // 자격증별 시험년도 리스트를 받기 위한 데이터 타입 정의
 export interface certificateYearList {

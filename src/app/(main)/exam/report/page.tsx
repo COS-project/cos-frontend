@@ -1,17 +1,13 @@
 'use client';
 import React from 'react';
-import { useRecoilState } from 'recoil';
 
 import CorrectRateGraph from '@/components/exam/CorrectRateGraph';
 import ReportCard from '@/components/exam/ReportCard';
 import RoundFilter from '@/components/exam/RoundFilter';
 import StayTimeGraph from '@/components/exam/StayTimeGraph';
 import SubjectGradeCard from '@/components/exam/SubjectGradeCard';
-import { selectedRoundState } from '@/utils/recoilState';
 
 const Report: React.FC = () => {
-  const [selectedRound, setSelectedRound] = useRecoilState<Number | null>(selectedRoundState);
-
   const subjects = [
     { name: '컴퓨터 일반', correctAnswer: 75, totalProblems: 100 },
     { name: '스프레드시트', correctAnswer: 60, totalProblems: 80 },

@@ -1,12 +1,8 @@
 import React from 'react';
 
-import { SpecificSubject } from '@/types/global';
-
 interface SubjectGradeCardProps {
-  name: SpecificSubject['name'];
-  // correctAnswer: SpecificSubject['correctAnswer'];
+  name: string;
   correctAnswer: number;
-  // totalCorrect: SpecificSubject['totalProblems'];
   totalCorrect: number;
 }
 

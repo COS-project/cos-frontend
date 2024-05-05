@@ -2,7 +2,6 @@ import Link from 'next/link';
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { Session } from '@/types/global';
 import { selectedSessionState } from '@/utils/recoilState';
 
 import SubjectGradeCard from './SubjectGradeCard';
@@ -17,8 +16,6 @@ interface SessionModalProps {
 }
 
 const SessionModal: React.FC<SessionModalProps> = ({ closeModal, openTimerModal, round, main, total, isTaken }) => {
-  const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
-
   return (
     <div>
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30">

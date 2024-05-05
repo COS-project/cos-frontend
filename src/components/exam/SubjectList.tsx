@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 
 import { useGetExamYearData } from '@/lib/hooks/useGetExamInfoFetcher';
@@ -37,7 +37,7 @@ const SubjectSessionCard: React.FC = ({}) => {
   return (
     <>
       <div className="flex flex-wrap mt-5">
-        {rounds?.map((round, index) => {
+        {rounds?.map((round: any, index: any) => {
           if (round.round) {
             return (
               <div key={index} className="w-1/2 mb-4">
