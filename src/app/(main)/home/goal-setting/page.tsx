@@ -63,8 +63,8 @@ const GoalSetting = () => {
   const resetGoalSettingState = () => {
     return {
       goalScore: 100,
-      prepareStartDateTime: '2024-01-21T06:45:07.833Z',
-      prepareFinishDateTime: '2024-01-21T06:45:07.833Z',
+      prepareStartDateTime: new Date().toISOString(),
+      prepareFinishDateTime: new Date().toISOString(),
       goalPrepareDays: 0,
       mockExamsPerDay: 0,
       goalMockExams: 0,
