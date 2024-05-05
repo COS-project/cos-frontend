@@ -34,11 +34,11 @@ const TimerModal: React.FC<SessionModalProps> = ({ closeTimerModal, closeSession
         <div className="bg-white rounded-3xl">
           <div className="w-[90%] mx-auto">
             <h2 className="flex justify-center text-h4 font-bold p-4">
-              <div>{`${selectedSession?.sessionNumber}회차`}</div>
+              <div>{`n회차`}</div>
             </h2>
             <div className="border-t border-gray1"></div>
             <div className="flex justify-center font-bold my-4">시험 시간 설정</div>
-            <div className="flex justify-center rounded-3xl bg-gray1 p-4">여기에 타이머가 들어가야하는데</div>
+            <div className="flex justify-center rounded-3xl bg-gray1 p-4">00시간 0분</div>
             <div className="flex justify-center mt-3">
               <label className="text-h5">
                 <input className="mx-2" type="checkbox" checked={isChecked} onChange={handleCheckboxChange} />
