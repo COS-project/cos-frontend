@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -17,7 +16,6 @@ export interface ChooseCertificationProps {
 }
 
 const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBefore }) => {
-  const router = useRouter();
   const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
   const [isNullErrorModalOpen, setIsNullErrorModalOpen] = useState(false);
   const [isMax3ErrorModalOpen, setIsMax3ErrorModalOpen] = useState(false);

@@ -1,11 +1,8 @@
 'use client';
 
-import { extend } from 'dayjs';
 import { atom } from 'recoil';
 
 import { CreatePostDataType, EditPostDataType, PopularSearchKeyword, RecentSearchResult } from '@/types/community/type';
-import SubjectList from '@/components/exam/SubjectList';
-import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
 
 export const imagePreviewsState = atom<string[]>({
   key: 'imagePreviewsState',
