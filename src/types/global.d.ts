@@ -177,19 +177,28 @@ export interface Certificate {
 }
 
 //온보딩 흥미 자격증 타입
-export interface InterestCertificate {
+export interface InterestCertificateOnboarding {
   certificateId: number;
   interestPriority: string;
   certificateName?: string;
 }
 export interface PostInterestCertificate {
-  interestTargetList: InterestCertificate[];
+  interestTargetList: InterestCertificateOnboarding[];
 }
 //게시판 즐겨찾기
 export interface FavoriteBoard {
   certificateId: number;
   boardName: string;
   isFavorite: boolean;
+}
+
+//관심 자격증
+export interface InterestCertificate {
+  certificate: {
+    certificateId: number;
+    certificateName: string;
+  };
+  interestPriority: string;
 }
 
 //userProfile

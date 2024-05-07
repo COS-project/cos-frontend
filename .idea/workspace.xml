@@ -5,14 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/mypage/MyPageHeader.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/mypage/MyPageItem.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetBoardList.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/types/mypage/type.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/mypage/ItemContents.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/MockExamYearsFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/MockExamYearsFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/WriteExplanationPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/WriteExplanationPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/WriteNormalPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/WriteNormalPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/WriteTipPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/WriteTipPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamYearsAndRounds.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamYearsAndRounds.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/myComment/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/comment/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/myWriting/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/writing/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/profileSetting/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/profile/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/goal-setting/SelectCertification.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-setting/SelectCertification.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/onboarding/CertificationPriority.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/onboarding/CertificationPriority.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/onboarding.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/onboarding.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/global.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +47,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "fix-post__creation__bug",
+    "git-widget-placeholder": "feature/connect-mypage-api",
     "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
