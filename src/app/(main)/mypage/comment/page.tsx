@@ -1,46 +1,93 @@
+'use client';
+
+import React, { SVGProps, useState } from 'react';
+
+import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import MyPageFilter from '@/components/mypage/MyPageFilter';
+import Post from '@/components/mypage/Post';
+import { filterContent } from '@/utils/mypage/FilterContent';
 
 export default function MyComment() {
+  // 최신순:createdAt, 인기순:popular
+  const [selectedFilterContent, setSelectedFilterContent] = useState('최신순');
+  const [isOpenFilter, setIsOpenFilter] = useState(false);
+  const commentaryTopElement = () => {
+    return (
+      <div className={'flex gap-x-[6px] pb-3'}>
+        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>2023년도</div>
+        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>1회차</div>
+        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>23번</div>
+      </div>
+    );
+  };
+
+  const tipTopElement = () => {
+    return (
+      <div className={'pb-2'}>
+        <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
+      </div>
+    );
+  };
+
+  const bottomElement = () => {
+    return (
+      <div className={'flex justify-end gap-x-2'}>
+        <button className={'bg-gray0 py-2 px-4 rounded-[12px]'}>수정</button>
+        <button className={'bg-black text-white py-2 px-4 rounded-[12px]'}>삭제</button>
+      </div>
+    );
+  };
+
   return (
     <>
-      <div className="w-full mt-2">
-        <header className="flex justify-between items-center px-[1.25rem] py-[0.25rem] text-h4">
-          <a href="../mypage">{'<'}</a>
-          <div>내가 쓴 댓글</div>
-          <div>...</div>
-        </header>
-      </div>
-
-      <div className="w-full bg-gray1 mt-3 px-3 py-3 min-h-screen">
-        <select className="rounded-2xl text-h6 text-gray4">
-          <option key="all" value="all">
-            전체
-          </option>
-          <option key="new" value="new">
-            최신순
-          </option>
-          <option key="old" value="old">
-            작성순
-          </option>
-        </select>
-        {/* 여기가 박스안에 내용들 담아놓은곳 아래.. */}
-        <div className="w-full bg-white rounded-2xl mt-3 py-2">
-          <div className="flex justify-between px-3 py-[0.25rem]">
-            <div className="text-h6 ml-3">nickname</div>
-            <div className="flex justify-between">
-              <div className="rounded-2xl text-h6 border border-gray4 py-[2px] px-1 text-gray4 mx-2">
-                준비기간 6개월 ↑
-              </div>
-              <div className="rounded-2xl text-h6 text-white bg-point py-[2px] px-1">조금 어려워요</div>
-            </div>
+      <Header headerType={'dynamic'} title={'내가 작성한 댓글'} rightElement={<EmptyIcon />} />
+      <div className={'py-6 bg-gray0 min-h-screen'}>
+        <div className={'relative px-5 flex flex-col gap-y-4 '}>
+          {/*필터*/}
+          <div className={' w-fit flex px-3 py-1 rounded-full bg-white '}>
+            <span className={'text-gray4 text-h6'}>{selectedFilterContent}</span>
+            {isOpenFilter ? (
+              <ActivationIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
+            ) : (
+              <DisableIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
+            )}
           </div>
-          <div>
-            <div className="px-6 mt-2">
-              <div className="text-h3">여기에는 제목이 들어갈거고</div>
-              <div className="text-h6 text-black">여기에는 내용이 들어갈거고</div>
-              <div className="text-h7"> 여기에 좋아요랑 댓글 수가 들어갈거고.</div>
-              <div className="text-gray4 text-h7">작성일 2024.03.16</div>
-            </div>
+          {isOpenFilter ? (
+            <MyPageFilter
+              isOpenFilter={isOpenFilter}
+              setSelectedFilterContent={setSelectedFilterContent}
+              setIsOpenFilter={setIsOpenFilter}
+              data={filterContent}
+            />
+          ) : null}
+          <div className={'flex flex-col gap-y-4'}>
+            <Post
+              content={'어려운 문제였어요. 데이터베이스 관계형 데이터 베이스...'}
+              title={'스프레드시트 23번 문제'}
+              commentCount={32}
+              bottomElement={bottomElement}
+              createdAt={'2023.7.12'}
+              imageUrl={'/황유림.jpg'}
+              likeCount={12}
+              topElement={commentaryTopElement}></Post>
+            <Post
+              content={'어려운 문제였어요. 데이터베이스 관계형 데이터 베이스...'}
+              title={'스프레드시트 23번 문제'}
+              commentCount={32}
+              bottomElement={bottomElement}
+              createdAt={'2023.7.12'}
+              imageUrl={'/황유림.jpg'}
+              likeCount={12}></Post>
+            <Post
+              content={'어려운 문제였어요. 데이터베이스 관계형 데이터 베이스...'}
+              title={'스프레드시트 23번 문제'}
+              commentCount={32}
+              bottomElement={bottomElement}
+              createdAt={'2023.7.12'}
+              imageUrl={'/황유림.jpg'}
+              likeCount={12}
+              topElement={tipTopElement}></Post>
           </div>
         </div>
       </div>
@@ -48,3 +95,36 @@ export default function MyComment() {
     </>
   );
 }
+const DisableIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none" {...props}>
+    <path stroke="#727375" strokeLinecap="round" d="M13.5 9 10 12 6.5 9" />
+  </svg>
+);
+const ActivationIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none" {...props}>
+    <path stroke="#727375" strokeLinecap="round" d="M6.5 12 10 9l3.5 3" />
+  </svg>
+);
+
+const EmptyIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none" {...props}>
+    <mask
+      id="a"
+      width={32}
+      height={32}
+      x={0}
+      y={0}
+      maskUnits="userSpaceOnUse"
+      style={{
+        maskType: 'alpha',
+      }}>
+      <path fill="#D9D9D9" d="M0 0h32v32H0z" />
+    </mask>
+    <g mask="url(#a)">
+      <path
+        fill="#fff"
+        d="m26.11 26.867-8.474-8.474a7 7 0 0 1-2.306 1.349 7.8 7.8 0 0 1-2.64.468q-3.19 0-5.402-2.206-2.211-2.207-2.211-5.384T7.283 7.23q2.207-2.21 5.383-2.21t5.397 2.207q2.22 2.208 2.22 5.385 0 1.378-.492 2.692a7.2 7.2 0 0 1-1.347 2.28l8.48 8.45zm-13.424-7.785q2.721 0 4.595-1.87 1.875-1.869 1.875-4.597 0-2.727-1.875-4.597t-4.595-1.87q-2.726 0-4.604 1.87-1.877 1.871-1.877 4.597 0 2.728 1.877 4.597t4.603 1.87"
+      />
+    </g>
+  </svg>
+);

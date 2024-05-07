@@ -2,7 +2,7 @@ import { ItemType } from '@/types/mypage/type';
 
 export const boardContents: ItemType[] = [
   { title: '내가 작성한 글', path: '/mypage/writing' },
-  { title: '내가 작성한 댓글', path: '/mypage/profile' },
+  { title: '내가 작성한 댓글', path: '/mypage/comment' },
 ];
 
 export const goalContents: ItemType[] = [{ title: '이전 목표', path: '/home/goal-setting' }];
