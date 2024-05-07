@@ -5,24 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/mypage/MyPageHeader.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/mypage/MyPageItem.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetBoardList.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types/mypage/type.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/mypage/ItemContents.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/황유림.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/mypage/MyWritingMenu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/mypage/Post.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/myComment/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/comment/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/myWriting/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/writing/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/profileSetting/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/profile/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/goal-setting/SelectCertification.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-setting/SelectCertification.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/onboarding/CertificationPriority.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/onboarding/CertificationPriority.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/api/onboarding.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/onboarding.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/global.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/writing/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/writing/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +46,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
