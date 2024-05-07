@@ -8,6 +8,7 @@ import MyPageFilter from '@/components/mypage/MyPageFilter';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import Post from '@/components/mypage/Post';
 import { filterContent } from '@/utils/mypage/FilterContent';
+import ReviewPost from '@/components/mypage/ReviewPost';
 
 export default function MyWriting() {
   // REVIEW, COMMENTARY, TIP, NORMAL
@@ -75,6 +76,14 @@ export default function MyWriting() {
               imageUrl={'/황유림.jpg'}
               likeCount={12}
               topElement={commentaryTopElement}></Post>
+            <ReviewPost
+              createdAt={'2023.7.13'}
+              content={'막 생각보다 엄청 어렵지는 않은데, 그래도 못풀겠음..ㅠㅠ'}
+              nickName={'bright98'}
+              difficulty={'조금 어려워요'}
+              preparationPeriod={'6개월 이상'}
+              bottomElement={bottomElement}
+            />
             <Post
               content={'어려운 문제였어요. 데이터베이스 관계형 데이터 베이스...'}
               title={'스프레드시트 23번 문제'}
