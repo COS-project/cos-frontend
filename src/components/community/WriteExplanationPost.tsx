@@ -93,7 +93,7 @@ const WriteExplanationPost = () => {
     const formData = new FormData();
 
     imageUrlList.forEach((file, index) => {
-      formData.append('images', file);
+      formData.append('files', file);
     });
 
     formData.append(
@@ -130,7 +130,7 @@ const WriteExplanationPost = () => {
             </div>
             {isYearsFilterOpen && (
               <MockExamYearsFilter
-                data={examYearWithRounds?.examYearWithRounds}
+                data={examYearWithRounds}
                 setIsOpen={setIsYearsFilterOpen}
                 setDataState={setPostData}
               />
@@ -150,6 +150,7 @@ const WriteExplanationPost = () => {
             </div>
             {isRoundsFilterOpen && (
               <FilterModal
+                //TO DO: 회차 모의고사
                 data={postData.examYear ? examYearWithRounds?.examYearWithRounds[postData.examYear] : null}
                 setDataState={setPostData}
                 setIsOpen={setIsRoundsFilterOpen}
