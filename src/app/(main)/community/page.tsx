@@ -10,22 +10,8 @@ export default function Community() {
   // 관심 자격증 리스트 데이터 패칭
   const { interestCertificates, isLoading, isError } = useGetInterestCertificates();
 
-  // 모든 자격증 리스트 불러오는 함수
-  const getInterestCertifications = useCallback(async () => {
-    return interestCertificates;
-  }, []);
-
   useEffect(() => {
-    if (interestCertificates) {
-      getInterestCertifications();
-    }
-    // if (isLoading) {
-    //
-    // }
-    //
-    // if (isError) {
-    //
-    // }
+    console.log('interestCertificates', interestCertificates);
   }, []);
 
   // CertificationClassificationItem 컴포넌트가 클릭됐을 때, 안됐을 때 아이콘
@@ -63,14 +49,14 @@ export default function Community() {
               return (
                 <CertificationClassificationItem
                   usage={'board'}
-                  key={certification.certificate.certificateId}
-                  certificateId={certification.certificate.certificateId}
-                  certificateName={certification.certificate.certificateName}
+                  key={certification.certificateId}
+                  certificateId={certification.certificateId}
+                  certificateName={certification.boardName}
                   isClickState={certification.isFavorite}
                   isMoveButton={true}
-                  path={certification.certificate.certificateId}
+                  path={certification.certificateId}
                   icon={chooseClassificationItemIcon(certification.isFavorite)}>
-                  {certification.certificate.certificateName}
+                  {certification.boardName}
                 </CertificationClassificationItem>
               );
             })

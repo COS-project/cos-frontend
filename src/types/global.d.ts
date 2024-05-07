@@ -187,10 +187,8 @@ export interface PostInterestCertificate {
 }
 //게시판 즐겨찾기
 export interface FavoriteBoard {
-  certificate: {
-    certificateId: number;
-    certificateName: string;
-  };
+  certificateId: number;
+  boardName: string;
   isFavorite: boolean;
 }
 

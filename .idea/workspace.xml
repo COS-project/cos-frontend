@@ -6,12 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/exam/wrong/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/exam/wrong/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/home/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useAllIncorrectQuestions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useAllIncorrectQuestions.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/onboarding/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/onboarding/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/onboarding/CertificationClassificationItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/onboarding/CertificationClassificationItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/onboarding/ChooseCertification.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/onboarding/ChooseCertification.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/community.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/community.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/recoil/atom.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/recoil/atom.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/recoil/community/atom.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/recoil/community/atom.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/global.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +40,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "bug-login__token__error",
+    "git-widget-placeholder": "fix/board-list",
     "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
