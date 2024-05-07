@@ -6,7 +6,7 @@ import { userProfile } from '@/types/global';
 
 const useGetPost = () => {
   //66: 자유, 61: 해설, 55: 꿀팁
-  const { data, error } = useSWR<AxiosResponse<userProfile>>('/posts/55', swrGetFetcher);
+  const { data, error } = useSWR<AxiosResponse<userProfile>>('/posts/61', swrGetFetcher);
   return {
     postDetailData: data ? data.result : null,
     isLoading: !error && !data,

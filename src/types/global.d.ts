@@ -182,6 +182,9 @@ export interface InterestCertificate {
   interestPriority: string;
   certificateName?: string;
 }
+export interface PostInterestCertificate {
+  interestTargetList: InterestCertificate[];
+}
 //게시판 즐겨찾기
 export interface FavoriteBoard {
   certificate: {
@@ -218,7 +221,7 @@ export interface UserAnswerRequests {
 export interface SubjectResultRequests {
   subjectId: number;
   score: number;
-  userAnswerRequests: UserAnswerRequests[];
+  createUserAnswerRequests: UserAnswerRequests[];
 }
 
 //모의고사 시험 문제, 선지 전체

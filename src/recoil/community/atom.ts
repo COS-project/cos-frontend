@@ -3,8 +3,8 @@
 import { extend } from 'dayjs';
 import { atom } from 'recoil';
 
+import { CreatePostDataType, EditPostDataType, PopularSearchKeyword, RecentSearchResult } from '@/types/community/type';
 import SubjectList from '@/components/exam/SubjectList';
-import { CreatePostDataType, EditPostDataType } from '@/types/community/type';
 import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
 
 export const imagePreviewsState = atom<string[]>({
@@ -41,4 +41,25 @@ export const editPostDataState = atom<EditPostDataType>({
     title: '제목',
     content: '내용',
   },
+});
+
+//검색 키워드 자동완성 데이터
+export const autoCompleteSearchKeywordState = atom<string>({
+  key: 'autoCompleteSearchKeywordState',
+  default: '',
+});
+
+//최근 검색 기록
+export const recentSearchResultState = atom<RecentSearchResult>({
+  key: 'recentSearchResultState',
+  default: {
+    keyword: '',
+    createdAt: '',
+  },
+});
+
+//최근 검색 기록
+export const popularSearchKeywordState = atom<PopularSearchKeyword[]>({
+  key: 'popularSearchKeywordState',
+  default: [],
 });
