@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/community/WriteButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/community/FilterContent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/mypage/MyPageFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mypage/MyPageFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/mypage/Post.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mypage/Post.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetTotalSearchResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetTotalSearchResults.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/writing/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/writing/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +111,7 @@
       <workItem from="1714611962110" duration="1329000" />
       <workItem from="1714820712763" duration="6383000" />
       <workItem from="1715048202330" duration="4341000" />
-      <workItem from="1715154350854" duration="12199000" />
+      <workItem from="1715154350854" duration="14451000" />
     </task>
     <servers />
   </component>
