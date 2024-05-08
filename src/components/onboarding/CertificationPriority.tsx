@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useRecoilState } from 'recoil';
 
@@ -22,11 +22,11 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
-    const reorderedCertificates = Array.from(interestCertificates);
+    const reorderedCertificates = Array.from(interestCertificates.interestTargetList);
     const [selectedCertificate] = reorderedCertificates.splice(result.source.index, 1);
     reorderedCertificates.splice(result.destination.index, 0, selectedCertificate);
 
-    setInterestCertificates(reorderedCertificates);
+    setInterestCertificates(() => ({ interestTargetList: reorderedCertificates }));
   };
 
   // 자격증 객체에서 certificateName 속성을 제거합니다. API 요청을 위한 데이터 정제 과정입니다.
@@ -42,11 +42,16 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
 
   // 우선 순위가 업데이트된 자격증 목록을 서버에 전송하고, 로컬 상태를 업데이트합니다.
   const handleSubmit = () => {
-    const prioritizedCertificates = updateCertificatesPriority(interestCertificates);
+    const prioritizedCertificates = updateCertificatesPriority(interestCertificates.interestTargetList);
     const sanitizedCertificates = sanitizeCertificates(prioritizedCertificates);
-    setInterestCertificates(sanitizedCertificates);
-    postInterestCertificates(sanitizedCertificates);
+    setInterestCertificates(() => ({ interestTargetList: sanitizedCertificates }));
   };
+
+  useEffect(() => {
+    if (!interestCertificates.interestTargetList[0].certificateName) {
+      postInterestCertificates(interestCertificates);
+    }
+  }, [interestCertificates]);
 
   return (
     <div>
@@ -66,7 +71,7 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
           <Droppable droppableId="certificates">
             {(provided) => (
               <div className="grid gap-y-[16px]" ref={provided.innerRef} {...provided.droppableProps}>
-                {interestCertificates.map(({ certificateId, certificateName }, index) => (
+                {interestCertificates.interestTargetList.map(({ certificateId, certificateName }, index) => (
                   <Draggable key={certificateId} draggableId={certificateId.toString()} index={index}>
                     {(provided) => (
                       <div

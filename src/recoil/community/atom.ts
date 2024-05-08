@@ -74,3 +74,24 @@ export const editPostDataState = atom<EditPostDataType>({
     content: '내용',
   },
 });
+
+//검색 키워드 자동완성 데이터
+export const autoCompleteSearchKeywordState = atom<string>({
+  key: 'autoCompleteSearchKeywordState',
+  default: '',
+});
+
+//최근 검색 기록
+export const recentSearchResultState = atom<RecentSearchResult>({
+  key: 'recentSearchResultState',
+  default: {
+    keyword: '',
+    createdAt: '',
+  },
+});
+
+//최근 검색 기록
+export const popularSearchKeywordState = atom<PopularSearchKeyword[]>({
+  key: 'popularSearchKeywordState',
+  default: [],
+});
