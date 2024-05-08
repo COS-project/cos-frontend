@@ -1,8 +1,9 @@
 'use client';
 
+import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import CorrectRateGraph from '@/components/exam/CorrectRateGraph';
 import StayTimeGraph from '@/components/exam/StayTimeGraph';
@@ -11,6 +12,8 @@ import GoalRunningGraph from '@/components/home/goal-attaining/GoalRunningGraph'
 import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
 
 export default function Home() {
+  const [alarmEvent, setAlarmEvent] = useState(undefined);
+  const EventSource = EventSourcePolyfill;
   const parameter = useSearchParams();
   const accessToken = parameter.get('accessToken');
   const refreshToken = parameter.get('refreshToken');
@@ -21,6 +24,27 @@ export default function Home() {
     console.log('액세스 토큰', localStorage.getItem('accessToken'));
     console.log('리프레시 토큰', localStorage.getItem('refreshToken'));
   }, [accessToken, refreshToken]);
+
+  useEffect(() => {
+    if (localStorage.getItem('accessToken')) {
+      const eventSource = new EventSource('http://cercat.o-r.kr/api/v2/alarms/subscribe', {
+        headers: {
+          'Access-Token': localStorage.getItem('accessToken'),
+        },
+      });
+      eventSource.addEventListener('connect', (event: any) => {
+        const { data: receivedConnectData } = event;
+        if (receivedConnectData === 'SSE 연결이 완료되었습니다.') {
+          console.log('SSE CONNECTED');
+        } else {
+          console.log(event);
+        }
+      });
+      return () => {
+        eventSource.close();
+      };
+    }
+  }, [accessToken]);
 
   return (
     <div className="bg-gray0 items-center h-screen overflow-y-auto">
