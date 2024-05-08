@@ -1,5 +1,6 @@
 'use client';
 
+import { Certificate } from '@/types/global';
 import { format } from 'date-fns';
 import { atom } from 'recoil';
 
@@ -49,4 +50,9 @@ export const mockExamCount = atom({
 export const studyTimeCount = atom({
   key: 'studyTimeCount',
   default: 0,
+});
+
+export const certificationsListState = atom<Certificate[]>({
+  key: 'certificationsListState',
+  default: [],
 });
