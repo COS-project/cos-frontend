@@ -1,32 +1,35 @@
 'use client';
 
 import { AxiosResponse } from 'axios';
+import { useRouter } from 'next/navigation';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import WriteButton from '@/components/community/WriteButton';
+import WriteExplanationPost from '@/components/community/WriteExplanationPost';
+import WriteNormalPost from '@/components/community/WriteNormalPost';
+import WriteTipPost from '@/components/community/WriteTipPost';
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import Post from '@/components/mypage/Post';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
 import { filterContent } from '@/utils/mypage/FilterContent';
-import WriteExplanationPost from '@/components/community/WriteExplanationPost';
-import WriteTipPost from '@/components/community/WriteTipPost';
-import WriteNormalPost from '@/components/community/WriteNormalPost';
-import WriteButton from '@/components/community/WriteButton';
-import { useRouter } from 'next/navigation';
+import { filterNormalAndTipContent } from '@/utils/community/FilterContent';
+import useGetMockExamYearsAndRounds from '@/lib/hooks/useGetMockExamYearsAndRounds';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
-  const [isOpenFilter, setIsOpenFilter] = useState();
-  const [selectedFilterContent, setSelectedFilterContent] = useState('');
+  const [isOpenFilter, setIsOpenFilter] = useState<boolean>(false);
+  const [selectedFilterContent, setSelectedFilterContent] = useState<>('최신순');
   const [boardType, setBoardType] = useState<BoardType>('TIP');
   const { userPostsList, setSize } = useGetTotalSearchResults(boardType, 1);
   const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('TIP');
   const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
   const router = useRouter();
+  const {examYearWithRounds} = useGetMockExamYearsAndRounds();
 
   const getMoreItem = useCallback(async () => {
     if (userPostsList) {
@@ -43,7 +46,7 @@ export default function CommunityCategoryPage() {
 
   const onMoveSrearchPage = () => {
     router.push('/search');
-  }
+  };
 
   const commentaryTopElement = (year: number, round: number, number: number) => {
     return (
@@ -63,6 +66,33 @@ export default function CommunityCategoryPage() {
     );
   };
 
+  const updateFilterByPostType = () => {
+    if (boardType === 'NORMAL' || boardType === 'TIP') {
+      return (
+        <div>
+          <div className={' w-fit flex px-3 py-1 rounded-full bg-white '}>
+            <span className={'text-gray4 text-h6'}>{selectedFilterContent}</span>
+            {isOpenFilter ? (
+              <ActivationIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
+            ) : (
+              <DisableIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
+            )}
+          </div>
+          {isOpenFilter ? (
+            <MyPageFilter
+              isOpenFilter={isOpenFilter}
+              setSelectedFilterContent={setSelectedFilterContent}
+              setIsOpenFilter={setIsOpenFilter}
+              data={filterNormalAndTipContent}
+            />
+          ) : null}
+        </div>
+      );
+    } else if (boardType === 'COMMENTARY') {
+      return <div>일단 냅둠</div>;
+    }
+  };
+
   return boardTypeForPost === 'COMMENTARY' && isClickedWriteButton ? (
     <WriteExplanationPost />
   ) : boardTypeForPost === 'TIP' && isClickedWriteButton ? (
@@ -80,11 +110,12 @@ export default function CommunityCategoryPage() {
             }}
           />
         }
-        title={'정보처리기사 게시판'}
+        title={'정보처리기사 게시판'} //TODO: 게시판 내용으로 바꿀 예정
       />
       <div className={'flex flex-col gap-y-4 bg-gray0 min-h-screen'}>
         <MyWritingMenu boardType={boardType} setBoardType={setBoardType} />
         <div className={'relative px-5 flex flex-col gap-y-4 '}>
+          {updateFilterByPostType()}
           <div className={'flex flex-col gap-y-4'}>
             {userPostsList
               ? userPostsList.map((userPosts: AxiosResponse<ResponsePostType>) => {
