@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetUserPosts.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/community/WriteButton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/comment/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/comment/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/mypage/writing/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/mypage/writing/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/mypage/MyWritingMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mypage/MyWritingMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/mypage/MyPageFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mypage/MyPageFilter.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/mypage/Post.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mypage/Post.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/community/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/community/type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/global.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/mypage/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/mypage/type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetTotalSearchResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetTotalSearchResults.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,21 +31,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/connect-mypage-api&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "feature-board__list",
+    "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public" />
@@ -116,7 +113,7 @@
       <workItem from="1714611962110" duration="1329000" />
       <workItem from="1714820712763" duration="6383000" />
       <workItem from="1715048202330" duration="4341000" />
-      <workItem from="1715154350854" duration="5791000" />
+      <workItem from="1715154350854" duration="12199000" />
     </task>
     <servers />
   </component>

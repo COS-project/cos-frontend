@@ -1,21 +1,37 @@
 import { AxiosResponse } from 'axios';
-import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
 
 import { swrGetFetcher } from '@/lib/axios';
-import { Certificate } from '@/types/global';
+import { BoardType, ResponsePostType } from '@/types/community/type';
 
-const useGetRecentSearchResults = (postType: string, keyword: string) => {
-  const { data, error } = useSWR<AxiosResponse>(
-    `/certificates/1/search?postType=${postType}&keyword=${keyword}&page=0&size=5`, // URL에 직접 keyword 파라미터를 추가
+const getKey = (size: number, previousPageData: ResponsePostType, postType: BoardType, certificateId: number) => {
+  if (size === 0) {
+    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortKey=id`;
+  }
+  if (previousPageData && !previousPageData.result.hasNext) {
+    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortKey=id`;
+  }
+  if (previousPageData.result.hasNext) {
+    return null;
+  }
+};
+const useGetTotalSearchResults = (postType: BoardType, certificateId: number) => {
+  const { data, isLoading, error, size, setSize } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
+    (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType, certificateId),
     swrGetFetcher,
+    {
+      revalidateAll: true,
+    },
   );
 
-  const parseResultList = data?.result.content.map((item: Certificate) => item).flat();
+  const parseResultList = data ? data.map((item) => item).flat() : [];
 
   return {
-    totalSearchResults: parseResultList,
+    userPostsList: data ? data : [],
     isLoading: !error && !data,
     isError: error,
+    size,
+    setSize,
   };
 };
-export default useGetRecentSearchResults;
+export default useGetTotalSearchResults;
