@@ -10,7 +10,7 @@ interface Props {
 }
 
 const MyPageFilter = (props: Props) => {
-  const { data, setSelectedFilterContent,setIsOpenFilter, isOpenFilter } = props;
+  const { data, setSelectedFilterContent, setIsOpenFilter, isOpenFilter } = props;
 
   return (
     <div className={'absolute top-8 border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10'}>
