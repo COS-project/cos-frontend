@@ -243,7 +243,10 @@ export interface QuestionsResponse {
   };
   questionSeq: number;
   questionText: string;
-  questionImage: string;
+  questionImage: {
+    id: number;
+    imageUrl: string;
+  };
   questionOptions: Question[];
   correctOption: number;
   score: number;

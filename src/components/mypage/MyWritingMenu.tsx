@@ -1,9 +1,10 @@
 'use client';
 import React, { useState } from 'react';
+import { BoardType } from '@/types/community/type';
 
 interface Props {
-  boardType: string;
-  setBoardType: React.Dispatch<React.SetStateAction<string>>;
+  boardType: BoardType;
+  setBoardType: React.Dispatch<React.SetStateAction<BoardType>>;
 }
 
 const MyWritingMenu = (props: Props) => {

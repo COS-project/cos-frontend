@@ -1,27 +1,48 @@
 'use client';
 
-import React, { SVGProps, useState } from 'react';
+import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
-import Post from '@/components/mypage/Post';
-import { filterContent } from '@/utils/mypage/FilterContent';
 import ReviewPost from '@/components/mypage/ReviewPost';
+import { filterContent } from '@/utils/mypage/FilterContent';
+import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
+import { PostType, BoardType, ResponsePostType } from '@/types/community/type';
+import { useInView } from 'react-intersection-observer';
+import useAllIncorrectQuestions from '@/lib/hooks/useAllIncorrectQuestions';
+import { AxiosResponse } from 'axios';
+import Post from '@/components/mypage/Post';
 
 export default function MyWriting() {
+  const [ref, inView] = useInView();
   // REVIEW, COMMENTARY, TIP, NORMAL
-  const [boardType, setBoardType] = useState<string>('REVIEW');
+  const [boardType, setBoardType] = useState<BoardType>('COMMENTARY');
   // 최신순:createdAt, 인기순:popular
   const [selectedFilterContent, setSelectedFilterContent] = useState('최신순');
   const [isOpenFilter, setIsOpenFilter] = useState(false);
-  const commentaryTopElement = () => {
+  const { userPostsList, setSize } = useGetUserPosts(boardType);
+
+  const getMoreItem = useCallback(async () => {
+    if (userPostsList) {
+      setSize((prev: number) => prev + 1);
+    }
+    return;
+  }, []);
+
+  useEffect(() => {
+    if (inView) {
+      getMoreItem();
+    }
+  }, [inView]);
+
+  const commentaryTopElement = (year: number, round: number, number: number) => {
     return (
       <div className={'flex gap-x-[6px] pb-3'}>
-        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>2023년도</div>
-        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>1회차</div>
-        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>23번</div>
+        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{year}년도</div>
+        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{round}회차</div>
+        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{number}번</div>
       </div>
     );
   };
@@ -67,40 +88,37 @@ export default function MyWriting() {
             />
           ) : null}
           <div className={'flex flex-col gap-y-4'}>
-            <Post
-              content={'어려운 문제였어요. 데이터베이스 관계형 데이터 베이스...'}
-              title={'스프레드시트 23번 문제'}
-              commentCount={32}
-              bottomElement={bottomElement}
-              createdAt={'2023.7.12'}
-              imageUrl={'/황유림.jpg'}
-              likeCount={12}
-              topElement={commentaryTopElement}></Post>
-            <ReviewPost
-              createdAt={'2023.7.13'}
-              content={'막 생각보다 엄청 어렵지는 않은데, 그래도 못풀겠음..ㅠㅠ'}
-              nickName={'bright98'}
-              difficulty={'조금 어려워요'}
-              preparationPeriod={'6개월 이상'}
-              bottomElement={bottomElement}
-            />
-            <Post
-              content={'어려운 문제였어요. 데이터베이스 관계형 데이터 베이스...'}
-              title={'스프레드시트 23번 문제'}
-              commentCount={32}
-              bottomElement={bottomElement}
-              createdAt={'2023.7.12'}
-              imageUrl={'/황유림.jpg'}
-              likeCount={12}></Post>
-            <Post
-              content={'어려운 문제였어요. 데이터베이스 관계형 데이터 베이스...'}
-              title={'스프레드시트 23번 문제'}
-              commentCount={32}
-              bottomElement={bottomElement}
-              createdAt={'2023.7.12'}
-              imageUrl={'/황유림.jpg'}
-              likeCount={12}
-              topElement={tipTopElement}></Post>
+            {userPostsList
+              ? userPostsList.map((userPosts: AxiosResponse<ResponsePostType>) => {
+                  return userPosts.result.content.map((userPost: PostType) => {
+                    return (
+                      <div key={userPost.postId} ref={ref}>
+                        <Post
+                          content={userPost.postContent.content}
+                          title={userPost.postContent.title}
+                          commentCount={userPost.postStatus.commentCount}
+                          bottomElement={bottomElement}
+                          createdAt={'2023.7.12'}
+                          imageUrl={
+                            userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null
+                          }
+                          likeCount={userPost.postStatus.likeCount}
+                          topElement={
+                            userPost.question
+                              ? commentaryTopElement(
+                                  userPost.question.mockExam.examYear,
+                                  userPost.question.mockExam.round,
+                                  userPost.question.questionSeq,
+                                )
+                              : userPost.recommendTags
+                              ? tipTopElement()
+                              : null
+                          }></Post>
+                      </div>
+                    );
+                  });
+                })
+              : null}
           </div>
         </div>
       </div>

@@ -5,12 +5,12 @@ import * as React from 'react';
 interface Props {
   title: string;
   content: string;
-  imageUrl: string;
+  imageUrl?: string | null;
   likeCount: number;
   commentCount: number;
   createdAt: string;
-  topElement?: () => React.JSX.Element;
-  bottomElement?: () => React.JSX.Element;
+  topElement?: React.JSX.Element | null;
+  bottomElement?: () => React.JSX.Element | null;
 }
 const Post = (props: Props) => {
   const { title, content, imageUrl, likeCount, commentCount, createdAt, bottomElement, topElement } = props;
@@ -18,11 +18,11 @@ const Post = (props: Props) => {
     <div className={'flex flex-col gap-y-1 bg-white p-5 rounded-[32px]'}>
       <div>
         {/*best 태그, 해설게시판 태그*/}
-        {!topElement || topElement() ? (topElement ? topElement() : null) : null}
-        <div className={'flex gap-x-3 items-center'}>
+        {topElement ? topElement : null}
+        <div className={'flex gap-x-3 items-center justify-between'}>
           <div className={'flex flex-col gap-y-1'}>
             <div className={'text-h4 font-semibold'}>{title}</div>
-            <div className={'text-h4 font-normal'}>{content}</div>
+            <div className={'text-h4 font-normal line-clamp-2'}>{content}</div>
             {/*좋아요 수, 댓글 수*/}
             <div className={'flex gap-x-2'}>
               <div className={'flex items-center'}>
@@ -35,7 +35,9 @@ const Post = (props: Props) => {
               </div>
             </div>
           </div>
-          <Image src={imageUrl} alt={imageUrl} height={104} width={100} className={'rounded-[5px]'} />
+          {imageUrl ? (
+            <Image src={imageUrl} alt={imageUrl} height={104} width={100} className={'rounded-[5px]'} />
+          ) : null}
         </div>
       </div>
 

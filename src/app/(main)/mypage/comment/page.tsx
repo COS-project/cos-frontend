@@ -12,6 +12,7 @@ export default function MyComment() {
   // 최신순:createdAt, 인기순:popular
   const [selectedFilterContent, setSelectedFilterContent] = useState('최신순');
   const [isOpenFilter, setIsOpenFilter] = useState(false);
+
   const commentaryTopElement = () => {
     return (
       <div className={'flex gap-x-[6px] pb-3'}>
