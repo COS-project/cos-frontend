@@ -1,5 +1,6 @@
 import React, { SVGProps } from 'react';
 
+import AlarmItem from '@/components/alarm/AlarmItem';
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 
@@ -7,7 +8,9 @@ export default function Alarm() {
   return (
     <>
       <Header headerType={'dynamic'} title={'알림'} rightElement={<EmptyIcon />} />
-      <div className={'bg-gray0 min-h-screen'}></div>
+      <div className={'bg-gray0 min-h-screen'}>
+        <AlarmItem />
+      </div>
       <NavBar />
     </>
   );
