@@ -1,9 +1,7 @@
 import React from 'react';
 
-import { FilterType } from '@/types/mypage/type';
-
 interface Props {
-  data: FilterType[];
+  data: string[];
   setSelectedFilterContent: React.Dispatch<React.SetStateAction<string>>;
   setIsOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenFilter: boolean;
@@ -17,16 +15,16 @@ const MyPageFilter = (props: Props) => {
       {!data || data.length === 0 ? (
         <div>error</div>
       ) : (
-        data.map((datum: FilterType, index: number) => {
+        data.map((datum: string, index: number) => {
           return (
             <div
               key={index}
               className="text-h4 text-gray3 py-3 px-4 hover:text-black transition"
               onClick={() => {
-                setSelectedFilterContent(datum.kor);
-                setIsOpenFilter(!isOpenFilter)
+                setSelectedFilterContent(datum);
+                setIsOpenFilter(!isOpenFilter);
               }}>
-              {datum.kor}
+              {datum}
             </div>
           );
         })

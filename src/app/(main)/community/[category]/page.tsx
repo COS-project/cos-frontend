@@ -19,7 +19,6 @@ import MyPageFilter from '@/components/mypage/MyPageFilter';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import Post from '@/components/mypage/Post';
 import useDebounce from '@/hooks/useDebounce';
-import { getCommentarySearchResults, getTotalSearchResults } from '@/lib/api/community';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
@@ -35,13 +34,18 @@ export default function CommunityCategoryPage() {
   const [isOpenCommentaryYearFilter, setIsOpenCommentaryYearFilter] = useState<boolean>(false);
   const [isOpenCommentaryRoundFilter, setIsOpenCommentaryRoundFilter] = useState<boolean>(false);
   const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<string>('최신순');
-  const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number>(2023);
-  const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number>(1);
-  const { examYears } = useGetMockExamYears();
-  const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent);
+  const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number | string>(
+    '전체',
+  );
+  const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number | string>(
+    '전체',
+  );
+  const [sortKey, setSortKey] = useState<string>('createdAt'); //최신순 인기순
+  const { examYears } = useGetMockExamYears(); //해설 년도 필터값
+  const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent); //해설 회차 필터값
   //보드 타입
   const [boardType, setBoardType] = useState<BoardType>('COMMENTARY');
-  const { userPostsList, setSize, mutate } = useGetTotalSearchResults(boardType, 1);
+  const { userPostsList, setSize } = useGetTotalSearchResults(boardType, 1, sortKey);
   const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('COMMENTARY');
   //글쓰기 버튼
   const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
@@ -55,6 +59,17 @@ export default function CommunityCategoryPage() {
     selectedCommentaryRoundFilterContent,
     searchValue,
   );
+
+  /**
+   * 전체를 선택했을 경우 회차 선택되지 않도록
+   */
+  const controlDisabledFilter = () => {
+    if (selectedCommentaryYearFilterContent === '전체') {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -72,15 +87,33 @@ export default function CommunityCategoryPage() {
     }
   }, [inView]);
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await getCommentarySearchResults(
-      1,
-      selectedCommentaryYearFilterContent,
-      selectedCommentaryRoundFilterContent,
-      debouncedValue,
-    ).then((r) => console.log(r.result.content));
-  };
+  /**
+   * 해설 게시판 년도 필터가 전체면 회차 필터도 전체로 변경
+   */
+  useEffect(() => {
+    if (selectedCommentaryYearFilterContent === '전체') {
+      setSelectedCommentaryRoundFilterContent('전체');
+    }
+  }, [selectedCommentaryYearFilterContent]);
+
+  /**
+   * 일반, 꿀팁 게시판 필터
+   */
+  useEffect(() => {
+    if (selectedNormalAndTipFilterContent == '최신순') {
+      setSortKey('createdAt');
+    } else if (selectedNormalAndTipFilterContent == '인기순') {
+      setSortKey('likeCount');
+    }
+  }, [selectedNormalAndTipFilterContent]);
+
+  /**
+   * boardType 이 변경되면 필터값 초기화
+   */
+  useEffect(() => {
+    setSelectedNormalAndTipFilterContent('최신순');
+    setSelectedCommentaryYearFilterContent('전체');
+  }, [boardType]);
 
   /**
    * 쿼리파라미터에서 검색어
@@ -146,7 +179,7 @@ export default function CommunityCategoryPage() {
       return (
         <div className={'flex gap-x-2'}>
           {/*년도 필터*/}
-          <div className={' w-fit flex px-3 py-1 rounded-full bg-white '}>
+          <div className={'flex-shrink-0 w-fit flex px-3 py-1 rounded-full bg-white '}>
             <span className={'text-gray4 text-h6'}>{selectedCommentaryYearFilterContent}년도</span>
             {isOpenCommentaryYearFilter ? (
               <ActivationIcon onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)} />
@@ -164,14 +197,16 @@ export default function CommunityCategoryPage() {
           ) : null}
 
           {/*회차 필터*/}
-          <div className={' w-fit flex px-3 py-1 rounded-full bg-white '}>
+          <button
+            disabled={controlDisabledFilter()}
+            className={'flex-shrink-0 w-fit flex px-3 py-1 rounded-full bg-white '}>
             <span className={'text-gray4 text-h6'}>{selectedCommentaryRoundFilterContent}회차</span>
             {isOpenCommentaryRoundFilter ? (
               <ActivationIcon onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)} />
             ) : (
               <DisableIcon onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)} />
             )}
-          </div>
+          </button>
           {isOpenCommentaryRoundFilter ? (
             <RoundFilter
               isOpenFilter={isOpenCommentaryRoundFilter}
@@ -184,14 +219,14 @@ export default function CommunityCategoryPage() {
           {/*문제 번호 검색 필터*/}
           <form
             onSubmit={(e) => {
-              handleFormSubmit(e);
+              e.preventDefault();
             }}
             className={'flex items-center gap-x-1 py-1 px-3 bg-white rounded-full w-fit'}>
             <input
               value={searchValue}
               type={'number'}
               onChange={(e) => {
-                setSearchValue(e.target.value);
+                setSearchValue(parseInt(e.target.value));
               }}
               className={'text-h6 text-black outline-none w-[80px] placeholder:text-gray4 border-b-[1px] border-black'}
               placeholder={'문항번호 검색'}
@@ -223,11 +258,44 @@ export default function CommunityCategoryPage() {
         title={'정보처리기사 게시판'} //TODO: 게시판 내용으로 바꿀 예정
       />
       <div className={'flex flex-col gap-y-4 bg-gray0 min-h-screen'}>
+        {/*boardType 변경 메뉴*/}
         <MyWritingMenu boardType={boardType} setBoardType={setBoardType} />
         <div className={'relative px-5 flex flex-col gap-y-4 '}>
+          {/*boardType 에 따른 필터*/}
           {updateFilterByPostType()}
           <div className={'flex flex-col gap-y-4'}>
-            {userPostsList
+            {/*post*/}
+            {boardType === 'COMMENTARY'
+              ? commentarySearchResults.map((userPosts: AxiosResponse<ResponsePostType>) => {
+                  return userPosts?.result.content.map((userPost: PostType) => {
+                    return (
+                      <div key={userPost.postId} ref={ref}>
+                        <Post
+                          postId={userPost.postId}
+                          content={userPost.postContent.content}
+                          title={userPost.postContent.title}
+                          commentCount={userPost.postStatus.commentCount}
+                          createdAt={'2023.7.12'}
+                          imageUrl={
+                            userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null
+                          }
+                          likeCount={userPost.postStatus.likeCount}
+                          topElement={
+                            userPost.question
+                              ? commentaryTopElement(
+                                  userPost.question.mockExam.examYear,
+                                  userPost.question.mockExam.round,
+                                  userPost.question.questionSeq,
+                                )
+                              : userPost.recommendTags
+                              ? tipTopElement()
+                              : null
+                          }></Post>
+                      </div>
+                    );
+                  });
+                })
+              : userPostsList
               ? userPostsList.map((userPosts: AxiosResponse<ResponsePostType>) => {
                   return userPosts?.result.content.map((userPost: PostType) => {
                     return (
@@ -258,6 +326,7 @@ export default function CommunityCategoryPage() {
                   });
                 })
               : null}
+            {}
           </div>
         </div>
       </div>

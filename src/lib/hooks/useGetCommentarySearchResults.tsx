@@ -8,15 +8,30 @@ const getKey = (
   size: number,
   previousPageData: ResponsePostType,
   certificateId: number,
-  examYear: number,
-  round: number,
+  examYear: number | string,
+  round: number | string,
   questionSequence: number,
 ) => {
-  if (size === 0) {
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${size}&size=10&sortKey=id`;
+  if (examYear === '전체') {
+    return `/certificates/${certificateId}/posts?&page=${size}&size=10&sortKey=createdAt`;
   }
-  if (previousPageData && !previousPageData.result.hasNext) {
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${size}&size=10&sortKey=id`;
+  if (examYear !== '전체' && round === '전체') {
+    return `/certificates/${certificateId}/posts?examYear=${examYear}&page=${size}&size=10&sortKey=createdAt`;
+  }
+  if (examYear !== '전체' && round !== '전체' && questionSequence === undefined && size === 0) {
+    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&page=${size}&size=10&sortKey=createdAt`;
+  }
+  if (examYear !== '전체' && round !== '전체' && questionSequence !== undefined && size === 0) {
+    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${size}&size=10&sortKey=createdAt`;
+  }
+  if (
+    examYear !== '전체' &&
+    round !== '전체' &&
+    questionSequence !== undefined &&
+    previousPageData &&
+    !previousPageData.result.hasNext
+  ) {
+    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${size}&size=10&sortKey=createdAt`;
   }
   if (previousPageData.result.hasNext) {
     return null;
@@ -24,8 +39,8 @@ const getKey = (
 };
 const useGetCommentarySearchResults = (
   certificateId: number,
-  examYear: number,
-  round: number,
+  examYear: number | string,
+  round: number | string,
   questionSequence: number,
 ) => {
   const { data, isLoading, error, size, setSize } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
@@ -36,8 +51,6 @@ const useGetCommentarySearchResults = (
       revalidateAll: true,
     },
   );
-
-  const parseResultList = data ? data.map((item) => item).flat() : [];
 
   return {
     commentarySearchResults: data ? data : [],

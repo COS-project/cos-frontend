@@ -2,7 +2,7 @@ import React from 'react';
 
 interface Props {
   data: number[];
-  setSelectedFilterContent: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedFilterContent: React.Dispatch<React.SetStateAction<number | string>>;
   setIsOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenFilter: boolean;
 }
@@ -24,7 +24,7 @@ const YearFilter = (props: Props) => {
                 setSelectedFilterContent(datum);
                 setIsOpenFilter(!isOpenFilter);
               }}>
-              {datum}년도
+              {datum}
             </div>
           );
         })
