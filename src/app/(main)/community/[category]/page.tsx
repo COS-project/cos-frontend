@@ -64,11 +64,7 @@ export default function CommunityCategoryPage() {
    * 전체를 선택했을 경우 회차 선택되지 않도록
    */
   const controlDisabledFilter = () => {
-    if (selectedCommentaryYearFilterContent === '전체') {
-      return true;
-    } else {
-      return false;
-    }
+    return selectedCommentaryYearFilterContent === '전체';
   };
 
   /**
