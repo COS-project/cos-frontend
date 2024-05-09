@@ -1,7 +1,7 @@
 'use client';
 
 import { AxiosResponse } from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -16,20 +16,37 @@ import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import Post from '@/components/mypage/Post';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
-import { filterContent } from '@/utils/mypage/FilterContent';
 import { filterNormalAndTipContent } from '@/utils/community/FilterContent';
-import useGetMockExamYearsAndRounds from '@/lib/hooks/useGetMockExamYearsAndRounds';
+import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
+import YearFilter from '@/components/community/YearFilter';
+import useGetMockExams from '@/lib/hooks/useGetMockExams';
+import RoundFilter from '@/components/community/RoundFilter';
+import qs from 'query-string';
+import useDebounce from '@/hooks/useDebounce';
+import { useRecoilState } from 'recoil';
+import { autoCompleteSearchKeywordState } from '@/recoil/community/atom';
+import { getSearchResults } from '@/lib/api/community';
+import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
-  const [isOpenFilter, setIsOpenFilter] = useState<boolean>(false);
-  const [selectedFilterContent, setSelectedFilterContent] = useState<>('최신순');
+  const parameter = useSearchParams();
+  const [isOpenNormalAndTipFilter, setIsOpenNormalAndTipFilter] = useState<boolean>(false);
+  const [isOpenCommentaryYearFilter, setIsOpenCommentaryYearFilter] = useState<boolean>(false);
+  const [isOpenCommentaryRoundFilter, setIsOpenCommentaryRoundFilter] = useState<boolean>(false);
+  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<string>('최신순');
+  const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number>(2023);
+  const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number>(1);
   const [boardType, setBoardType] = useState<BoardType>('TIP');
   const { userPostsList, setSize } = useGetTotalSearchResults(boardType, 1);
   const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('TIP');
   const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
   const router = useRouter();
-  const {examYearWithRounds} = useGetMockExamYearsAndRounds();
+  const { examYears } = useGetMockExamYears();
+  const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent);
+  const [searchValue, setSearchValue] = useRecoilState<string>(autoCompleteSearchKeywordState);
+  const debouncedValue = useDebounce<string>(searchValue, 100);
+  const { recentSearchResults, mutate } = useGetRecentSearchResults();
 
   const getMoreItem = useCallback(async () => {
     if (userPostsList) {
@@ -43,6 +60,25 @@ export default function CommunityCategoryPage() {
       getMoreItem();
     }
   }, [inView]);
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await getSearchResults(1, 'COMMENTARY', debouncedValue).then((r) => console.log(r.result.content));
+    await mutate();
+  };
+
+  useEffect(() => {
+    const query = {
+      keyword: debouncedValue,
+    };
+
+    const url = qs.stringifyUrl({
+      url: '/search',
+      query: query,
+    });
+
+    router.push(url);
+  }, [debouncedValue, router]);
 
   const onMoveSrearchPage = () => {
     router.push('/search');
@@ -71,25 +107,63 @@ export default function CommunityCategoryPage() {
       return (
         <div>
           <div className={' w-fit flex px-3 py-1 rounded-full bg-white '}>
-            <span className={'text-gray4 text-h6'}>{selectedFilterContent}</span>
-            {isOpenFilter ? (
-              <ActivationIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
+            <span className={'text-gray4 text-h6'}>{selectedNormalAndTipFilterContent}</span>
+            {isOpenNormalAndTipFilter ? (
+              <ActivationIcon onClick={() => setIsOpenNormalAndTipFilter(!isOpenNormalAndTipFilter)} />
             ) : (
-              <DisableIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
+              <DisableIcon onClick={() => setIsOpenNormalAndTipFilter(!isOpenNormalAndTipFilter)} />
             )}
           </div>
-          {isOpenFilter ? (
+          {isOpenNormalAndTipFilter ? (
             <MyPageFilter
-              isOpenFilter={isOpenFilter}
-              setSelectedFilterContent={setSelectedFilterContent}
-              setIsOpenFilter={setIsOpenFilter}
+              isOpenFilter={isOpenNormalAndTipFilter}
+              setSelectedFilterContent={setSelectedNormalAndTipFilterContent}
+              setIsOpenFilter={setIsOpenNormalAndTipFilter}
               data={filterNormalAndTipContent}
             />
           ) : null}
         </div>
       );
     } else if (boardType === 'COMMENTARY') {
-      return <div>일단 냅둠</div>;
+      return (
+        <div className={'flex gap-x-2'}>
+          {/*년도 필터*/}
+          <div className={' w-fit flex px-3 py-1 rounded-full bg-white '}>
+            <span className={'text-gray4 text-h6'}>{selectedCommentaryYearFilterContent}년도</span>
+            {isOpenCommentaryYearFilter ? (
+              <ActivationIcon onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)} />
+            ) : (
+              <DisableIcon onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)} />
+            )}
+          </div>
+          {isOpenCommentaryYearFilter ? (
+            <YearFilter
+              isOpenFilter={isOpenCommentaryYearFilter}
+              setSelectedFilterContent={setSelectedCommentaryYearFilterContent}
+              setIsOpenFilter={setIsOpenCommentaryYearFilter}
+              data={examYears}
+            />
+          ) : null}
+
+          {/*회차 필터*/}
+          <div className={' w-fit flex px-3 py-1 rounded-full bg-white '}>
+            <span className={'text-gray4 text-h6'}>{selectedCommentaryRoundFilterContent}회차</span>
+            {isOpenCommentaryRoundFilter ? (
+              <ActivationIcon onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)} />
+            ) : (
+              <DisableIcon onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)} />
+            )}
+          </div>
+          {isOpenCommentaryRoundFilter ? (
+            <RoundFilter
+              isOpenFilter={isOpenCommentaryRoundFilter}
+              setSelectedFilterContent={setSelectedCommentaryRoundFilterContent}
+              setIsOpenFilter={setIsOpenCommentaryRoundFilter}
+              data={mockExams}
+            />
+          ) : null}
+        </div>
+      );
     }
   };
 
