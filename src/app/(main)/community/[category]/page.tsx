@@ -40,12 +40,12 @@ export default function CommunityCategoryPage() {
   const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number | string>(
     '전체',
   );
-  const [sortKey, setSortKey] = useState<string>('createdAt'); //최신순 인기순
+  const [sortField, setSortField] = useState<string>('createdAt'); //최신순 인기순
   const { examYears } = useGetMockExamYears(); //해설 년도 필터값
   const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent); //해설 회차 필터값
   //보드 타입
   const [boardType, setBoardType] = useState<BoardType>('COMMENTARY');
-  const { userPostsList, setSize } = useGetTotalSearchResults(boardType, 1, sortKey);
+  const { userPostsList, setSize } = useGetTotalSearchResults(boardType, 1, sortField);
   const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('COMMENTARY');
   //글쓰기 버튼
   const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
@@ -97,9 +97,9 @@ export default function CommunityCategoryPage() {
    */
   useEffect(() => {
     if (selectedNormalAndTipFilterContent == '최신순') {
-      setSortKey('createdAt');
+      setSortField('createdAt');
     } else if (selectedNormalAndTipFilterContent == '인기순') {
-      setSortKey('likeCount');
+      setSortField('likeCount');
     }
   }, [selectedNormalAndTipFilterContent]);
 

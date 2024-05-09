@@ -9,29 +9,33 @@ const getKey = (
   previousPageData: ResponsePostType,
   postType: BoardType,
   certificateId: number,
-  sortKey: string,
+  sortField: string,
 ) => {
-  if (size === 0 && postType !== 'REVIEW') {
-    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortKey=${sortKey}`;
+  if (sortField === 'createdAt' && size === 0 && postType !== 'REVIEW') {
+    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10`;
   }
-  if (previousPageData && !previousPageData.result.hasNext && postType !== 'REVIEW') {
-    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortKey=${sortKey}`;
+  if (sortField === 'likeCount' && size === 0 && postType !== 'REVIEW') {
+    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortFields=${sortField}`;
+  }
+  if (sortField === 'createdAt' && previousPageData && !previousPageData.result.hasNext && postType !== 'REVIEW') {
+    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10`;
+  }
+  if (sortField === 'likeCount' && previousPageData && !previousPageData.result.hasNext && postType !== 'REVIEW') {
+    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortFields=${sortField}`;
   }
   if (previousPageData.result.hasNext && postType !== 'REVIEW') {
     return null;
   }
 };
-const useGetTotalSearchResults = (postType: BoardType, certificateId: number, sortKey: string) => {
+const useGetTotalSearchResults = (postType: BoardType, certificateId: number, sortField: string) => {
   const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
-    (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType, certificateId, sortKey),
+    (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType, certificateId, sortField),
     swrGetFetcher,
     {
       revalidateAll: true,
     },
   );
-
-  const parseResultList = data ? data.map((item) => item).flat() : [];
-
+  
   return {
     userPostsList: data ? data : [],
     isLoading: !error && !data,
