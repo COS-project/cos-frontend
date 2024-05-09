@@ -7,7 +7,7 @@ import { SVGProps, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import useDebounce from '@/hooks/useDebounce';
-import { getSearchResults } from '@/lib/api/community';
+import { getTotalSearchResults } from '@/lib/api/community';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
 import { autoCompleteSearchKeywordState } from '@/recoil/community/atom';
 
@@ -23,7 +23,7 @@ const SearchInput = (props: Props) => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await getSearchResults(1, 'COMMENTARY', debouncedValue).then((r) => console.log(r.result.content));
+    await getTotalSearchResults(1, 'COMMENTARY', debouncedValue).then((r) => console.log(r.result.content));
     await mutate();
   };
 

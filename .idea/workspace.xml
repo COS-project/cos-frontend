@@ -5,35 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/community/ImgModal.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/community/PostingModal.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/community/RoundFilter.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/community/YearFilter.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/api/communityPost.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetCommunityPost.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExams.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetCommentarySearchResults.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/NavBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/Comment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/Comment.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommentBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommentContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentContent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommentReply.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentReply.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommentWriting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentWriting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommunityNav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommunityNav.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommunityPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommunityPosting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommunityProfile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommunityProfile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/DdabongIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/DdabongIcon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/EditPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/EditPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/WriteExplanationPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/WriteExplanationPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamYearsAndRounds.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamYears.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/recoil/atom.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/recoil/atom.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/SearchInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/SearchInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/community.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/community.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetTotalSearchResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetTotalSearchResults.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/recoil/community/atom.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/recoil/community/atom.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/global.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,21 +32,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging feature-board__list",
-    "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature-board__list&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public" />
@@ -137,6 +116,7 @@
       <workItem from="1714820712763" duration="6383000" />
       <workItem from="1715048202330" duration="4341000" />
       <workItem from="1715154350854" duration="14451000" />
+      <workItem from="1715266065321" duration="1775000" />
     </task>
     <servers />
   </component>

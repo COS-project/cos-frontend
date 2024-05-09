@@ -61,7 +61,7 @@ export const putPostDetail = async (certificateId: number, postType: string, for
 };
 
 // 통합 검색
-export const getSearchResults = async (certificateId: number, postType: string, keyword: string) => {
+export const getTotalSearchResults = async (certificateId: number, postType: string, keyword: string) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
@@ -70,6 +70,30 @@ export const getSearchResults = async (certificateId: number, postType: string, 
       },
       method: 'GET',
       url: `/certificates/${certificateId}/search?postType=${postType}&keyword=${keyword}&page=0&size=5`,
+    });
+    console.log(response.data);
+    // 성공적인 응답 처리
+    return response.data;
+  } catch (error) {
+    // 에러 처리
+    console.error('에러 발생:', error);
+  }
+};
+
+export const getCommentarySearchResults = async (
+  certificateId: number,
+  examYear: number,
+  round: number,
+  questionSequence: number,
+) => {
+  try {
+    // 액세스 토큰을 헤더에 담아 요청 보내기
+    const response = await sendRequest({
+      headers: {
+        'Access-Token': localStorage.getItem('accessToken'),
+      },
+      method: 'GET',
+      url: `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=0&size=10&sortKey=id`,
     });
     console.log(response.data);
     // 성공적인 응답 처리

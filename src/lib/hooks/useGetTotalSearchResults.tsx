@@ -5,18 +5,18 @@ import { swrGetFetcher } from '@/lib/axios';
 import { BoardType, ResponsePostType } from '@/types/community/type';
 
 const getKey = (size: number, previousPageData: ResponsePostType, postType: BoardType, certificateId: number) => {
-  if (size === 0) {
+  if (size === 0 && postType !== 'REVIEW') {
     return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortKey=id`;
   }
-  if (previousPageData && !previousPageData.result.hasNext) {
+  if (previousPageData && !previousPageData.result.hasNext && postType !== 'REVIEW') {
     return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortKey=id`;
   }
-  if (previousPageData.result.hasNext) {
+  if (previousPageData.result.hasNext && postType !== 'REVIEW') {
     return null;
   }
 };
 const useGetTotalSearchResults = (postType: BoardType, certificateId: number) => {
-  const { data, isLoading, error, size, setSize } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
+  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
     (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType, certificateId),
     swrGetFetcher,
     {
@@ -32,6 +32,7 @@ const useGetTotalSearchResults = (postType: BoardType, certificateId: number) =>
     isError: error,
     size,
     setSize,
+    mutate,
   };
 };
 export default useGetTotalSearchResults;

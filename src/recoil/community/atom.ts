@@ -91,8 +91,14 @@ export const recentSearchResultState = atom<RecentSearchResult>({
   },
 });
 
-//최근 검색 기록
+//인기 검색 기록
 export const popularSearchKeywordState = atom<PopularSearchKeyword[]>({
   key: 'popularSearchKeywordState',
   default: [],
+});
+
+//해설 게시글 번호 검색
+export const commentarySearchQuestionSequence = atom<number>({
+  key: 'commentarySearchQuestionSequence',
+  default: undefined,
 });

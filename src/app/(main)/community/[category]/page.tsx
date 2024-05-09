@@ -2,52 +2,64 @@
 
 import { AxiosResponse } from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
+import qs from 'query-string';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import RoundFilter from '@/components/community/RoundFilter';
 import WriteButton from '@/components/community/WriteButton';
 import WriteExplanationPost from '@/components/community/WriteExplanationPost';
 import WriteNormalPost from '@/components/community/WriteNormalPost';
 import WriteTipPost from '@/components/community/WriteTipPost';
+import YearFilter from '@/components/community/YearFilter';
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import Post from '@/components/mypage/Post';
+import useDebounce from '@/hooks/useDebounce';
+import { getCommentarySearchResults, getTotalSearchResults } from '@/lib/api/community';
+import useGetMockExams from '@/lib/hooks/useGetMockExams';
+import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
+import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
+import { autoCompleteSearchKeywordState, commentarySearchQuestionSequence } from '@/recoil/community/atom';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
 import { filterNormalAndTipContent } from '@/utils/community/FilterContent';
-import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
-import YearFilter from '@/components/community/YearFilter';
-import useGetMockExams from '@/lib/hooks/useGetMockExams';
-import RoundFilter from '@/components/community/RoundFilter';
-import qs from 'query-string';
-import useDebounce from '@/hooks/useDebounce';
-import { useRecoilState } from 'recoil';
-import { autoCompleteSearchKeywordState } from '@/recoil/community/atom';
-import { getSearchResults } from '@/lib/api/community';
-import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
+import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
-  const parameter = useSearchParams();
+  //필터값
   const [isOpenNormalAndTipFilter, setIsOpenNormalAndTipFilter] = useState<boolean>(false);
   const [isOpenCommentaryYearFilter, setIsOpenCommentaryYearFilter] = useState<boolean>(false);
   const [isOpenCommentaryRoundFilter, setIsOpenCommentaryRoundFilter] = useState<boolean>(false);
   const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<string>('최신순');
   const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number>(2023);
   const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number>(1);
-  const [boardType, setBoardType] = useState<BoardType>('TIP');
-  const { userPostsList, setSize } = useGetTotalSearchResults(boardType, 1);
-  const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('TIP');
-  const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
-  const router = useRouter();
   const { examYears } = useGetMockExamYears();
   const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent);
-  const [searchValue, setSearchValue] = useRecoilState<string>(autoCompleteSearchKeywordState);
-  const debouncedValue = useDebounce<string>(searchValue, 100);
-  const { recentSearchResults, mutate } = useGetRecentSearchResults();
+  //보드 타입
+  const [boardType, setBoardType] = useState<BoardType>('COMMENTARY');
+  const { userPostsList, setSize, mutate } = useGetTotalSearchResults(boardType, 1);
+  const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('COMMENTARY');
+  //글쓰기 버튼
+  const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
+  const router = useRouter();
+  //해설 게시글 검색
+  const [searchValue, setSearchValue] = useRecoilState<number>(commentarySearchQuestionSequence);
+  const debouncedValue = useDebounce<number>(searchValue, 100);
+  const { commentarySearchResults } = useGetCommentarySearchResults(
+    1,
+    selectedCommentaryYearFilterContent,
+    selectedCommentaryRoundFilterContent,
+    searchValue,
+  );
 
+  /**
+   * 무한 스크롤 뷰 감지하고 size+1 해줌
+   */
   const getMoreItem = useCallback(async () => {
     if (userPostsList) {
       setSize((prev: number) => prev + 1);
@@ -63,22 +75,29 @@ export default function CommunityCategoryPage() {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await getSearchResults(1, 'COMMENTARY', debouncedValue).then((r) => console.log(r.result.content));
-    await mutate();
+    await getCommentarySearchResults(
+      1,
+      selectedCommentaryYearFilterContent,
+      selectedCommentaryRoundFilterContent,
+      debouncedValue,
+    ).then((r) => console.log(r.result.content));
   };
 
+  /**
+   * 쿼리파라미터에서 검색어
+   */
   useEffect(() => {
     const query = {
       keyword: debouncedValue,
     };
 
     const url = qs.stringifyUrl({
-      url: '/search',
+      url: '/community/1',
       query: query,
     });
 
     router.push(url);
-  }, [debouncedValue, router]);
+  }, [debouncedValue, router, commentarySearchResults]);
 
   const onMoveSrearchPage = () => {
     router.push('/search');
@@ -162,6 +181,24 @@ export default function CommunityCategoryPage() {
               data={mockExams}
             />
           ) : null}
+
+          {/*문제 번호 검색 필터*/}
+          <form
+            onSubmit={(e) => {
+              handleFormSubmit(e);
+            }}
+            className={'flex items-center gap-x-1 py-1 px-3 bg-white rounded-full w-fit'}>
+            <input
+              value={searchValue}
+              type={'number'}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+              }}
+              className={'text-h6 text-black outline-none w-[80px] placeholder:text-gray4 border-b-[1px] border-black'}
+              placeholder={'문항번호 검색'}
+            />
+            <QuestionSeqSearchIcon />
+          </form>
         </div>
       );
     }
@@ -193,7 +230,7 @@ export default function CommunityCategoryPage() {
           <div className={'flex flex-col gap-y-4'}>
             {userPostsList
               ? userPostsList.map((userPosts: AxiosResponse<ResponsePostType>) => {
-                  return userPosts.result.content.map((userPost: PostType) => {
+                  return userPosts?.result.content.map((userPost: PostType) => {
                     return (
                       <div key={userPost.postId} ref={ref}>
                         <Post
@@ -264,6 +301,29 @@ const SearchIcon = (props: SVGProps<SVGSVGElement>) => (
       <path
         fill="#1C1B1F"
         d="m26.755 27.367-8.473-8.474a7 7 0 0 1-2.306 1.349 7.8 7.8 0 0 1-2.64.468q-3.192 0-5.402-2.206T5.723 13.12 7.929 7.73t5.383-2.21 5.397 2.207 2.22 5.385q0 1.378-.492 2.692a7.2 7.2 0 0 1-1.347 2.28l8.479 8.45zm-13.424-7.785q2.722 0 4.596-1.87 1.874-1.869 1.874-4.597 0-2.727-1.874-4.597t-4.596-1.87q-2.725 0-4.603 1.87t-1.877 4.597 1.877 4.597q1.878 1.87 4.603 1.87"
+      />
+    </g>
+  </svg>
+);
+
+const QuestionSeqSearchIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={21} height={20} fill="none" {...props}>
+    <mask
+      id="a"
+      width={21}
+      height={20}
+      x={0}
+      y={0}
+      maskUnits="userSpaceOnUse"
+      style={{
+        maskType: 'alpha',
+      }}>
+      <path fill="#D9D9D9" d="M.646 0h20v20h-20z" />
+    </mask>
+    <g mask="url(#a)">
+      <path
+        fill="#1C1B1F"
+        d="m16.535 16.647-4.963-4.963a5 5 0 0 1-1.37.735q-.746.26-1.54.26-1.95 0-3.314-1.364Q3.982 9.95 3.982 8q0-1.948 1.365-3.314Q6.713 3.32 8.66 3.32q1.95 0 3.315 1.365T13.341 8q0 .817-.268 1.563a5 5 0 0 1-.727 1.346l4.963 4.963zm-7.873-5.05q1.506-.001 2.551-1.046T12.258 8t-1.045-2.551q-1.044-1.045-2.551-1.045T6.11 5.449 5.066 8t1.044 2.551 2.552 1.045"
       />
     </g>
   </svg>
