@@ -5,6 +5,7 @@ import React, { useCallback, useEffect } from 'react';
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 import useGetBoardList from '@/lib/hooks/useGetBoardList';
 import { FavoriteBoard } from '@/types/global';
+import WriteReviewModal from '@/components/community/WriteReviewModal';
 
 export default function Community() {
   // 관심 자격증 리스트 데이터 패칭
@@ -34,35 +35,38 @@ export default function Community() {
   };
 
   return (
-    <div className="grid gap-y-8 m-5 mt-6">
-      <div className="grid gap-y-2">
-        <div className="text-primary text-h4">게시판</div>
-        <div className="text-black text-h1 font-bold">
-          어떤 자격증 정보와 <br /> 소식이 궁금하신가요?
+    <>
+      {/*<WriteReviewModal />*/}
+      <div className="grid gap-y-8 m-5 mt-6">
+        <div className="grid gap-y-2">
+          <div className="text-primary text-h4">게시판</div>
+          <div className="text-black text-h1 font-bold">
+            어떤 자격증 정보와 <br /> 소식이 궁금하신가요?
+          </div>
+        </div>
+
+        {/* 자격증 선택 */}
+        <div className="grid gap-y-4">
+          {boardList
+            ? boardList.map((certification: FavoriteBoard) => {
+                return (
+                  <CertificationClassificationItem
+                    usage={'board'}
+                    key={certification.certificateId}
+                    certificateId={certification.certificateId}
+                    certificateName={certification.boardName}
+                    isClickState={certification.isFavorite}
+                    isMoveButton={true}
+                    path={certification.certificateId}
+                    icon={chooseClassificationItemIcon(certification.isFavorite)}>
+                    {certification.boardName}
+                  </CertificationClassificationItem>
+                );
+              })
+            : null}
         </div>
       </div>
-
-      {/* 자격증 선택 */}
-      <div className="grid gap-y-4">
-        {boardList
-          ? boardList.map((certification: FavoriteBoard) => {
-              return (
-                <CertificationClassificationItem
-                  usage={'board'}
-                  key={certification.certificateId}
-                  certificateId={certification.certificateId}
-                  certificateName={certification.boardName}
-                  isClickState={certification.isFavorite}
-                  isMoveButton={true}
-                  path={certification.certificateId}
-                  icon={chooseClassificationItemIcon(certification.isFavorite)}>
-                  {certification.boardName}
-                </CertificationClassificationItem>
-              );
-            })
-          : null}
-      </div>
-    </div>
+    </>
   );
 }
 
