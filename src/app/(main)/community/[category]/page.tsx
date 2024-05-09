@@ -1,7 +1,7 @@
 'use client';
 
 import { AxiosResponse } from 'axios';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import qs from 'query-string';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -20,14 +20,13 @@ import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import Post from '@/components/mypage/Post';
 import useDebounce from '@/hooks/useDebounce';
 import { getCommentarySearchResults, getTotalSearchResults } from '@/lib/api/community';
+import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
-import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
-import { autoCompleteSearchKeywordState, commentarySearchQuestionSequence } from '@/recoil/community/atom';
+import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
 import { filterNormalAndTipContent } from '@/utils/community/FilterContent';
-import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
