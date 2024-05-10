@@ -36,7 +36,7 @@ export default function Community() {
 
   return (
     <>
-      {/*<WriteReviewModal />*/}
+      <WriteReviewModal />
       <div className="grid gap-y-8 m-5 mt-6">
         <div className="grid gap-y-2">
           <div className="text-primary text-h4">게시판</div>

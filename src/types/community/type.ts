@@ -5,6 +5,7 @@ import { QuestionsResponse } from '@/types/global';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
 
+
 export interface YearsAndRounds {
   2017: number[];
   2018: number[];
