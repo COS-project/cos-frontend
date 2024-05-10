@@ -1,19 +1,16 @@
 'use client';
 
-import React, { useCallback, useEffect } from 'react';
+import React, { useState } from 'react';
 
+import WriteReviewModal from '@/components/community/WriteReviewModal';
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 import useGetBoardList from '@/lib/hooks/useGetBoardList';
 import { FavoriteBoard } from '@/types/global';
-import WriteReviewModal from '@/components/community/WriteReviewModal';
 
 export default function Community() {
   // 관심 자격증 리스트 데이터 패칭
   const { boardList, isLoading, isError } = useGetBoardList();
-
-  useEffect(() => {
-    console.log('interestCertificates', boardList);
-  }, []);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
   // CertificationClassificationItem 컴포넌트가 클릭됐을 때, 안됐을 때 아이콘
   const chooseClassificationItemIcon = (isCheck: boolean) => {
@@ -36,7 +33,8 @@ export default function Community() {
 
   return (
     <>
-      <WriteReviewModal />
+      {/*위치 이동 예정*/}
+      {isModalOpen ? <WriteReviewModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} /> : null}
       <div className="grid gap-y-8 m-5 mt-6">
         <div className="grid gap-y-2">
           <div className="text-primary text-h4">게시판</div>

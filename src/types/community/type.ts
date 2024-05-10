@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { UserInfo } from '@/types/mypage/type';
 import { QuestionsResponse } from '@/types/global';
+import { UserInfo } from '@/types/mypage/type';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
 
-
+export type ExamReviewPostType = {
+  examDifficulty: string;
+  content: string;
+};
 export interface YearsAndRounds {
   2017: number[];
   2018: number[];

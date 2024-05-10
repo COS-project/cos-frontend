@@ -2,7 +2,7 @@
 import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
 import { extend } from 'dayjs';
 import SubjectList from '@/components/exam/SubjectList';
-import { CreatePostDataType, EditPostDataType } from '@/types/community/type';
+import { CreatePostDataType, EditPostDataType, ExamReviewPostType } from '@/types/community/type';
 import { atom } from 'recoil';
 import { GenerateComment, Post } from '@/types/global';
 
@@ -101,4 +101,12 @@ export const popularSearchKeywordState = atom<PopularSearchKeyword[]>({
 export const commentarySearchQuestionSequence = atom<number>({
   key: 'commentarySearchQuestionSequence',
   default: undefined,
+});
+
+export const examReviewPostState = atom<ExamReviewPostType>({
+  key: 'examReviewPostState',
+  default: {
+    examDifficulty: '',
+    content: '',
+  },
 });
