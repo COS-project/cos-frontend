@@ -35,7 +35,7 @@ const useGetTotalSearchResults = (postType: BoardType, certificateId: number, so
       revalidateAll: true,
     },
   );
-  
+
   return {
     userPostsList: data ? data : [],
     isLoading: !error && !data,
