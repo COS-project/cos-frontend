@@ -1,24 +1,42 @@
 'use client';
 
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
+import { useSWRConfig } from 'swr';
 
 import Button from '@/components/common/Button';
 import PreparationPeriodSetting from '@/components/home/goal-setting/PreparationPeriodSetting';
 import SelectCertification from '@/components/home/goal-setting/SelectCertification';
 import SetDailyGoals from '@/components/home/goal-setting/SetDailyGoals';
 import SetGoalScore from '@/components/home/goal-setting/SetGoalScore';
+import SettingNewGoalModal from '@/components/home/goal-setting/SettingNewGoalModal';
 import { postGoalSettingData, putGoalSettingData } from '@/lib/api/home';
 import useGetGoalSettingData from '@/lib/hooks/useGetGoalSettingData';
-import { goalSettingState } from '@/recoil/home/atom';
+import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
+import { goalSettingCertificateId, goalSettingState } from '@/recoil/home/atom';
 import { GoalSettingInfo } from '@/types/global';
 
 const GoalSetting = () => {
-  // 데이터 패칭
-  const { goalSettingData, isLoading, isError } = useGetGoalSettingData();
-
+  // 선택된 자격증 Id
+  const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number>(goalSettingCertificateId);
+  const [isSettingNewGoalModalOpen, setIsSettingNewGoalModalOpen] = useState(true);
+  // 사용자의 목표 설정 Id를 불러오는 데이터 패칭
+  const { userGoals } = useGetUserGoals(1);
+  const { mutate } = useSWRConfig();
+  /**
+   * 최근 목표ID를 불러오는 함수
+   */
+  const getLastGoalId = () => {
+    if (userGoals && userGoals.length > 0) {
+      return userGoals[userGoals.length - 1].goalId;
+    }
+    return null; // 또는 적절한 기본값/오류 처리
+  };
+  // 기존에 설정한 목표를 불러오는 데이터 패칭
+  const { goalSettingData, isLoading, isError } = useGetGoalSettingData(getLastGoalId());
   const [goalData, setGoalData] = useRecoilState(goalSettingState);
+  const [isResetButtonClick, setIsResetButtonClick] = useState(false);
 
   /**
    * Recoil 상태를 초기화하는 함수
@@ -36,6 +54,24 @@ const GoalSetting = () => {
       studyTimePerDay: apiResponse.studyTimePerDay,
       goalStudyTime: apiResponse.goalStudyTime,
       studyRepeatDays: apiResponse.studyRepeatDays,
+    };
+  };
+
+  /**
+   * 목표를 새로 생성할 때, state를 변경하는 함수
+   */
+  const resetGoalSettingState = () => {
+    return {
+      goalScore: 100,
+      prepareStartDateTime: new Date().toISOString(),
+      prepareFinishDateTime: new Date().toISOString(),
+      goalPrepareDays: 0,
+      mockExamsPerDay: 0,
+      goalMockExams: 0,
+      mockExamRepeatDays: [],
+      studyTimePerDay: 0,
+      goalStudyTime: 0,
+      studyRepeatDays: [],
     };
   };
 
@@ -58,18 +94,32 @@ const GoalSetting = () => {
     }
   };
 
-  // 컴포넌트가 마운트될 때 데이터 가져오기
-  useEffect(() => {
-    fetchDataAndUpdateState();
-  }, [goalSettingData]);
+  /**
+   * 목표를 새로 설정할 때의 함수
+   */
+  const resetData = () => {
+    const resetState = resetGoalSettingState();
+    setGoalData(resetState);
+  };
 
   return (
     <div className="flex flex-col gap-y-8 mx-5">
-      {goalSettingData ? (
+      {isSettingNewGoalModalOpen ? (
+        <SettingNewGoalModal
+          fetchDataAndUpdateState={fetchDataAndUpdateState}
+          setIsResetButtonClick={setIsResetButtonClick}
+          resetData={resetData}
+          isSubmitConfirmationModalOpen={isSettingNewGoalModalOpen}
+          setIsSubmitConfirmationModalOpen={setIsSettingNewGoalModalOpen}
+        />
+      ) : null}
+      {isResetButtonClick ? (
         //수정버튼
         <Button
-          onClick={() => {
-            putGoalSettingData(goalData);
+          onClick={async () => {
+            await postGoalSettingData(goalData, selectedCertificationId);
+            await mutate('/certificates/1/goals').then((r) => console.log('r', r));
+            setIsResetButtonClick(false);
           }}
           className={'absolute right-0 w-fit'}>
           저장
@@ -78,14 +128,14 @@ const GoalSetting = () => {
         //처음 생성 버튼
         <Button
           onClick={() => {
-            postGoalSettingData(goalData);
+            putGoalSettingData(goalData, getLastGoalId());
           }}
           className={'absolute right-0 w-fit'}>
-          저장
+          수정
         </Button>
       )}
       {/*자격증 선택*/}
-      <SelectCertification />
+      {isResetButtonClick ? <SelectCertification /> : null}
       {/*목표 점수 설정*/}
       <SetGoalScore />
       {/*자격증 준비기간 설정*/}
