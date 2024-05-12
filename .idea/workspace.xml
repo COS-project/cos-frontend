@@ -5,13 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/(main)/mypage/components/DoneButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/onboarding/certification-priority/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/onboarding/choose-certification/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/exam/wrong/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/exam/wrong/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/home/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useAllIncorrectQuestions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useAllIncorrectQuestions.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,21 +33,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "bug-login__token__error",
-    "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;yurim&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cos-frontend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cos-frontend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -61,54 +62,6 @@
       <workItem from="1704112025702" duration="1065000" />
       <workItem from="1704118250285" duration="160000" />
       <workItem from="1704118419630" duration="9436000" />
-      <workItem from="1708765855642" duration="6911000" />
-      <workItem from="1708786283914" duration="4899000" />
-      <workItem from="1708818146370" duration="1351000" />
-      <workItem from="1708916679803" duration="15776000" />
-      <workItem from="1708940160356" duration="13450000" />
-      <workItem from="1708953643190" duration="1175000" />
-      <workItem from="1708954824691" duration="3462000" />
-      <workItem from="1709195160861" duration="1270000" />
-      <workItem from="1709278300769" duration="6840000" />
-      <workItem from="1709295027122" duration="13399000" />
-      <workItem from="1709359851123" duration="16582000" />
-      <workItem from="1709377616546" duration="1086000" />
-      <workItem from="1709378738230" duration="229000" />
-      <workItem from="1709378971986" duration="5385000" />
-      <workItem from="1709459376722" duration="2360000" />
-      <workItem from="1709529966402" duration="1195000" />
-      <workItem from="1709797885677" duration="21000" />
-      <workItem from="1710081590527" duration="1861000" />
-      <workItem from="1710237566298" duration="1376000" />
-      <workItem from="1710238948087" duration="5184000" />
-      <workItem from="1710257275263" duration="3970000" />
-      <workItem from="1710289936304" duration="12093000" />
-      <workItem from="1710396369661" duration="605000" />
-      <workItem from="1710424561536" duration="7842000" />
-      <workItem from="1710854232358" duration="609000" />
-      <workItem from="1710898876230" duration="2072000" />
-      <workItem from="1710926518180" duration="610000" />
-      <workItem from="1711016732559" duration="1423000" />
-      <workItem from="1711018748679" duration="23000" />
-      <workItem from="1711018787714" duration="656000" />
-      <workItem from="1711020407681" duration="72000" />
-      <workItem from="1711028052036" duration="138000" />
-      <workItem from="1711112742250" duration="600000" />
-      <workItem from="1711451480919" duration="602000" />
-      <workItem from="1711456659252" duration="4260000" />
-      <workItem from="1711624482380" duration="21894000" />
-      <workItem from="1711885129398" duration="3499000" />
-      <workItem from="1711888758243" duration="8574000" />
-      <workItem from="1711977024625" duration="1555000" />
-      <workItem from="1712205240660" duration="378000" />
-      <workItem from="1712205874658" duration="496000" />
-      <workItem from="1712482242705" duration="20698000" />
-      <workItem from="1712878931687" duration="11236000" />
-      <workItem from="1714503983170" duration="6598000" />
-      <workItem from="1714562222791" duration="8739000" />
-      <workItem from="1714611962110" duration="1329000" />
-      <workItem from="1714820712763" duration="6383000" />
-      <workItem from="1715048202330" duration="4341000" />
     </task>
     <servers />
   </component>

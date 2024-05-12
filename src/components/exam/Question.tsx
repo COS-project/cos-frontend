@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 import QuestionContent from '@/components/exam/QuestionContent';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import {
-  questionIndex, stopwatchIsPaused,
+  questionIndex,
   stopwatchIsRunning,
   stopwatchTime,
   userAnswerRequests,
@@ -25,8 +25,6 @@ const Question = () => {
   // 각 문제당 걸린 시간
   const [time, setTime] = useRecoilState<number>(stopwatchTime);
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);
-  // 문제당 머문시간을 잠시 멈추는
-  const [isPaused, setIsPaused] = useRecoilState(stopwatchIsPaused);
   const [progressBarLength, setProgressBarLength] = useState(60); // 초기값을 60으로 설정
 
   const toggleQuestionModal = () => {
@@ -105,7 +103,7 @@ const Question = () => {
   useEffect(() => {
     let interval: NodeJS.Timer | undefined;
 
-    if (isRunning && !isPaused) {
+    if (isRunning) {
       interval = setInterval(() => {
         setTime((prevTime) => prevTime + 1);
       }, 1);
@@ -114,7 +112,7 @@ const Question = () => {
     }
 
     return () => clearInterval(interval);
-  }, [isRunning, isPaused]);
+  }, [isRunning]);
 
   /**
    * 다음 문제로 넘어갈 때, 스톱워치를 다시 키고, 다시 0으로 릿셋

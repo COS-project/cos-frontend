@@ -5,9 +5,9 @@ export default function MyWriting() {
     <>
       <div className="w-full mt-2">
         <header className="flex justify-between items-center px-[1.25rem] py-[0.25rem] text-h4">
-          <a href="../mypage">{'<'}</a>
+          <button>{'<'}</button>
           <div>내가 쓴 글</div>
-          <div>...</div>
+          <button>검색</button>
         </header>
         <div className="flex justify-around mt-2">
           <button className="rounded-2xl border border-gray2 px-3 py-1 text-h6 focus:bg-black focus:text-white mx-1">

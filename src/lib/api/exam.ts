@@ -9,7 +9,7 @@ export const postSubjectResultRequestsList = async (subjectResultRequestsList: S
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'POST',
-      data: { createSubjectResultRequests: subjectResultRequestsList },
+      data: { subjectResultRequests: subjectResultRequestsList },
       url: 'mock-exams/1/mock-exam-results',
     });
     // 성공적인 응답 처리

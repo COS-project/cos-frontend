@@ -1,43 +1,11 @@
 'use client';
-import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
+
 import { extend } from 'dayjs';
+import { atom } from 'recoil';
+
 import SubjectList from '@/components/exam/SubjectList';
 import { CreatePostDataType, EditPostDataType } from '@/types/community/type';
-import { atom } from 'recoil';
-import { GenerateComment, Post } from '@/types/global';
-
-//글 삭제 및 수정 모달창 조작
-export let postingModalState = atom<boolean>({
-  key: 'postingModalState',
-  default: false,
-});
-
-//댓글 삭제 모달창 조작
-export let commentModalState = atom<boolean>({
-  key: 'commentModalState',
-  default: false,
-});
-
-//댓글 삭제
-export let commentDeleteState = atom<number>({
-  key: 'commentDeleteState',
-  default: 0,
-});
-
-//글 삭제
-export let postDeleteState = atom<number>({
-  key: 'postDeleteState',
-  default: 0,
-});
-
-//댓글 생성
-export let GenerateCommentState = atom<GenerateComment>({
-  key: 'GenerateCommentState',
-  default: {
-    parentCommentId: null,
-    content: '',
-  },
-});
+import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
 
 export const imagePreviewsState = atom<string[]>({
   key: 'imagePreviewsState',
@@ -73,25 +41,4 @@ export const editPostDataState = atom<EditPostDataType>({
     title: '제목',
     content: '내용',
   },
-});
-
-//검색 키워드 자동완성 데이터
-export const autoCompleteSearchKeywordState = atom<string>({
-  key: 'autoCompleteSearchKeywordState',
-  default: '',
-});
-
-//최근 검색 기록
-export const recentSearchResultState = atom<RecentSearchResult>({
-  key: 'recentSearchResultState',
-  default: {
-    keyword: '',
-    createdAt: '',
-  },
-});
-
-//최근 검색 기록
-export const popularSearchKeywordState = atom<PopularSearchKeyword[]>({
-  key: 'popularSearchKeywordState',
-  default: [],
 });

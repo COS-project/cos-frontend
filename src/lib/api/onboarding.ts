@@ -1,7 +1,7 @@
 import { sendRequest } from '@/lib/axios';
-import { InterestCertificate, PostInterestCertificate, userProfile } from '@/types/global';
+import { InterestCertificate, userProfile } from '@/types/global';
 
-export const postInterestCertificates = async (interestCertificates: PostInterestCertificate) => {
+export const postInterestCertificates = async (interestCertificates: InterestCertificate[]) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({

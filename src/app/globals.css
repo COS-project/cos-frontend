@@ -15,7 +15,7 @@
 @layer components {
     /* Button 컴포넌트 backgrond primary인 className */
     .bg-blue-button {
-        @apply w-fit px-4 py-2 text-h6 bg-primary flex rounded-full text-white
+        @apply px-4 py-2 text-h6 bg-primary flex rounded-full text-white
     }
     /* Button 컴포넌트 border gray2인 className */
     .border-gray-button {
