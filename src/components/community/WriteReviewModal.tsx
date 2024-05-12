@@ -24,9 +24,9 @@ const WriteReviewModal = (props: Props) => {
     } else if (difficultyType === '보통이에요') {
       setExamReviewPost((prevState) => ({ ...prevState, examDifficulty: 'NORMAL' }));
     } else if (difficultyType === '어려워요') {
-      setExamReviewPost((prevState) => ({ ...prevState, examDifficulty: 'HARD' }));
+      setExamReviewPost((prevState) => ({ ...prevState, examDifficulty: 'TOO_DIFFICULT' }));
     } else {
-      setExamReviewPost((prevState) => ({ ...prevState, examDifficulty: 'TOO_HARD' }));
+      setExamReviewPost((prevState) => ({ ...prevState, examDifficulty: 'LITTLE_DIFFICULT' }));
     }
   }, [difficultyType]);
 
@@ -107,7 +107,9 @@ const WriteReviewModal = (props: Props) => {
             <form
               className={'flex flex-col gap-y-4'}
               onSubmit={(e) => {
-                handleFormSubmit(e).then((r) => {console.log(r)});
+                handleFormSubmit(e).then((r) => {
+                  console.log(r);
+                });
               }}>
               <textarea
                 onChange={(e) => {

@@ -7,9 +7,9 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import AutoCompleteSearchKeywords from '@/components/community/AutoCompleteSearchKeywords';
-import TrendingSearchKeywords from '@/components/community/TrendingSearchKeywords';
 import RecentSearchKeywords from '@/components/community/RecentSearchKeywords';
 import SearchInput from '@/components/community/SearchInput';
+import TrendingSearchKeywords from '@/components/community/TrendingSearchKeywords';
 import useDebounce from '@/hooks/useDebounce';
 import useGetSearchResults from '@/lib/hooks/useGetAutoCompleteSearchKeywords';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';

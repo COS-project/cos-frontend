@@ -89,6 +89,24 @@ export interface PostStatus {
   commentCount: number;
 }
 
+export interface ReviewPost {
+  examDifficulty: ExamDifficulty;
+  prepareMonths: number;
+  content: string;
+  user: UserInfo;
+  createdAt: string;
+}
+
+export type ExamDifficulty = 'TOO_EASY' | 'EASY' | 'NORMAL' | 'TOO_DIFFICULT' | 'LITTLE_DIFFICULT';
+
+export interface ResponseReviewPost {
+  responseCode: string;
+  result: {
+    content: ReviewPost[];
+  };
+  hasNext: boolean;
+}
+
 export interface RecommendTags {
   tagType: string;
   tagName: string;
