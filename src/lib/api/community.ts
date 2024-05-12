@@ -1,5 +1,6 @@
 import { sendRequest } from '../axios';
-import { ExamReviewPostType } from '@/types/community/type';
+import { BoardType, ExamReviewPostType } from '@/types/community/type';
+import { boardContents } from '@/utils/mypage/ItemContents';
 
 export const postFavoriteBoards = async (certificateId: number) => {
   try {
@@ -62,19 +63,21 @@ export const putPostDetail = async (certificateId: number, postType: string, for
 };
 
 // 통합 검색
-export const getTotalSearchResults = async (certificateId: number, postType: string, keyword: string) => {
+export const getTotalSearchResults = async (certificateId: number, postType: BoardType, keyword: string) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
-    const response = await sendRequest({
-      headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
-      },
-      method: 'GET',
-      url: `/certificates/${certificateId}/search?postType=${postType}&keyword=${keyword}&page=0&size=5`,
-    });
-    console.log(response.data);
-    // 성공적인 응답 처리
-    return response.data;
+    if (postType !== 'REVIEW') {
+      const response = await sendRequest({
+        headers: {
+          'Access-Token': localStorage.getItem('accessToken'),
+        },
+        method: 'GET',
+        url: `/certificates/${certificateId}/search?postType=${postType}&keyword=${keyword}&page=0&size=10`,
+      });
+      console.log(response.data);
+      // 성공적인 응답 처리
+      return response.data;
+    }
   } catch (error) {
     // 에러 처리
     console.error('에러 발생:', error);
@@ -125,7 +128,7 @@ export const deleteAllSearchResults = async () => {
   }
 };
 
-// 통합 검색 전체 삭제
+// 특정 검색 기록 삭제
 export const deleteEachSearchResult = async (keyword: string, createdAt: string) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
