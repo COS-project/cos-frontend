@@ -1,15 +1,26 @@
-import React, { type SVGProps, useCallback, useEffect } from 'react';
+'use client';
+
+import { useRouter } from 'next/navigation';
+import React, { type SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
+import ExamDifficultyFilter from '@/components/community/ExamDifficultyFilter';
+import PreparePeriodFilter from '@/components/community/PreparePeriodFilter';
+import UserActionReminder from '@/components/community/UserActionReminder';
 import useGetExamReview from '@/lib/hooks/useGetExamReview';
 import { ExamDifficulty, ReviewPost } from '@/types/community/type';
-import UserActionReminder from '@/components/community/UserActionReminder';
-import { useRouter } from 'next/navigation';
 
 const ExamReviewBoardList = () => {
   const [ref, inView] = useInView();
-  const { examReviews, setSize } = useGetExamReview(1);
   const router = useRouter();
+  const [selectedExamDifficultyContent, setSelectedExamDifficultyContent] = useState<string>('난이도 전체');
+  const [isExamDifficultyOpen, setIsExamDifficultyOpen] = useState<boolean>(false);
+  const [examDifficulty, setExamDifficulty] = useState<ExamDifficulty | undefined>();
+  const [selectedPreparePeriodContent, setSelectedPreparePeriodContent] = useState<string>('준비기간 전체');
+  const [isPreparePeriodOpen, setIsPreparePeriodOpen] = useState<boolean>(false);
+  const [startMonths, setStartMonths] = useState<number | undefined>();
+  const [endPreMonths, setEndPreMonths] = useState<number | undefined>();
+  const { examReviews, setSize } = useGetExamReview(1, examDifficulty, startMonths, endPreMonths);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -26,10 +37,6 @@ const ExamReviewBoardList = () => {
       getMoreItem();
     }
   }, [inView]);
-
-  useEffect(() => {
-    console.log('examReviews', examReviews);
-  }, [examReviews]);
 
   const changeTagForExamDifficulty = (examDifficulty: ExamDifficulty) => {
     if (examDifficulty === 'TOO_EASY') {
@@ -70,8 +77,42 @@ const ExamReviewBoardList = () => {
 
   return (
     <div className={'relative px-5 flex flex-col gap-y-4 '}>
-      {/**/}
       <UserActionReminder content={'크루들에게 따끈후기를 공유해주세요!'} button={userActionReminderMove()} />
+      {/*filter*/}
+      <div className={'flex gap-x-2'}>
+        <div
+          onClick={() => setIsPreparePeriodOpen(!isPreparePeriodOpen)}
+          className={'relative flex items-center rounded-full bg-white py-[6px] px-[12px]'}>
+          <div className={'text-h6'}>
+            {selectedPreparePeriodContent === '전체' ? '준비기간 전체' : selectedPreparePeriodContent}
+          </div>
+          {isPreparePeriodOpen ? <ActivationIcon /> : <DisableIcon />}
+        </div>
+        {isPreparePeriodOpen ? (
+          <PreparePeriodFilter
+            setEndPreMonths={setEndPreMonths}
+            setStartMonths={setStartMonths}
+            setSelectedPreparePeriodContent={setSelectedPreparePeriodContent}
+            setIsPreparePeriodOpen={setIsPreparePeriodOpen}
+          />
+        ) : null}
+        <div
+          onClick={() => setIsExamDifficultyOpen(!isExamDifficultyOpen)}
+          className={'flex items-center rounded-full bg-white py-[6px] px-[12px]'}>
+          <div className={'text-h6'}>
+            {selectedExamDifficultyContent === '전체' ? '난이도 전체' : selectedExamDifficultyContent}
+          </div>
+          {isExamDifficultyOpen ? <ActivationIcon /> : <DisableIcon />}
+        </div>
+        {isExamDifficultyOpen ? (
+          <ExamDifficultyFilter
+            selectedExamDifficulty={selectedExamDifficultyContent}
+            setIsExamDifficultyOpen={setIsExamDifficultyOpen}
+            setExamDifficulty={setExamDifficulty}
+            setSelectedExamDifficultyContent={setSelectedExamDifficultyContent}
+          />
+        ) : null}
+      </div>
       <div className={'flex flex-col gap-y-4'}>
         {examReviews
           ? examReviews.map((examReview) => {
@@ -106,5 +147,16 @@ export default ExamReviewBoardList;
 const MoveIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} fill="none" {...props}>
     <path stroke="#6283FD" strokeLinecap="round" strokeLinejoin="round" d="m5 11 6-6M5 5h6v6" />
+  </svg>
+);
+
+const DisableIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none" {...props}>
+    <path stroke="#727375" strokeLinecap="round" d="M13.5 9 10 12 6.5 9" />
+  </svg>
+);
+const ActivationIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none" {...props}>
+    <path stroke="#727375" strokeLinecap="round" d="M6.5 12 10 9l3.5 3" />
   </svg>
 );

@@ -122,3 +122,8 @@ export interface TrendingKeyword {
   keyword: string;
   status: TrendingKeywordState;
 }
+
+export interface PerparePeriodType {
+  startMonth: number | undefined;
+  endMonth: number | undefined;
+}

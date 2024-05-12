@@ -14,7 +14,7 @@ import { GenerateComment } from '@/types/global';
 //게시판 종류
 export const boardTypeState = atom<BoardType>({
   key: 'boardTypeState',
-  default: 'COMMENTARY',
+  default: 'REVIEW',
 });
 
 //글 삭제 및 수정 모달창 조작
