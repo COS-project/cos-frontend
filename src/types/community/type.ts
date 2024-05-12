@@ -98,3 +98,9 @@ export interface DateTime {
   createdAt: string;
   modifiedAt: string;
 }
+
+export type TrendingKeywordState = 'UNCHANGED' | 'NEW' | 'RANK_UP' | 'RANK_DOWN';
+export interface TrendingKeyword {
+  keyword: string;
+  status: TrendingKeywordState;
+}

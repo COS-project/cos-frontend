@@ -31,7 +31,7 @@ const Post = (props: Props) => {
         {topElement ? topElement : null}
         <div className={'flex gap-x-3 items-center justify-between'}>
           <div className={'flex flex-col gap-y-1'}>
-            <div className={'text-h4 font-semibold'}>{title}</div>
+            <div className={'text-h4 font-semibold truncate'}>{title}</div>
             <div className={'text-h4 font-normal line-clamp-2'}>{content}</div>
             {/*좋아요 수, 댓글 수*/}
             <div className={'flex gap-x-2'}>
