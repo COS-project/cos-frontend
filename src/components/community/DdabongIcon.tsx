@@ -9,13 +9,12 @@ interface Props {
   width: string; //가로
   height: string; //세로
   cursor?: string; //마우스 커서
-  onClick?: () => void; //버튼 클릭 시 동작
 }
 
 const DdbongIcon = (props: Props) => {
-  const { color, width, height, cursor, onClick } = props;
+  const { color, width, height, cursor } = props;
   return (
-    <div className={twMerge('w-[24px] h-[24px] items-center flex justify-center', cursor)} onClick={onClick}>
+    <div className={twMerge('w-[24px] h-[24px] items-center flex justify-center', cursor)}>
       <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} fill="none" viewBox="0 0 23 20">
         <path
           fill={color}

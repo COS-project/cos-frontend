@@ -2,53 +2,31 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
+import Swal from 'sweetalert2';
 
 import useCalculateScore from '@/hooks/useCalculateScore';
 import { postSubjectResultRequestsList } from '@/lib/api/exam';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import {
   questionIndex,
-  stopwatchIsPaused,
   stopwatchIsRunning,
   stopwatchTime,
   subjectResultRequestsList,
-  timerIsPaused,
   userAnswerRequestsList,
 } from '@/recoil/exam/atom';
 import { UserAnswerRequests } from '@/types/global';
 
-interface Props {
-  isUnsavedChangesWarningModalOpen: boolean;
-  setIsUnsavedChangesWarningModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isSubmitConfirmationModalOpen: boolean;
-  setIsSubmitConfirmationModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isAutoSubmitTimeUpModalOpen: boolean;
-  setIsAutoSubmitTimeUpModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const TestSubmitOrCancle = (props: Props) => {
-  const {
-    isUnsavedChangesWarningModalOpen,
-    setIsUnsavedChangesWarningModalOpen,
-    isSubmitConfirmationModalOpen,
-    setIsSubmitConfirmationModalOpen,
-    isAutoSubmitTimeUpModalOpen,
-    setIsAutoSubmitTimeUpModalOpen,
-  } = props;
+const TestSubmitOrCancle = () => {
   const { calculateScore, prepareAndScoreSubjectResults } = useCalculateScore();
   // 남은 시간(타이머) TODO: questions[0].mockExam.timeLimit으로 변경
-  const [timeLeft, setTimeLeft] = useState(5400000); //5400000
+  const [timeLeft, setTimeLeft] = useState(5400000);
   // 각 문제당 걸린 시간
   const [time, setTime] = useRecoilState<number>(stopwatchTime);
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);
-  // 모달창을 띄우면 타이머를 잠시 멈추게 하는 state
-  const [isPausedTimer, setIsPausedTimer] = useRecoilState(timerIsPaused);
-  // 문제당 머문시간을 잠시 멈추는
-  const [isPausedStopWatch, setIsPausedStopWatch] = useRecoilState(stopwatchIsPaused);
   const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
   const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
-  const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList)
-  // 제출버튼을 눌렀을 때 제출버튼을 누르는 페이지의 머문 시간까지 기록하기 위한 트릭
+  const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList);
+  // 제출버튼을 눌렀을 때 제출버튼을 누르는 페이지의 머문 시간까지 기록하기위한 트릭
   const [sessionRecorded, setSessionRecorded] = useState(false);
   // 시, 분, 초 계산
   const hours = String(Math.floor((timeLeft / (1000 * 60 * 60)) % 24)).padStart(2, '0');
@@ -60,14 +38,11 @@ const TestSubmitOrCancle = (props: Props) => {
    */
   useEffect(() => {
     const id = setInterval(() => {
-      if (!isPausedTimer && timeLeft > 0) {
-        setTimeLeft((prevCount) => (prevCount <= 0 ? 0 : prevCount - 1000)); // 1초(1000밀리초) 감소
-
-      }
+      setTimeLeft((prevCount) => (prevCount <= 0 ? 0 : prevCount - 1000)); // 1초(1000밀리초) 감소
     }, 1000);
 
     return () => clearInterval(id); // 컴포넌트 언마운트 시 인터벌 클리어
-  }, [timeLeft, isPausedTimer]);
+  }, [timeLeft]);
 
   /**
    * 각 문제당 걸린 시간 기록 함수
@@ -129,26 +104,25 @@ const TestSubmitOrCancle = (props: Props) => {
     }
   }, [subjectResultList]);
 
-  /**
-   * 시간이 종료되었을 때, 자동 제출되는 로직
-   */
-  useEffect(() => {
-    if (timeLeft < 0) {
-      setIsRunning(false);
-      setIsAutoSubmitTimeUpModalOpen(!isAutoSubmitTimeUpModalOpen);
-    }
-  }, [timeLeft]);
-
   return (
     <>
       <div className="flex justify-between items-center w-full py-4 px-5">
         <button
           className={'border-primary-button'}
-          onClick={() => {
-            setIsPausedTimer(!isPausedTimer);
-            setIsPausedStopWatch(!isPausedStopWatch);
-            setIsUnsavedChangesWarningModalOpen(!isUnsavedChangesWarningModalOpen);
-          }}>
+          onClick={() =>
+            Swal.fire({
+              title: '그만 두시겠습니까?',
+              text: '그만두면 기존에 풀었던 내용들은 저장되지 않습니다.',
+              confirmButtonText: '그만두기',
+              cancelButtonText: '닫기',
+              confirmButtonColor: '#000000',
+              cancelButtonColor: '#054354',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                Swal.fire('그만둡니다.', '', 'info');
+              }
+            })
+          }>
           그만두기
         </button>
         <span className={'px-10 rounded-lg bg-white'}>
@@ -156,9 +130,7 @@ const TestSubmitOrCancle = (props: Props) => {
         </span>
         <button
           onClick={() => {
-            setIsPausedTimer(!isPausedTimer);
-            setIsPausedStopWatch(!isPausedStopWatch);
-            setIsSubmitConfirmationModalOpen(!isSubmitConfirmationModalOpen);
+            setIsRunning(false);
           }}
           className={'bg-blue-button'}>
           제출하기

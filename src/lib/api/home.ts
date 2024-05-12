@@ -1,10 +1,8 @@
-'use client';
-
 import { GoalSettingInfo } from '@/types/global';
 
 import { sendRequest } from '../axios';
 
-export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo, certificateId: number) => {
+export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
@@ -13,7 +11,7 @@ export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo, cert
       },
       method: 'POST',
       data: goalSettingInfo,
-      url: `/certificates/${certificateId}/goals`,
+      url: '/1/goals',
     });
     // 성공적인 응답 처리
     return response.data;
@@ -23,7 +21,7 @@ export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo, cert
   }
 };
 
-export const putGoalSettingData = async (goalSettingInfo: GoalSettingInfo, goalId: number) => {
+export const putGoalSettingData = async (goalSettingInfo: GoalSettingInfo) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
@@ -32,7 +30,7 @@ export const putGoalSettingData = async (goalSettingInfo: GoalSettingInfo, goalI
       },
       method: 'PUT',
       data: goalSettingInfo,
-      url: `/goals/${goalId}`,
+      url: '/goals/1',
     });
     return response.data;
   } catch (error) {

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 
-export default function Page() {
+export default function page() {
   const parameter = useSearchParams();
   const accessToken = parameter.get('accessToken');
   const refreshToken = parameter.get('refreshToken');

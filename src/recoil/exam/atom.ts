@@ -51,13 +51,3 @@ export const stopwatchIsRunning = atom<boolean>({
   key: 'stopwatchIsRunning',
   default: true,
 });
-
-export const timerIsPaused = atom<boolean>({
-  key: 'timerIsPaused',
-  default: false,
-});
-
-export const stopwatchIsPaused = atom<boolean>({
-  key: 'stopwatchIsPaused',
-  default: false,
-});

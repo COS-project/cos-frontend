@@ -2,18 +2,17 @@
 //사진 입력받는 부분 api 연결하면서 수정 필요
 
 import { useRouter } from 'next/navigation';
-import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
+import React from 'react';
 
 interface Props {
   subject: string; //글 제목
   content: string; //글 내용
-  images?: string[]; //첨부 사진
+  image?: string; //첨부 사진
 }
 
 const CommunityPost = (props: Props) => {
   const router = useRouter();
-  const { subject, content, images } = props;
-
+  const { subject, content, image } = props;
   return (
     <>
       <div className="py-[8px] self-stretch text-black text-h2 font-bold font-['Pretendard Variable'] leading-[30px]">
@@ -23,9 +22,12 @@ const CommunityPost = (props: Props) => {
         {content}
       </div>
       <div className="mb-6 h-[100px] justify-start items-start gap-3 inline-flex overflow-y-hidden">
-        {images?.map((image, idex) => {
-          return <img className="w-[95.67px] h-[100px] rounded-[5px]" src={image} />;
-        })}
+        <img className="w-[95.67px] h-[100px] rounded-[5px]" src="https://via.placeholder.com/96x100" />
+        <img className="w-[95.67px] h-[100px] rounded-[5px]" src="https://via.placeholder.com/96x100" />
+        <img className="w-[95.67px] h-[100px] rounded-[5px]" src="https://via.placeholder.com/96x100" />
+        <img className="w-[95.67px] h-[100px] rounded-[5px]" src="https://via.placeholder.com/96x100" />
+        <img className="w-[95.67px] h-[100px] rounded-[5px]" src="https://via.placeholder.com/96x100" />
+        <img className="w-[95.67px] h-[100px] rounded-[5px]" src="https://via.placeholder.com/96x100" />
       </div>
     </>
   );

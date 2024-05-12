@@ -3,25 +3,23 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRecoilState } from 'recoil';
+import React from 'react';
 
 interface Props {
   children?: React.ReactNode; //회원 닉네임
   onClick?: () => void; //...눌렀을 때 동작
   fontsizing: boolean; //닉네임 폰트 사이즈 조절 false=14px true=16px
-  date: string; //작성 날짜
-  time: string; //작성 시간
-  imgSrc: string; //프로필이미지
+  date: string; //댓글 작성 날짜
+  time: string; //댓글 작성 시간
 }
 
 const CommunityProfile = (props: Props) => {
   const router = useRouter();
-  const { children, onClick, fontsizing, date, time, imgSrc } = props;
-
+  const { children, onClick, fontsizing, date, time } = props;
   return (
     <>
       <div className="w-full h-10 justify-start items-center gap-2 inline-flex">
-        <img className="cursor-pointer w-10 h-10 rounded-[999px]" src={imgSrc} />
+        <img className="cursor-pointer w-10 h-10 rounded-[999px]" src="https://via.placeholder.com/40x40" />
         <div className="grow shrink basis-0 h-[38px] justify-between items-center flex">
           <div className="flex-col justify-center items-start inline-flex">
             {fontsizing ? (
