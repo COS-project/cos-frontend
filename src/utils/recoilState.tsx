@@ -1,19 +1,12 @@
 import { atom } from 'recoil';
 
-import { ExamInfo, Session, SubjectInfo } from '@/types/global';
-
-export const selectedSubjectState = atom<SubjectInfo | null>({
-  key: 'selectedSubjectState',
-  default: null,
-});
-
 // 선택된 회차에 대한 상태
-export const selectedSessionState = atom<Session | null>({
+export const selectedSessionState = atom<Number | null>({
   key: 'selectedSessionState',
   default: null,
 });
 
-export const examInfoState = atom<ExamInfo[] | null>({
+export const examInfoState = atom<Number | null>({
   key: 'examInfoState',
   default: null,
 });

@@ -1,8 +1,5 @@
 import Link from 'next/link';
 import React, { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-
-import { selectedSessionState } from '@/utils/recoilState';
 
 import SubjectGradeCard from './SubjectGradeCard';
 
