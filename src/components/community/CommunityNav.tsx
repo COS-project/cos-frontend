@@ -8,7 +8,6 @@ interface Props {
   children: React.ReactNode; //게시판 이름
   Icon?: boolean; //검색아이콘 유무 true=검색아이콘o, false=검색아이콘x
   onClick?: () => void; //검색아이콘 클릭 시 경로(디자인 나오는 것 보고 수정 예정)
-  //(디자인이 나와있지 않아서 검색 클릭시 디자인 화면 필요함)
 }
 
 const CommunityNav = (props: Props) => {

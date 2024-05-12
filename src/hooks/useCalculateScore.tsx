@@ -46,7 +46,7 @@ const useCalculateScore = () => {
           const newSubjectResult: SubjectResultRequests = {
             subjectId: question.subject.subjectId - 1,
             score: newUserAnswerList.filter((userAnswer) => userAnswer.isCorrect).length * questions[index].score,
-            userAnswerRequests: newUserAnswerList,
+            createUserAnswerRequests: newUserAnswerList,
           };
           newSubjectResultList.push(newSubjectResult);
           newUserAnswerList = [];
@@ -57,7 +57,7 @@ const useCalculateScore = () => {
           const newSubjectResult: SubjectResultRequests = {
             subjectId: question.subject.subjectId,
             score: newUserAnswerList.filter((userAnswer) => userAnswer.isCorrect).length * questions[index].score,
-            userAnswerRequests: newUserAnswerList,
+            createUserAnswerRequests: newUserAnswerList,
           };
           newSubjectResultList.push(newSubjectResult);
           newUserAnswerList = [];
