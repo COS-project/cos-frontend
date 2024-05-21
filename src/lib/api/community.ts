@@ -1,6 +1,6 @@
-import { sendRequest } from '../axios';
 import { BoardType, ExamReviewPostType } from '@/types/community/type';
-import { boardContents } from '@/utils/mypage/ItemContents';
+
+import { sendRequest } from '../axios';
 
 export const postFavoriteBoards = async (certificateId: number) => {
   try {
