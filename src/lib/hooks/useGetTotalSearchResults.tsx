@@ -11,12 +11,16 @@ const getKey = (
   certificateId: number,
   sortField: string,
 ) => {
-  //검색 키워드가 없고, boardType 이 REVIEW 가 아니면, 첫페이지
-  if (size === 0 && postType !== 'REVIEW') {
+  if (sortField === 'createdAt' && size === 0 && postType !== 'REVIEW') {
+    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10`;
+  }
+  if (sortField === 'likeCount' && size === 0 && postType !== 'REVIEW') {
     return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortFields=${sortField}`;
   }
-  //검색 키워드가 없고, boardType 이 REVIEW 가 아니면, 첫 페이지가 아닐 때
-  if (previousPageData && !previousPageData.result.hasNext && postType !== 'REVIEW') {
+  if (sortField === 'createdAt' && previousPageData && !previousPageData.result.hasNext && postType !== 'REVIEW') {
+    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10`;
+  }
+  if (sortField === 'likeCount' && previousPageData && !previousPageData.result.hasNext && postType !== 'REVIEW') {
     return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortFields=${sortField}`;
   }
   if (previousPageData.result.hasNext && postType !== 'REVIEW') {
@@ -31,7 +35,6 @@ const useGetTotalSearchResults = (postType: BoardType, certificateId: number, so
       revalidateAll: true,
     },
   );
-
 
   return {
     userPostsList: data ? data : [],
