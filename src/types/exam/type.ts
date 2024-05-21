@@ -1,7 +1,7 @@
-import { ReviewIncorrectMockExam } from '@/types/global';
+import { ReviewIncorrectMockExam, Subject } from '@/types/global';
 export interface RecentMockExamResultResponseType {
   responseCode: string;
-  result: RecentMockExamResultType
+  result: RecentMockExamResultType;
 }
 interface RecentMockExamResultType {
   mockExamResultId: number;
@@ -9,4 +9,25 @@ interface RecentMockExamResultType {
   mockExam: ReviewIncorrectMockExam;
   totalScore: number;
   createdAt: string;
+}
+
+export interface MockExamResultsResponseType {
+  responseCode: string;
+  result: MockExamResultType[];
+}
+
+export interface MockExamResultType {
+  mockExamResultId: number;
+  round: number;
+  mockExam: ReviewIncorrectMockExam;
+  subjectResults: SubjectResultsType[];
+  totalScore: number;
+}
+
+interface SubjectResultsType {
+  subject: Subject;
+  score: number;
+  numberOfCorrect: number;
+  totalTakenTime: number;
+  correctRate: number;
 }

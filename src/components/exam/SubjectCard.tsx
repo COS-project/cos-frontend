@@ -64,11 +64,11 @@ const SubjectCard: React.FC<SubjectCard> = ({ round, MockExamId, total }) => {
       </div>
       {sessionModalIsOpen && (
         <SessionModal
+          MockExamId={MockExamId}
           closeModal={closeSessionModal}
           openTimerModal={openTimerModal}
-          round={round}
-          main={examResultRecent ? examResultRecent.totalScore : 0}
           total={total}
+          round={round}
         />
       )}
       {/* 타이머 모달에 대한 코드 */}
