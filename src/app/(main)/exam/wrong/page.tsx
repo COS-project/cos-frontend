@@ -30,7 +30,7 @@ const IncorrectQuestion = () => {
       <div className={'flex flex-col bg-gray0 p-5 gap-y-5'}>
         {incorrectQuestions
           ? incorrectQuestions.map((pastWrongQuestion: AxiosResponse<ReviewIncorrectAnswers>) => {
-              return pastWrongQuestion.result.content.map(
+              return pastWrongQuestion?.result.content.map(
                 (wrongQuestion: ReviewIncorrectAnswersContent, index: number) => {
                   return (
                     <div key={index} ref={ref}>

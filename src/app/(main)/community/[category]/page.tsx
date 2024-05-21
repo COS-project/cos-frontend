@@ -1,31 +1,22 @@
 'use client';
 
-import { AxiosResponse } from 'axios';
 import { useRouter } from 'next/navigation';
-import qs from 'query-string';
-import React, { SVGProps, useCallback, useEffect, useState } from 'react';
-import { useInView } from 'react-intersection-observer';
+import React, { SVGProps, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
-import RoundFilter from '@/components/community/RoundFilter';
+import CommentaryBoardList from '@/components/community/CommentaryBoardList';
+import ExamReviewBoardList from '@/components/community/ExamReviewBoardList';
+import NormalAndTipBoardList from '@/components/community/NormalAndTipBoardList';
 import WriteButton from '@/components/community/WriteButton';
 import WriteExplanationPost from '@/components/community/WriteExplanationPost';
 import WriteNormalPost from '@/components/community/WriteNormalPost';
 import WriteTipPost from '@/components/community/WriteTipPost';
-import YearFilter from '@/components/community/YearFilter';
-import MyPageFilter from '@/components/mypage/MyPageFilter';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
-import Post from '@/components/mypage/Post';
 import useDebounce from '@/hooks/useDebounce';
-import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
-import useGetMockExams from '@/lib/hooks/useGetMockExams';
-import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
-import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
-import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
-import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
-import { filterNormalAndTipContent } from '@/utils/community/FilterContent';
+import { boardTypeState, commentarySearchQuestionSequence } from '@/recoil/community/atom';
+import { BoardType } from '@/types/community/type';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
@@ -131,109 +122,6 @@ export default function CommunityCategoryPage() {
     router.push('/search');
   };
 
-  const commentaryTopElement = (year: number, round: number, number: number) => {
-    return (
-      <div className={'flex gap-x-[6px] pb-3'}>
-        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{year}년도</div>
-        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{round}회차</div>
-        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{number}번</div>
-      </div>
-    );
-  };
-
-  const tipTopElement = () => {
-    return (
-      <div className={'pb-2'}>
-        <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
-      </div>
-    );
-  };
-
-  const updateFilterByPostType = () => {
-    if (boardType === 'NORMAL' || boardType === 'TIP') {
-      return (
-        <div>
-          <div className={' w-fit flex px-3 py-1 rounded-full bg-white '}>
-            <span className={'text-gray4 text-h6'}>{selectedNormalAndTipFilterContent}</span>
-            {isOpenNormalAndTipFilter ? (
-              <ActivationIcon onClick={() => setIsOpenNormalAndTipFilter(!isOpenNormalAndTipFilter)} />
-            ) : (
-              <DisableIcon onClick={() => setIsOpenNormalAndTipFilter(!isOpenNormalAndTipFilter)} />
-            )}
-          </div>
-          {isOpenNormalAndTipFilter ? (
-            <MyPageFilter
-              isOpenFilter={isOpenNormalAndTipFilter}
-              setSelectedFilterContent={setSelectedNormalAndTipFilterContent}
-              setIsOpenFilter={setIsOpenNormalAndTipFilter}
-              data={filterNormalAndTipContent}
-            />
-          ) : null}
-        </div>
-      );
-    } else if (boardType === 'COMMENTARY') {
-      return (
-        <div className={'flex gap-x-2'}>
-          {/*년도 필터*/}
-          <div className={'flex-shrink-0 w-fit flex px-3 py-1 rounded-full bg-white '}>
-            <span className={'text-gray4 text-h6'}>{selectedCommentaryYearFilterContent}년도</span>
-            {isOpenCommentaryYearFilter ? (
-              <ActivationIcon onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)} />
-            ) : (
-              <DisableIcon onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)} />
-            )}
-          </div>
-          {isOpenCommentaryYearFilter ? (
-            <YearFilter
-              isOpenFilter={isOpenCommentaryYearFilter}
-              setSelectedFilterContent={setSelectedCommentaryYearFilterContent}
-              setIsOpenFilter={setIsOpenCommentaryYearFilter}
-              data={examYears}
-            />
-          ) : null}
-
-          {/*회차 필터*/}
-          <button
-            disabled={controlDisabledFilter()}
-            className={'flex-shrink-0 w-fit flex px-3 py-1 rounded-full bg-white '}>
-            <span className={'text-gray4 text-h6'}>{selectedCommentaryRoundFilterContent}회차</span>
-            {isOpenCommentaryRoundFilter ? (
-              <ActivationIcon onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)} />
-            ) : (
-              <DisableIcon onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)} />
-            )}
-          </button>
-          {isOpenCommentaryRoundFilter ? (
-            <RoundFilter
-              isOpenFilter={isOpenCommentaryRoundFilter}
-              setSelectedFilterContent={setSelectedCommentaryRoundFilterContent}
-              setIsOpenFilter={setIsOpenCommentaryRoundFilter}
-              data={mockExams}
-            />
-          ) : null}
-
-          {/*문제 번호 검색 필터*/}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-            className={'flex items-center gap-x-1 py-1 px-3 bg-white rounded-full w-fit'}>
-            <input
-              value={searchValue}
-              type={'number'}
-              onChange={(e) => {
-                setSearchValue(parseInt(e.target.value));
-              }}
-              className={'text-h6 text-black outline-none w-[80px] placeholder:text-gray4 border-b-[1px] border-black'}
-              placeholder={'문항번호 검색'}
-            />
-            <QuestionSeqSearchIcon />
-          </form>
-        </div>
-      );
-    }
-  };
-
   return boardTypeForPost === 'COMMENTARY' && isClickedWriteButton ? (
     <WriteExplanationPost />
   ) : boardTypeForPost === 'TIP' && isClickedWriteButton ? (
@@ -256,75 +144,21 @@ export default function CommunityCategoryPage() {
       <div className={'flex flex-col gap-y-4 bg-gray0 min-h-screen'}>
         {/*boardType 변경 메뉴*/}
         <MyWritingMenu boardType={boardType} setBoardType={setBoardType} />
-        <div className={'relative px-5 flex flex-col gap-y-4 '}>
-          {/*boardType 에 따른 필터*/}
-          {updateFilterByPostType()}
-          <div className={'flex flex-col gap-y-4'}>
-            {/*post*/}
-            {boardType === 'COMMENTARY'
-              ? commentarySearchResults.map((userPosts: AxiosResponse<ResponsePostType>) => {
-                  return userPosts?.result.content.map((userPost: PostType) => {
-                    return (
-                      <div key={userPost.postId} ref={ref}>
-                        <Post
-                          postId={userPost.postId}
-                          content={userPost.postContent.content}
-                          title={userPost.postContent.title}
-                          commentCount={userPost.postStatus.commentCount}
-                          createdAt={'2023.7.12'}
-                          imageUrl={
-                            userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null
-                          }
-                          likeCount={userPost.postStatus.likeCount}
-                          topElement={
-                            userPost.question
-                              ? commentaryTopElement(
-                                  userPost.question.mockExam.examYear,
-                                  userPost.question.mockExam.round,
-                                  userPost.question.questionSeq,
-                                )
-                              : userPost.recommendTags
-                              ? tipTopElement()
-                              : null
-                          }></Post>
-                      </div>
-                    );
-                  });
-                })
-              : userPostsList
-              ? userPostsList.map((userPosts: AxiosResponse<ResponsePostType>) => {
-                  return userPosts?.result.content.map((userPost: PostType) => {
-                    return (
-                      <div key={userPost.postId} ref={ref}>
-                        <Post
-                          postId={userPost.postId}
-                          content={userPost.postContent.content}
-                          title={userPost.postContent.title}
-                          commentCount={userPost.postStatus.commentCount}
-                          createdAt={'2023.7.12'}
-                          imageUrl={
-                            userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null
-                          }
-                          likeCount={userPost.postStatus.likeCount}
-                          topElement={
-                            userPost.question
-                              ? commentaryTopElement(
-                                  userPost.question.mockExam.examYear,
-                                  userPost.question.mockExam.round,
-                                  userPost.question.questionSeq,
-                                )
-                              : userPost.recommendTags
-                              ? tipTopElement()
-                              : null
-                          }></Post>
-                      </div>
-                    );
-                  });
-                })
-              : null}
-            {}
-          </div>
-        </div>
+        {/*post*/}
+        {boardType === 'REVIEW' ? (
+          <ExamReviewBoardList />
+        ) : boardType === 'COMMENTARY' ? (
+          <CommentaryBoardList
+            boardType={boardType}
+            setSearchValue={setSearchValue}
+            searchValue={searchValue}
+            debouncedValue={debouncedValue}
+          />
+        ) : boardType === 'TIP' ? (
+          <NormalAndTipBoardList boardType={boardType} />
+        ) : boardType === 'NORMAL' ? (
+          <NormalAndTipBoardList boardType={boardType} />
+        ) : null}
       </div>
       {boardTypeForPost === 'REVIEW' ? null : (
         <WriteButton
@@ -337,16 +171,7 @@ export default function CommunityCategoryPage() {
     </>
   );
 }
-const DisableIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none" {...props}>
-    <path stroke="#727375" strokeLinecap="round" d="M13.5 9 10 12 6.5 9" />
-  </svg>
-);
-const ActivationIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none" {...props}>
-    <path stroke="#727375" strokeLinecap="round" d="M6.5 12 10 9l3.5 3" />
-  </svg>
-);
+
 const SearchIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={33} height={33} fill="none" {...props}>
     <mask
@@ -365,29 +190,6 @@ const SearchIcon = (props: SVGProps<SVGSVGElement>) => (
       <path
         fill="#1C1B1F"
         d="m26.755 27.367-8.473-8.474a7 7 0 0 1-2.306 1.349 7.8 7.8 0 0 1-2.64.468q-3.192 0-5.402-2.206T5.723 13.12 7.929 7.73t5.383-2.21 5.397 2.207 2.22 5.385q0 1.378-.492 2.692a7.2 7.2 0 0 1-1.347 2.28l8.479 8.45zm-13.424-7.785q2.722 0 4.596-1.87 1.874-1.869 1.874-4.597 0-2.727-1.874-4.597t-4.596-1.87q-2.725 0-4.603 1.87t-1.877 4.597 1.877 4.597q1.878 1.87 4.603 1.87"
-      />
-    </g>
-  </svg>
-);
-
-const QuestionSeqSearchIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={21} height={20} fill="none" {...props}>
-    <mask
-      id="a"
-      width={21}
-      height={20}
-      x={0}
-      y={0}
-      maskUnits="userSpaceOnUse"
-      style={{
-        maskType: 'alpha',
-      }}>
-      <path fill="#D9D9D9" d="M.646 0h20v20h-20z" />
-    </mask>
-    <g mask="url(#a)">
-      <path
-        fill="#1C1B1F"
-        d="m16.535 16.647-4.963-4.963a5 5 0 0 1-1.37.735q-.746.26-1.54.26-1.95 0-3.314-1.364Q3.982 9.95 3.982 8q0-1.948 1.365-3.314Q6.713 3.32 8.66 3.32q1.95 0 3.315 1.365T13.341 8q0 .817-.268 1.563a5 5 0 0 1-.727 1.346l4.963 4.963zm-7.873-5.05q1.506-.001 2.551-1.046T12.258 8t-1.045-2.551q-1.044-1.045-2.551-1.045T6.11 5.449 5.066 8t1.044 2.551 2.552 1.045"
       />
     </g>
   </svg>
