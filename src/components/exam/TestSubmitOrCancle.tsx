@@ -7,6 +7,7 @@ import useCalculateScore from '@/hooks/useCalculateScore';
 import { postSubjectResultRequestsList } from '@/lib/api/exam';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import {
+  mockExamIdState,
   questionIndex,
   stopwatchIsPaused,
   stopwatchIsRunning,
@@ -35,7 +36,8 @@ const TestSubmitOrCancle = (props: Props) => {
     isAutoSubmitTimeUpModalOpen,
     setIsAutoSubmitTimeUpModalOpen,
   } = props;
-  const { calculateScore, prepareAndScoreSubjectResults } = useCalculateScore();
+  const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
+  const { calculateScore, prepareAndScoreSubjectResults } = useCalculateScore(selectedMockExamId);
   // 남은 시간(타이머) TODO: questions[0].mockExam.timeLimit으로 변경
   const [timeLeft, setTimeLeft] = useState(5400000); //5400000
   // 각 문제당 걸린 시간
@@ -117,17 +119,6 @@ const TestSubmitOrCancle = (props: Props) => {
       prepareAndScoreSubjectResults();
     }
   }, [userAnswerList[0]?.isCorrect]);
-
-  /**
-   * prepareAndScoreSubjectResults 가 다 완료되고, subjectResultList 에 값이 다 저장될 때,
-   * 서버에 post 요청을 보내는 코드
-   */
-  useEffect(() => {
-    if (subjectResultList.length !== 0) {
-      postSubjectResultRequestsList(subjectResultList).then((r) => console.log(r));
-      setSubjectResultList([]); //다시 제출 방지
-    }
-  }, [subjectResultList]);
 
   /**
    * 시간이 종료되었을 때, 자동 제출되는 로직

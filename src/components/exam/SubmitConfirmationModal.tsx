@@ -2,7 +2,14 @@ import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useRecoilState } from 'recoil';
 
-import { stopwatchIsPaused, stopwatchIsRunning, timerIsPaused } from '@/recoil/exam/atom';
+import { postSubjectResultRequestsList } from '@/lib/api/exam';
+import {
+  mockExamIdState,
+  stopwatchIsPaused,
+  stopwatchIsRunning,
+  subjectResultRequestsList,
+  timerIsPaused,
+} from '@/recoil/exam/atom';
 
 interface Props {
   isSubmitConfirmationModalOpen: boolean;
@@ -10,21 +17,22 @@ interface Props {
 }
 
 const SubmitConfirmationModal = (props: Props) => {
+  const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
   const { isSubmitConfirmationModalOpen, setIsSubmitConfirmationModalOpen } = props;
   // 모달창을 띄우면 타이머를 잠시 멈추게 하는 state
   const [isPausedTimer, setIsPausedTimer] = useRecoilState(timerIsPaused);
   // 문제당 머문시간을 잠시 멈추는
   const [isPausedStopWatch, setIsPausedStopWatch] = useRecoilState(stopwatchIsPaused);
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);
+  const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList)
   const router = useRouter();
 
   /**
    * 제출 버튼을 눌렀을 때, 결과 페이지로 이동하는 함수
    */
-  const onMove = () => {
+  const onMove = async () => {
     router.push('/exam/result');
   };
-
   return (
     <>
       <div
@@ -49,10 +57,11 @@ const SubmitConfirmationModal = (props: Props) => {
               닫기
             </button>
             <button
-              onClick={() => {
+              onClick={async () => {
                 setIsRunning(false);
                 setIsSubmitConfirmationModalOpen(!isSubmitConfirmationModalOpen);
-                onMove();
+                await postSubjectResultRequestsList(subjectResultList, selectedMockExamId).then((r) => console.log(r));
+                await onMove();
               }}
               className={'bg-black rounded-full text-white py-[7px] px-3'}>
               제출하기

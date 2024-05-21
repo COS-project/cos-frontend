@@ -5,12 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetExamResults.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/Question.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/Question.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/exam/SessionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/SessionModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/exam/SubjectCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/SubjectCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/exam/SubjectGradeCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/SubjectGradeCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/exam/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/exam/type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/SubjectList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/SubjectList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/SubmitConfirmationModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/SubmitConfirmationModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/TestSubmitOrCancle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/TestSubmitOrCancle.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/TimerModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/TimerModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/hooks/useCalculateScore.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useCalculateScore.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/exam.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/exam.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useMockExamQuestions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useMockExamQuestions.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/recoil/exam/atom.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/recoil/exam/atom.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +126,7 @@
       <workItem from="1715506546722" duration="28839000" />
       <workItem from="1715652288664" duration="122000" />
       <workItem from="1716123590906" duration="891000" />
-      <workItem from="1716256789152" duration="15085000" />
+      <workItem from="1716256789152" duration="18991000" />
     </task>
     <servers />
   </component>

@@ -6,7 +6,9 @@ import { useRecoilState } from 'recoil';
 import QuestionContent from '@/components/exam/QuestionContent';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import {
-  questionIndex, stopwatchIsPaused,
+  mockExamIdState,
+  questionIndex,
+  stopwatchIsPaused,
   stopwatchIsRunning,
   stopwatchTime,
   userAnswerRequests,
@@ -17,7 +19,8 @@ import { Question, QuestionsResponse, UserAnswerRequests } from '@/types/global'
 import { AllQuestionModal } from './AllQuestionModal';
 
 const Question = () => {
-  const { questions, isLoading, isError } = useMockExamQuestions();
+  const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
+  const { questions, isLoading, isError } = useMockExamQuestions(selectedMockExamId);
   const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
   const [allQuestionModalIsOpen, setAllQuestionModalIsOpen] = useState(false);
   const [userAnswer, setUserAnswer] = useRecoilState<UserAnswerRequests>(userAnswerRequests);
