@@ -38,7 +38,7 @@ const TestSubmitOrCancle = (props: Props) => {
   } = props;
   const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
   // 남은 시간(타이머) TODO: questions[0].mockExam.timeLimit으로 변경
-  const [timeLeft, setTimeLeft] = useState(5400000); //5400000
+  const [timeLeft, setTimeLeft] = useState(10000); //5400000
   // 각 문제당 걸린 시간
   const [time, setTime] = useRecoilState<number>(stopwatchTime);
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);
@@ -95,6 +95,16 @@ const TestSubmitOrCancle = (props: Props) => {
     calculateScore();
   };
 
+  /**
+   * 시간이 종료되었을 때, 자동 제출되는 로직
+   */
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      setIsRunning(false);
+      setIsAutoSubmitTimeUpModalOpen(!isAutoSubmitTimeUpModalOpen);
+    }
+  }, [timeLeft]);
+
   useEffect(() => {
     if (!isRunning) {
       recordSessionTime();
@@ -129,16 +139,6 @@ const TestSubmitOrCancle = (props: Props) => {
       setSubjectResultList([]); //다시 제출 방지
     }
   }, [subjectResultList]);
-
-  /**
-   * 시간이 종료되었을 때, 자동 제출되는 로직
-   */
-  useEffect(() => {
-    if (timeLeft < 0) {
-      setIsRunning(false);
-      setIsAutoSubmitTimeUpModalOpen(!isAutoSubmitTimeUpModalOpen);
-    }
-  }, [timeLeft]);
 
   return (
     <>

@@ -29,8 +29,8 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
     <div>
       <div className="fixed z-20 inset-0 flex items-center justify-center bg-black bg-opacity-30">
         <div className="w-[80%]">
-          <button onClick={closeModal} className="w-full flex justify-end text-white text-h6 px-2 my-2">
-            닫기 X
+          <button onClick={closeModal} className="w-full flex justify-end items-center text-white text-h6 px-2 my-2">
+            닫기 <CancleIcon />
           </button>
           <div className="relative bg-white rounded-[32px]">
             <div className="flex flex-col gap-y-4 p-5">
@@ -61,8 +61,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                 </div>
               </div>
               <div>
-                {examResults && examResults[examResults?.length - 1]?.subjectResults
-                  ? (
+                {examResults && examResults[examResults?.length - 1]?.subjectResults ? (
                   <div className={'flex flex-col gap-y-2'}>
                     <div className="text-h6 font-semibold">과목별 맞춘 문제 수</div>
                     <div className={'flex'}>
@@ -111,5 +110,28 @@ const AfterIcon = (props: SVGProps<SVGSVGElement>) => (
 const MoveIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={16} height={17} fill="none" {...props}>
     <path stroke="#0D0E10" strokeLinecap="round" strokeLinejoin="round" d="m5 11.5 6-6M5 5.5h6v6" />
+  </svg>
+);
+
+const CancleIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" {...props}>
+    <mask
+      id="a"
+      width={24}
+      height={24}
+      x={0}
+      y={0}
+      maskUnits="userSpaceOnUse"
+      style={{
+        maskType: 'alpha',
+      }}>
+      <path fill="#D9D9D9" d="M0 0h24v24H0z" />
+    </mask>
+    <g mask="url(#a)">
+      <path
+        fill="#fff"
+        d="m12 12.708-5.246 5.246a.5.5 0 0 1-.344.15.47.47 0 0 1-.364-.15.5.5 0 0 1-.16-.354.5.5 0 0 1 .16-.354L11.292 12 6.046 6.754a.5.5 0 0 1-.15-.344.47.47 0 0 1 .15-.364.5.5 0 0 1 .354-.16.5.5 0 0 1 .354.16L12 11.292l5.246-5.246a.5.5 0 0 1 .344-.15.47.47 0 0 1 .364.15.5.5 0 0 1 .16.354.5.5 0 0 1-.16.354L12.708 12l5.246 5.246a.5.5 0 0 1 .15.344.47.47 0 0 1-.15.364.5.5 0 0 1-.354.16.5.5 0 0 1-.354-.16z"
+      />
+    </g>
   </svg>
 );
