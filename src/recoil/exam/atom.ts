@@ -37,6 +37,11 @@ export let userAnswerRequestsList = atom<UserAnswerRequests[]>({
   default: [],
 });
 
+export const sessionRecordedState = atom<boolean>({
+  key: 'sessionRecordedState',
+  default: false,
+});
+
 export const questionIndex = atom<number>({
   key: 'questionIndex',
   default: 0,
