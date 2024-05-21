@@ -61,3 +61,9 @@ export const stopwatchIsPaused = atom<boolean>({
   key: 'stopwatchIsPaused',
   default: false,
 });
+
+//모의고사 응시 번호
+export const mockExamIdState = atom<number>({
+  key: 'mockExamIdState',
+  default: 1,
+});

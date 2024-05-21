@@ -9,15 +9,15 @@ import SubjectGradeCard from './SubjectGradeCard';
 
 interface SessionModalProps {
   round: number;
-  MockExamId: number;
+  mockExamId: number;
   closeModal: () => void;
   openTimerModal: () => void;
   total: number;
 }
 
-const SessionModal: React.FC<SessionModalProps> = ({ round, MockExamId, closeModal, openTimerModal, total }) => {
+const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeModal, openTimerModal, total }) => {
   const [changedRound, setChangedRound] = useState<number>(0);
-  const { examResults } = useGetExamResults(MockExamId);
+  const { examResults } = useGetExamResults(mockExamId);
 
   useEffect(() => {
     if (round) {

@@ -18,7 +18,11 @@ const SubjectSessionCard = (props: Props) => {
       {mockExams?.map((mockExam: ReviewIncorrectMockExam, index: number) => {
         return (
           <div key={index}>
-            <SubjectCard total={300} round={mockExam.round} MockExamId={mockExam.MockExamId}></SubjectCard>
+            <SubjectCard
+              timeLimit={mockExam.timeLimit}
+              total={300}
+              round={mockExam.round}
+              mockExamId={mockExam.MockExamId}></SubjectCard>
           </div>
         );
       })}

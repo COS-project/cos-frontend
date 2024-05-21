@@ -9,13 +9,14 @@ import SessionModal from './SessionModal';
 import TimerModal from './TimerModal';
 
 interface SubjectCard {
+  timeLimit: number;
   round: number;
-  MockExamId: number;
+  mockExamId: number;
   total: number;
 }
 
-const SubjectCard: React.FC<SubjectCard> = ({ round, MockExamId, total }) => {
-  const { examResultRecent } = useGetExamResultRecent(MockExamId);
+const SubjectCard: React.FC<SubjectCard> = ({ timeLimit, round, mockExamId, total }) => {
+  const { examResultRecent } = useGetExamResultRecent(mockExamId);
   const [selectedSubject, setSelectedSubject] = useRecoilState<SubjectInfo | null>(selectedSubjectState);
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
 
@@ -64,7 +65,7 @@ const SubjectCard: React.FC<SubjectCard> = ({ round, MockExamId, total }) => {
       </div>
       {sessionModalIsOpen && (
         <SessionModal
-          MockExamId={MockExamId}
+          mockExamId={mockExamId}
           closeModal={closeSessionModal}
           openTimerModal={openTimerModal}
           total={total}
@@ -72,7 +73,15 @@ const SubjectCard: React.FC<SubjectCard> = ({ round, MockExamId, total }) => {
         />
       )}
       {/* 타이머 모달에 대한 코드 */}
-      {timerModalIsOpen && <TimerModal closeTimerModal={closeTimerModal} closeSessionModal={closeSessionModal} />}
+      {timerModalIsOpen && (
+        <TimerModal
+          mockExamId={mockExamId}
+          timeLimit={timeLimit}
+          round={round}
+          closeTimerModal={closeTimerModal}
+          closeSessionModal={closeSessionModal}
+        />
+      )}
     </div>
   );
 };
