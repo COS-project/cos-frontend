@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
+import useGetExamResultRecent from '@/lib/hooks/useGetExamResultRecent';
 import { Session, SubjectInfo } from '@/types/global';
 import { selectedSessionState, selectedSubjectState } from '@/utils/recoilState';
 
@@ -9,12 +10,12 @@ import TimerModal from './TimerModal';
 
 interface SubjectCard {
   round: number;
-  score: number;
+  MockExamId: number;
   total: number;
-  isTaken: boolean;
 }
 
-const SubjectCard: React.FC<SubjectCard> = ({ round, score, total, isTaken }) => {
+const SubjectCard: React.FC<SubjectCard> = ({ round, MockExamId, total }) => {
+  const { examResultRecent } = useGetExamResultRecent(MockExamId);
   const [selectedSubject, setSelectedSubject] = useRecoilState<SubjectInfo | null>(selectedSubjectState);
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
 
@@ -44,19 +45,20 @@ const SubjectCard: React.FC<SubjectCard> = ({ round, score, total, isTaken }) =>
 
   return (
     <div>
-      <div className="mx-2 p-3 border border-gray2 rounded-3xl">
-        <div className="text-black font-bold text-center">{`${round}회차`}</div>
-        <div className="border-t border-gray1 my-2"></div>
-        <div className="text-black text-center text-h7">최근 점수</div>
-        {isTaken ? (
-          <ul className="flex text-center justify-center">
-            <li className="font-bold text-h2">{`${score}점`}</li>
-            <div className="mt-1 text-gray3">{`/${total}점`}</div>
-          </ul>
-        ) : (
-          <p className="text-center text-h2 font-bold">미응시</p>
-        )}
-        <button onClick={() => openSessionModal()} className="w-full bg-gray1 rounded-3xl py-3 mt-4 text-h6 font-bold">
+      <div className="flex flex-col gap-y-4 p-3 border-[1px] border-gray2 rounded-[32px]">
+        <div className="font-semibold text-center pb-2 border-b border-gray1">{`${round}회차`}</div>
+        <div>
+          <div className="text-black text-center text-h7">최근 점수</div>
+          {examResultRecent ? (
+            <ul className="flex items-end justify-center">
+              <li className="font-bold text-h2">{`${examResultRecent.totalScore}점`}</li>
+              <div className="mb-[3px] text-gray3 text-h6">{`/${total}점`}</div>
+            </ul>
+          ) : (
+            <p className="text-center text-h2 font-semibold">미응시</p>
+          )}
+        </div>
+        <button onClick={() => openSessionModal()} className="w-full bg-gray0 rounded-3xl py-3 text-h6">
           시험 보기
         </button>
       </div>
@@ -65,7 +67,7 @@ const SubjectCard: React.FC<SubjectCard> = ({ round, score, total, isTaken }) =>
           closeModal={closeSessionModal}
           openTimerModal={openTimerModal}
           round={round}
-          main={score}
+          main={examResultRecent ? examResultRecent.totalScore : 0}
           total={total}
         />
       )}

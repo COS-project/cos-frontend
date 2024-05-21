@@ -6,7 +6,7 @@ import { swrGetFetcher } from '@/lib/axios';
 const useGetMockExams = (certificateId: number, year: number | string) => {
   const { data, error } = useSWR<AxiosResponse>(
     year === '전체'
-      ? `/certificates/${certificateId}/mock-exams?examYear=2023`
+      ? `/certificates/${certificateId}/mock-exams?examYear=2017`
       : `/certificates/${certificateId}/mock-exams?examYear=${year}`,
     swrGetFetcher,
   );

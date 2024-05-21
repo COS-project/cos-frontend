@@ -6,11 +6,16 @@ import * as React from 'react';
 import MockExamYearsFilter from '@/components/exam/MockExamYearsFilter';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 
+interface Props {
+  examYears: number[];
+  isClickedYearSelector: boolean;
+  setIsClickedYearSelector: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedYear: number;
+  setSelectedYear: React.Dispatch<React.SetStateAction<number>>;
+}
 // 과목의 Year를 선택하는 모듈
-const YearSelector = () => {
-  const { examYears } = useGetMockExamYears('YearSelector');
-  const [isClickedYearSelector, setIsClickedYearSelector] = useState<boolean>(false);
-  const [selectedYear, setSelectedYear] = useState<number>(2017);
+const YearSelector = (props: Props) => {
+  const { examYears, isClickedYearSelector, setSelectedYear, setIsClickedYearSelector, selectedYear } = props;
 
   return (
     <>

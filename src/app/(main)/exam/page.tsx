@@ -1,20 +1,28 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 
 import Banner from '@/components/common/Banner';
 import Header from '@/components/common/Header';
 import SubjectSessionCard from '@/components/exam/SubjectList';
 import YearSelector from '@/components/exam/YearSelector';
+import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
+import NavBar from '@/components/common/NavBar';
 
 const Exam = () => {
   return (
     <div>
       <Header />
       <SolveExamBox />
+      <NavBar />
     </div>
   );
 };
 
 const SolveExamBox = () => {
+  const { examYears } = useGetMockExamYears('YearSelector');
+  const [isClickedYearSelector, setIsClickedYearSelector] = useState<boolean>(false);
+  const [selectedYear, setSelectedYear] = useState<number>(2017);
+
   return (
     <div>
       <div className="px-5 py-4">
@@ -23,8 +31,14 @@ const SolveExamBox = () => {
           <Banner title="실제 출제된 문제를 모아봤어요." buttonText="랜덤 모의고사" href="/exam/wrong" />
         </div>
         <div className="text-h3 mt-[24px] font-bold">모의고사 풀기</div>
-        <YearSelector />
-        <SubjectSessionCard />
+        <YearSelector
+          isClickedYearSelector={isClickedYearSelector}
+          examYears={examYears}
+          setSelectedYear={setSelectedYear}
+          setIsClickedYearSelector={setIsClickedYearSelector}
+          selectedYear={selectedYear}
+        />
+        <SubjectSessionCard selectedYear={selectedYear} />
       </div>
     </div>
   );
