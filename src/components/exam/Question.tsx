@@ -87,7 +87,7 @@ const Question = () => {
   };
 
   /**
-   * 처음 랜더링 될 때, userAnswerLis t을 기본값으로 채워주는 기능
+   * 처음 랜더링 될 때, userAnswerList 을 기본값으로 채워주는 기능
    */
   useEffect(() => {
     if (questions?.length > 0 && userAnswerList.length === 0) {
