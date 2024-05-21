@@ -12,7 +12,7 @@ import {
   stopwatchIsPaused,
   stopwatchIsRunning,
   stopwatchTime,
-  subjectResultRequestsList,
+  subjectResultRequestsList, timeLimitState,
   timerIsPaused,
   userAnswerRequestsList,
 } from '@/recoil/exam/atom';
@@ -37,8 +37,10 @@ const TestSubmitOrCancle = (props: Props) => {
     setIsAutoSubmitTimeUpModalOpen,
   } = props;
   const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
-  // 남은 시간(타이머) TODO: questions[0].mockExam.timeLimit으로 변경
-  const [timeLeft, setTimeLeft] = useState(10000); //5400000
+  //시험 제한 시간
+  const [timeLimit, setTimeLimit] = useRecoilState(timeLimitState);
+  // 남은 시간(타이머)
+  const [timeLeft, setTimeLeft] = useState(timeLimit); //5400000 -> 1시간 30분, 10000 -> 10초
   // 각 문제당 걸린 시간
   const [time, setTime] = useRecoilState<number>(stopwatchTime);
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);

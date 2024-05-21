@@ -72,3 +72,8 @@ export const mockExamIdState = atom<number>({
   key: 'mockExamIdState',
   default: 1,
 });
+
+export const timeLimitState = atom<number>({
+  key: 'timeLimitState',
+  default: 0,
+});

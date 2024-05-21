@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import useGetExamResultRecent from '@/lib/hooks/useGetExamResultRecent';
@@ -7,6 +7,7 @@ import { selectedSessionState, selectedSubjectState } from '@/utils/recoilState'
 
 import SessionModal from './SessionModal';
 import TimerModal from './TimerModal';
+import { timeLimitState } from '@/recoil/exam/atom';
 
 interface SubjectCard {
   timeLimit: number;
@@ -23,6 +24,14 @@ const SubjectCard: React.FC<SubjectCard> = ({ timeLimit, round, mockExamId, tota
   // 모달 관련 states
   const [sessionModalIsOpen, setSessionModalIsOpen] = useState(false);
   const [timerModalIsOpen, setTimerModalIsOpen] = useState(false);
+  const [time, setTime] = useRecoilState(timeLimitState);
+
+  //제한 시간 설정
+  useEffect(() => {
+    if (timeLimit != 0) {
+      setTime(timeLimit);
+    }
+  }, [timeLimit]);
 
   // 모달이 열릴때 세션 상태 설정
   const openSessionModal = () => {
