@@ -28,7 +28,7 @@ const CommentaryBoardList = (props: Props) => {
   const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number | string>(
     '전체',
   );
-  const { examYears } = useGetMockExamYears(); //해설 년도 필터값
+  const { examYears } = useGetMockExamYears('CommentaryBoardList'); //해설 년도 필터값
   const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent); //해설 회차 필터값
   const [ref, inView] = useInView();
   const router = useRouter();
