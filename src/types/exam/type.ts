@@ -24,7 +24,7 @@ export interface MockExamResultType {
   totalScore: number;
 }
 
-interface SubjectResultsType {
+export interface SubjectResultsType {
   subject: Subject;
   score: number;
   numberOfCorrect: number;

@@ -3,7 +3,7 @@ import { SVGProps, useEffect, useState } from 'react';
 import React from 'react';
 
 import useGetExamResultRecent from '@/lib/hooks/useGetExamResultRecent';
-import useGetExamResults from '@/lib/hooks/useGetExamResults';
+import useGetTestResults from '@/lib/hooks/useGetTestResults';
 
 import SubjectGradeCard from './SubjectGradeCard';
 
@@ -17,7 +17,7 @@ interface SessionModalProps {
 
 const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeModal, openTimerModal, total }) => {
   const [changedRound, setChangedRound] = useState<number>(0);
-  const { examResults } = useGetExamResults(mockExamId);
+  const { examResults } = useGetTestResults(mockExamId);
 
   useEffect(() => {
     if (round) {

@@ -12,7 +12,7 @@ import {
   stopwatchIsPaused,
   stopwatchIsRunning,
   stopwatchTime,
-  subjectResultRequestsList, timeLimitState,
+  subjectResultRequestsList, submittedMockExamResultIdState, timeLimitState,
   timerIsPaused,
   userAnswerRequestsList,
 } from '@/recoil/exam/atom';
@@ -59,6 +59,7 @@ const TestSubmitOrCancle = (props: Props) => {
   const minutes = String(Math.floor((timeLeft / (1000 * 60)) % 60)).padStart(2, '0');
   const seconds = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, '0');
   const { calculateScore, prepareAndScoreSubjectResults } = useCalculateScore(selectedMockExamId);
+  const [submittedMockExamResultId, setSubmittedMockExamResultId] = useRecoilState(submittedMockExamResultIdState);
 
   /**
    * 시험 시간 타이머 기능
@@ -116,7 +117,7 @@ const TestSubmitOrCancle = (props: Props) => {
 
   useEffect(() => {
     if (sessionRecorded) {
-      handleSubmit().then((r) => console.log('제출되어 체점 완료'));
+      handleSubmit()
       setSessionRecorded(false); // 다시 초기 상태로 설정
     }
   }, [sessionRecorded]);
@@ -137,7 +138,10 @@ const TestSubmitOrCancle = (props: Props) => {
    */
   useEffect(() => {
     if (subjectResultList.length !== 0) {
-      postSubjectResultRequestsList(subjectResultList, selectedMockExamId).then((r) => console.log('제출 되어야 함.', r));
+      postSubjectResultRequestsList(subjectResultList, selectedMockExamId).then((r) => {
+        console.log(r);
+        setSubmittedMockExamResultId(r.result.mockExamResultId);
+      });
       setSubjectResultList([]); //다시 제출 방지
     }
   }, [subjectResultList]);
