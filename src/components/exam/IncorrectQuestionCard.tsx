@@ -100,9 +100,11 @@ const IncorrectQuestionCard = (props: Props) => {
             })}
           </div>
           <div className={'flex gap-x-2 justify-end'}>
-            <button onClick={() => resetSelectedAnswerInThePast()} className={'border-second-button'}>
-              과거의 나
-            </button>
+            {selectOptionSeq !== 0 ? (
+              <button onClick={() => resetSelectedAnswerInThePast()} className={'border-second-button'}>
+                과거의 나
+              </button>
+            ) : null}
             <button onClick={() => resetCorrectAnswer()} className={'bg-blue-button'}>
               정답보기
             </button>

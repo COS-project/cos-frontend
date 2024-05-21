@@ -4,7 +4,7 @@ import { CreatePostDataType, YearsAndRounds } from '@/types/community/type';
 import { Certificate } from '@/types/global';
 
 interface Props {
-  data: YearsAndRounds;
+  data: number[];
   setDataState: React.Dispatch<React.SetStateAction<CreatePostDataType>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -25,7 +25,7 @@ const MockExamYearsFilter = (props: Props) => {
       {!data || data.length === 0 ? (
         <div>error</div>
       ) : (
-        Object.entries(data).map(([year, rounds]) => {
+        data.map((year) => {
           return (
             <div
               key={year}

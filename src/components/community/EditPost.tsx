@@ -8,7 +8,7 @@ import FilterModal from '@/components/common/FilterModal';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { putPostDetail } from '@/lib/api/community';
-import useGetMockExamYearsAndRounds from '@/lib/hooks/useGetMockExamYearsAndRounds';
+import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useGetPost from '@/lib/hooks/useGetPost';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { editPostDataState, imagePreviewsState, imageUrlListState, pastImageUrlsState } from '@/recoil/community/atom';
@@ -17,7 +17,7 @@ import { EditPostDataType, TipPostTagType } from '@/types/community/type';
 const EditPost = () => {
   const { postDetailData } = useGetPost();
   const { questions } = useMockExamQuestions();
-  const { examYearWithRounds } = useGetMockExamYearsAndRounds();
+  const { examYears } = useGetMockExamYears();
   const [editPostData, setEditPostData] = useRecoilState(editPostDataState);
   const [onlineCourseInputs, setOnlineCourseInputs] = useState<string[]>([]);
   const [workbookInputs, setWorkbookInputs] = useState<string[]>([]);
@@ -385,7 +385,7 @@ const EditPost = () => {
               </div>
               {isYearsFilterOpen && (
                 <MockExamYearsFilter
-                  data={examYearWithRounds?.examYearWithRounds}
+                  data={examYears?.examYearWithRounds}
                   setIsOpen={setIsYearsFilterOpen}
                   setDataState={setEditPostData}
                 />
@@ -407,7 +407,7 @@ const EditPost = () => {
                 <FilterModal
                   data={
                     postDetailData.mockExam.examYear
-                      ? examYearWithRounds?.examYearWithRounds[postDetailData.mockExam.examYear]
+                      ? examYears?.examYearWithRounds[postDetailData.mockExam.examYear]
                       : null
                   }
                   setDataState={setEditPostData}

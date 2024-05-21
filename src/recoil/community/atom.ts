@@ -1,10 +1,21 @@
 'use client';
-import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
-import { extend } from 'dayjs';
-import SubjectList from '@/components/exam/SubjectList';
-import { CreatePostDataType, EditPostDataType } from '@/types/community/type';
 import { atom } from 'recoil';
-import { GenerateComment, Post } from '@/types/global';
+
+import {
+  BoardType,
+  CreatePostDataType,
+  EditPostDataType,
+  ExamReviewPostType,
+  PopularSearchKeyword,
+  RecentSearchResult,
+} from '@/types/community/type';
+import { GenerateComment } from '@/types/global';
+
+//게시판 종류
+export const boardTypeState = atom<BoardType>({
+  key: 'boardTypeState',
+  default: 'REVIEW',
+});
 
 //글 삭제 및 수정 모달창 조작
 export let postingModalState = atom<boolean>({
@@ -90,8 +101,16 @@ export const recentSearchResultState = atom<RecentSearchResult>({
   },
 });
 
-//최근 검색 기록
-export const popularSearchKeywordState = atom<PopularSearchKeyword[]>({
-  key: 'popularSearchKeywordState',
-  default: [],
+//해설 게시글 번호 검색
+export const commentarySearchQuestionSequence = atom<number>({
+  key: 'commentarySearchQuestionSequence',
+  default: undefined,
+});
+
+export const examReviewPostState = atom<ExamReviewPostType>({
+  key: 'examReviewPostState',
+  default: {
+    examDifficulty: '',
+    content: '',
+  },
 });

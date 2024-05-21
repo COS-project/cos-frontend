@@ -1,5 +1,14 @@
 import React from 'react';
 
+import { QuestionsResponse } from '@/types/global';
+import { UserInfo } from '@/types/mypage/type';
+
+export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
+
+export type ExamReviewPostType = {
+  examDifficulty: string;
+  content: string;
+};
 export interface YearsAndRounds {
   2017: number[];
   2018: number[];
@@ -43,4 +52,78 @@ export interface PopularSearchKeyword {
   sequence: number;
   keyword: string;
   icon: React.JSX.Element;
+}
+
+export interface ResponsePostType {
+  responseCode: string;
+  result: {
+    content: PostType[];
+    hasNext: boolean;
+  };
+}
+
+export interface PostType {
+  postId: number;
+  postContent: PostContent;
+  postStatus: PostStatus;
+  user: UserInfo;
+  recommendTags?: RecommendTags[]; //꿀팁
+  question?: QuestionsResponse; //해설
+  dateTime: DateTime;
+}
+
+export interface PostContent {
+  title: string;
+  content: string;
+  images: Image[];
+}
+
+export interface Image {
+  id: number;
+  imageUrl: string;
+}
+
+export interface PostStatus {
+  postType: string;
+  likeCount: number;
+  commentCount: number;
+}
+
+export interface ReviewPost {
+  examDifficulty: ExamDifficulty;
+  prepareMonths: number;
+  content: string;
+  user: UserInfo;
+  createdAt: string;
+}
+
+export type ExamDifficulty = 'TOO_EASY' | 'EASY' | 'NORMAL' | 'TOO_DIFFICULT' | 'LITTLE_DIFFICULT';
+
+export interface ResponseReviewPost {
+  responseCode: string;
+  result: {
+    content: ReviewPost[];
+  };
+  hasNext: boolean;
+}
+
+export interface RecommendTags {
+  tagType: string;
+  tagName: string;
+}
+
+export interface DateTime {
+  createdAt: string;
+  modifiedAt: string;
+}
+
+export type TrendingKeywordState = 'UNCHANGED' | 'NEW' | 'RANK_UP' | 'RANK_DOWN';
+export interface TrendingKeyword {
+  keyword: string;
+  status: TrendingKeywordState;
+}
+
+export interface PerparePeriodType {
+  startMonth: number | undefined;
+  endMonth: number | undefined;
 }

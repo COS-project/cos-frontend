@@ -1,16 +1,11 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useEffect, useState } from 'react';
 
 import CertificationPriority from '@/components/onboarding/CertificationPriority';
 import ChooseCertification from '@/components/onboarding/ChooseCertification';
 import ProfileSettings from '@/components/onboarding/ProfileSettings';
-import useGetAllCertificates from '@/lib/hooks/useGetAllCertificates';
-import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
-import { certificationsListState } from '@/recoil/atom';
-import { Certificate } from '@/types/global';
 
 const OnBoarding = () => {
   const parameter = useSearchParams();

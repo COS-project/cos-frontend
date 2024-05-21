@@ -6,14 +6,14 @@ import { useRecoilState } from 'recoil';
 
 import FilterModal from '@/components/common/FilterModal';
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
-import useGetInterestCertificates from '@/lib/hooks/useGetInterestCertificates';
+import useGetBoardList from '@/lib/hooks/useGetBoardList';
 import { goalSettingCertificateId, goalSettingCertificateName } from '@/recoil/home/atom';
 
 /**
  목표 설정 페이지 중 자격증 선택 컴포넌트 입니다.
  */
 const SelectCertification = () => {
-  const { interestCertificates } = useGetInterestCertificates();
+  const { boardList } = useGetBoardList();
   //FilterModal 을 열고 닫는 state
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // 선택된 자격증
@@ -27,14 +27,14 @@ const SelectCertification = () => {
   };
 
   const initializeGoalSettingCertificateIdState = () => {
-    if (interestCertificates) {
-      return interestCertificates[0]?.certificate.certificateId;
+    if (boardList) {
+      return boardList[0]?.certificate.certificateId;
     }
   };
 
   const initializeGoalSettingCertificateNameState = () => {
-    if (interestCertificates) {
-      return interestCertificates[0]?.certificate.certificateName;
+    if (boardList) {
+      return boardList[0]?.certificate.certificateName;
     }
   };
 
@@ -65,7 +65,7 @@ const SelectCertification = () => {
           setIsOpen={setIsModalOpen}
           setIdState={setSelectedCertificationId}
           setDataState={setSelectedCertificationName}
-          data={interestCertificates}
+          data={boardList}
           className={'absolute top-[134px] w-[90%]'}
         />
       ) : null}

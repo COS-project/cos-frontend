@@ -35,3 +35,13 @@
         @apply rounded-[16px] bg-gray0 py-3 px-4 w-full
     }
 }
+
+@layer components {
+    /* 목표 설정 content className */
+    .tag-not-clicked {
+        @apply flex-shrink-0 border-[1px] border-gray2 rounded-full py-2 px-4 bg-white text-h6 text-gray4
+    }
+    .tag-clicked {
+        @apply flex-shrink-0 rounded-full py-2 px-4 bg-black text-h6 text-white
+    }
+}
