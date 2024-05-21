@@ -7,9 +7,9 @@ import NavBar from '@/components/common/NavBar';
 import CorrectRateGraph from '@/components/exam/CorrectRateGraph';
 import MockExamReportHeader from '@/components/exam/MockExamReportHeader';
 import MockExamResultReport from '@/components/exam/MockExamResultReport';
-import StayTimeGraph from '@/components/exam/StayTimeGraph';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 import { mockExamIdState, submittedMockExamResultIdState } from '@/recoil/exam/atom';
+import TakenTimeGraphReport from '@/components/exam/TakenTimeGraphReport';
 
 const Result = () => {
   const [submittedMockExamResultId, setSubmittedMockExamResultId] = useRecoilState(submittedMockExamResultIdState);
@@ -42,7 +42,11 @@ const Result = () => {
               score={examResults ? examResults[examResults.length - 1]?.totalScore : 0}
               subjectResults={examResults ? examResults[examResults.length - 1]?.subjectResults : []}
             />
-            {/*<StayTimeGraph ></StayTimeGraph>*/}
+            <TakenTimeGraphReport
+              totalTakenTime={sumTotalTakenTime}
+              subjectResults={examResults ? examResults[examResults.length - 1]?.subjectResults : []}
+              timeLimit={examResults ? examResults[examResults.length - 1]?.mockExam.timeLimit : 0}
+            />
             {/*<CorrectRateGraph></CorrectRateGraph>*/}
           </div>
         ) : (
