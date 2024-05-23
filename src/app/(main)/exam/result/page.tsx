@@ -1,16 +1,19 @@
 'use client';
+import { ResponsiveRadar } from '@nivo/radar';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import CorrectRateGraph from '@/components/exam/CorrectRateGraph';
+import IncorrectQuestions from '@/components/exam/IncorrectQuestions';
 import MockExamReportHeader from '@/components/exam/MockExamReportHeader';
 import MockExamResultReport from '@/components/exam/MockExamResultReport';
 import TakenTimeGraphReport from '@/components/exam/TakenTimeGraphReport';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 import { mockExamIdState, submittedMockExamResultIdState } from '@/recoil/exam/atom';
-import IncorrectQuestions from '@/components/exam/IncorrectQuestions';
+import { subjectData } from '@/utils/common/accuracyChart';
+import AccuracyChart from '@/lib/hooks/AccuracyChart';
 
 const Result = () => {
   const [submittedMockExamResultId, setSubmittedMockExamResultId] = useRecoilState(submittedMockExamResultIdState);
@@ -48,12 +51,12 @@ const Result = () => {
               subjectResults={examResults ? examResults[examResults.length - 1]?.subjectResults : []}
               timeLimit={examResults ? examResults[examResults.length - 1]?.mockExam.timeLimit : 0}
             />
-            {/*<CorrectRateGraph></CorrectRateGraph>*/}
+            <AccuracyChart subjectResults={examResults ? examResults[examResults.length - 1]?.subjectResults : []} />
           </div>
         ) : (
           <div>
             <div>
-              <IncorrectQuestions />
+              <IncorrectQuestions submittedMockExamResultId={submittedMockExamResultId} />
             </div>
           </div>
         )}

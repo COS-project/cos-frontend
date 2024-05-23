@@ -5,15 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/exam/IncorrectQuestions.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetIncorrectQuestionsResult.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/hooks/AccuracyChart.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/exam/result/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/exam/result/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/exam/Question.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/Question.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/exam/TakenTimeGraphReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/TakenTimeGraphReport.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/exam/TestSubmitOrCancle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/TestSubmitOrCancle.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/IncorrectQuestions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/IncorrectQuestions.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/exam/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/exam/type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/global.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +122,8 @@
       <workItem from="1715652288664" duration="122000" />
       <workItem from="1716123590906" duration="891000" />
       <workItem from="1716256789152" duration="35566000" />
-      <workItem from="1716426429072" duration="3057000" />
+      <workItem from="1716426429072" duration="10065000" />
+      <workItem from="1716450504992" duration="7559000" />
     </task>
     <servers />
   </component>

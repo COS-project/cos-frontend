@@ -53,3 +53,8 @@ export interface MockExamIncorrectQuestionsResult {
   takenTime: number;
   isCorrect: boolean;
 }
+
+export interface CorrectRateGraphType {
+  subjectTitle: string;
+  subjectCorrectRate: number;
+}

@@ -4,10 +4,13 @@ import { useInView } from 'react-intersection-observer';
 import IncorrectQuestionCard from '@/components/exam/IncorrectQuestionCard';
 import useGetIncorrectQuestionsResult from '@/lib/hooks/useGetIncorrectQuestionsResult';
 import { MockExamIncorrectQuestionsResult, MockExamIncorrectQuestionsResultResponseType } from '@/types/exam/type';
-
-const IncorrectQuestions = () => {
+interface Props {
+  submittedMockExamResultId: number;
+}
+const IncorrectQuestions = (props: Props) => {
+  const { submittedMockExamResultId } = props;
   const [ref, inView] = useInView();
-  const { incorrectQuestionsResult, setSize } = useGetIncorrectQuestionsResult(55);
+  const { incorrectQuestionsResult, setSize } = useGetIncorrectQuestionsResult(submittedMockExamResultId);
 
   const getMoreItem = useCallback(async () => {
     if (incorrectQuestionsResult) {
