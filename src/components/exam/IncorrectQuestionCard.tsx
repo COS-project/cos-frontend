@@ -4,13 +4,13 @@ import { useRecoilState } from 'recoil';
 
 import QuestionContent from '@/components/exam/QuestionContent';
 import { userAnswerRequests } from '@/recoil/exam/atom';
-import { Question, ReviewIncorrectMockExam, UserAnswerRequests } from '@/types/global';
+import { Question, QuestionOptions, ReviewIncorrectMockExam, UserAnswerRequests } from '@/types/global';
 
 interface Props {
   selectOptionSeq: number;
   mockExam: ReviewIncorrectMockExam;
   correctOption: number;
-  questionOptions: Question[];
+  questionOptions: QuestionOptions[];
   questionText: string;
   questionSeq: number;
 }

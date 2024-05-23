@@ -7,9 +7,10 @@ import NavBar from '@/components/common/NavBar';
 import CorrectRateGraph from '@/components/exam/CorrectRateGraph';
 import MockExamReportHeader from '@/components/exam/MockExamReportHeader';
 import MockExamResultReport from '@/components/exam/MockExamResultReport';
+import TakenTimeGraphReport from '@/components/exam/TakenTimeGraphReport';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 import { mockExamIdState, submittedMockExamResultIdState } from '@/recoil/exam/atom';
-import TakenTimeGraphReport from '@/components/exam/TakenTimeGraphReport';
+import IncorrectQuestions from '@/components/exam/IncorrectQuestions';
 
 const Result = () => {
   const [submittedMockExamResultId, setSubmittedMockExamResultId] = useRecoilState(submittedMockExamResultIdState);
@@ -52,7 +53,7 @@ const Result = () => {
         ) : (
           <div>
             <div>
-              틀린문제
+              <IncorrectQuestions />
             </div>
           </div>
         )}

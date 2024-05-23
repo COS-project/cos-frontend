@@ -61,6 +61,10 @@ const TestSubmitOrCancle = (props: Props) => {
   const { calculateScore, prepareAndScoreSubjectResults } = useCalculateScore(selectedMockExamId);
   const [submittedMockExamResultId, setSubmittedMockExamResultId] = useRecoilState(submittedMockExamResultIdState);
 
+
+  useEffect(() => {
+    console.log('userAnswerList',userAnswerList)
+  }, [userAnswerList]);
   /**
    * 시험 시간 타이머 기능
    */

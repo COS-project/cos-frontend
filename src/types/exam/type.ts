@@ -1,4 +1,4 @@
-import { ReviewIncorrectMockExam, Subject } from '@/types/global';
+import { Question, ReviewIncorrectMockExam, Subject } from '@/types/global';
 export interface RecentMockExamResultResponseType {
   responseCode: string;
   result: RecentMockExamResultType;
@@ -11,6 +11,9 @@ interface RecentMockExamResultType {
   createdAt: string;
 }
 
+/**
+ * 성적리포트 통계 responseType
+ */
 export interface MockExamResultsResponseType {
   responseCode: string;
   result: MockExamResultType[];
@@ -30,4 +33,23 @@ export interface SubjectResultsType {
   numberOfCorrect: number;
   totalTakenTime: number;
   correctRate: number;
+}
+
+/**
+ * 성적리포트 틀린문제 responseType
+ */
+export interface MockExamIncorrectQuestionsResultResponseType {
+  responseCode: string;
+  result: {
+    content: MockExamIncorrectQuestionsResult[];
+    hasNext: boolean;
+  };
+}
+
+export interface MockExamIncorrectQuestionsResult {
+  question: Question;
+  userAnswerId: number;
+  selectOptionSeq: number;
+  takenTime: number;
+  isCorrect: boolean;
 }

@@ -31,7 +31,7 @@ const TakenTimeGraphReport = (props: Props) => {
         <div className="flex items-end space-x-2">
           <div className="w-[85%]">
             <div className="flex h-32">
-              {subjectResults.map((subjectResult, index) => {
+              {subjectResults?.map((subjectResult, index) => {
                 return (
                   <div key={index} className="w-full flex justify-center space-x-2">
                     <StickGraph height={millisecondsToMinutes(subjectResult.totalTakenTime)} color="second" />
@@ -45,7 +45,7 @@ const TakenTimeGraphReport = (props: Props) => {
         </div>
         <div className="flex space-x-2">
           <div className="w-[85%] flex justify-between mt-[2%]">
-            {subjectResults.map((subjectResult, index) => (
+            {subjectResults?.map((subjectResult, index) => (
               <div key={index} className="w-full flex justify-center text-h7">
                 {subjectResult.subject.subjectName}
               </div>
