@@ -7,6 +7,7 @@ import Post from '@/components/mypage/Post';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
 import { filterNormalAndTipContent } from '@/utils/community/FilterContent';
+import { postingDelete } from '@/lib/api/communityPost';
 interface Props {
   boardType: BoardType;
 }
@@ -62,7 +63,7 @@ const NormalAndTipBoardList = (props: Props) => {
   };
 
   return (
-    <div className={'relative px-5 flex flex-col gap-y-4 '}>
+    <div className={'relative px-5 flex flex-col gap-y-4'}>
       <div>
         <div className={' w-fit flex px-3 py-1 rounded-full bg-white '}>
           <span className={'text-gray4 text-h6'}>{selectedNormalAndTipFilterContent}</span>
@@ -101,8 +102,7 @@ const NormalAndTipBoardList = (props: Props) => {
         })}
       </div>
     </div>
-  )
-    ;
+  );
 };
 export default NormalAndTipBoardList;
 

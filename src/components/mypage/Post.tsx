@@ -12,7 +12,7 @@ interface Props {
   commentCount: number;
   createdAt: string;
   topElement?: React.JSX.Element | null;
-  bottomElement?: () => React.JSX.Element | null;
+  bottomElement?: React.JSX.Element | null;
 }
 const Post = (props: Props) => {
   const { title, postId, content, imageUrl, likeCount, commentCount, createdAt, bottomElement, topElement } = props;
@@ -21,12 +21,11 @@ const Post = (props: Props) => {
     router.push(`/community/1/${postId}`); //TODO:자격증 바꾸기
   };
   return (
-    <div
-      onClick={() => {
-        onMove();
-      }}
-      className={'flex flex-col gap-y-1 bg-white p-5 rounded-[32px]'}>
-      <div>
+    <div className={'flex flex-col gap-y-1 bg-white p-5 rounded-[32px]'}>
+      <div
+        onClick={() => {
+          onMove();
+        }}>
         {/*best 태그, 해설게시판 태그*/}
         {topElement ? topElement : null}
         <div className={'flex gap-x-3 items-center justify-between'}>
@@ -55,7 +54,8 @@ const Post = (props: Props) => {
       <div className={'text-h6 text-gray3'}>작성일 {createdAt}</div>
 
       {/*수정, 삭제버튼*/}
-      {!bottomElement || bottomElement() ? (bottomElement ? bottomElement() : null) : null}
+      {bottomElement ? bottomElement : null}
+      {/*{!bottomElement || bottomElement() ? (bottomElement ? bottomElement() : null) : null}*/}
     </div>
   );
 };

@@ -1,7 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React, { SVGProps, useState } from 'react';
+import qs from 'query-string';
+import React, { SVGProps, useCallback, useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
@@ -15,7 +17,11 @@ import WriteNormalPost from '@/components/community/WriteNormalPost';
 import WriteTipPost from '@/components/community/WriteTipPost';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import useDebounce from '@/hooks/useDebounce';
-import { boardTypeState, commentarySearchQuestionSequence } from '@/recoil/community/atom';
+import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
+import useGetMockExams from '@/lib/hooks/useGetMockExams';
+import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
+import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
+import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
 import { BoardType } from '@/types/community/type';
 
 export default function CommunityCategoryPage() {

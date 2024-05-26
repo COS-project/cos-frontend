@@ -6,17 +6,17 @@ import { BoardType, ResponsePostType } from '@/types/community/type';
 
 const getKey = (size: number, previousPageData: ResponsePostType, postType: BoardType) => {
   if (size === 0) {
-    return `/${postType}/posts/my-posts?page=${size}&size=10&sortKey=id`;
+    return `/${postType}/posts/my-posts?page=${size}&size=10&sortKey=createdAt, id`;
   }
   if (previousPageData && !previousPageData.result.hasNext) {
-    return `/${postType}/posts/my-posts?page=${size}&size=10&sortKey=id`;
+    return `/${postType}/posts/my-posts?page=${size}&size=10&sortFields=createdAt, id`;
   }
   if (previousPageData.result.hasNext) {
     return null;
   }
 };
 const useGetUserPosts = (postType: BoardType) => {
-  const { data, isLoading, error, size, setSize } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
+  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
     (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType),
     swrGetFetcher,
     {
@@ -30,6 +30,7 @@ const useGetUserPosts = (postType: BoardType) => {
     userPostsList: data ? data : [],
     isLoading: !error && !data,
     isError: error,
+    mutate,
     size,
     setSize,
   };
