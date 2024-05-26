@@ -14,6 +14,7 @@ import { useInView } from 'react-intersection-observer';
 import useAllIncorrectQuestions from '@/lib/hooks/useAllIncorrectQuestions';
 import { AxiosResponse } from 'axios';
 import Post from '@/components/mypage/Post';
+import { FilterType } from '@/types/mypage/type';
 
 export default function MyWriting() {
   const [ref, inView] = useInView();

@@ -1,57 +1,40 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import qs from 'query-string';
 import * as React from 'react';
-import { SVGProps, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { SVGProps } from 'react';
 
-import useDebounce from '@/hooks/useDebounce';
-import { getSearchResults } from '@/lib/api/community';
+import { getTotalSearchResults } from '@/lib/api/community';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
-import { autoCompleteSearchKeywordState } from '@/recoil/community/atom';
+import { BoardType } from '@/types/community/type';
 
 interface Props {
   setIsClickedAutoCompleteSearchKeywords: React.Dispatch<React.SetStateAction<boolean>>;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  searchValue: string;
+  boardType: BoardType;
 }
 const SearchInput = (props: Props) => {
-  const { setIsClickedAutoCompleteSearchKeywords } = props;
-  const router = useRouter();
-  const [searchValue, setSearchValue] = useRecoilState<string>(autoCompleteSearchKeywordState);
-  const debouncedValue = useDebounce<string>(searchValue, 100);
-  const { recentSearchResults, mutate } = useGetRecentSearchResults();
-
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await getSearchResults(1, 'COMMENTARY', debouncedValue).then((r) => console.log(r.result.content));
-    await mutate();
+  const { boardType, setIsClickedAutoCompleteSearchKeywords, setSearchValue, searchValue } = props;
+  const { mutate } = useGetRecentSearchResults();
+  const handleSubmit = async () => {
+    await getTotalSearchResults(1, boardType, searchValue).then((r) => console.log('검색 결과', r));
+    await mutate().then((r) => console.log('response임', r));
   };
-
-  useEffect(() => {
-    const query = {
-      keyword: debouncedValue,
-    };
-
-    const url = qs.stringifyUrl({
-      url: '/search',
-      query: query,
-    });
-
-    router.push(url);
-  }, [debouncedValue, router]);
 
   return (
     <div className={'bg-white my-[6px] px-5 py-[10px]'}>
       <div className={'flex gap-x-3  items-center'}>
         <BackIcon />
         <form
-          onSubmit={(e) => {
-            handleFormSubmit(e);
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await handleSubmit();
           }}
           className={'flex gap-x-1 py-2 px-3 border-[1px] border-gray2 rounded-[16px] w-full'}>
           <SearchIcon />
           <input
             value={searchValue}
+            title={'keyContent'}
             onChange={(e) => {
               setSearchValue(e.target.value);
               setIsClickedAutoCompleteSearchKeywords(true);

@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetTotalSearchResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetTotalSearchResults.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/community.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/community.ts" afterDir="false" />
+>>>>>>> 762d9274f37c68cee1578a909eb9683f5e7412ee
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,21 +32,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "feature-board__list",
+    "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.editor",
+    "ts.external.directory.path": "/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/connect-mypage-api&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature-review__board__list&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public" />
@@ -108,7 +129,12 @@
       <workItem from="1714611962110" duration="1329000" />
       <workItem from="1714820712763" duration="6383000" />
       <workItem from="1715048202330" duration="4341000" />
-      <workItem from="1715154350854" duration="5791000" />
+      <workItem from="1715154350854" duration="14451000" />
+      <workItem from="1715266065321" duration="1775000" />
+      <workItem from="1715505273635" duration="1262000" />
+      <workItem from="1715506546722" duration="28839000" />
+      <workItem from="1715652288664" duration="122000" />
+      <workItem from="1716123590906" duration="891000" />
     </task>
     <servers />
   </component>

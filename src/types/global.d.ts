@@ -170,7 +170,7 @@ export interface GoalSettingInfo {
 }
 
 //온보딩 자격증
-export interface Certificate {
+export export interface Certificate {
   certificateId: number;
   certificateName: string;
   isClick: boolean; // 자격증을 선택했을 경우
@@ -303,4 +303,173 @@ export interface ReviewIncorrectMockExam {
   round: number;
   timeLimit: number;
   certificate: Certificate;
+}
+
+//유저
+interface User {
+  userId: number;
+  nickname: string;
+  email: string;
+  profileImage: string;
+}
+
+//태그
+interface RecommendTags {
+  tagType: string; //Lecture
+  tagName: string;
+}
+
+//모의고사
+interface MockExam {
+  MockExamId: number;
+  examYear: number;
+  round: number;
+  timeLimit: number;
+  certificate: Certificate;
+}
+
+//과목
+interface Subject {
+  subjectId: number;
+  subjectName: string;
+  numberOfQuestions: number;
+  totalScore: number;
+}
+
+//질문옵션(무엇을 의미하는지 파악 못함)
+interface QuestionOptions {
+  optionSequence: number;
+  optionContent: string;
+  optionImage: string;
+}
+
+//커뮤니티 포스트
+export interface Post {
+  postId: number;
+  title: string;
+  content: string;
+  user: User;
+  postImages: string[];
+  likeCount: number;
+  isLiked: boolean;
+  commentCount: number;
+  recommendTags: RecommendTags[];
+  question: Question;
+  mockExam: MockExam;
+  createdAt: string;
+  postComments: PostComments[];
+}
+
+//질문
+interface Question {
+  questionId: number;
+  mockExam: MockExam;
+  subject: Subject;
+  questionSeq: number;
+  questionText: string;
+  questionImage: string;
+  questionOptions: QuestionOptions[];
+  correctOption: number;
+  score: number;
+}
+
+//커뮤니티 포스팅 댓글
+interface PostComments {
+  postCommentId: number;
+  user: User;
+  createdAt: string;
+  parentCommentId: number;
+  likeCount: number;
+  isLiked: boolean;
+  content: string;
+}
+
+export interface GenerateComment{
+  parentCommentId: null | number;
+  content: string;
+}
+
+//유저
+interface User {
+  userId: number;
+  nickname: string;
+  email: string;
+  profileImage: string;
+}
+
+//태그
+interface RecommendTags {
+  tagType: string; //Lecture
+  tagName: string;
+}
+
+//모의고사
+interface MockExam {
+  MockExamId: number;
+  examYear: number;
+  round: number;
+  timeLimit: number;
+  certificate: Certificate;
+}
+
+//과목
+interface Subject {
+  subjectId: number;
+  subjectName: string;
+  numberOfQuestions: number;
+  totalScore: number;
+}
+
+//질문옵션(무엇을 의미하는지 파악 못함)
+interface QuestionOptions {
+  optionSequence: number;
+  optionContent: string;
+  optionImage: string;
+}
+
+//커뮤니티 포스트
+export interface Post {
+  postId: number;
+  title: string;
+  content: string;
+  user: User;
+  postImages: string[];
+  likeCount: number;
+  commentCount: number;
+  recommendTags: RecommendTags[];
+  question: Question;
+  mockExam: MockExam;
+  createdAt: string;
+  postComments: PostComments[];
+}
+
+//질문
+interface Question {
+  questionId: number;
+  mockExam: MockExam;
+  subject: Subject;
+  questionSeq: number;
+  questionText: string;
+  questionImage: string;
+  questionOptions: QuestionOptions[];
+  correctOption: number;
+  score: number;
+}
+
+//이 부분도 수정이 필요함
+//커뮤니티 포스팅 댓글
+interface PostComments {
+  postCommentId: number;
+  user: User;
+  createdAt: string;
+  parentCommentId: number;
+  likeCount: number;
+  content: string;
+  childPostComments: [];
+}
+
+//댓글 생성 양식
+export interface GenerateComment {
+  parentCommentId: null | number;
+  content: string;
 }

@@ -1,13 +1,13 @@
 import React from 'react';
 
 interface Props {
-  data: string[];
-  setSelectedFilterContent: React.Dispatch<React.SetStateAction<string>>;
+  data: number[];
+  setSelectedFilterContent: React.Dispatch<React.SetStateAction<number | string>>;
   setIsOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenFilter: boolean;
 }
 
-const MyPageFilter = (props: Props) => {
+const YearFilter = (props: Props) => {
   const { data, setSelectedFilterContent, setIsOpenFilter, isOpenFilter } = props;
 
   return (
@@ -15,7 +15,7 @@ const MyPageFilter = (props: Props) => {
       {!data || data.length === 0 ? (
         <div>error</div>
       ) : (
-        data.map((datum: string, index: number) => {
+        data.map((datum: number, index: number) => {
           return (
             <div
               key={index}
@@ -31,5 +31,5 @@ const MyPageFilter = (props: Props) => {
       )}
     </div>
   );
-};
-export default MyPageFilter;
+}
+export default YearFilter;

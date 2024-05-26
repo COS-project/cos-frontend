@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import type { SVGProps } from 'react';
 import * as React from 'react';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   title: string;
+  postId: number;
   content: string;
   imageUrl?: string | null;
   likeCount: number;
@@ -13,15 +15,23 @@ interface Props {
   bottomElement?: () => React.JSX.Element | null;
 }
 const Post = (props: Props) => {
-  const { title, content, imageUrl, likeCount, commentCount, createdAt, bottomElement, topElement } = props;
+  const { title, postId, content, imageUrl, likeCount, commentCount, createdAt, bottomElement, topElement } = props;
+  const router = useRouter();
+  const onMove = () => {
+    router.push(`/community/1/${postId}`); //TODO:자격증 바꾸기
+  };
   return (
-    <div className={'flex flex-col gap-y-1 bg-white p-5 rounded-[32px]'}>
+    <div
+      onClick={() => {
+        onMove();
+      }}
+      className={'flex flex-col gap-y-1 bg-white p-5 rounded-[32px]'}>
       <div>
         {/*best 태그, 해설게시판 태그*/}
         {topElement ? topElement : null}
         <div className={'flex gap-x-3 items-center justify-between'}>
-          <div className={'flex flex-col gap-y-1'}>
-            <div className={'text-h4 font-semibold'}>{title}</div>
+          <div className={'flex flex-col gap-y-1 w-[60%]'}>
+            <div className={'text-h4 font-semibold truncate'}>{title}</div>
             <div className={'text-h4 font-normal line-clamp-2'}>{content}</div>
             {/*좋아요 수, 댓글 수*/}
             <div className={'flex gap-x-2'}>

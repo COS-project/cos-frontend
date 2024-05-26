@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+
 import { BoardType } from '@/types/community/type';
 
 interface Props {
