@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import DetailedGradeReport from '@/components/home/DetailedGradeReport';
@@ -29,6 +29,10 @@ const GrowthChartView = () => {
   );
   const [goalPeriod, setGoalPeriod] = useState<string>('목표 기간 선택');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log('성적그래프 통계', statisticsData);
+  }, [statisticsData]);
 
   /**
    * 목표 주차 계산해주는 함수

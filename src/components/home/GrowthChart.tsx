@@ -364,7 +364,7 @@ const GrowthChart = () => {
             ) : null}
             <div>평균 점수</div>
           </div>
-          <div className={'font-semibold text-h3 ml-2'}>{statisticsData?.average}점</div>
+          <div className={'font-semibold text-h3 ml-2'}>{statisticsData?.totalAverage}점</div>
         </div>
 
         {/* 그래프 */}
@@ -377,7 +377,7 @@ const GrowthChart = () => {
               </div>
 
               <div
-                style={{ bottom: `${6 + statisticsData?.average}%` }}
+                style={{ bottom: `${6 + statisticsData?.totalAverage}%` }}
                 className={'absolute flex items-center space-x-1'}>
                 <div className="w-[258px] border-t border-dashed border-primary"></div>
                 <div className="text-primary text-h5">평균</div>
