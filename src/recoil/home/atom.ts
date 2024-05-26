@@ -52,9 +52,9 @@ export let goalSettingState = atom<GoalSettingInfo>({
 });
 
 // 성장그래프 자세히 보기(그래프)
-export const selectedReportTypeState = atom<'WEEK' | 'MONTH' | 'YEAR'>({
+export const selectedReportTypeState = atom<'WEEKLY' | 'MONTHLY' | 'YEARLY'>({
   key: 'selectedReportTypeState',
-  default: 'WEEK',
+  default: 'WEEKLY',
 });
 
 // 성장그래프 자세히 보기(각각 디테일)

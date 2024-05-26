@@ -15,7 +15,7 @@ import {
 import { ScoreAVGListType, WeeklyGoalPeriodType } from '@/types/home/type';
 
 const GrowthChart = () => {
-  const [selectedReportType, setSelectedReportType] = useRecoilState<'WEEK' | 'MONTH' | 'YEAR'>(
+  const [selectedReportType, setSelectedReportType] = useRecoilState<'WEEKLY' | 'MONTHLY' | 'YEARLY'>(
     selectedReportTypeState,
   );
   const [selectedDateType, setSelectedDateType] = useRecoilState<'DATE' | 'WEEK_OF_MONTH' | 'MONTH'>(
@@ -26,6 +26,7 @@ const GrowthChart = () => {
   );
   const [selectedPrepareTime, setSelectedPrepareTime] = useRecoilState(selectedPrepareTimeState);
   const { statisticsData } = useGetMockExamStatistics(
+    1,
     selectedReportType,
     selectedPrepareWeeksBetween.prepareYear,
     selectedPrepareWeeksBetween.prepareMonth,
@@ -82,7 +83,9 @@ const GrowthChart = () => {
         prepareMonth: getMonth(new Date(weekStart.toISOString().slice(0, 10))), //몇 월인지
         prepareWeekly: getWeekly(new Date(weekStart.toISOString().slice(0, 10))), //몇 주인지
         prepareDate: new Date(weekStart.toISOString().slice(0, 10)).toISOString(), //몇 주인지
-        formattedWeeklyPrepTime: `${getMonth(new Date(weekStart.toISOString().slice(0, 10)))}월 ${getWeekly(new Date(weekStart.toISOString().slice(0, 10)))}주차`, //00월 00주
+        formattedWeeklyPrepTime: `${getMonth(new Date(weekStart.toISOString().slice(0, 10)))}월 ${getWeekly(
+          new Date(weekStart.toISOString().slice(0, 10)),
+        )}주차`, //00월 00주
       };
     });
   };
@@ -188,11 +191,11 @@ const GrowthChart = () => {
    * 필터값에 따라서 성장그래프의 막대그래프를 그려주는 함수 WEEK, MONTH, YEAR
    */
   const renderGraphLabelsByReportType = () => {
-    if (selectedReportType === 'WEEK') {
+    if (selectedReportType === 'WEEKLY') {
       return weeklyGraph();
-    } else if (selectedReportType === 'MONTH') {
+    } else if (selectedReportType === 'MONTHLY') {
       return monthlyGraph();
-    } else if (selectedReportType === 'YEAR' && statisticsData?.scoreAVGList) {
+    } else if (selectedReportType === 'YEARLY' && statisticsData?.scoreAVGList) {
       return yearGraph();
     } else {
       return <div />;
@@ -272,11 +275,11 @@ const GrowthChart = () => {
         <div className={'flex w-[100%] justify-evenly rounded-[12px] border-[1px] border-gray1'}>
           <div
             onClick={() => {
-              setSelectedReportType('WEEK');
+              setSelectedReportType('WEEKLY');
               setSelectedDateType('DATE');
             }}
             className={
-              selectedReportType === 'WEEK'
+              selectedReportType === 'WEEKLY'
                 ? 'flex px-8 py-1 w-full border-[1px] border-gray1 justify-center items-center rounded-[12px] bg-gray0'
                 : 'flex px-8 py-1 w-full justify-center items-center rounded-[12px] text-gray4'
             }>
@@ -284,11 +287,11 @@ const GrowthChart = () => {
           </div>
           <div
             onClick={() => {
-              setSelectedReportType('MONTH');
+              setSelectedReportType('MONTHLY');
               setSelectedDateType('WEEK_OF_MONTH');
             }}
             className={
-              selectedReportType === 'MONTH'
+              selectedReportType === 'MONTHLY'
                 ? 'flex px-8 py-1 w-full border-[1px] border-gray1 justify-center items-center rounded-[12px] bg-gray0'
                 : 'flex px-8 py-1 w-full justify-center items-center rounded-[12px] text-gray4'
             }>
@@ -296,11 +299,11 @@ const GrowthChart = () => {
           </div>
           <div
             onClick={() => {
-              setSelectedReportType('YEAR');
+              setSelectedReportType('YEARLY');
               setSelectedDateType('MONTH');
             }}
             className={
-              selectedReportType === 'YEAR'
+              selectedReportType === 'YEARLY'
                 ? 'flex px-8 py-1 w-full border-[1px] border-gray1 justify-center items-center rounded-[12px] bg-gray0'
                 : 'flex px-8 py-1 w-full justify-center items-center rounded-[12px] text-gray4'
             }>
@@ -314,13 +317,13 @@ const GrowthChart = () => {
             {/*주차, 월간, 년도 선택 버튼*/}
             <div onClick={() => setIsFilterOpen(!isFilterOpen)} className={'flex ml-2'}>
               <div>
-                {selectedReportType === 'WEEK'
+                {selectedReportType === 'WEEKLY'
                   ? selectedPrepareWeeksBetween.formattedWeeklyPrepTime
-                  : selectedReportType === 'MONTH'
-                    ? `${selectedPrepareWeeksBetween.prepareMonth}월`
-                    : selectedReportType === 'YEAR'
-                      ? `${selectedPrepareWeeksBetween.prepareYear}년`
-                      : null}
+                  : selectedReportType === 'MONTHLY'
+                  ? `${selectedPrepareWeeksBetween.prepareMonth}월`
+                  : selectedReportType === 'YEARLY'
+                  ? `${selectedPrepareWeeksBetween.prepareYear}년`
+                  : null}
               </div>
               {isFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
             </div>
@@ -329,29 +332,29 @@ const GrowthChart = () => {
             {isFilterOpen ? (
               <WeeklyGoalPeriodFilter
                 data={
-                  selectedReportType === 'WEEK'
+                  selectedReportType === 'WEEKLY'
                     ? getWeeksBetween(
                         new Date(selectedPrepareTime.prepareStartDateTime),
                         new Date(selectedPrepareTime.prepareFinishDateTime),
                       )
-                    : selectedReportType === 'MONTH'
-                      ? removeDuplicatesByMonth(
-                          getWeeksBetween(
-                            new Date(selectedPrepareTime.prepareStartDateTime),
-                            new Date(selectedPrepareTime.prepareFinishDateTime),
-                          ),
-                        )
-                      : selectedReportType === 'YEAR'
-                        ? removeDuplicatesByYear(
-                            getWeeksBetween(
-                              new Date(selectedPrepareTime.prepareStartDateTime),
-                              new Date(selectedPrepareTime.prepareFinishDateTime),
-                            ),
-                          )
-                        : getWeeksBetween(
-                            new Date(selectedPrepareTime.prepareStartDateTime),
-                            new Date(selectedPrepareTime.prepareFinishDateTime),
-                          )
+                    : selectedReportType === 'MONTHLY'
+                    ? removeDuplicatesByMonth(
+                        getWeeksBetween(
+                          new Date(selectedPrepareTime.prepareStartDateTime),
+                          new Date(selectedPrepareTime.prepareFinishDateTime),
+                        ),
+                      )
+                    : selectedReportType === 'YEARLY'
+                    ? removeDuplicatesByYear(
+                        getWeeksBetween(
+                          new Date(selectedPrepareTime.prepareStartDateTime),
+                          new Date(selectedPrepareTime.prepareFinishDateTime),
+                        ),
+                      )
+                    : getWeeksBetween(
+                        new Date(selectedPrepareTime.prepareStartDateTime),
+                        new Date(selectedPrepareTime.prepareFinishDateTime),
+                      )
                 }
                 setIsOpen={setIsFilterOpen}
                 className={'absolute z-10 top-6'}
@@ -392,8 +395,6 @@ const GrowthChart = () => {
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
       </div>
