@@ -61,10 +61,6 @@ const TestSubmitOrCancle = (props: Props) => {
   const { calculateScore, prepareAndScoreSubjectResults } = useCalculateScore(selectedMockExamId);
   const [submittedMockExamResultId, setSubmittedMockExamResultId] = useRecoilState(submittedMockExamResultIdState);
 
-
-  useEffect(() => {
-    console.log('userAnswerList',userAnswerList)
-  }, [userAnswerList]);
   /**
    * 시험 시간 타이머 기능
    */
@@ -142,6 +138,7 @@ const TestSubmitOrCancle = (props: Props) => {
    */
   useEffect(() => {
     if (subjectResultList.length !== 0) {
+      console.log('선택된 모의고사 id', selectedMockExamId);
       postSubjectResultRequestsList(subjectResultList, selectedMockExamId).then((r) => {
         console.log(r);
         setSubmittedMockExamResultId(r.result.mockExamResultId);
