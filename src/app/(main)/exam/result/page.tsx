@@ -45,7 +45,7 @@ const Result = () => {
    * ExamResults 리스트의 값이 1개 이상일 경우 필터 적용 1개일 경우는 적용 X
    * @param examResults 시험 결과
    */
-  const displayComponentBasedOnExamResults = (examResults: MockExamResultType[] | null) => {
+  const displayComponentBasedOnExamResults = (examResults: MockExamResultType[] | null | undefined) => {
     if (examResults && examResults.length === 1) {
       return (
         <>
