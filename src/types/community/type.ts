@@ -5,6 +5,8 @@ import { UserInfo } from '@/types/mypage/type';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
 
+export type SortDirections = 'DESC' | 'ASC';
+
 export type ExamReviewPostType = {
   examDifficulty: string;
   content: string;

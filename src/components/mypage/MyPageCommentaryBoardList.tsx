@@ -11,11 +11,12 @@ interface Props {
   isDeleteWarningModalOpen: boolean;
   setIsDeleteWarningModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setDeletePostId: React.Dispatch<React.SetStateAction<number>>;
+  selectedFilterContent: '최신순' | '작성순';
 }
 const MyPageCommentaryBoardList = (props: Props) => {
-  const { boardType, isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, setDeletePostId } = props;
+  const { boardType, isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, setDeletePostId, selectedFilterContent } = props;
   const [ref, inView] = useInView();
-  const { userPostsList, setSize } = useGetUserPosts(boardType);
+  const { userPostsList, setSize } = useGetUserPosts(boardType, selectedFilterContent == '최신순' ? 'ASC' : 'DESC');
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
    */

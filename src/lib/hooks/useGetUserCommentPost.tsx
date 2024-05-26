@@ -4,24 +4,19 @@ import useSWRInfinite from 'swr/infinite';
 import { swrGetFetcher } from '@/lib/axios';
 import { BoardType, ResponsePostType, SortDirections } from '@/types/community/type';
 
-const getKey = (
-  size: number,
-  previousPageData: ResponsePostType,
-  postType: BoardType,
-  sortDirections: SortDirections,
-) => {
+const getKey = (size: number, previousPageData: ResponsePostType, sortDirections: SortDirections) => {
   if (size === 0) {
-    return `/${postType}/posts/my-posts?page=${size}&size=10&sortKey=createdAt, id&$sortDirections=${sortDirections}`;
+    return `/comment-posts/my-comment-posts?page=${size}&size=10&sortKey=createdAt, id&$sortDirections=${sortDirections}`;
   }
   if (previousPageData && !previousPageData.result.hasNext) {
-    return `/${postType}/posts/my-posts?page=${size}&size=10&sortFields=createdAt, id&$sortDirections=${sortDirections}`;
+    return `/comment-posts/my-comment-posts?page=${size}&size=10&sortFields=createdAt, id&$sortDirections=${sortDirections}`;
   }
   if (previousPageData.result.hasNext) {
     return null;
   }
 };
-const useGetUserPosts = (postType: BoardType, sortDirections: SortDirections) => {
-  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
+const useGetUserCommentPost = (sortDirections: '최신순' | '작성순') => {
+  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<ResponsePostType>(
     (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType, sortDirections),
     swrGetFetcher,
     {
@@ -32,7 +27,7 @@ const useGetUserPosts = (postType: BoardType, sortDirections: SortDirections) =>
   const parseResultList = data ? data.map((item) => item).flat() : [];
 
   return {
-    userPostsList: data ? data : [],
+    userCommentPostsList: data ? data : [],
     isLoading: !error && !data,
     isError: error,
     mutate,
@@ -40,4 +35,4 @@ const useGetUserPosts = (postType: BoardType, sortDirections: SortDirections) =>
     setSize,
   };
 };
-export default useGetUserPosts;
+export default useGetUserCommentPost;

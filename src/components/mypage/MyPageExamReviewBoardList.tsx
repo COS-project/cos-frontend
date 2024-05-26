@@ -9,6 +9,7 @@ interface Props {
   isDeleteWarningModalOpen: boolean;
   setIsDeleteWarningModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setDeletePostId: React.Dispatch<React.SetStateAction<number>>;
+  selectedFilterContent: '최신순' | '작성순';
 }
 const MyPageExamReviewBoardList = (props: Props) => {
   const { boardType,isDeleteWarningModalOpen , setIsDeleteWarningModalOpen, setDeletePostId } = props;
