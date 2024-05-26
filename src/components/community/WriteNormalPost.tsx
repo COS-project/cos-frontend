@@ -64,7 +64,7 @@ const WriteNormalPost = () => {
     const formData = new FormData();
 
     imageUrlList.forEach((file, index) => {
-      formData.append('images', file);
+      formData.append('files', file);
     });
 
     formData.append(

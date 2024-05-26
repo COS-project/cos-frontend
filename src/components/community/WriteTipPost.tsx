@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
@@ -142,7 +142,7 @@ const WriteTipPost = () => {
       // 태그가 업데이트된 후 실행할 로직
       const formData = new FormData();
       imageUrlList.forEach((file) => {
-        formData.append('images', file);
+        formData.append('files', file);
       });
       formData.append('request', new Blob([JSON.stringify(postData)], { type: 'application/json' }));
 

@@ -9,6 +9,12 @@ export const layoutState = atom({
   default: 'Home',
 });
 
+//전체 자격증 리스트를 가져오는 state
+export let certificationsListState = atom<Certificate[]>({
+  key: 'certificationsListState',
+  default: [],
+});
+
 //목표 시작 날짜
 export const targetStartDate = atom({
   key: 'targetStartDate',

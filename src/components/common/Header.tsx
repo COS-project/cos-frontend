@@ -25,7 +25,7 @@ export default function Header(props: Props) {
           <>
             <PrevArrow />
             <h1 className="text-black font-h1">{title}</h1>
-            {rightElement ? { rightElement } : <div />}
+            {rightElement ? rightElement : <div />}
           </>
         );
 
@@ -35,7 +35,7 @@ export default function Header(props: Props) {
   };
 
   return (
-    <header className="flex sticky top-0 justify-between items-center px-[1.25rem] py-[0.25rem]">
+    <header className="bg-white flex sticky top-0 justify-between items-center px-4 py-2">
       {renderHeader(headerType)}
     </header>
   );

@@ -6,10 +6,10 @@ import { ReviewIncorrectAnswers } from '@/types/global';
 
 const getKey = (size: number, previousPageData: ReviewIncorrectAnswers) => {
   if (size === 0) {
-    return `/certificates/1/user-answers/wrong-answers?page=${size}&size=10`;
+    return `/certificates/1/user-answers/wrong-answers?page=${size}&size=10&sortKey=id`;
   }
   if (previousPageData && !previousPageData.result.last) {
-    return `/certificates/1/user-answers/wrong-answers?page=${size}&size=10`;
+    return `/certificates/1/user-answers/wrong-answers?page=${size}&size=10&sortKey=id`;
   }
   if (previousPageData.result.last) {
     return null;

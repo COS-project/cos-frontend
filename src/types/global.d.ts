@@ -9,16 +9,63 @@ export interface MenuList {
   path: string;
 }
 
-// 여기부터
-// 자격증별 시험년도 리스트를 받기 위한 데이터 타입 정의
-export interface certificateYearList {
-  responseCode: string;
-  result: string[];
+// 과목에 대한 정보
+export interface SubjectInfo {
+  // 과목의 연도 정보
+  year: number;
+  // 회차 리스트
+  sessions: Session[];
 }
 
-// api를 통해 받아온 year들을 추출해서 정수형으로 변경 후 담아둘 구조
-export interface examYearList {
-  years: number[] | undefined;
+// 과목 - 회차에 대한 정보
+export interface Session {
+  // 회차 정보 ex) 2023년 - 1회차
+  sessionNumber: number;
+  // 총 맞춘 정답 개수
+  totalCorrect: number;
+  // 총 문제 개수
+  totalProblem: number;
+  // 과목내 세부과목에 대한 정보를 담고있음
+  subjects: SpecificSubject[];
+}
+
+// 과목별 세부 과목 내용을 담는 자료 Ex) 정보처리기사 - 데이터베이스 과목
+export interface SpecificSubject {
+  // 과목명
+  name: string;
+  // 정답 개수
+  correctAnswer: Number | null;
+  // 전체 문제 수
+  totalProblems: Number | null;
+  // 평균 머문 시간 (기존)
+  averageTime: Number | null;
+  // 과목에 머문 시간
+  takenTime: Number | null;
+}
+
+// api 기준
+export interface ExamInfo {
+  responseCode: string;
+  result: {
+    // examYearWithRounds: Record<string, number[]>[];
+    examYearWithRounds: examYearWithRounds[];
+  };
+}
+
+export interface examYearWithRounds {
+  year: string;
+  rounds: number[];
+}
+
+export interface ExamResult {
+  responseCode: string;
+  result: MockExam[];
+}
+
+export interface MockExam {
+  mockExamId: number;
+  round: number;
+  isTake: boolean;
 }
 
 // 진행 바 만들 때 사용합니다.
@@ -34,6 +81,11 @@ export interface ProblemInfo {
 export interface multipleChoice {
   problem: string;
   example: string[];
+}
+
+// api를 통해 받아온 year들을 추출해서 담아둘 구조
+export interface examYearList {
+  years: number[];
 }
 
 // 온보딩 관심 자격증 리스트
@@ -118,25 +170,35 @@ export interface GoalSettingInfo {
 }
 
 //온보딩 자격증
-export interface Certificate {
+export export interface Certificate {
   certificateId: number;
   certificateName: string;
   isClick: boolean; // 자격증을 선택했을 경우
 }
 
 //온보딩 흥미 자격증 타입
-export interface InterestCertificate {
+export interface InterestCertificateOnboarding {
   certificateId: number;
   interestPriority: string;
   certificateName?: string;
 }
+export interface PostInterestCertificate {
+  interestTargetList: InterestCertificateOnboarding[];
+}
 //게시판 즐겨찾기
 export interface FavoriteBoard {
+  certificateId: number;
+  boardName: string;
+  isFavorite: boolean;
+}
+
+//관심 자격증
+export interface InterestCertificate {
   certificate: {
     certificateId: number;
     certificateName: string;
   };
-  isFavorite: boolean;
+  interestPriority: string;
 }
 
 //userProfile
@@ -166,7 +228,7 @@ export interface UserAnswerRequests {
 export interface SubjectResultRequests {
   subjectId: number;
   score: number;
-  userAnswerRequests: UserAnswerRequests[];
+  createUserAnswerRequests: UserAnswerRequests[];
 }
 
 //모의고사 시험 문제, 선지 전체
@@ -181,7 +243,10 @@ export interface QuestionsResponse {
   };
   questionSeq: number;
   questionText: string;
-  questionImage: string;
+  questionImage: {
+    id: number;
+    imageUrl: string;
+  };
   questionOptions: Question[];
   correctOption: number;
   score: number;
@@ -238,4 +303,173 @@ export interface ReviewIncorrectMockExam {
   round: number;
   timeLimit: number;
   certificate: Certificate;
+}
+
+//유저
+interface User {
+  userId: number;
+  nickname: string;
+  email: string;
+  profileImage: string;
+}
+
+//태그
+interface RecommendTags {
+  tagType: string; //Lecture
+  tagName: string;
+}
+
+//모의고사
+interface MockExam {
+  MockExamId: number;
+  examYear: number;
+  round: number;
+  timeLimit: number;
+  certificate: Certificate;
+}
+
+//과목
+interface Subject {
+  subjectId: number;
+  subjectName: string;
+  numberOfQuestions: number;
+  totalScore: number;
+}
+
+//질문옵션(무엇을 의미하는지 파악 못함)
+interface QuestionOptions {
+  optionSequence: number;
+  optionContent: string;
+  optionImage: string;
+}
+
+//커뮤니티 포스트
+export interface Post {
+  postId: number;
+  title: string;
+  content: string;
+  user: User;
+  postImages: string[];
+  likeCount: number;
+  isLiked: boolean;
+  commentCount: number;
+  recommendTags: RecommendTags[];
+  question: Question;
+  mockExam: MockExam;
+  createdAt: string;
+  postComments: PostComments[];
+}
+
+//질문
+interface Question {
+  questionId: number;
+  mockExam: MockExam;
+  subject: Subject;
+  questionSeq: number;
+  questionText: string;
+  questionImage: string;
+  questionOptions: QuestionOptions[];
+  correctOption: number;
+  score: number;
+}
+
+//커뮤니티 포스팅 댓글
+interface PostComments {
+  postCommentId: number;
+  user: User;
+  createdAt: string;
+  parentCommentId: number;
+  likeCount: number;
+  isLiked: boolean;
+  content: string;
+}
+
+export interface GenerateComment{
+  parentCommentId: null | number;
+  content: string;
+}
+
+//유저
+interface User {
+  userId: number;
+  nickname: string;
+  email: string;
+  profileImage: string;
+}
+
+//태그
+interface RecommendTags {
+  tagType: string; //Lecture
+  tagName: string;
+}
+
+//모의고사
+interface MockExam {
+  MockExamId: number;
+  examYear: number;
+  round: number;
+  timeLimit: number;
+  certificate: Certificate;
+}
+
+//과목
+interface Subject {
+  subjectId: number;
+  subjectName: string;
+  numberOfQuestions: number;
+  totalScore: number;
+}
+
+//질문옵션(무엇을 의미하는지 파악 못함)
+interface QuestionOptions {
+  optionSequence: number;
+  optionContent: string;
+  optionImage: string;
+}
+
+//커뮤니티 포스트
+export interface Post {
+  postId: number;
+  title: string;
+  content: string;
+  user: User;
+  postImages: string[];
+  likeCount: number;
+  commentCount: number;
+  recommendTags: RecommendTags[];
+  question: Question;
+  mockExam: MockExam;
+  createdAt: string;
+  postComments: PostComments[];
+}
+
+//질문
+interface Question {
+  questionId: number;
+  mockExam: MockExam;
+  subject: Subject;
+  questionSeq: number;
+  questionText: string;
+  questionImage: string;
+  questionOptions: QuestionOptions[];
+  correctOption: number;
+  score: number;
+}
+
+//이 부분도 수정이 필요함
+//커뮤니티 포스팅 댓글
+interface PostComments {
+  postCommentId: number;
+  user: User;
+  createdAt: string;
+  parentCommentId: number;
+  likeCount: number;
+  content: string;
+  childPostComments: [];
+}
+
+//댓글 생성 양식
+export interface GenerateComment {
+  parentCommentId: null | number;
+  content: string;
 }

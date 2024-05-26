@@ -6,12 +6,12 @@ import FilterModal from '@/components/common/FilterModal';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
-import useGetMockExamYearsAndRounds from '@/lib/hooks/useGetMockExamYearsAndRounds';
+import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 
 const WriteExplanationPost = () => {
-  const { examYearWithRounds } = useGetMockExamYearsAndRounds();
+  const { examYears } = useGetMockExamYears();
   const { questions } = useMockExamQuestions();
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
@@ -93,7 +93,7 @@ const WriteExplanationPost = () => {
     const formData = new FormData();
 
     imageUrlList.forEach((file, index) => {
-      formData.append('images', file);
+      formData.append('files', file);
     });
 
     formData.append(
@@ -130,7 +130,7 @@ const WriteExplanationPost = () => {
             </div>
             {isYearsFilterOpen && (
               <MockExamYearsFilter
-                data={examYearWithRounds?.examYearWithRounds}
+                data={examYears}
                 setIsOpen={setIsYearsFilterOpen}
                 setDataState={setPostData}
               />
@@ -150,7 +150,8 @@ const WriteExplanationPost = () => {
             </div>
             {isRoundsFilterOpen && (
               <FilterModal
-                data={postData.examYear ? examYearWithRounds?.examYearWithRounds[postData.examYear] : null}
+                //TO DO: 회차 모의고사
+                data={postData.examYear ? examYears?.examYearWithRounds[postData.examYear] : null}
                 setDataState={setPostData}
                 setIsOpen={setIsRoundsFilterOpen}
                 className={'absolute w-full top-[100%]'}

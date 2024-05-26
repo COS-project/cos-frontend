@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil';
 import DoneButton from '@/components/onboarding/DoneButton';
 import { postInterestCertificates } from '@/lib/api/onboarding';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
-import { InterestCertificate } from '@/types/global';
+import { InterestCertificateOnboarding } from '@/types/global';
 
 export interface CertificationPriorityProps {
   onNext: () => void;
@@ -30,11 +30,11 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
   };
 
   // 자격증 객체에서 certificateName 속성을 제거합니다. API 요청을 위한 데이터 정제 과정입니다.
-  const sanitizeCertificates = (certificates: InterestCertificate[]) =>
+  const sanitizeCertificates = (certificates: InterestCertificateOnboarding[]) =>
     certificates.map(({ certificateName, ...rest }) => rest);
 
   // 각 자격증에 새로운 우선 순위를 할당합니다. 이는 사용자가 설정한 드래그 앤 드롭 순서에 기반합니다.
-  const updateCertificatesPriority = (certificates: InterestCertificate[]) =>
+  const updateCertificatesPriority = (certificates: InterestCertificateOnboarding[]) =>
     certificates.map((certificate, index) => ({
       ...certificate,
       interestPriority: ['HIGH', 'NORMAL', 'LOW'][index] || certificate.interestPriority,
