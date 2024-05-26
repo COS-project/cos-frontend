@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/home/growth-chart-view/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/growth-chart-view/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/GrowthChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/GrowthChart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamStatistics.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamStatistics.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/home/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/home/type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/home/goal-setting/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/goal-setting/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/goal-setting/SelectCertification.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-setting/SelectCertification.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/goal-setting/SettingNewGoalModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-setting/SettingNewGoalModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +34,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "fix__growth-graph",
+    "git-widget-placeholder": "fix__goal-setting",
     "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -121,7 +122,7 @@
       <workItem from="1716256789152" duration="35566000" />
       <workItem from="1716426429072" duration="10065000" />
       <workItem from="1716450504992" duration="9437000" />
-      <workItem from="1716709779130" duration="9589000" />
+      <workItem from="1716709779130" duration="10798000" />
     </task>
     <servers />
   </component>
