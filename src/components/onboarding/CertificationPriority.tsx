@@ -5,7 +5,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useRecoilState } from 'recoil';
 
 import DoneButton from '@/components/onboarding/DoneButton';
-import { postInterestCertificates } from '@/lib/api/onboarding';
+import { postInterestCertificates, putInterestCertificates } from '@/lib/api/onboarding';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
 import { InterestCertificateOnboarding } from '@/types/global';
 
@@ -50,6 +50,8 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
   useEffect(() => {
     if (!interestCertificates.interestTargetList[0].certificateName) {
       postInterestCertificates(interestCertificates);
+    } else {
+      putInterestCertificates(interestCertificates).then((r) => console.log('수정완료', r));
     }
   }, [interestCertificates]);
 

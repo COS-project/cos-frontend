@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import Header from '@/components/common/Header';
+import NavBar from '@/components/common/NavBar';
 import MyPageHeader from '@/components/mypage/MyPageHeader';
 import MyPageItem from '@/components/mypage/MyPageItem';
 import {
@@ -15,6 +17,7 @@ import {
 export default function MyPage() {
   return (
     <>
+      <Header />
       <div className={'flex flex-col gap-y-6 bg-gray0 min-h-screen'}>
         <MyPageHeader />
         <div className={'mx-5 flex flex-col gap-y-3'}>
@@ -25,6 +28,7 @@ export default function MyPage() {
           <MyPageItem contents={etcContents} category={'기타'} />
         </div>
       </div>
+      <NavBar />
     </>
   );
 }
