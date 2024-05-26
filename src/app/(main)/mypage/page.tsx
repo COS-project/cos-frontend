@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 
 import MyPageHeader from '@/components/mypage/MyPageHeader';

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { SVGProps } from 'react';
 import * as React from 'react';
 
@@ -9,12 +10,21 @@ import { InterestCertificate } from '@/types/global';
 const MyPageHeader = () => {
   const { userProfile } = useGetUserProfile();
   const { interestCertificates } = useGetInterestCertificates();
+  const router = useRouter();
+
+  const onMove = () => {
+    router.push('/mypage/profile');
+  };
 
   return (
     <>
       <div className={'flex flex-col bg-white p-5 gap-y-4'}>
         {/*프로필 설정*/}
-        <div className={'flex gap-x-4 items-center'}>
+        <div
+          onClick={() => {
+            onMove();
+          }}
+          className={'flex gap-x-4 items-center'}>
           <Image
             src={userProfile?.profileImage}
             alt={userProfile?.profileImage}
