@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import type { SVGProps } from 'react';
+import * as React from 'react';
 
 interface Props {
   title: string;
@@ -10,13 +12,22 @@ export default function Banner(props: Props) {
   const { title, buttonText, href } = props;
 
   return (
-    <div className="mx-auto mt-4 p-3 rounded-3xl bg-second">
-      <div className="px-2">
-        <div className="text-white font-bold text-left text-h4 my-1">{title}</div>
+    <div className="py-[16px] px-[16px] rounded-[32px] bg-second">
+      <div className="flex flex-col gap-y-3">
+        <div className="text-white font-semibold text-left text-h3 my-1">{title}</div>
         <Link href={href}>
-          <div className="inline-block rounded-3xl bg-white text-blue text-h6 my-1 px-3 py-1">{buttonText} ➚</div>
+          <div className="flex px-[12px] py-1 rounded-full items-center w-fit bg-white text-blue text-h6">
+            {buttonText}
+            <MoveIcon />
+          </div>
         </Link>
       </div>
     </div>
   );
 }
+
+const MoveIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={17} height={17} fill="none" {...props}>
+    <path stroke="#6283FD" strokeLinecap="round" strokeLinejoin="round" d="m5.75 11.5 6-6M5.75 5.5h6v6" />
+  </svg>
+);

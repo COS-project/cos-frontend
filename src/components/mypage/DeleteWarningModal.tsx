@@ -1,19 +1,18 @@
-import React, { type SVGProps } from 'react';
+import type { SVGProps } from 'react';
+import * as React from 'react';
 
 import { postingDelete } from '@/lib/api/communityPost';
 import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
-import { BoardType, SortDirections } from '@/types/community/type';
-
+import { BoardType } from '@/types/community/type';
 interface Props {
-  deletePostId: number;
-  boardType: BoardType;
   isDeleteWarningModalOpen: boolean;
   setIsDeleteWarningModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedFilterContent: '최신순' | '작성순';
+  postId: number;
+  boardType: BoardType;
 }
 const DeleteWarningModal = (props: Props) => {
-  const { deletePostId, isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, boardType, selectedFilterContent } = props;
-  const { mutate } = useGetUserPosts(boardType, selectedFilterContent === '최신순' ? 'ASC' : 'DESC');
+  const { isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, postId, boardType } = props;
+  const { mutate } = useGetUserPosts(boardType);
 
   return (
     <>
@@ -22,18 +21,17 @@ const DeleteWarningModal = (props: Props) => {
           'absolute left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
         }>
         <div
-          onClick={() => setIsDeleteWarningModalOpen(!isDeleteWarningModalOpen)}
+          onClick={() => {
+            setIsDeleteWarningModalOpen(!isDeleteWarningModalOpen);
+          }}
           className={'flex justify-end items-center'}>
           <div className={'text-white text-h6'}>닫기</div>
-          <CancelIcon />
+          <CancleIcon />
         </div>
         <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
           <div className={'flex flex-col gap-y-1'}>
-            <div className={'text-h2 font-semibold text-black'}>이전 목표를 불러올까요?</div>
-            <div>
-              <div className={'flex items-center text-h6'}>정보를 불러오면 이전에 설정한 목표를</div>
-              <div className={'text-h6'}>토대로 작성할 수 있어요.</div>
-            </div>
+            <div className={'text-h2 font-semibold text-black'}>정말 삭제하시겠습니까?</div>
+            <div className={'text-h6'}>삭제하면 작성한 글을 되돌릴 수 없습니다.</div>
           </div>
           <div className={'flex justify-end gap-x-2'}>
             <button
@@ -45,9 +43,9 @@ const DeleteWarningModal = (props: Props) => {
             </button>
             <button
               onClick={async () => {
-                await postingDelete(deletePostId);
-                await mutate();
                 setIsDeleteWarningModalOpen(!isDeleteWarningModalOpen);
+                await postingDelete(postId);
+                await mutate();
               }}
               className={'bg-black rounded-full text-white py-[7px] px-3'}>
               삭제하기
@@ -58,10 +56,9 @@ const DeleteWarningModal = (props: Props) => {
     </>
   );
 };
-
 export default DeleteWarningModal;
 
-const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
+const CancleIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={25} height={24} fill="none" {...props}>
     <mask
       id="a"

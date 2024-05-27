@@ -367,7 +367,7 @@ interface Question {
   subject: Subject;
   questionSeq: number;
   questionText: string;
-  questionImage: string;
+  questionImage?: string;
   questionOptions: QuestionOptions[];
   correctOption: number;
   score: number;

@@ -1,7 +1,7 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import type { SVGProps } from 'react';
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
 
 interface Props {
   title: string;
@@ -55,7 +55,6 @@ const Post = (props: Props) => {
 
       {/*수정, 삭제버튼*/}
       {bottomElement ? bottomElement : null}
-      {/*{!bottomElement || bottomElement() ? (bottomElement ? bottomElement() : null) : null}*/}
     </div>
   );
 };

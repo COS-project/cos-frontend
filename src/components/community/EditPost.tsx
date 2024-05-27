@@ -17,7 +17,7 @@ import { EditPostDataType, TipPostTagType } from '@/types/community/type';
 const EditPost = () => {
   const { postDetailData } = useGetPost();
   const { questions } = useMockExamQuestions();
-  const { examYears } = useGetMockExamYears();
+  const { examYears } = useGetMockExamYears('EditPost');
   const [editPostData, setEditPostData] = useRecoilState(editPostDataState);
   const [onlineCourseInputs, setOnlineCourseInputs] = useState<string[]>([]);
   const [workbookInputs, setWorkbookInputs] = useState<string[]>([]);

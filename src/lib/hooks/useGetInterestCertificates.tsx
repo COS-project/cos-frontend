@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { swrGetFetcher } from '@/lib/axios';
 import { FavoriteBoard } from '@/types/global';
 
-const useGetBoardList = () => {
+const useGetInterestCertificates = () => {
   const { data, error } = useSWR<AxiosResponse>('/interest-certificates', swrGetFetcher);
 
   const parseResultList = data?.result.map((item: FavoriteBoard) => item).flat();
@@ -15,4 +15,4 @@ const useGetBoardList = () => {
     isError: error,
   };
 };
-export default useGetBoardList;
+export default useGetInterestCertificates;

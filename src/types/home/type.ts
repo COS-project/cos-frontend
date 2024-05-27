@@ -21,11 +21,16 @@ export interface WeeklyGoalPeriodType {
   formattedWeeklyPrepTime: string;
 }
 
+export interface ExamStaticsDataResponseType {
+  responseCode: string;
+  result: ExamStaticsDataType;
+}
+
 /**
  * 성장그래프 통계 타입
  */
 export interface ExamStaticsDataType {
-  average: number;
+  totalAverage: number;
   scoreAVGList: ScoreAVGListType[];
 }
 

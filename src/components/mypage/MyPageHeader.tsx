@@ -11,6 +11,7 @@ const MyPageHeader = () => {
   const router = useRouter();
   const { userProfile } = useGetUserProfile();
   const { interestCertificates } = useGetInterestCertificates();
+  const router = useRouter();
 
   const onMoveProfilePage = () => {
     router.push('/mypage/profile');
