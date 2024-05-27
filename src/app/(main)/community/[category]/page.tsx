@@ -19,15 +19,104 @@ import { boardTypeState, commentarySearchQuestionSequence } from '@/recoil/commu
 import { BoardType } from '@/types/community/type';
 
 export default function CommunityCategoryPage() {
+  const [ref, inView] = useInView();
+  //필터값
+  const [isOpenNormalAndTipFilter, setIsOpenNormalAndTipFilter] = useState<boolean>(false);
+  const [isOpenCommentaryYearFilter, setIsOpenCommentaryYearFilter] = useState<boolean>(false);
+  const [isOpenCommentaryRoundFilter, setIsOpenCommentaryRoundFilter] = useState<boolean>(false);
+  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<string>('최신순');
+  const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number | string>(
+    '전체',
+  );
+  const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number | string>(
+    '전체',
+  );
+  const [sortField, setSortField] = useState<string>('createdAt'); //최신순 인기순
+  const { examYears } = useGetMockExamYears(); //해설 년도 필터값
+  const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent); //해설 회차 필터값
   //보드 타입
-  const [boardType, setBoardType] = useRecoilState<BoardType>(boardTypeState);
-  const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('REVIEW');
+  const [boardType, setBoardType] = useState<BoardType>('COMMENTARY');
+  const { userPostsList, setSize } = useGetTotalSearchResults(boardType, 1, sortField);
+  const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('COMMENTARY');
   //글쓰기 버튼
   const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
   const router = useRouter();
   //해설 게시글 검색
   const [searchValue, setSearchValue] = useRecoilState<number>(commentarySearchQuestionSequence);
   const debouncedValue = useDebounce<number>(searchValue, 100);
+  const { commentarySearchResults } = useGetCommentarySearchResults(
+    1,
+    selectedCommentaryYearFilterContent,
+    selectedCommentaryRoundFilterContent,
+    searchValue,
+  );
+
+  /**
+   * 전체를 선택했을 경우 회차 선택되지 않도록
+   */
+  const controlDisabledFilter = () => {
+    return selectedCommentaryYearFilterContent === '전체';
+  };
+
+  /**
+   * 무한 스크롤 뷰 감지하고 size+1 해줌
+   */
+  const getMoreItem = useCallback(async () => {
+    if (userPostsList) {
+      setSize((prev: number) => prev + 1);
+    }
+    return;
+  }, []);
+
+  useEffect(() => {
+    if (inView) {
+      getMoreItem();
+    }
+  }, [inView]);
+
+  /**
+   * 해설 게시판 년도 필터가 전체면 회차 필터도 전체로 변경
+   */
+  useEffect(() => {
+    if (selectedCommentaryYearFilterContent === '전체') {
+      setSelectedCommentaryRoundFilterContent('전체');
+    }
+  }, [selectedCommentaryYearFilterContent]);
+
+  /**
+   * 일반, 꿀팁 게시판 필터
+   */
+  useEffect(() => {
+    if (selectedNormalAndTipFilterContent == '최신순') {
+      setSortField('createdAt');
+    } else if (selectedNormalAndTipFilterContent == '인기순') {
+      setSortField('likeCount');
+    }
+  }, [selectedNormalAndTipFilterContent]);
+
+  /**
+   * boardType 이 변경되면 필터값 초기화
+   */
+  useEffect(() => {
+    setSelectedNormalAndTipFilterContent('최신순');
+    setSelectedCommentaryYearFilterContent('전체');
+  }, [boardType]);
+
+  /**
+   * 쿼리파라미터에서 검색어
+   */
+  useEffect(() => {
+    const query = {
+      keyword: debouncedValue,
+    };
+
+    const url = qs.stringifyUrl({
+      url: '/community/1',
+      query: query,
+    });
+
+    router.push(url);
+  }, [debouncedValue, router, commentarySearchResults]);
 
   const onMoveSrearchPage = () => {
     router.push('/search');

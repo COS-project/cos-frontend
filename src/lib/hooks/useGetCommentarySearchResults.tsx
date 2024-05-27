@@ -13,16 +13,16 @@ const getKey = (
   questionSequence: number,
 ) => {
   if (examYear === '전체') {
-    return `/certificates/${certificateId}/posts?&page=${size}&size=10&sortKey=createdAt`;
+    return `/certificates/${certificateId}/posts?&page=${size}&size=10`;
   }
   if (examYear !== '전체' && round === '전체') {
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&page=${size}&size=10&sortKey=createdAt`;
+    return `/certificates/${certificateId}/posts?examYear=${examYear}&page=${size}&size=10`;
   }
   if (examYear !== '전체' && round !== '전체' && questionSequence === undefined && size === 0) {
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&page=${size}&size=10&sortKey=createdAt`;
+    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&page=${size}&size=10`;
   }
   if (examYear !== '전체' && round !== '전체' && questionSequence !== undefined && size === 0) {
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${size}&size=10&sortKey=createdAt`;
+    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${size}&size=10`;
   }
   if (
     examYear !== '전체' &&
@@ -31,7 +31,7 @@ const getKey = (
     previousPageData &&
     !previousPageData.result.hasNext
   ) {
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${size}&size=10&sortKey=createdAt`;
+    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${size}&size=10`;
   }
   if (previousPageData.result.hasNext) {
     return null;
