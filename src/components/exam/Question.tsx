@@ -6,7 +6,9 @@ import { useRecoilState } from 'recoil';
 import QuestionContent from '@/components/exam/QuestionContent';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import {
-  questionIndex, stopwatchIsPaused,
+  mockExamIdState,
+  questionIndex,
+  stopwatchIsPaused,
   stopwatchIsRunning,
   stopwatchTime,
   userAnswerRequests,
@@ -17,7 +19,8 @@ import { Question, QuestionsResponse, UserAnswerRequests } from '@/types/global'
 import { AllQuestionModal } from './AllQuestionModal';
 
 const Question = () => {
-  const { questions, isLoading, isError } = useMockExamQuestions();
+  const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
+  const { questions, isLoading, isError } = useMockExamQuestions(selectedMockExamId);
   const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
   const [allQuestionModalIsOpen, setAllQuestionModalIsOpen] = useState(false);
   const [userAnswer, setUserAnswer] = useRecoilState<UserAnswerRequests>(userAnswerRequests);
@@ -84,7 +87,7 @@ const Question = () => {
   };
 
   /**
-   * 처음 랜더링 될 때, userAnswerLis t을 기본값으로 채워주는 기능
+   * 처음 랜더링 될 때, userAnswerList 을 기본값으로 채워주는 기능
    */
   useEffect(() => {
     if (questions?.length > 0 && userAnswerList.length === 0) {
@@ -107,8 +110,8 @@ const Question = () => {
 
     if (isRunning && !isPaused) {
       interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
-      }, 1);
+        setTime((prevTime) => prevTime + 1000);
+      }, 1000);
     } else {
       clearInterval(interval);
     }

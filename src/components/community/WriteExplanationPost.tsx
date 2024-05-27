@@ -11,7 +11,7 @@ import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 
 const WriteExplanationPost = () => {
-  const { examYears } = useGetMockExamYears();
+  const { examYears } = useGetMockExamYears('WriteExplanationPost');
   const { questions } = useMockExamQuestions();
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);

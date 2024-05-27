@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import DetailedGradeReport from '@/components/home/DetailedGradeReport';
@@ -16,11 +16,12 @@ const GrowthChartView = () => {
   const [selectedPrepareWeeksBetween, setSelectedPrepareWeeksBetweenState] = useRecoilState(
     selectedPrepareWeeksBetweenState,
   );
-  const [selectedReportType, setSelectedReportType] = useRecoilState<'WEEK' | 'MONTH' | 'YEAR'>(
+  const [selectedReportType, setSelectedReportType] = useRecoilState<'WEEKLY' | 'MONTHLY' | 'YEARLY'>(
     selectedReportTypeState,
   );
 
   const { statisticsData } = useGetMockExamStatistics(
+    1,
     selectedReportType,
     selectedPrepareWeeksBetween.prepareYear,
     selectedPrepareWeeksBetween.prepareMonth,
@@ -28,6 +29,10 @@ const GrowthChartView = () => {
   );
   const [goalPeriod, setGoalPeriod] = useState<string>('목표 기간 선택');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log('성적그래프 통계', statisticsData);
+  }, [statisticsData]);
 
   /**
    * 목표 주차 계산해주는 함수
@@ -121,45 +126,45 @@ const GrowthChartView = () => {
         {/*주간 성적 자세히 보기*/}
         <div className={'flex flex-col gap-y-[8px]'}>
           <div className={'text-h3 font-bold ml-2'}>
-            {selectedReportType === 'WEEK' ? '주간' : selectedReportType === 'MONTH' ? '월간' : '년간'} 성적 자세히 보기
+            {selectedReportType === 'WEEKLY' ? '주간' : selectedReportType === 'MONTHLY' ? '월간' : '년간'} 성적 자세히 보기
           </div>
           <div className={'flex flex-col gap-y-[12px]'}>
             {statisticsData?.scoreAVGList.map((scoreAVG: ScoreAVGListType, index: number) => {
               return (
                 <DetailedGradeReport
                   prepareYear={
-                    selectedReportType === 'WEEK'
+                    selectedReportType === 'WEEKLY'
                       ? getYear(new Date(scoreAVG.date))
-                      : selectedReportType === 'MONTH'
-                        ? selectedPrepareWeeksBetween.prepareYear.toString()
-                        : selectedReportType === 'YEAR'
-                          ? selectedPrepareWeeksBetween.prepareYear.toString()
-                          : ''
+                      : selectedReportType === 'MONTHLY'
+                      ? selectedPrepareWeeksBetween.prepareYear.toString()
+                      : selectedReportType === 'YEARLY'
+                      ? selectedPrepareWeeksBetween.prepareYear.toString()
+                      : ''
                   }
                   prepareMonth={
-                    selectedReportType === 'WEEK'
+                    selectedReportType === 'WEEKLY'
                       ? getMonth(new Date(scoreAVG.date))
-                      : selectedReportType === 'MONTH'
-                        ? selectedPrepareWeeksBetween.prepareMonth
-                        : selectedReportType === 'YEAR'
-                          ? scoreAVG.month
-                          : undefined
+                      : selectedReportType === 'MONTHLY'
+                      ? selectedPrepareWeeksBetween.prepareMonth
+                      : selectedReportType === 'YEARLY'
+                      ? scoreAVG.month
+                      : undefined
                   }
                   prepareWeekly={
-                    selectedReportType === 'WEEK'
+                    selectedReportType === 'WEEKLY'
                       ? getWeek(new Date(scoreAVG.date))
-                      : selectedReportType === 'MONTH'
-                        ? scoreAVG.weekOfMonth
-                        : undefined
+                      : selectedReportType === 'MONTHLY'
+                      ? scoreAVG.weekOfMonth
+                      : undefined
                   }
-                  prepareDate={selectedReportType === 'WEEK' ? new Date(scoreAVG.date).toISOString() : undefined}
+                  prepareDate={selectedReportType === 'WEEKLY' ? new Date(scoreAVG.date).toISOString() : undefined}
                   key={index}
                   dayOfWeek={
-                    selectedReportType === 'WEEK'
+                    selectedReportType === 'WEEKLY'
                       ? convertDayOfWeekToKorean(scoreAVG)
-                      : selectedReportType === 'MONTH'
-                        ? convertWeekOfMonth(scoreAVG)
-                        : convertMonth(scoreAVG)
+                      : selectedReportType === 'MONTHLY'
+                      ? convertWeekOfMonth(scoreAVG)
+                      : convertMonth(scoreAVG)
                   }
                   scoreAverage={scoreAVG.scoreAverage}
                 />

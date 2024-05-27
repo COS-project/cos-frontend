@@ -1,17 +1,19 @@
-import { type SVGProps, useState } from 'react';
+import type { SVGProps } from 'react';
 import * as React from 'react';
 
+import { postingDelete } from '@/lib/api/communityPost';
+import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
+import { BoardType } from '@/types/community/type';
 interface Props {
-  setIsSettingNewModal: React.Dispatch<React.SetStateAction<boolean>>;
-  isSettingNewGoalModal: boolean;
-  resetData: () => void;
-  fetchDataAndUpdateState: () => void;
-  setIsResetButtonClick: React.Dispatch<React.SetStateAction<boolean>>;
+  isDeleteWarningModalOpen: boolean;
+  setIsDeleteWarningModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  postId: number;
+  boardType: BoardType;
 }
+const DeleteWarningModal = (props: Props) => {
+  const { isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, postId, boardType } = props;
+  const { mutate } = useGetUserPosts(boardType);
 
-const SettingNewGoalModal = (props: Props) => {
-  const { setIsSettingNewModal, isSettingNewGoalModal, resetData, setIsResetButtonClick, fetchDataAndUpdateState } =
-    props;
   return (
     <>
       <div
@@ -20,7 +22,7 @@ const SettingNewGoalModal = (props: Props) => {
         }>
         <div
           onClick={() => {
-            setIsSettingNewModal(!isSettingNewGoalModal);
+            setIsDeleteWarningModalOpen(!isDeleteWarningModalOpen);
           }}
           className={'flex justify-end items-center'}>
           <div className={'text-white text-h6'}>닫기</div>
@@ -28,29 +30,25 @@ const SettingNewGoalModal = (props: Props) => {
         </div>
         <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
           <div className={'flex flex-col gap-y-1'}>
-            <div className={'text-h2 font-semibold text-black'}>이전 목표를 불러올까요?</div>
-            <div>
-              <div className={'flex items-center text-h6'}>정보를 불러오면 이전에 설정한 목표를</div>
-              <div className={'text-h6'}>토대로 작성할 수 있어요.</div>
-            </div>
+            <div className={'text-h2 font-semibold text-black'}>정말 삭제하시겠습니까?</div>
+            <div className={'text-h6'}>삭제하면 작성한 글을 되돌릴 수 없습니다.</div>
           </div>
           <div className={'flex justify-end gap-x-2'}>
             <button
               onClick={() => {
-                resetData();
-                setIsResetButtonClick(true);
-                setIsSettingNewModal(!isSettingNewGoalModal);
+                setIsDeleteWarningModalOpen(!isDeleteWarningModalOpen);
               }}
               className={'bg-gray1 rounded-full text-gray4 py-[7px] px-4'}>
-              새 목표
+              취소
             </button>
             <button
-              onClick={() => {
-                fetchDataAndUpdateState();
-                setIsSettingNewModal(!isSettingNewGoalModal);
+              onClick={async () => {
+                setIsDeleteWarningModalOpen(!isDeleteWarningModalOpen);
+                await postingDelete(postId);
+                await mutate();
               }}
               className={'bg-black rounded-full text-white py-[7px] px-3'}>
-              불러오기
+              삭제하기
             </button>
           </div>
         </div>
@@ -58,7 +56,7 @@ const SettingNewGoalModal = (props: Props) => {
     </>
   );
 };
-export default SettingNewGoalModal;
+export default DeleteWarningModal;
 
 const CancleIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={25} height={24} fill="none" {...props}>

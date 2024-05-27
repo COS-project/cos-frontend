@@ -21,7 +21,7 @@ const SubmitConfirmationModal = (props: Props) => {
   /**
    * 제출 버튼을 눌렀을 때, 결과 페이지로 이동하는 함수
    */
-  const onMove = () => {
+  const onMove = async () => {
     router.push('/exam/result');
   };
 
@@ -49,10 +49,10 @@ const SubmitConfirmationModal = (props: Props) => {
               닫기
             </button>
             <button
-              onClick={() => {
-                setIsRunning(false);
+              onClick={async () => {
+                setIsRunning(false); //제출 트릭
                 setIsSubmitConfirmationModalOpen(!isSubmitConfirmationModalOpen);
-                onMove();
+                await onMove();
               }}
               className={'bg-black rounded-full text-white py-[7px] px-3'}>
               제출하기

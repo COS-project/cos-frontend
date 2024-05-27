@@ -9,7 +9,7 @@ interface Props {
   data: WeeklyGoalPeriodType[];
   setDataState: React.Dispatch<React.SetStateAction<WeeklyGoalPeriodType>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  reportType?: 'WEEK' | 'MONTH' | 'YEAR';
+  reportType?: 'WEEKLY' | 'MONTHLY' | 'YEARLY';
 }
 const WeeklyGoalPeriodFilter = (props: Props) => {
   const { className, data, setDataState, reportType, setIsOpen } = props;
@@ -20,11 +20,11 @@ const WeeklyGoalPeriodFilter = (props: Props) => {
    */
   const adjustFilterContentsByReportType = (weeklyGoalPeriod: WeeklyGoalPeriodType) => {
     switch (reportType) {
-      case 'WEEK':
+      case 'WEEKLY':
         return weeklyGoalPeriod.formattedWeeklyPrepTime;
-      case 'MONTH':
+      case 'MONTHLY':
         return `${weeklyGoalPeriod.prepareMonth}월`;
-      case 'YEAR':
+      case 'YEARLY':
         return `${weeklyGoalPeriod.prepareYear}년`;
       default:
         return '에러';

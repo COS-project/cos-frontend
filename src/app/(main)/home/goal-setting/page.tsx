@@ -103,14 +103,14 @@ const GoalSetting = () => {
   };
 
   return (
-    <div className="flex flex-col gap-y-8 mx-5">
+    <div className="min-h-screen bg-gray0 flex flex-col gap-y-8 mx-5">
       {isSettingNewGoalModalOpen ? (
         <SettingNewGoalModal
           fetchDataAndUpdateState={fetchDataAndUpdateState}
           setIsResetButtonClick={setIsResetButtonClick}
           resetData={resetData}
-          isSubmitConfirmationModalOpen={isSettingNewGoalModalOpen}
-          setIsSubmitConfirmationModalOpen={setIsSettingNewGoalModalOpen}
+          isSettingNewGoalModal={isSettingNewGoalModalOpen}
+          setIsSettingNewModal={setIsSettingNewGoalModalOpen}
         />
       ) : null}
       {isResetButtonClick ? (

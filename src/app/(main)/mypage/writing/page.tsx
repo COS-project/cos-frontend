@@ -1,20 +1,20 @@
 'use client';
 
+import { AxiosResponse } from 'axios';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import DeleteWarningModal from '@/components/mypage/DeleteWarningModal';
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
-import ReviewPost from '@/components/mypage/ReviewPost';
-import { filterContent } from '@/utils/mypage/FilterContent';
-import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
-import { PostType, BoardType, ResponsePostType } from '@/types/community/type';
-import { useInView } from 'react-intersection-observer';
-import useAllIncorrectQuestions from '@/lib/hooks/useAllIncorrectQuestions';
-import { AxiosResponse } from 'axios';
 import Post from '@/components/mypage/Post';
-import { FilterType } from '@/types/mypage/type';
+import ReviewPost from '@/components/mypage/ReviewPost';
+import useAllIncorrectQuestions from '@/lib/hooks/useAllIncorrectQuestions';
+import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
+import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
+import { filterContent } from '@/utils/mypage/FilterContent';
 
 export default function MyWriting() {
   const [ref, inView] = useInView();
@@ -23,7 +23,13 @@ export default function MyWriting() {
   // 최신순:createdAt, 인기순:popular
   const [selectedFilterContent, setSelectedFilterContent] = useState('최신순');
   const [isOpenFilter, setIsOpenFilter] = useState(false);
-  const { userPostsList, setSize } = useGetUserPosts(boardType);
+  const { userPostsList, setSize, mutate } = useGetUserPosts(boardType);
+  const [isDeleteWarningModalOpen, setIsDeleteWarningModalOpen] = useState<boolean>(false);
+  const [deletePostId, setDeletePostId] = useState<number>(0);
+
+  useEffect(() => {
+    console.log('userPostsList', userPostsList);
+  }, [userPostsList]);
 
   const getMoreItem = useCallback(async () => {
     if (userPostsList) {
@@ -56,17 +62,32 @@ export default function MyWriting() {
     );
   };
 
-  const bottomElement = () => {
+  const bottomElement = (postId: number) => {
     return (
       <div className={'flex justify-end gap-x-2'}>
         <button className={'bg-gray0 py-2 px-4 rounded-[12px]'}>수정</button>
-        <button className={'bg-black text-white py-2 px-4 rounded-[12px]'}>삭제</button>
+        <button
+          onClick={() => {
+            setIsDeleteWarningModalOpen(!isDeleteWarningModalOpen);
+            setDeletePostId(postId);
+          }}
+          className={'bg-black text-white py-2 px-4 rounded-[12px]'}>
+          삭제
+        </button>
       </div>
     );
   };
 
   return (
     <>
+      {isDeleteWarningModalOpen ? (
+        <DeleteWarningModal
+          postId={deletePostId}
+          setIsDeleteWarningModalOpen={setIsDeleteWarningModalOpen}
+          isDeleteWarningModalOpen={isDeleteWarningModalOpen}
+          boardType={boardType}
+        />
+      ) : null}
       <Header headerType={'dynamic'} title={'내가 작성한 글'} rightElement={<EmptyIcon />} />
       <div className={'flex flex-col gap-y-4 bg-gray0 min-h-screen'}>
         <MyWritingMenu boardType={boardType} setBoardType={setBoardType} />
@@ -95,10 +116,11 @@ export default function MyWriting() {
                     return (
                       <div key={userPost.postId} ref={ref}>
                         <Post
+                          postId={userPost.postId}
                           content={userPost.postContent.content}
                           title={userPost.postContent.title}
                           commentCount={userPost.postStatus.commentCount}
-                          bottomElement={bottomElement}
+                          bottomElement={bottomElement(userPost.postId)}
                           createdAt={'2023.7.12'}
                           imageUrl={
                             userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null
