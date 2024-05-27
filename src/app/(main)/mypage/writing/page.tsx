@@ -29,6 +29,7 @@ export default function MyWriting() {
           deletePostId={deletePostId}
           isDeleteWarningModalOpen={isDeleteWarningModalOpen}
           setIsDeleteWarningModalOpen={setIsDeleteWarningModalOpen}
+          selectedFilterContent={selectedFilterContent}
         />
       ) : null}
       {/* 헤더 */}

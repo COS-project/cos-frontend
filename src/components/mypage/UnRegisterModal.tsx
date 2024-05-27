@@ -1,7 +1,7 @@
+import { useRouter } from 'next/navigation';
 import React, { type SVGProps } from 'react';
 
 import { deleteUserInfo } from '@/lib/api/mypage';
-import { useRouter } from 'next/navigation';
 
 interface Props {
   isUnRegisterModalOpen: boolean;

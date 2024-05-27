@@ -2,17 +2,18 @@ import React, { type SVGProps } from 'react';
 
 import { postingDelete } from '@/lib/api/communityPost';
 import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
-import { BoardType } from '@/types/community/type';
+import { BoardType, SortDirections } from '@/types/community/type';
 
 interface Props {
   deletePostId: number;
   boardType: BoardType;
   isDeleteWarningModalOpen: boolean;
   setIsDeleteWarningModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedFilterContent: '최신순' | '작성순';
 }
 const DeleteWarningModal = (props: Props) => {
-  const { deletePostId, isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, boardType } = props;
-  const { mutate } = useGetUserPosts(boardType);
+  const { deletePostId, isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, boardType, selectedFilterContent } = props;
+  const { mutate } = useGetUserPosts(boardType, selectedFilterContent === '최신순' ? 'ASC' : 'DESC');
 
   return (
     <>
