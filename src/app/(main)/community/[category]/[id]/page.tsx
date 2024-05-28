@@ -16,7 +16,7 @@ import CommunityTag from '@/components/community/CommunityTag';
 import { postToggleLikeData } from '@/lib/api/communityPost';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
-import { Post, PostComments, RecommendTags } from '@/types/global';
+import { PostComments, RecommendTags } from '@/types/global';
 
 const CommunityDetailPage = () => {
   const params = useParams();
@@ -140,7 +140,7 @@ const CommunityDetailPage = () => {
                     {postComment.childPostComments?.map(
                       //대댓글
                       //AxiosResponse<PostComments>
-                      (childPostComment: string, index: number) => {
+                      (childPostComment: PostComments, index: number) => {
                         return (
                           <CommentReply //대댓글
                             key={index}

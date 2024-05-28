@@ -384,12 +384,12 @@ export interface ImageType {
 interface PostComments {
   postCommentId: number;
   user: User;
-  parentCommentId: number;
+  parentCommentId?: number;
   likeCount: number;
   isLiked: boolean;
   content: string;
   dateTime: DateTime;
-  childPostComments?: string[];
+  childPostComments?: PostComments[];
 }
 
 //날짜 타입
