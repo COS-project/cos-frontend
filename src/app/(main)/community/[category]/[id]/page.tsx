@@ -1,26 +1,27 @@
 'use client';
+import { format } from 'date-fns';
+import { useParams } from 'next/navigation';
+import type { SVGProps } from 'react';
 import React, { useEffect, useState } from 'react';
-import CommunityNav from '@/components/community/CommunityNav';
+import { useRecoilState } from 'recoil';
+
+import Header from '@/components/common/Header';
+import Comment from '@/components/community/Comment';
+import CommentBar from '@/components/community/CommentBar';
+import CommentReply from '@/components/community/CommentReply';
+import CommentWriting from '@/components/community/CommentWriting';
+import CommunityPost from '@/components/community/CommunityPosting';
 import CommunityProfile from '@/components/community/CommunityProfile';
 import CommunityTag from '@/components/community/CommunityTag';
-import CommunityPost from '@/components/community/CommunityPosting';
-import CommentWriting from '@/components/community/CommentWriting';
-import CommentBar from '@/components/community/CommentBar';
-import Comment from '@/components/community/Comment';
-import CommentReply from '@/components/community/CommentReply';
-import ImgModal from '@/components/community/ImgModal';
-import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
-import { postingModalState, commentModalState, commentDeleteState, postDeleteState } from '@/recoil/community/atom';
-import { useRecoilState } from 'recoil';
-import { Post, PostComments, RecommendTags } from '@/types/global';
-import { format } from 'date-fns';
 import { postToggleLikeData } from '@/lib/api/communityPost';
-import { AxiosResponse } from 'axios';
-import { useSWRConfig } from 'swr';
+import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
+import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
+import { Post, PostComments, RecommendTags } from '@/types/global';
 
 const CommunityDetailPage = () => {
+  const params = useParams();
   //커뮤니티 포스트에 해당하는 데이터를 가져옴
-  const { communityPostData, isLoading, isError, mutate } = useGetCommunityPost();
+  const { communityPostData, isLoading, isError, mutate } = useGetCommunityPost(params.id);
   //데이터 잘 들어왔는지 확인
   useEffect(() => {
     console.log('communityPostData', communityPostData);
@@ -53,48 +54,70 @@ const CommunityDetailPage = () => {
       <div className="mb-[100px]">
         {/* <ImgModal></ImgModa> */}
         {/* 나중에 이 부분에 이미지 모달창을 넣을 예정 */}
-        <CommunityNav Icon={false}>해설 게시판</CommunityNav>
+        <Header
+          headerType={'dynamic'}
+          title={
+            communityPostData && communityPostData.postResponse?.postStatus.postType === 'COMMENTARY'
+              ? '해설 게시글'
+              : communityPostData?.postResponse?.postStatus.postType === 'TIP'
+              ? '꿀팁 게시글'
+              : '자유 게시글'
+          }></Header>
         {communityPostData ? ( //데이터가 있을 때만 뜨도록 함
           <div>
             <div className="pt-[21px]"></div>
             <div className="mx-[20px]">
               <CommunityProfile
                 fontsizing={true} //폰트 크기를 작게
-                date={format(communityPostData.createdAt, 'yy.MM.dd')} //날짜
-                time={format(communityPostData.createdAt, 'HH:mm')} //시간
-                imgSrc={communityPostData.user.profileImage} //프로필 이미지
+                date={format(communityPostData.postResponse?.dateTime.createdAt, 'yy.MM.dd')} //날짜
+                time={format(communityPostData.postResponse?.dateTime.createdAt, 'HH:mm')} //시간
+                imgSrc={communityPostData.postResponse.user.profileImage} //프로필 이미지
                 onClick={() => {
                   //...버튼 클릭했을 때 동작
                   setOnPostModal(!onPostModal);
-                  setPostDelete(communityPostData.postId);
+                  setPostDelete(communityPostData.postResponse.postId);
                 }}>
-                {communityPostData.user.nickname}
+                {communityPostData.postResponse.user.nickname}
               </CommunityProfile>
               <div className="pb-[16px]"></div>
-              <div className="justify-start items-start gap-2 inline-flex">
-                {/* 태그가 있을 때 실행 */}
-                {communityPostData.recommendTags?.map((tag: RecommendTags, index: number) => {
-                  return <CommunityTag key={index}>{tag.tagName}</CommunityTag>;
-                })}
-                <CommunityTag>{communityPostData.mockExam?.examYear}년도</CommunityTag>
-                <CommunityTag>{communityPostData.mockExam?.round}회차</CommunityTag>
-                <CommunityTag>{communityPostData.question?.questionId}번</CommunityTag>
+              {/* 꿀팁 태그 */}
+              <div className={'flex gap-x-2'}>
+                {communityPostData.postResponse.recommendTags
+                  ? communityPostData.postResponse.recommendTags?.map((tag: RecommendTags, index: number) => {
+                      return <CommunityTag key={index}>{tag.tagName}</CommunityTag>;
+                    })
+                  : null}
               </div>
+              {/* 해설 태그 && 문제보기 버튼 */}
+              {communityPostData.postResponse?.question ? (
+                <div className={'flex w-full justify-between'}>
+                  <div className={'flex gap-x-2'}>
+                    <CommunityTag>{communityPostData.postResponse?.question?.mockExam.examYear}년도</CommunityTag>
+                    <CommunityTag>{communityPostData.postResponse?.question?.mockExam.round}회차</CommunityTag>
+                    <CommunityTag>{communityPostData.postResponse?.question?.questionSeq}번</CommunityTag>
+                  </div>
+                  <div
+                    className={'flex items-center px-3 py-1 rounded-full border-[1px] border-gray2 text-gray4 text-h6'}>
+                    문제보기
+                    <MoveIcon />
+                  </div>
+                </div>
+              ) : null}
               <CommunityPost
-                subject={communityPostData.title}
-                content={communityPostData.content}
-                images={communityPostData.postImages}></CommunityPost>
+                subject={communityPostData.postResponse?.postContent.title}
+                content={communityPostData.postResponse?.postContent.content}
+                images={communityPostData.postResponse?.postContent.images}></CommunityPost>
               <CommentBar
-                empathy={communityPostData.likeCount} //공감수
-                comment={communityPostData.commentCount} //댓글수
-                isLike={communityPostData.isLiked} //사용자 좋아요 클릭 여부
+                empathy={communityPostData.postResponse?.postStatus.likeCount} //공감수
+                comment={communityPostData.postResponse?.postStatus.commentCount} //댓글수
+                isLike={false} //사용자 좋아요 클릭 여부
                 onClick={async () => {
                   //추천버튼 클릭 시 동작
-                  await postToggleLikeData(communityPostData.postId, 'POST');
+                  await postToggleLikeData(communityPostData.postResponse.postId, 'POST');
                   await mutate();
                   //mutete를 사용하여 반영이 바로 되도록 구현
                 }}></CommentBar>
-              <CommentWriting postId={communityPostData.postId}></CommentWriting>
+              <CommentWriting postId={communityPostData.postResponse.postId}></CommentWriting>
               <div className="h-2"></div>
               {communityPostData.postComments?.toReversed().map((postComment: PostComments, index: number) => {
                 return (
@@ -117,7 +140,7 @@ const CommunityDetailPage = () => {
                     {postComment.childPostComments?.map(
                       //대댓글
                       //AxiosResponse<PostComments>
-                      (childPostComment: PostComments, index: number) => {
+                      (childPostComment: string, index: number) => {
                         return (
                           <CommentReply //대댓글
                             key={index}
@@ -140,7 +163,7 @@ const CommunityDetailPage = () => {
                         <div>
                           {/* 대댓글을 생성하는 입력란이 보여짐 */}
                           <CommentWriting
-                            postId={communityPostData.postId}
+                            postId={communityPostData.postResponse.postId}
                             commentId={parentId}
                             padding="pl-[48px]"></CommentWriting>
                         </div>
@@ -157,3 +180,9 @@ const CommunityDetailPage = () => {
   );
 };
 export default CommunityDetailPage;
+
+const MoveIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={17} height={16} fill="none" {...props}>
+    <path stroke="#727375" strokeLinecap="round" strokeLinejoin="round" d="m5.646 11 6-6M5.646 5h6v6" />
+  </svg>
+);

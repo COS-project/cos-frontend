@@ -2,11 +2,12 @@
 
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
-import React from 'react';
-import CommentContent from './CommentContent';
-import { PostComments } from '@/types/global';
 import { format } from 'date-fns';
+import React from 'react';
+
+import { PostComments } from '@/types/global';
+
+import CommentContent from './CommentContent';
 import CommunityProfile from './CommunityProfile';
 
 interface Props {
@@ -22,8 +23,8 @@ const Comment = (props: Props) => {
     <div className="py-5">
       <CommunityProfile
         fontsizing={false} //폰트 사이즈를 크게 함
-        date={format(info.createdAt, 'yy.MM.dd')}
-        time={format(info.createdAt, 'HH:mm')}
+        date={format(info.dateTime.createdAt, 'yy.MM.dd')}
+        time={format(info.dateTime.createdAt, 'HH:mm')}
         imgSrc={info.user.profileImage}
         onClick={profileModal}>
         {/* ...버튼 클릭 시 동작 */}

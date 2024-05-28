@@ -56,6 +56,10 @@ export interface PopularSearchKeyword {
   icon: React.JSX.Element;
 }
 
+/**
+ ************ post Detail *************
+ */
+
 export interface ResponsePostType {
   responseCode: string;
   result: {

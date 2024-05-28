@@ -20,6 +20,7 @@ const Post = (props: Props) => {
   const onMove = () => {
     router.push(`/community/1/${postId}`); //TODO:자격증 바꾸기
   };
+
   return (
     <div className={'flex flex-col gap-y-1 bg-white p-5 rounded-[32px]'}>
       <div

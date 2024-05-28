@@ -1,4 +1,5 @@
 import React from 'react';
+import { PostType } from '@/types/community/type';
 
 export type HeaderType = 'static' | 'dynamic';
 
@@ -170,7 +171,7 @@ export interface GoalSettingInfo {
 }
 
 //온보딩 자격증
-export export interface Certificate {
+export interface Certificate {
   certificateId: number;
   certificateName: string;
   isClick: boolean; // 자격증을 선택했을 경우
@@ -210,7 +211,7 @@ export interface userProfile {
 }
 
 //모의고사 시험 문제 선지
-export interface Question {
+export interface QuestionOptions {
   optionSequence: number;
   optionContent: string;
   optionImage: string;
@@ -247,7 +248,7 @@ export interface QuestionsResponse {
     id: number;
     imageUrl: string;
   };
-  questionOptions: Question[];
+  questionOptions: QuestionOptions[];
   correctOption: number;
   score: number;
 }
@@ -343,50 +344,58 @@ interface QuestionOptions {
   optionImage: string;
 }
 
+export interface ResponsePostDetailType {
+  responseCode: string;
+  result: {
+    postResponse: Post;
+    postComments: PostComments[];
+  };
+}
+
 //커뮤니티 포스트
 export interface Post {
   postId: number;
-  title: string;
-  content: string;
+  postContent: PostContent;
+  postStatus: PostStatus;
   user: User;
-  postImages: string[];
-  likeCount: number;
-  isLiked: boolean;
-  commentCount: number;
+  question?: Question;
   recommendTags: RecommendTags[];
-  question: Question;
-  mockExam: MockExam;
-  createdAt: string;
-  postComments: PostComments[];
+  dateTime: DateTime;
 }
 
-//질문
-interface Question {
-  questionId: number;
-  mockExam: MockExam;
-  subject: Subject;
-  questionSeq: number;
-  questionText: string;
-  questionImage?: string;
-  questionOptions: QuestionOptions[];
-  correctOption: number;
-  score: number;
+export interface PostStatus {
+  postType: string;
+  likeCount: number;
+  commentCount: number;
+}
+
+export interface PostContent {
+  title: string;
+  content: string;
+  images: ImageType[];
+}
+
+export interface ImageType {
+  id: number;
+  imageUrl: string;
 }
 
 //커뮤니티 포스팅 댓글
 interface PostComments {
   postCommentId: number;
   user: User;
-  createdAt: string;
   parentCommentId: number;
   likeCount: number;
   isLiked: boolean;
   content: string;
+  dateTime: DateTime;
+  childPostComments?: string[];
 }
 
-export interface GenerateComment{
-  parentCommentId: null | number;
-  content: string;
+//날짜 타입
+export interface DateTime {
+  createdAt: string;
+  modifiedAt: string;
 }
 
 //유저
@@ -401,6 +410,12 @@ interface User {
 interface RecommendTags {
   tagType: string; //Lecture
   tagName: string;
+}
+
+//댓글 생성 양식
+export interface GenerateComment {
+  parentCommentId: null | number;
+  content: string;
 }
 
 //모의고사
@@ -427,22 +442,6 @@ interface QuestionOptions {
   optionImage: string;
 }
 
-//커뮤니티 포스트
-export interface Post {
-  postId: number;
-  title: string;
-  content: string;
-  user: User;
-  postImages: string[];
-  likeCount: number;
-  commentCount: number;
-  recommendTags: RecommendTags[];
-  question: Question;
-  mockExam: MockExam;
-  createdAt: string;
-  postComments: PostComments[];
-}
-
 //질문
 interface Question {
   questionId: number;
@@ -454,22 +453,4 @@ interface Question {
   questionOptions: QuestionOptions[];
   correctOption: number;
   score: number;
-}
-
-//이 부분도 수정이 필요함
-//커뮤니티 포스팅 댓글
-interface PostComments {
-  postCommentId: number;
-  user: User;
-  createdAt: string;
-  parentCommentId: number;
-  likeCount: number;
-  content: string;
-  childPostComments: [];
-}
-
-//댓글 생성 양식
-export interface GenerateComment {
-  parentCommentId: null | number;
-  content: string;
 }

@@ -7,7 +7,6 @@ import Post from '@/components/mypage/Post';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
 import { filterNormalAndTipContent } from '@/utils/community/FilterContent';
-import { postingDelete } from '@/lib/api/communityPost';
 interface Props {
   boardType: BoardType;
 }
@@ -18,7 +17,7 @@ const NormalAndTipBoardList = (props: Props) => {
   const { userPostsList, setSize } = useGetTotalSearchResults(boardType, 1, sortField);
   //필터값
   const [isOpenNormalAndTipFilter, setIsOpenNormalAndTipFilter] = useState<boolean>(false);
-  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<string>('최신순');
+  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<'최신순' | '작성순'>('최신순');
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -116,4 +115,3 @@ const ActivationIcon = (props: SVGProps<SVGSVGElement>) => (
     <path stroke="#727375" strokeLinecap="round" d="M6.5 12 10 9l3.5 3" />
   </svg>
 );
-

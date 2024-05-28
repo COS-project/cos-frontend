@@ -3,12 +3,10 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { twMerge } from 'tailwind-merge';
-import { postCommentData } from '@/lib/api/communityPost';
-import { GenerateComment } from '@/types/global';
-import { GenerateCommentState } from '@/recoil/community/atom';
 import { useRecoilState } from 'recoil';
+
+import { postCommentData } from '@/lib/api/communityPost';
+import { GenerateCommentState } from '@/recoil/community/atom';
 
 interface Props {
   link?: string; //버튼 눌렀을 때 데이터를 저장하는 경로 입력, api연결하면서 "?"수정 필요함
