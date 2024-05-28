@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { QuestionsResponse } from '@/types/global';
+import { MockExam, QuestionsResponse } from '@/types/global';
 import { UserInfo } from '@/types/mypage/type';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
@@ -11,14 +11,15 @@ export type ExamReviewPostType = {
   examDifficulty: string;
   content: string;
 };
-export interface YearsAndRounds {
-  2017: number[];
-  2018: number[];
-  2019: number[];
-  2020: number[];
-  2021: number[];
-  2022: number[];
-  2023: number[];
+
+export interface MockExamsYearResponseType {
+  responseCode: string;
+  result: number[];
+}
+
+export interface MockExamsByYearResponseType {
+  responseCode: string;
+  result: MockExam[];
 }
 
 export interface CreatePostDataType {

@@ -1,18 +1,19 @@
 import Image from 'next/image';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import FilterModal from '@/components/common/FilterModal';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
+import MockExamRoundFilter from '@/components/community/MockExamRoundFilter';
 import { postCommentary } from '@/lib/api/community';
+import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 
 const WriteExplanationPost = () => {
-  const { examYears } = useGetMockExamYears('WriteExplanationPost');
-  const { questions } = useMockExamQuestions();
+  const { examYears } = useGetMockExamYears();
+  const { questions } = useMockExamQuestions(1); //TODO: 나중에 모의고사 번호로 변경해야 함.
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
 
@@ -24,6 +25,20 @@ const WriteExplanationPost = () => {
   const [isEmpty, setIsEmpty] = useState(true);
   const [isQuestionSequenceNumeric, setIsQuestionSequenceNumeric] = useState(true);
   const [questionSequence, setQuestionSequence] = useState(0);
+  const { mockExams } = useGetMockExams(1, postData.examYear); //해설 회차 필터값
+  const [filteredExamYears, setFilteredExamYears] = useState<number[]>([]);
+
+  useEffect(() => {
+    console.log('mockExams', mockExams);
+    console.log('postData', postData);
+  }, [mockExams, postData]);
+
+  useEffect(() => {
+    if (examYears.includes('전체')) {
+      const filterData = examYears.filter((item) => item !== '전체');
+      setFilteredExamYears(filterData);
+    }
+  }, [examYears]);
 
   /**
    * 문제 번호를 변경하는 함수
@@ -130,7 +145,7 @@ const WriteExplanationPost = () => {
             </div>
             {isYearsFilterOpen && (
               <MockExamYearsFilter
-                data={examYears}
+                years={filteredExamYears}
                 setIsOpen={setIsYearsFilterOpen}
                 setDataState={setPostData}
               />
@@ -149,9 +164,9 @@ const WriteExplanationPost = () => {
               {isRoundsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
             </div>
             {isRoundsFilterOpen && (
-              <FilterModal
-                //TO DO: 회차 모의고사
-                data={postData.examYear ? examYears?.examYearWithRounds[postData.examYear] : null}
+              <MockExamRoundFilter
+                //TODO: 회차 모의고사
+                mockExams={postData.examYear ? mockExams : null}
                 setDataState={setPostData}
                 setIsOpen={setIsRoundsFilterOpen}
                 className={'absolute w-full top-[100%]'}

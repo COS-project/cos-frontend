@@ -5,22 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/community/MockExamRoundFilter.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/Comment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/Comment.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommentContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentContent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommentReply.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentReply.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommentWriting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentWriting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommunityNav.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommunityPosting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommunityPosting.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommunityProfile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommunityProfile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/NormalAndTipBoardList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/NormalAndTipBoardList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/mypage/Post.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mypage/Post.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetCommunityPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetCommunityPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetPost.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/MockExamYearsFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/MockExamYearsFilter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/CommentaryBoardList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentaryBoardList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/EditPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/EditPost.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/RoundFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/RoundFilter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/WriteExplanationPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/WriteExplanationPost.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/YearFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/YearFilter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetCommentarySearchResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetCommentarySearchResults.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamYears.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamYears.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetMockExams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExams.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/community/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/community/type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/global.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

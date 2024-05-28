@@ -38,7 +38,7 @@ export default function CommunityCategoryPage() {
     '전체',
   );
   const [sortField, setSortField] = useState<string>('createdAt'); //최신순 인기순
-  const { examYears } = useGetMockExamYears('CommentaryBoardList'); //해설 년도 필터값
+  const { examYears } = useGetMockExamYears(); //해설 년도 필터값
   const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent); //해설 회차 필터값
   //보드 타입
   const [boardType, setBoardType] = useState<BoardType>('REVIEW');

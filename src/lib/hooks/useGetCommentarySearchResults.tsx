@@ -43,7 +43,7 @@ const useGetCommentarySearchResults = (
   round: number | string,
   questionSequence: number,
 ) => {
-  const { data, isLoading, error, size, setSize } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
+  const { data, isLoading, error, size, setSize } = useSWRInfinite<ResponsePostType>(
     (pageIndex, previousPageData) =>
       getKey(pageIndex, previousPageData, certificateId, examYear, round, questionSequence),
     swrGetFetcher,

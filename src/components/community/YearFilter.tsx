@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Props {
-  data: number[];
+  data: number[] | undefined;
   setSelectedFilterContent: React.Dispatch<React.SetStateAction<number | string>>;
   setIsOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenFilter: boolean;
@@ -31,5 +31,5 @@ const YearFilter = (props: Props) => {
       )}
     </div>
   );
-}
+};
 export default YearFilter;

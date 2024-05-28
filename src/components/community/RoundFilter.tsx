@@ -3,7 +3,7 @@ import React from 'react';
 import { ReviewIncorrectMockExam } from '@/types/global';
 
 interface Props {
-  data: ReviewIncorrectMockExam[];
+  data: ReviewIncorrectMockExam[] | undefined;
   setSelectedFilterContent: React.Dispatch<React.SetStateAction<number | string>>;
   setIsOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenFilter: boolean;

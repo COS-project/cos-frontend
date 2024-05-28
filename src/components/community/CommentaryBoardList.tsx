@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 import { useRouter } from 'next/navigation';
 import qs from 'query-string';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
@@ -28,7 +27,7 @@ const CommentaryBoardList = (props: Props) => {
   const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number | string>(
     '전체',
   );
-  const { examYears } = useGetMockExamYears('CommentaryBoardList'); //해설 년도 필터값
+  const { examYears } = useGetMockExamYears(); //해설 년도 필터값
   const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent); //해설 회차 필터값
   const [ref, inView] = useInView();
   const router = useRouter();
@@ -38,6 +37,18 @@ const CommentaryBoardList = (props: Props) => {
     selectedCommentaryRoundFilterContent,
     searchValue,
   );
+  //필터 값에 '전체'를 추가하기 위한 트리거
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
+
+  /**
+   * 필터 값에 '전체'를 추가하는 기능
+   */
+  useEffect(() => {
+    if (examYears && isInitialLoad) {
+      examYears.unshift('전체');
+      setIsInitialLoad(false);
+    }
+  }, [isInitialLoad]);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -119,10 +130,10 @@ const CommentaryBoardList = (props: Props) => {
         </div>
         {isOpenCommentaryYearFilter ? (
           <YearFilter
+            data={examYears}
             isOpenFilter={isOpenCommentaryYearFilter}
             setSelectedFilterContent={setSelectedCommentaryYearFilterContent}
             setIsOpenFilter={setIsOpenCommentaryYearFilter}
-            data={examYears}
           />
         ) : null}
 
@@ -139,10 +150,10 @@ const CommentaryBoardList = (props: Props) => {
         </button>
         {isOpenCommentaryRoundFilter ? (
           <RoundFilter
+            data={mockExams}
             isOpenFilter={isOpenCommentaryRoundFilter}
             setSelectedFilterContent={setSelectedCommentaryRoundFilterContent}
             setIsOpenFilter={setIsOpenCommentaryRoundFilter}
-            data={mockExams}
           />
         ) : null}
 
@@ -165,7 +176,7 @@ const CommentaryBoardList = (props: Props) => {
         </form>
       </div>
       <div className={'flex flex-col gap-y-4'}>
-        {commentarySearchResults.map((userPosts: AxiosResponse<ResponsePostType>) => {
+        {commentarySearchResults.map((userPosts: ResponsePostType) => {
           return userPosts?.result.content.map((userPost: PostType) => {
             return (
               <div key={userPost.postId} ref={ref}>
