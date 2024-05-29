@@ -21,8 +21,8 @@ const CommentReply = (props: Props) => {
     <div className="pb-3 pl-[48px]">
       <CommunityProfile
         fontsizing={true}
-        date={format(info.dateTime.createdAt, 'yy.MM.dd')}
-        time={format(info.dateTime.createdAt, 'HH:mm')}
+        date={info.dateTime.createdAt ? format(info.dateTime.createdAt, 'yy.MM.dd') : null}
+        time={info.dateTime.createdAt ? format(info.dateTime.createdAt, 'HH:mm') : null}
         imgSrc={info.user.profileImage}
         onClick={profileModal}>
         {info.user.nickname}

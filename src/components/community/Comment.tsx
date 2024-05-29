@@ -3,7 +3,7 @@
 'use client';
 
 import { format } from 'date-fns';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { PostComments } from '@/types/global';
 
@@ -19,12 +19,16 @@ interface Props {
 
 const Comment = (props: Props) => {
   const { onClick, info, profileModal, DdabongClick } = props;
+  useEffect(() => {
+    console.log('info', info);
+  }, [info]);
+
   return (
     <div className="py-5">
       <CommunityProfile
         fontsizing={false} //폰트 사이즈를 크게 함
-        date={format(info.dateTime.createdAt, 'yy.MM.dd')}
-        time={format(info.dateTime.createdAt, 'HH:mm')}
+        date={info.dateTime.createdAt ? format(info.dateTime.createdAt, 'yy.MM.dd') : null}
+        time={info.dateTime.createdAt ? format(info.dateTime.createdAt, 'HH:mm') : null}
         imgSrc={info.user.profileImage}
         onClick={profileModal}>
         {/* ...버튼 클릭 시 동작 */}

@@ -13,7 +13,7 @@ const useGetCommunityPost = (postId: string[] | string) => {
     communityPostData: data ? data.result : null,
     isLoading: !error && !data,
     isError: error,
-    mutate: mutate,
+    communityPostDataMutate: mutate,
   };
 };
 export default useGetCommunityPost;

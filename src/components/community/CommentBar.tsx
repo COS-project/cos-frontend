@@ -1,7 +1,6 @@
 //공감수, 댓글 수, 추천버튼 라인
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
 
 import DdbongIcon from './DdabongIcon';
@@ -10,7 +9,7 @@ interface Props {
   empathy: number; //공감 수
   comment: number; //댓글 수
   onClick?: () => void; //추천 버튼 눌렀을 때 동작
-  isLike: boolean; //사용자 게시글 좋아요 클릭 여부
+  isLike: boolean | undefined; //사용자 게시글 좋아요 클릭 여부
 }
 
 const CommentBar = (props: Props) => {

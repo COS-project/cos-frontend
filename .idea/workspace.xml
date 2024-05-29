@@ -5,18 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/community/MockExamRoundFilter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetLikeStatus.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/MockExamYearsFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/MockExamYearsFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommentaryBoardList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentaryBoardList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/EditPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/EditPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/RoundFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/RoundFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/WriteExplanationPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/WriteExplanationPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/YearFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/YearFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetCommentarySearchResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetCommentarySearchResults.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamYears.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamYears.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetMockExams.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExams.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/Comment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/Comment.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/CommentBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/CommentReply.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentReply.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/CommunityProfile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommunityProfile.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/communityPost.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/communityPost.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetCommunityPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetCommunityPost.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/types/community/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/community/type.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,21 +35,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "fix__community-detail",
-    "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;fix__community-detail&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public" />
@@ -61,7 +58,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="" />
+      <changelist id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="" />
       <created>1703923469288</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -130,6 +127,7 @@
       <workItem from="1716426429072" duration="10065000" />
       <workItem from="1716450504992" duration="9437000" />
       <workItem from="1716709779130" duration="16244000" />
+      <workItem from="1716944541926" duration="764000" />
     </task>
     <servers />
   </component>

@@ -1,7 +1,7 @@
 'use client';
 import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
-import type { SVGProps } from 'react';
+import { SVGProps } from 'react';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -15,13 +15,14 @@ import CommunityProfile from '@/components/community/CommunityProfile';
 import CommunityTag from '@/components/community/CommunityTag';
 import { postToggleLikeData } from '@/lib/api/communityPost';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
+import useGetLikeStatus from '@/lib/hooks/useGetLikeStatus';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 import { PostComments, RecommendTags } from '@/types/global';
 
 const CommunityDetailPage = () => {
   const params = useParams();
   //커뮤니티 포스트에 해당하는 데이터를 가져옴
-  const { communityPostData, isLoading, isError, mutate } = useGetCommunityPost(params.id);
+  const { communityPostData, isLoading, isError, communityPostDataMutate } = useGetCommunityPost(params.id);
   //데이터 잘 들어왔는지 확인
   useEffect(() => {
     console.log('communityPostData', communityPostData);
@@ -41,12 +42,32 @@ const CommunityDetailPage = () => {
   const [commentDelete, setCommentDelete] = useRecoilState(commentDeleteState);
   //삭제하는 글의 아이디를 넘기기 위해 사용
   const [postDelete, setPostDelete] = useRecoilState(postDeleteState);
+  const [likeTargetType, setLikeTargetType] = useState<'POST' | 'COMMENT'>('POST');
+  const { likeStatus, likeStatusMutate } = useGetLikeStatus(likeTargetType, params.id);
 
   //답글달기 버튼 클릭시에 사용
   const commentReplyControll = (index: number, id: number) => {
     setReplyOnOff(!replyOnOff); //대댓글 작성란을 열고 닫음
     setParentId(id); //대댓글의 부모 아이디 저장
     setCommentNumber(index); //몇 번째 댓글에 대댓글 작성란을 열 것인지 저장
+  };
+
+  /**
+   * 좋아요 버튼 클릭시 이벤트 함수
+   * @param likeTargetType 'POST' | 'COMMENT', 게시글의 댓글인지 댓글의 대댓글인지
+   * @param id 어떤 것의 댓글 or 대댓글을 달건지
+   */
+  const handlePostLikeClick = async (likeTargetType: 'POST' | 'COMMENT', id: number) => {
+    // 상태 업데이트를 기다리는 Promise 사용
+    await new Promise((resolve) => {
+      setLikeTargetType(likeTargetType);
+      resolve();
+    });
+
+    // 상태 업데이트가 완료된 후에 나머지 로직을 실행
+    await postToggleLikeData(id, likeTargetType);
+    await likeStatusMutate();
+    await communityPostDataMutate();
   };
 
   return (
@@ -110,11 +131,10 @@ const CommunityDetailPage = () => {
               <CommentBar
                 empathy={communityPostData.postResponse?.postStatus.likeCount} //공감수
                 comment={communityPostData.postResponse?.postStatus.commentCount} //댓글수
-                isLike={false} //사용자 좋아요 클릭 여부
+                isLike={likeStatus} //사용자 좋아요 클릭 여부
                 onClick={async () => {
                   //추천버튼 클릭 시 동작
-                  await postToggleLikeData(communityPostData.postResponse.postId, 'POST');
-                  await mutate();
+                  handlePostLikeClick('POST', communityPostData.postResponse.postId);
                   //mutete를 사용하여 반영이 바로 되도록 구현
                 }}></CommentBar>
               <CommentWriting postId={communityPostData.postResponse.postId}></CommentWriting>
@@ -134,8 +154,7 @@ const CommunityDetailPage = () => {
                       info={postComment}
                       //추천버튼 클릭시에 동작
                       DdabongClick={async () => {
-                        await postToggleLikeData(postComment.postCommentId, 'COMMENT');
-                        await mutate();
+                        handlePostLikeClick('COMMENT', postComment.postCommentId);
                       }}></Comment>
                     {postComment.childPostComments?.map(
                       //대댓글
@@ -152,8 +171,7 @@ const CommunityDetailPage = () => {
                             info={childPostComment} //하위 컴포넌트에 넘겨줄 정보
                             DdabongClick={async () => {
                               //추천버튼 클릭 시 동작
-                              await postToggleLikeData(childPostComment.postCommentId, 'COMMENT');
-                              await mutate();
+                              handlePostLikeClick('COMMENT', childPostComment.postCommentId);
                             }}></CommentReply>
                         );
                       },

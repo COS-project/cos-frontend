@@ -12,6 +12,11 @@ export type ExamReviewPostType = {
   content: string;
 };
 
+export interface LikeStatusResponseType {
+  responseCode: string;
+  result: boolean;
+}
+
 export interface MockExamsYearResponseType {
   responseCode: string;
   result: number[];

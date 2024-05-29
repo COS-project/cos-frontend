@@ -1,9 +1,9 @@
-import { AxiosResponse } from 'axios';
-import { sendRequest } from '../axios';
 import { GenerateComment, Post } from '@/types/global';
 
+import { sendRequest } from '../axios';
+
 //게시글 좋아요 추가/삭제
-export const postToggleLikeData = async (id: number, likeType: string) => {
+export const postToggleLikeData = async (targetId: number, likeTargetType: string) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
@@ -11,7 +11,7 @@ export const postToggleLikeData = async (id: number, likeType: string) => {
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'POST',
-      url: `/${likeType}/likes/${id}`,
+      url: `/likes?likeTargetType=${likeTargetType}&targetId=${targetId}`,
     });
     // 성공적인 응답 처리
 

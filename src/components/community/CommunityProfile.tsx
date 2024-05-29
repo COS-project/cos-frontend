@@ -9,8 +9,8 @@ interface Props {
   children?: React.ReactNode; //회원 닉네임
   onClick?: () => void; //...눌렀을 때 동작
   fontsizing: boolean; //닉네임 폰트 사이즈 조절 false=14px true=16px
-  date: string; //작성 날짜
-  time: string; //작성 시간
+  date: string | null; //작성 날짜
+  time: string | null; //작성 시간
   imgSrc: string; //프로필이미지
 }
 
