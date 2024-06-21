@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import React, { ReactNode } from 'react';
 
 import { HeaderType } from '@/types/global';
@@ -10,6 +11,7 @@ interface Props {
 
 export default function Header(props: Props) {
   const { headerType = 'static', title, rightElement } = props;
+  const router = useRouter();
 
   const renderHeader = (headerType: HeaderType) => {
     switch (headerType) {
@@ -23,9 +25,13 @@ export default function Header(props: Props) {
       case 'dynamic':
         return (
           <>
-            <PrevArrow />
+            <PrevArrow
+              onClick={() => {
+                router.back();
+              }}
+            />
             <h1 className="text-black font-h1">{title}</h1>
-            {rightElement ? rightElement : <div />}
+            {rightElement ? rightElement : <div className={'h-[32px] w-[32px]'}/>}
           </>
         );
 
