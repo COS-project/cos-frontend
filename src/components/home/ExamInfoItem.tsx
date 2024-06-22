@@ -1,11 +1,7 @@
 'use client';
 
-import { string } from 'prop-types';
 import React from 'react';
 
-import { CertificateInfoType } from '@/types/global';
-
-// @ts-ignore
 interface ExamInfoItemProps {
   Icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
   title: string;

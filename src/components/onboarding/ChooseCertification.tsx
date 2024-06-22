@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
+import Header from '@/components/common/Header';
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 import Max3ErrorModal from '@/components/onboarding/Max3ErrorModal';
 import NullErrorModal from '@/components/onboarding/NullErrorModal';
@@ -86,6 +87,7 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
 
   return (
     <div className={'relative'}>
+      <Header headerType={'dynamic'} title={'종목선택'} onBack={onBefore} />
       {isNullErrorModalOpen ? (
         <NullErrorModal isErrorModalOpen={isNullErrorModalOpen} setIsErrorModalOpen={setIsNullErrorModalOpen} />
       ) : null}
@@ -94,10 +96,6 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
           isErrorModalOpen={isMax3ErrorModalOpen}
           setIsErrorModalOpen={setIsMax3ErrorModalOpen}></Max3ErrorModal>
       ) : null}
-      {/* TODO: Header */}
-      <div className="flex justify-between">
-        <button onClick={onBefore}>이전</button>
-      </div>
 
       {/* 온보딩 멘트 */}
       <div className="grid gap-y-8 m-4">

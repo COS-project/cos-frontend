@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useRecoilState } from 'recoil';
 
+import Header from '@/components/common/Header';
 import DoneButton from '@/components/onboarding/DoneButton';
 import { postInterestCertificates, putInterestCertificates } from '@/lib/api/onboarding';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
@@ -14,7 +15,6 @@ export interface CertificationPriorityProps {
   onBefore: () => void;
 }
 
-// CertificationPriority 컴포넌트는 사용자가 자격증의 우선 순위를 설정할 수 있는 UI를 제공합니다.
 const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, onBefore }) => {
   const [interestCertificates, setInterestCertificates] = useRecoilState(interestCertificatesState);
 
@@ -57,9 +57,7 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
 
   return (
     <div>
-      <div>
-        <button onClick={onBefore}>이전</button>
-      </div>
+      <Header headerType={'dynamic'} onBack={onBefore} title={'종목설정'}></Header>
 
       <div className="grid gap-y-8 m-4">
         <div className="grid">
