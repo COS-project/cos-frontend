@@ -129,11 +129,11 @@ export default function CommunityCategoryPage() {
   };
 
   return boardTypeForPost === 'COMMENTARY' && isClickedWriteButton ? (
-    <WriteExplanationPost />
+    <WriteExplanationPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : boardTypeForPost === 'TIP' && isClickedWriteButton ? (
-    <WriteTipPost />
+    <WriteTipPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : boardTypeForPost === 'NORMAL' && isClickedWriteButton ? (
-    <WriteNormalPost />
+    <WriteNormalPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : (
     <>
       <Header

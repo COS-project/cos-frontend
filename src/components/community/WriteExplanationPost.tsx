@@ -1,7 +1,8 @@
 import Image from 'next/image';
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
+import Header from '@/components/common/Header';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import MockExamRoundFilter from '@/components/community/MockExamRoundFilter';
@@ -11,7 +12,12 @@ import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 
-const WriteExplanationPost = () => {
+interface Props {
+  setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const WriteExplanationPost = (props: Props) => {
+  const { setIsClickedWriteButton } = props;
   const { examYears } = useGetMockExamYears();
   const { questions } = useMockExamQuestions(1); //TODO: 나중에 모의고사 번호로 변경해야 함.
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
@@ -30,7 +36,6 @@ const WriteExplanationPost = () => {
 
   useEffect(() => {
     console.log('mockExams', mockExams);
-    console.log('postData', postData);
   }, [mockExams, postData]);
 
   useEffect(() => {
@@ -125,12 +130,24 @@ const WriteExplanationPost = () => {
     }
   };
 
+  const onBack = () => {
+    setIsClickedWriteButton(false);
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <button type={'submit'} className={'p-3 bg-second text-white'}>
-          저장
-        </button>
+        <Header
+          onBack={onBack}
+          CancelIcon={CancelIcon}
+          headerType={'dynamic'}
+          title={'해설 쓰기'}
+          rightElement={
+            <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
+              완료
+            </button>
+          }></Header>
+
         <div className={'flex flex-col m-5 gap-y-4'}>
           {/* 년도 선택 세션 */}
           <div className={'flex flex-col relative gap-y-2'}>
@@ -304,3 +321,10 @@ function DeleteIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+
+const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none" {...props}>
+    <path stroke="#000" strokeLinecap="round" d="m8 8 16 16M24 8 8 24" />
+  </svg>
+);

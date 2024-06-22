@@ -7,6 +7,7 @@ import { useInView } from 'react-intersection-observer';
 import IncorrectQuestionCard from '@/components/exam/IncorrectQuestionCard';
 import useAllIncorrectQuestions from '@/lib/hooks/useAllIncorrectQuestions';
 import { ReviewIncorrectAnswers, ReviewIncorrectAnswersContent } from '@/types/global';
+import Header from '@/components/common/Header';
 
 const IncorrectQuestion = () => {
   const [ref, inView] = useInView();
@@ -27,7 +28,8 @@ const IncorrectQuestion = () => {
 
   return (
     <>
-      <div className={'flex flex-col bg-gray0 p-5 gap-y-5'}>
+      <Header headerType={'dynamic'} title={'틀린문제 모아보기'}></Header>
+      <div className={'flex flex-col bg-gray0 p-5 gap-y-5 min-h-screen'}>
         {incorrectQuestions
           ? incorrectQuestions.map((pastWrongQuestion: AxiosResponse<ReviewIncorrectAnswers>) => {
               return pastWrongQuestion?.result.content.map(

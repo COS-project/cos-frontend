@@ -7,22 +7,22 @@ import { useInView } from 'react-intersection-observer';
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import DeleteWarningModal from '@/components/mypage/DeleteWarningModal';
+import MyPageCommentaryBoardList from '@/components/mypage/MyPageCommentaryBoardList';
+import MyPageExamReviewBoardList from '@/components/mypage/MyPageExamReviewBoardList';
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import MyPageNormalAndTipBoardList from '@/components/mypage/MyPageNormalAndTipBoardList';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import Post from '@/components/mypage/Post';
-import ReviewPost from '@/components/mypage/ReviewPost';
-import useAllIncorrectQuestions from '@/lib/hooks/useAllIncorrectQuestions';
 import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
 import { filterContent } from '@/utils/mypage/FilterContent';
-
 export default function MyWriting() {
   // REVIEW, COMMENTARY, TIP, NORMAL
+  const [ref, inView] = useInView();
   const [boardType, setBoardType] = useState<BoardType>('COMMENTARY');
   // 최신순:createdAt, 인기순:popular
   const [selectedFilterContent, setSelectedFilterContent] = useState('최신순');
-  const [isOpenFilter, setIsOpenFilter] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { userPostsList, setSize, mutate } = useGetUserPosts(boardType);
   const [isDeleteWarningModalOpen, setIsDeleteWarningModalOpen] = useState<boolean>(false);
   const [deletePostId, setDeletePostId] = useState<number>(0);

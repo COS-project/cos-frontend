@@ -12,10 +12,11 @@ interface Props {
   title?: string;
   rightElement?: ReactNode;
   onBack?: () => void;
+  CancelIcon?: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
 }
 
 export default function Header(props: Props) {
-  const { headerType = 'static', title, rightElement, onBack } = props;
+  const { headerType = 'static', title, rightElement, onBack, CancelIcon } = props;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   // 선택된 자격증
   const [selectedCertificationName, setSelectedCertificationName] = useRecoilState<string>(certificateNameAtom);
@@ -36,22 +37,36 @@ export default function Header(props: Props) {
       case 'dynamic':
         return (
           <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-3">
-            <PrevArrow
-              onClick={() => {
-                if (onBack) {
-                  onBack();
-                } else {
-                  router.back();
-                }
-              }}
-            />
-            <h1 className="absolute left-1/2 right1-1/2 transform -translate-x-1/2 text-black font-h1 flex-shrink-0">{title}</h1>
+            {CancelIcon ? (
+              <CancelIcon
+                onClick={() => {
+                  if (onBack) {
+                    onBack();
+                  } else {
+                    router.back();
+                  }
+                }}
+              />
+            ) : (
+              <PrevArrow
+                onClick={() => {
+                  if (onBack) {
+                    onBack();
+                  } else {
+                    router.back();
+                  }
+                }}
+              />
+            )}
+            <h1 className="absolute left-1/2 right1-1/2 transform -translate-x-1/2 text-black font-h1 flex-shrink-0">
+              {title}
+            </h1>
             {rightElement ? rightElement : <div className={'h-[32px] w-[32px]'} />}
           </header>
         );
       case 'second':
         return (
-          <header className="bg-white flex sticky top-12 justify-between items-center px-5 py-3">
+          <header className="bg-white flex sticky top-12 justify-between items-center px-5 py-3 border-b-[1px] border-gray0">
             <div
               onClick={() => {
                 setIsFilterOpen(!isFilterOpen);
@@ -121,13 +136,7 @@ const PrevArrow = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 const ArrowIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={16}
-    height={17}
-    fill="none"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width={16} height={17} fill="none" {...props}>
     <path stroke="#0D0E10" strokeLinecap="round" strokeLinejoin="round" d="m5 11.5 6-6M5 5.5h6v6" />
   </svg>
 );

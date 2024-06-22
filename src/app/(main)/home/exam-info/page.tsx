@@ -10,7 +10,6 @@ import Header from '@/components/common/Header';
 import ExamInfoItem from '@/components/home/ExamInfoItem';
 import useGetCertificationInfo from '@/lib/hooks/useGetCertificationInfo';
 import { certificationInfoState } from '@/recoil/home/atom';
-import { CommonTitleType } from '@/types/global';
 import { CertificateInfoType } from '@/types/home/type';
 import { commonTitle } from '@/utils/exam-info/CommonTitle';
 

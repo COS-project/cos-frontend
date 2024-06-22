@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 
+import Header from '@/components/common/Header';
+import NavBar from '@/components/common/NavBar';
 import WriteReviewModal from '@/components/community/WriteReviewModal';
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 import useGetBoardList from '@/lib/hooks/useGetBoardList';
@@ -33,8 +35,10 @@ export default function Community() {
 
   return (
     <>
+      <Header />
       {/*위치 이동 예정*/}
       {isModalOpen ? <WriteReviewModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} /> : null}
+      <div className={' border-t-[1px] border-gray0'}></div>
       <div className="grid gap-y-8 m-5 mt-6">
         <div className="grid gap-y-2">
           <div className="text-primary text-h4">게시판</div>
@@ -42,7 +46,6 @@ export default function Community() {
             어떤 자격증 정보와 <br /> 소식이 궁금하신가요?
           </div>
         </div>
-
         {/* 자격증 선택 */}
         <div className="grid gap-y-4">
           {boardList
@@ -64,6 +67,7 @@ export default function Community() {
             : null}
         </div>
       </div>
+      <NavBar />
     </>
   );
 }

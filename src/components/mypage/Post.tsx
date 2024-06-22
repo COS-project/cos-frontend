@@ -46,7 +46,9 @@ const Post = (props: Props) => {
             </div>
           </div>
           {imageUrl ? (
-            <Image src={imageUrl} alt={imageUrl} height={104} width={100} className={'rounded-[5px]'} />
+            <div className={'relative h-[104px] w-[100px] '}>
+              <Image src={imageUrl} alt={imageUrl} fill className={'object-cover rounded-[5px]'} />
+            </div>
           ) : null}
         </div>
       </div>
