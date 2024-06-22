@@ -9,6 +9,8 @@ import StayTimeGraph from '@/components/exam/StayTimeGraph';
 import CarouselCardView from '@/components/home/goal-attaining/Carousel';
 import GoalRunningGraph from '@/components/home/goal-attaining/GoalRunningGraph';
 import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
+import Header from '@/components/common/Header';
+import NavBar from '@/components/common/NavBar';
 
 export default function Home() {
   const parameter = useSearchParams();
@@ -24,6 +26,7 @@ export default function Home() {
 
   return (
     <div className="bg-gray0 items-center h-screen overflow-y-auto">
+      <Header />
       <div className="w-[90%] mx-auto">
         <DayBox />
         <GoalBox />
@@ -33,6 +36,7 @@ export default function Home() {
         <BestTip />
         <StayTimeGraphBox />
       </div>
+      <NavBar />
     </div>
   );
 }

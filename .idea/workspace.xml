@@ -5,16 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetLikeStatus.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/Comment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/Comment.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommentBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommentReply.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentReply.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/CommunityProfile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommunityProfile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/api/communityPost.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/communityPost.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetCommunityPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetCommunityPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/community/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/community/type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/home/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/ExamInfoItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/ExamInfoItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/mypage/Post.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mypage/Post.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/onboarding/CertificationPriority.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/onboarding/CertificationPriority.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/onboarding/ChooseCertification.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/onboarding/ChooseCertification.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/onboarding/ProfileSettings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/onboarding/ProfileSettings.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/onboarding.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/onboarding.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/axios.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/axios.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,21 +35,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;fix__community-detail&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "fix-cert__priority__bug",
+    "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public" />
@@ -127,11 +127,35 @@
       <workItem from="1716426429072" duration="10065000" />
       <workItem from="1716450504992" duration="9437000" />
       <workItem from="1716709779130" duration="16244000" />
-      <workItem from="1716944541926" duration="764000" />
+      <workItem from="1716944541926" duration="1887000" />
+      <workItem from="1717056904644" duration="26000" />
+      <workItem from="1717059901567" duration="1893000" />
+      <workItem from="1717727489225" duration="47000" />
+      <workItem from="1717762067864" duration="1133000" />
+      <workItem from="1717765355916" duration="1247000" />
+      <workItem from="1717805694331" duration="4693000" />
+      <workItem from="1717849799219" duration="432000" />
+      <workItem from="1718797268771" duration="6338000" />
+      <workItem from="1718819692560" duration="15000" />
+      <workItem from="1718820263711" duration="3311000" />
+      <workItem from="1718832852583" duration="5021000" />
+      <workItem from="1718915454181" duration="613000" />
+      <workItem from="1718962843109" duration="10999000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/recoil/community/atom.ts</url>
+          <line>23</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -7,10 +7,11 @@ interface Props {
   headerType?: HeaderType;
   title?: string;
   rightElement?: ReactNode;
+  onBack?: () => void;
 }
 
 export default function Header(props: Props) {
-  const { headerType = 'static', title, rightElement } = props;
+  const { headerType = 'static', title, rightElement, onBack } = props;
   const router = useRouter();
 
   const renderHeader = (headerType: HeaderType) => {
@@ -27,11 +28,15 @@ export default function Header(props: Props) {
           <>
             <PrevArrow
               onClick={() => {
-                router.back();
+                if (onBack) {
+                  onBack();
+                } else {
+                  router.back();
+                }
               }}
             />
             <h1 className="text-black font-h1">{title}</h1>
-            {rightElement ? rightElement : <div className={'h-[32px] w-[32px]'}/>}
+            {rightElement ? rightElement : <div className={'h-[32px] w-[32px]'} />}
           </>
         );
 
