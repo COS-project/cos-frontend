@@ -6,6 +6,7 @@ export type HeaderType = 'static' | 'dynamic';
 export interface MenuList {
   id: number;
   Icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+  ClickedIcon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
   name: string;
   path: string;
 }
