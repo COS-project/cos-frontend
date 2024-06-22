@@ -1,7 +1,7 @@
 import React from 'react';
 import { PostType } from '@/types/community/type';
 
-export type HeaderType = 'static' | 'dynamic';
+export type HeaderType = 'static' | 'dynamic' | 'second';
 
 export interface MenuList {
   id: number;
