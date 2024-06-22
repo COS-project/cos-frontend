@@ -45,7 +45,7 @@ export default function Header(props: Props) {
                 }
               }}
             />
-            <h1 className="text-black font-h1">{title}</h1>
+            <h1 className="absolute left-1/2 right1-1/2 transform -translate-x-1/2 text-black font-h1 flex-shrink-0">{title}</h1>
             {rightElement ? rightElement : <div className={'h-[32px] w-[32px]'} />}
           </header>
         );
