@@ -1,8 +1,21 @@
 'use client';
 
-import { Certificate } from '@/types/global';
 import { format } from 'date-fns';
 import { atom } from 'recoil';
+
+import { Certificate } from '@/types/global';
+
+// 현재 선택된 자격증 이름
+export const certificateNameAtom = atom<string>({
+  key: 'certificateNameAtom',
+  default: '정보처리기사',
+});
+
+// 현재 선택된 자격증 id
+export const certificateIdAtom = atom<number>({
+  key: 'certificateIdAtom',
+  default: 1,
+});
 
 //자격증 응시 정보를 확인하는 페이지에서 navbar, header가 보이지 않도록 하는 state
 export const layoutState = atom({

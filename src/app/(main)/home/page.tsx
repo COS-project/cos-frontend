@@ -27,6 +27,7 @@ export default function Home() {
   return (
     <div className="bg-gray0 items-center h-screen overflow-y-auto">
       <Header />
+      <Header headerType={'second'}></Header>
       <div className="w-[90%] mx-auto">
         <DayBox />
         <GoalBox />
