@@ -30,13 +30,13 @@ const ExamReviewBoardList = () => {
       await setSize((prev: number) => prev + 1);
     }
     return;
-  }, []);
+  }, [setSize]);
 
   useEffect(() => {
     if (inView) {
       getMoreItem();
     }
-  }, [inView]);
+  }, [inView, getMoreItem]);
 
   const changeTagForExamDifficulty = (examDifficulty: ExamDifficulty) => {
     if (examDifficulty === 'TOO_EASY') {
@@ -115,10 +115,15 @@ const ExamReviewBoardList = () => {
       </div>
       <div className={'flex flex-col gap-y-4'}>
         {examReviews
-          ? examReviews.map((examReview) => {
-              return examReview?.result.content.map((review: ReviewPost, index: number) => {
+          ? examReviews.map((examReview, index) => {
+              return examReview?.result.content.map((review: ReviewPost, postIndex: number) => {
+                const isLastElement =
+                  index === examReviews.length - 1 && postIndex === examReview?.result.content.length - 1;
                 return (
-                  <div key={index} ref={ref} className={'flex flex-col gap-y-1 py-4 px-5 rounded-[32px] bg-white'}>
+                  <div
+                    key={review.createdAt}
+                    ref={isLastElement ? ref : null}
+                    className={'flex flex-col gap-y-1 py-4 px-5 rounded-[32px] bg-white'}>
                     <div className={'flex flex-col gap-y-3'}>
                       <div className={'w-full flex items-center gap-x-[6px]'}>
                         <div className={'flex items-center gap-x-[9px]'}>

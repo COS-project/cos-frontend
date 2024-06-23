@@ -4,30 +4,32 @@ import { swrGetFetcher } from '@/lib/axios';
 import { ExamDifficulty, ResponseReviewPost } from '@/types/community/type';
 
 const getKey = (
-  size: number,
+  pageIndex: number,
   previousPageData: ResponseReviewPost | null,
   certificateId: number,
   examDifficulty: ExamDifficulty | undefined,
   startMonths: number | undefined,
   endPreMonths: number | undefined,
 ) => {
-  if (size === 0) {
-    return `/certificates/${certificateId}/exam-reviews?page=${size}&size=10${
+  if (pageIndex === 0) {
+    return `/certificates/${certificateId}/exam-reviews?page=${pageIndex}&size=10${
       startMonths ? `&startMonths=${startMonths}` : ''
     }${endPreMonths ? `&endPreMonths=${endPreMonths}` : ''}${
       examDifficulty ? `&examDifficulty=${examDifficulty}` : ''
     }`;
   }
-  if (previousPageData && !previousPageData.result.hasNext) {
-    return `/certificates/${certificateId}/exam-reviews?page=${size}&size=10${
-      startMonths ? `&startMonths=${startMonths}` : ''
-    }${endPreMonths ? `&endPreMonths=${endPreMonths}` : ''}${
-      examDifficulty ? `&examDifficulty=${examDifficulty}` : ''
-    }`;
-  }
+
+  if (!previousPageData) return null;
+
   if (previousPageData?.result.hasNext) {
-    return null;
+    return `/certificates/${certificateId}/exam-reviews?page=${pageIndex}&size=10${
+      startMonths ? `&startMonths=${startMonths}` : ''
+    }${endPreMonths ? `&endPreMonths=${endPreMonths}` : ''}${
+      examDifficulty ? `&examDifficulty=${examDifficulty}` : ''
+    }`;
   }
+
+  return null;
 };
 const useGetExamReview = (
   certificateId: number,
