@@ -87,17 +87,19 @@ const CommentaryBoardList = (props: Props) => {
    * 쿼리파라미터에서 검색어
    */
   useEffect(() => {
-    const query = {
-      keyword: debouncedValue,
-    };
+    if (debouncedValue !== undefined) {
+      const query = {
+        keyword: debouncedValue || '',
+      };
 
-    const url = qs.stringifyUrl({
-      url: '/community/1',
-      query: query,
-    });
+      const url = qs.stringifyUrl({
+        url: '/community/1',
+        query: query,
+      });
 
-    router.push(url);
-  }, [debouncedValue, router, commentarySearchResults]);
+      router.push(url);
+    }
+  }, [debouncedValue, router]);
 
   /**
    * 해설 게시판 년도 필터가 전체면 회차 필터도 전체로 변경
@@ -114,6 +116,12 @@ const CommentaryBoardList = (props: Props) => {
   useEffect(() => {
     setSelectedCommentaryYearFilterContent('전체');
   }, [boardType]);
+
+  // 디바운싱 적용된 상태 업데이트
+  const handleSearchValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value ? parseInt(e.target.value, 10) : 0;
+    setSearchValue(value);
+  };
 
   return (
     <div className={'relative px-5 flex flex-col gap-y-4 '}>
@@ -164,11 +172,9 @@ const CommentaryBoardList = (props: Props) => {
           }}
           className={'flex items-center gap-x-1 py-1 px-3 bg-white rounded-full w-fit'}>
           <input
-            value={searchValue}
+            value={searchValue === 0 ? null : searchValue}
             type={'number'}
-            onChange={(e) => {
-              setSearchValue(parseInt(e.target.value));
-            }}
+            onChange={handleSearchValueChange}
             className={'text-h6 text-black outline-none w-[80px] placeholder:text-gray4 border-b-[1px] border-black'}
             placeholder={'문항번호 검색'}
           />
