@@ -5,37 +5,46 @@ import { swrGetFetcher } from '@/lib/axios';
 import { ResponsePostType } from '@/types/community/type';
 
 const getKey = (
-  size: number,
+  pageIndex: number,
   previousPageData: ResponsePostType,
   certificateId: number,
   examYear: number | string,
   round: number | string,
   questionSequence: number,
 ) => {
-  if (examYear === '전체') {
-    return `/certificates/${certificateId}/posts?&page=${size}&size=10`;
+  // 초기 요청
+  if (pageIndex === 0) {
+    if (examYear === '전체') {
+      return `/certificates/${certificateId}/posts?page=${pageIndex}&size=10`;
+    }
+    if (round === '전체') {
+      return `/certificates/${certificateId}/posts?examYear=${examYear}&page=${pageIndex}&size=10`;
+    }
+    if (questionSequence === null) {
+      return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&page=${pageIndex}&size=10`;
+    }
+    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${pageIndex}&size=10`;
   }
-  if (examYear !== '전체' && round === '전체') {
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&page=${size}&size=10`;
-  }
-  if (examYear !== '전체' && round !== '전체' && questionSequence === undefined && size === 0) {
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&page=${size}&size=10`;
-  }
-  if (examYear !== '전체' && round !== '전체' && questionSequence !== undefined && size === 0) {
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${size}&size=10`;
-  }
-  if (
-    examYear !== '전체' &&
-    round !== '전체' &&
-    questionSequence !== undefined &&
-    previousPageData &&
-    !previousPageData.result.hasNext
-  ) {
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${size}&size=10`;
-  }
+
+  // 이전 페이지 데이터가 없으면 종료
+  if (!previousPageData) return null;
+
+  // 이전 페이지에 더 많은 데이터가 있으면 다음 페이지 요청
   if (previousPageData.result.hasNext) {
-    return null;
+    if (examYear === '전체') {
+      return `/certificates/${certificateId}/posts?page=${pageIndex}&size=10`;
+    }
+    if (round === '전체') {
+      return `/certificates/${certificateId}/posts?examYear=${examYear}&page=${pageIndex}&size=10`;
+    }
+    if (questionSequence === null) {
+      return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&page=${pageIndex}&size=10`;
+    }
+    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${pageIndex}&size=10`;
   }
+
+  // 이전 페이지에 더 이상 데이터가 없으면 null 반환
+  return null;
 };
 const useGetCommentarySearchResults = (
   certificateId: number,

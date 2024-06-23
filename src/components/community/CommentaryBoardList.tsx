@@ -58,13 +58,13 @@ const CommentaryBoardList = (props: Props) => {
       await setSize((prev: number) => prev + 1);
     }
     return;
-  }, []);
+  }, [setSize]);
 
   useEffect(() => {
     if (inView) {
       getMoreItem();
     }
-  }, [inView]);
+  }, [inView, getMoreItem]);
 
   const commentaryTopElement = (year: number, round: number, number: number) => {
     return (
@@ -176,10 +176,12 @@ const CommentaryBoardList = (props: Props) => {
         </form>
       </div>
       <div className={'flex flex-col gap-y-4'}>
-        {commentarySearchResults.map((userPosts: ResponsePostType) => {
-          return userPosts?.result.content.map((userPost: PostType) => {
+        {commentarySearchResults.map((userPosts: ResponsePostType, index: number) => {
+          return userPosts?.result.content.map((userPost: PostType, postIndex: number) => {
+            const isLastElement =
+              index === commentarySearchResults.length - 1 && postIndex === userPosts?.result.content.length - 1;
             return (
-              <div key={userPost.postId} ref={ref}>
+              <div key={userPost.postId} ref={isLastElement ? ref : null}>
                 <Post
                   postId={userPost.postId}
                   content={userPost.postContent.content}

@@ -24,16 +24,16 @@ const NormalAndTipBoardList = (props: Props) => {
    */
   const getMoreItem = useCallback(async () => {
     if (userPostsList) {
-      setSize((prev: number) => prev + 1);
+      await setSize((prev: number) => prev + 1);
     }
     return;
-  }, []);
+  }, [setSize]);
 
   useEffect(() => {
     if (inView) {
       getMoreItem();
     }
-  }, [inView]);
+  }, [inView, getMoreItem]);
 
   /**
    * 일반, 꿀팁 게시판 필터
@@ -82,10 +82,12 @@ const NormalAndTipBoardList = (props: Props) => {
         ) : null}
       </div>
       <div className={'flex flex-col gap-y-4'}>
-        {userPostsList.map((userPosts: AxiosResponse<ResponsePostType>) => {
-          return userPosts?.result.content.map((userPost: PostType) => {
+        {userPostsList.map((userPosts: AxiosResponse<ResponsePostType>, index) => {
+          return userPosts?.result.content.map((userPost: PostType, postIndex: number) => {
+            const isLastElement =
+              index === userPostsList.length - 1 && postIndex === userPosts?.result.content.length - 1;
             return (
-              <div key={userPost.postId} ref={ref}>
+              <div ref={isLastElement ? ref : null} key={userPost.postId}>
                 <Post
                   postId={userPost.postId}
                   content={userPost.postContent.content}

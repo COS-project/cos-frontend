@@ -5,27 +5,31 @@ import { swrGetFetcher } from '@/lib/axios';
 import { BoardType, ResponsePostType } from '@/types/community/type';
 
 const getKey = (
-  size: number,
+  pageIndex: number,
   previousPageData: ResponsePostType,
   postType: BoardType,
   certificateId: number,
   sortField: string,
 ) => {
-  if (sortField === 'createdAt' && size === 0 && postType !== 'REVIEW') {
-    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10`;
+  // 초기 요청 또는 이전 페이지 데이터가 없을 때
+  if (pageIndex === 0) {
+    return sortField === 'createdAt'
+      ? `/certificates/${certificateId}/search?postType=${postType}&page=${pageIndex}&size=10`
+      : `/certificates/${certificateId}/search?postType=${postType}&page=${pageIndex}&size=10&sortFields=${sortField}`;
   }
-  if (sortField === 'likeCount' && size === 0 && postType !== 'REVIEW') {
-    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortFields=${sortField}`;
+
+  // 이전 페이지 데이터가 없으면 종료
+  if (!previousPageData) return null;
+
+  // 이전 페이지에 더 많은 데이터가 있으면 다음 페이지 요청
+  if (previousPageData?.result.hasNext) {
+    return sortField === 'createdAt'
+      ? `/certificates/${certificateId}/search?postType=${postType}&page=${pageIndex}&size=10`
+      : `/certificates/${certificateId}/search?postType=${postType}&page=${pageIndex}&size=10&sortFields=${sortField}`;
   }
-  if (sortField === 'createdAt' && previousPageData && !previousPageData.result.hasNext && postType !== 'REVIEW') {
-    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10`;
-  }
-  if (sortField === 'likeCount' && previousPageData && !previousPageData.result.hasNext && postType !== 'REVIEW') {
-    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortFields=${sortField}`;
-  }
-  if (previousPageData.result.hasNext && postType !== 'REVIEW') {
-    return null;
-  }
+
+  // 이전 페이지에 더 이상 데이터가 없으면 null 반환
+  return null;
 };
 const useGetTotalSearchResults = (postType: BoardType, certificateId: number, sortField: string) => {
   const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
