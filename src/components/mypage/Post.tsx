@@ -30,7 +30,7 @@ const Post = (props: Props) => {
         {/*best 태그, 해설게시판 태그*/}
         {topElement ? topElement : null}
         <div className={'flex gap-x-3 items-center justify-between'}>
-          <div className={'flex flex-col gap-y-1 w-[60%]'}>
+          <div className={imageUrl ? 'flex flex-col gap-y-1 w-[60%]' : 'flex flex-col gap-y-1 w-full'}>
             <div className={'text-h4 font-semibold truncate'}>{title}</div>
             <div className={'text-h4 font-normal line-clamp-2'}>{content}</div>
             {/*좋아요 수, 댓글 수*/}
@@ -46,7 +46,7 @@ const Post = (props: Props) => {
             </div>
           </div>
           {imageUrl ? (
-            <div className={'relative h-[104px] w-[100px] '}>
+            <div className={'relative h-[104px] w-[100px]'}>
               <Image src={imageUrl} alt={imageUrl} fill className={'object-cover rounded-[5px]'} />
             </div>
           ) : null}
