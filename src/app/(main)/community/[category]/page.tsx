@@ -58,13 +58,6 @@ export default function CommunityCategoryPage() {
   );
 
   /**
-   * 전체를 선택했을 경우 회차 선택되지 않도록
-   */
-  const controlDisabledFilter = () => {
-    return selectedCommentaryYearFilterContent === '전체';
-  };
-
-  /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
    */
   const getMoreItem = useCallback(async () => {
@@ -124,7 +117,7 @@ export default function CommunityCategoryPage() {
     router.push(url);
   }, [debouncedValue, router, commentarySearchResults]);
 
-  const onMoveSrearchPage = () => {
+  const onMoveSearchPage = () => {
     router.push('/search');
   };
 
@@ -146,7 +139,7 @@ export default function CommunityCategoryPage() {
         rightElement={
           <SearchIcon
             onClick={() => {
-              onMoveSrearchPage();
+              onMoveSearchPage();
             }}
           />
         }

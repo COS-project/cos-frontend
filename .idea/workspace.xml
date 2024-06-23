@@ -5,14 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useBest3TipPosts.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/ExamDifficultyFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/ExamDifficultyFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/ExamReviewBoardList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/ExamReviewBoardList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/CommentaryBoardList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/CommentaryBoardList.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/community/NormalAndTipBoardList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/NormalAndTipBoardList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/PreparePeriodFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/PreparePeriodFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/RoundFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/RoundFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/YearFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/YearFilter.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/mypage/MyPageFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mypage/MyPageFilter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/mypage/Post.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mypage/Post.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetTotalSearchResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetTotalSearchResults.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/community/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/community/type.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/community/FilterContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/community/FilterContent.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -142,7 +143,7 @@
       <workItem from="1718820263711" duration="3311000" />
       <workItem from="1718832852583" duration="5021000" />
       <workItem from="1718915454181" duration="613000" />
-      <workItem from="1718962843109" duration="39310000" />
+      <workItem from="1718962843109" duration="43218000" />
     </task>
     <servers />
   </component>

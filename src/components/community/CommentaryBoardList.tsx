@@ -42,11 +42,6 @@ const CommentaryBoardList = (props: Props) => {
     searchValue,
   );
 
-  useEffect(() => {
-    console.log('yearsWithAllOption', yearsWithAllOption);
-    console.log('roundsWithAllOption', roundsWithAllOption);
-  }, [yearsWithAllOption]);
-
   //필터 값에 '전체'를 추가하기 위한 트리거
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
@@ -146,6 +141,18 @@ const CommentaryBoardList = (props: Props) => {
     setSearchValue(value);
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+
+    // 년, 월, 일 추출
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
+    const day = String(date.getDate()).padStart(2, '0'); // 일자를 2자리로 맞춤
+
+    // 원하는 형식으로 반환
+    return `${year}.${month}.${day}`;
+  };
+
   return (
     <div className={'relative px-5 flex flex-col gap-y-4 '}>
       {/*필터*/}
@@ -217,7 +224,7 @@ const CommentaryBoardList = (props: Props) => {
                   content={userPost.postContent.content}
                   title={userPost.postContent.title}
                   commentCount={userPost.postStatus.commentCount}
-                  createdAt={'2023.7.12'}
+                  createdAt={formatDate(userPost.dateTime.createdAt)}
                   imageUrl={userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null}
                   likeCount={userPost.postStatus.likeCount}
                   topElement={
@@ -227,7 +234,7 @@ const CommentaryBoardList = (props: Props) => {
                           userPost.question.mockExam.round,
                           userPost.question.questionSeq,
                         )
-                      : null
+                      : undefined
                   }></Post>
               </div>
             );

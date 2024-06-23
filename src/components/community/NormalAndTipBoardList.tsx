@@ -1,9 +1,9 @@
-import { AxiosResponse } from 'axios';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import Post from '@/components/mypage/Post';
+import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
 import { filterNormalAndTipContent } from '@/utils/community/FilterContent';
@@ -20,6 +20,7 @@ const NormalAndTipBoardList = (props: Props) => {
   const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<'최신순' | '인기순'>(
     '최신순',
   );
+  const { bestTipPosts } = useBest3TipPosts(1);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -55,12 +56,36 @@ const NormalAndTipBoardList = (props: Props) => {
     setSelectedNormalAndTipFilterContent('최신순');
   }, [boardType]);
 
-  const tipTopElement = () => {
-    return (
-      <div className={'pb-2'}>
-        <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
-      </div>
-    );
+  /**
+   * Best3 Post 태그
+   */
+  const tipTopElement = (normalTipPostId: number): JSX.Element | undefined => {
+    if (bestTipPosts) {
+      const bestTipPost = bestTipPosts.find((post: PostType) => post.postId === normalTipPostId);
+      if (bestTipPost) {
+        return (
+          <div key={normalTipPostId} className={'pb-2'}>
+            <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
+          </div>
+        );
+      }
+    }
+    return undefined;
+  };
+
+  /**
+   * 날짜 format 함수 2024.04.04
+   */
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+
+    // 년, 월, 일 추출
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
+    const day = String(date.getDate()).padStart(2, '0'); // 일자를 2자리로 맞춤
+
+    // 원하는 형식으로 반환
+    return `${year}.${month}.${day}`;
   };
 
   return (
@@ -85,7 +110,7 @@ const NormalAndTipBoardList = (props: Props) => {
         ) : null}
       </div>
       <div className={'flex flex-col gap-y-4'}>
-        {userPostsList.map((userPosts: AxiosResponse<ResponsePostType>, index) => {
+        {userPostsList.map((userPosts: ResponsePostType, index) => {
           return userPosts?.result.content.map((userPost: PostType, postIndex: number) => {
             const isLastElement =
               index === userPostsList.length - 1 && postIndex === userPosts?.result.content.length - 1;
@@ -96,10 +121,10 @@ const NormalAndTipBoardList = (props: Props) => {
                   content={userPost.postContent.content}
                   title={userPost.postContent.title}
                   commentCount={userPost.postStatus.commentCount}
-                  createdAt={'2023.7.12'}
+                  createdAt={formatDate(userPost.dateTime.createdAt)}
                   imageUrl={userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null}
                   likeCount={userPost.postStatus.likeCount}
-                  topElement={userPost.recommendTags ? tipTopElement() : null}></Post>
+                  topElement={userPost.recommendTags ? tipTopElement(userPost.postId) : undefined}></Post>
               </div>
             );
           });

@@ -11,7 +11,7 @@ interface Props {
   likeCount: number;
   commentCount: number;
   createdAt: string;
-  topElement?: React.JSX.Element | null;
+  topElement?: JSX.Element | undefined;
   bottomElement?: React.JSX.Element | null;
 }
 const Post = (props: Props) => {

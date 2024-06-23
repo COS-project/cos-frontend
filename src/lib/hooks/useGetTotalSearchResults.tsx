@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 import useSWRInfinite from 'swr/infinite';
 
 import { swrGetFetcher } from '@/lib/axios';
@@ -6,7 +5,7 @@ import { BoardType, ResponsePostType } from '@/types/community/type';
 
 const getKey = (
   pageIndex: number,
-  previousPageData: ResponsePostType,
+  previousPageData: ResponsePostType | null,
   postType: BoardType,
   certificateId: number,
   sortField: string,
@@ -32,7 +31,7 @@ const getKey = (
   return null;
 };
 const useGetTotalSearchResults = (postType: BoardType, certificateId: number, sortField: string) => {
-  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
+  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<ResponsePostType>(
     (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType, certificateId, sortField),
     swrGetFetcher,
     {
