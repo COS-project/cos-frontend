@@ -12,18 +12,15 @@ const getKey = (
   round: number | string,
   questionSequence: number,
 ) => {
+  console.log('examYear', examYear == '전체');
+  console.log('round', round);
   // 초기 요청
   if (pageIndex === 0) {
-    if (examYear === '전체') {
-      return `/certificates/${certificateId}/posts?page=${pageIndex}&size=10`;
-    }
-    if (round === '전체') {
-      return `/certificates/${certificateId}/posts?examYear=${examYear}&page=${pageIndex}&size=10`;
-    }
-    if (questionSequence === null) {
-      return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&page=${pageIndex}&size=10`;
-    }
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${pageIndex}&size=10`;
+    return `/certificates/${certificateId}/posts?${examYear == '전체' ? ' ' : `examYear=${examYear}`}${
+      round == '전체' ? '' : `&round=${round}`
+    }${
+      (questionSequence === undefined) || (questionSequence === 0) ? ' ' : `&questionSequence=${questionSequence}`
+    }&page=${pageIndex}&size=10`;
   }
 
   // 이전 페이지 데이터가 없으면 종료
@@ -31,16 +28,9 @@ const getKey = (
 
   // 이전 페이지에 더 많은 데이터가 있으면 다음 페이지 요청
   if (previousPageData.result.hasNext) {
-    if (examYear === '전체') {
-      return `/certificates/${certificateId}/posts?page=${pageIndex}&size=10`;
-    }
-    if (round === '전체') {
-      return `/certificates/${certificateId}/posts?examYear=${examYear}&page=${pageIndex}&size=10`;
-    }
-    if (questionSequence === null) {
-      return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&page=${pageIndex}&size=10`;
-    }
-    return `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=${pageIndex}&size=10`;
+    return `/certificates/${certificateId}/posts?${examYear == '전체' ? ' ' : `examYear=${examYear}`}${
+      round == '전체' ? ' ' : `&round=${round}`
+    }${(questionSequence === undefined) || (questionSequence === 0) ? ' ' : `&questionSequence=${questionSequence}`}&page=${pageIndex}&size=10`;
   }
 
   // 이전 페이지에 더 이상 데이터가 없으면 null 반환

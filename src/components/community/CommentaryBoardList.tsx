@@ -10,6 +10,7 @@ import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchRes
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
+import { MockExam } from '@/types/global';
 
 interface Props {
   boardType: BoardType;
@@ -27,31 +28,53 @@ const CommentaryBoardList = (props: Props) => {
   const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number | string>(
     '전체',
   );
-  const { examYears } = useGetMockExamYears(); //해설 년도 필터값
+  const { examYears } = useGetMockExamYears(); //해설 년도 필터값 데이터
+  const [yearsWithAllOption, setYearsWithAllOption] = useState<Array<number | string>>([]); //해설 년도 필터값 데이터 Copy Array
   const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent); //해설 회차 필터값
+  const [roundsWithAllOption, setRoundsWithAllOption] = useState<Array<string | MockExam>>([]); //해설 회차 필터값 데이터 Copy Array
   const [ref, inView] = useInView();
   const router = useRouter();
+  //해설 게시글 검색 결과
   const { commentarySearchResults, setSize } = useGetCommentarySearchResults(
     1,
     selectedCommentaryYearFilterContent,
     selectedCommentaryRoundFilterContent,
     searchValue,
   );
+
+  useEffect(() => {
+    console.log('yearsWithAllOption', yearsWithAllOption);
+    console.log('roundsWithAllOption', roundsWithAllOption);
+  }, [yearsWithAllOption]);
+
   //필터 값에 '전체'를 추가하기 위한 트리거
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
   /**
-   * 필터 값에 '전체'를 추가하는 기능
+   * 처음 시작할 때 Year, Round 필터 값에 '전체'를 추가하는 기능
    */
   useEffect(() => {
-    if (examYears && isInitialLoad) {
-      examYears.unshift('전체');
+    if (isInitialLoad && examYears && mockExams) {
+      const newExamYears = ['전체', ...examYears];
+      const newExamRounds = ['전체', ...mockExams];
+      setYearsWithAllOption(newExamYears);
+      setRoundsWithAllOption(newExamRounds);
       setIsInitialLoad(false);
     }
-  }, [isInitialLoad]);
+  }, [examYears, isInitialLoad]);
 
   /**
-   * 무한 스크롤 뷰 감지하고 size+1 해줌
+   * Year 를 선택할 때마다 Round 필터 값에 '전체'를 추가하는 기능
+   */
+  useEffect(() => {
+    if (mockExams) {
+      const newExamRounds = ['전체', ...mockExams];
+      setRoundsWithAllOption(newExamRounds);
+    }
+  }, [mockExams]);
+
+  /**
+   * 무한 스크롤 뷰 감지하고 size + 1 해줌
    */
   const getMoreItem = useCallback(async () => {
     if (commentarySearchResults) {
@@ -128,17 +151,15 @@ const CommentaryBoardList = (props: Props) => {
       {/*필터*/}
       <div className={'flex gap-x-2'}>
         {/*년도 필터*/}
-        <div className={'flex-shrink-0 w-fit flex px-3 py-1 rounded-full bg-white '}>
+        <div
+          onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)}
+          className={'flex-shrink-0 w-fit flex px-3 py-1 rounded-full bg-white '}>
           <span className={'text-gray4 text-h6'}>{selectedCommentaryYearFilterContent}년도</span>
-          {isOpenCommentaryYearFilter ? (
-            <ActivationIcon onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)} />
-          ) : (
-            <DisableIcon onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)} />
-          )}
+          {isOpenCommentaryYearFilter ? <ActivationIcon /> : <DisableIcon />}
         </div>
         {isOpenCommentaryYearFilter ? (
           <YearFilter
-            data={examYears}
+            data={yearsWithAllOption}
             isOpenFilter={isOpenCommentaryYearFilter}
             setSelectedFilterContent={setSelectedCommentaryYearFilterContent}
             setIsOpenFilter={setIsOpenCommentaryYearFilter}
@@ -147,18 +168,21 @@ const CommentaryBoardList = (props: Props) => {
 
         {/*회차 필터*/}
         <button
+          onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)}
           disabled={controlDisabledFilter()}
           className={'flex-shrink-0 w-fit flex px-3 py-1 rounded-full bg-white '}>
           <span className={'text-gray4 text-h6'}>{selectedCommentaryRoundFilterContent}회차</span>
-          {isOpenCommentaryRoundFilter ? (
-            <ActivationIcon onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)} />
-          ) : (
-            <DisableIcon onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)} />
-          )}
+          {selectedCommentaryYearFilterContent !== '전체' ? (
+            isOpenCommentaryRoundFilter ? (
+              <ActivationIcon />
+            ) : (
+              <DisableIcon />
+            )
+          ) : null}
         </button>
         {isOpenCommentaryRoundFilter ? (
           <RoundFilter
-            data={mockExams}
+            data={roundsWithAllOption}
             isOpenFilter={isOpenCommentaryRoundFilter}
             setSelectedFilterContent={setSelectedCommentaryRoundFilterContent}
             setIsOpenFilter={setIsOpenCommentaryRoundFilter}
@@ -172,7 +196,7 @@ const CommentaryBoardList = (props: Props) => {
           }}
           className={'flex items-center gap-x-1 py-1 px-3 bg-white rounded-full w-fit'}>
           <input
-            value={searchValue === 0 ? null : searchValue}
+            value={searchValue === 0 || undefined ? '' : searchValue}
             type={'number'}
             onChange={handleSearchValueChange}
             className={'text-h6 text-black outline-none w-[80px] placeholder:text-gray4 border-b-[1px] border-black'}

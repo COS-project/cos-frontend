@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Props {
-  data: number[] | undefined;
+  data: (string | number)[] | undefined;
   setSelectedFilterContent: React.Dispatch<React.SetStateAction<number | string>>;
   setIsOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenFilter: boolean;
