@@ -48,7 +48,7 @@ const ExamReviewBoardList = () => {
     } else if (examDifficulty === 'LITTLE_DIFFICULT') {
       return <div className={'px-[10px] py-[2px] bg-[#F89249] text-white rounded-full text-h6'}>조금 어려워요</div>;
     } else {
-      return <div className={'px-[10px] py-[2px] bg-[#49D8F8] text-white rounded-full text-h6'}>어려워요</div>;
+      return <div className={'px-[10px] py-[2px] bg-[#F85449] text-white rounded-full text-h6'}>어려워요</div>;
     }
   };
 

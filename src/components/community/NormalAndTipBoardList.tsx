@@ -76,6 +76,7 @@ const NormalAndTipBoardList = (props: Props) => {
         </div>
         {isOpenNormalAndTipFilter ? (
           <MyPageFilter
+            className={boardType === 'TIP' ? 'top-[15%]' : 'top-9'}
             isFilterOpen={isOpenNormalAndTipFilter}
             setSelectedFilterContent={setSelectedNormalAndTipFilterContent}
             setIsFilterOpen={setIsOpenNormalAndTipFilter}

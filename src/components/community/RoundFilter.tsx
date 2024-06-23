@@ -13,7 +13,7 @@ const RoundFilter = (props: Props) => {
   const { data, setSelectedFilterContent, setIsOpenFilter, isOpenFilter } = props;
 
   return (
-    <div className={'absolute top-8 left-32 border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10'}>
+    <div className={'absolute top-9 left-32 border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10'}>
       {!data || data.length === 0 ? (
         <div>error</div>
       ) : (
@@ -30,7 +30,7 @@ const RoundFilter = (props: Props) => {
                 }
                 setIsOpenFilter(!isOpenFilter);
               }}>
-              {typeof datum === 'string' ? '전체' : datum.round}회차
+              {typeof datum === 'string' ? '전체' : datum.round + '회차'}
             </div>
           );
         })
