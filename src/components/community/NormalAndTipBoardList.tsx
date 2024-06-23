@@ -14,10 +14,12 @@ const NormalAndTipBoardList = (props: Props) => {
   const { boardType } = props;
   const [ref, inView] = useInView();
   const [sortField, setSortField] = useState<string>('createdAt'); //최신순 인기순
-  const { userPostsList, setSize } = useGetTotalSearchResults(boardType, 1, sortField);
+  const { userPostsList, size, setSize } = useGetTotalSearchResults(boardType, 1, sortField);
   //필터값
   const [isOpenNormalAndTipFilter, setIsOpenNormalAndTipFilter] = useState<boolean>(false);
-  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<'최신순' | '작성순'>('최신순');
+  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<'최신순' | '인기순'>(
+    '최신순',
+  );
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
