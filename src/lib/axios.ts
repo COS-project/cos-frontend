@@ -106,8 +106,6 @@ export const swrGetFetcher = async (url) => {
       method: 'GET',
       url: url,
     });
-    // 성공적인 응답 처리
-    console.log('데이터:', response.data);
     return response.data;
   } catch (error) {
     // 에러 처리

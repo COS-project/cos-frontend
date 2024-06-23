@@ -66,6 +66,11 @@ export interface PopularSearchKeyword {
  ************ post Detail *************
  */
 
+export interface ResponseBest3PostType {
+  responseCode: string;
+  result: PostType[];
+}
+
 export interface ResponsePostType {
   responseCode: string;
   result: {
@@ -115,8 +120,8 @@ export interface ResponseReviewPost {
   responseCode: string;
   result: {
     content: ReviewPost[];
+    hasNext: boolean;
   };
-  hasNext: boolean;
 }
 
 export interface RecommendTags {
@@ -135,7 +140,7 @@ export interface TrendingKeyword {
   status: TrendingKeywordState;
 }
 
-export interface PerparePeriodType {
+export interface PreparePeriodType {
   startMonth: number | undefined;
   endMonth: number | undefined;
 }

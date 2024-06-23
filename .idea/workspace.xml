@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/NavBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/NavBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/mypage/Post.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mypage/Post.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/axios.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/axios.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/global.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/common/nav.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/common/nav.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,6 +16,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -31,21 +27,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "fix-navbar__click__icon",
-    "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;fix__community-list&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public" />
@@ -136,7 +132,7 @@
       <workItem from="1718820263711" duration="3311000" />
       <workItem from="1718832852583" duration="5021000" />
       <workItem from="1718915454181" duration="613000" />
-      <workItem from="1718962843109" duration="15034000" />
+      <workItem from="1718962843109" duration="45199000" />
     </task>
     <servers />
   </component>

@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -22,6 +23,11 @@ const Result = () => {
   const [userExamAttempt, setUserExamAttempt] = useState<number>(1);
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
   let totalTakenTime = 0;
+  const router = useRouter();
+
+  const onBack = () => {
+    router.push('/exam');
+  };
 
   useEffect(() => {
     if (examResults && examResults.length > 0 && isInitialLoad) {
@@ -116,7 +122,7 @@ const Result = () => {
 
   return (
     <>
-      <Header headerType={'dynamic'} title={'성적리포트'}></Header>
+      <Header headerType={'dynamic'} title={'성적리포트'} onBack={onBack}></Header>
       <MockExamReportHeader isClicked={isClicked} setIsClicked={setIsClicked} />
       <div className={'bg-gray0 min-h-screen p-5'}>{displayComponentBasedOnExamResults(examResults)}</div>
       <NavBar />

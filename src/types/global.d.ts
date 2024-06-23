@@ -130,31 +130,6 @@ export interface CommonTitleType {
   passingCriteria: ExamInfoCommonType;
 }
 
-//자격증 응시 정보 type
-export interface CertificateInfoType {
-  examSchedule: {
-    applicationStartDateTime: string;
-    applicationDeadlineDateTime: string;
-    examDateTime: string;
-  };
-  examFee: {
-    writtenExamFee: string;
-    practicalExamFee: string;
-  };
-  examTimeLimit: {
-    writtenExamTimeLimit: string;
-    practicalExamTimeLimit: string;
-  };
-  passingCriteria: {
-    subjectPassingCriteria: string;
-    totalAvgCriteria: string;
-    practicalPassingCriteria: string;
-  };
-  subjectsInfo: string;
-  description: string;
-  examFormat: string;
-  examEligibility: string;
-}
 
 // 목표 설정 type
 export interface GoalSettingInfo {

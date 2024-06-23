@@ -1,34 +1,35 @@
-import { AxiosResponse } from 'axios';
 import useSWRInfinite from 'swr/infinite';
 
 import { swrGetFetcher } from '@/lib/axios';
-import { ExamDifficulty, ResponsePostType, ResponseReviewPost } from '@/types/community/type';
+import { ExamDifficulty, ResponseReviewPost } from '@/types/community/type';
 
 const getKey = (
-  size: number,
-  previousPageData: ResponsePostType,
+  pageIndex: number,
+  previousPageData: ResponseReviewPost | null,
   certificateId: number,
   examDifficulty: ExamDifficulty | undefined,
   startMonths: number | undefined,
   endPreMonths: number | undefined,
 ) => {
-  if (size === 0) {
-    return `/certificates/${certificateId}/exam-reviews?page=${size}&size=10${
+  if (pageIndex === 0) {
+    return `/certificates/${certificateId}/exam-reviews?page=${pageIndex}&size=10${
       startMonths ? `&startMonths=${startMonths}` : ''
     }${endPreMonths ? `&endPreMonths=${endPreMonths}` : ''}${
       examDifficulty ? `&examDifficulty=${examDifficulty}` : ''
     }`;
   }
-  if (previousPageData && !previousPageData.result.hasNext) {
-    return `/certificates/${certificateId}/exam-reviews?page=${size}&size=10${
+
+  if (!previousPageData) return null;
+
+  if (previousPageData?.result.hasNext) {
+    return `/certificates/${certificateId}/exam-reviews?page=${pageIndex}&size=10${
       startMonths ? `&startMonths=${startMonths}` : ''
     }${endPreMonths ? `&endPreMonths=${endPreMonths}` : ''}${
       examDifficulty ? `&examDifficulty=${examDifficulty}` : ''
     }`;
   }
-  if (previousPageData.result.hasNext) {
-    return null;
-  }
+
+  return null;
 };
 const useGetExamReview = (
   certificateId: number,
@@ -36,7 +37,7 @@ const useGetExamReview = (
   startMonths: number | undefined,
   endPreMonths: number | undefined,
 ) => {
-  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<AxiosResponse<ResponseReviewPost>>(
+  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<ResponseReviewPost>(
     (pageIndex, previousPageData) =>
       getKey(pageIndex, previousPageData, certificateId, examDifficulty, startMonths, endPreMonths),
     swrGetFetcher,

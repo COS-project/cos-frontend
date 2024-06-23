@@ -10,6 +10,7 @@ import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchRes
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
+import { MockExam } from '@/types/global';
 
 interface Props {
   boardType: BoardType;
@@ -27,44 +28,61 @@ const CommentaryBoardList = (props: Props) => {
   const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number | string>(
     '전체',
   );
-  const { examYears } = useGetMockExamYears(); //해설 년도 필터값
+  const { examYears } = useGetMockExamYears(); //해설 년도 필터값 데이터
+  const [yearsWithAllOption, setYearsWithAllOption] = useState<Array<number | string>>([]); //해설 년도 필터값 데이터 Copy Array
   const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent); //해설 회차 필터값
+  const [roundsWithAllOption, setRoundsWithAllOption] = useState<Array<string | MockExam>>([]); //해설 회차 필터값 데이터 Copy Array
   const [ref, inView] = useInView();
   const router = useRouter();
+  //해설 게시글 검색 결과
   const { commentarySearchResults, setSize } = useGetCommentarySearchResults(
     1,
     selectedCommentaryYearFilterContent,
     selectedCommentaryRoundFilterContent,
     searchValue,
   );
+
   //필터 값에 '전체'를 추가하기 위한 트리거
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
   /**
-   * 필터 값에 '전체'를 추가하는 기능
+   * 처음 시작할 때 Year, Round 필터 값에 '전체'를 추가하는 기능
    */
   useEffect(() => {
-    if (examYears && isInitialLoad) {
-      examYears.unshift('전체');
+    if (isInitialLoad && examYears && mockExams) {
+      const newExamYears = ['전체', ...examYears];
+      const newExamRounds = ['전체', ...mockExams];
+      setYearsWithAllOption(newExamYears);
+      setRoundsWithAllOption(newExamRounds);
       setIsInitialLoad(false);
     }
-  }, [isInitialLoad]);
+  }, [examYears, isInitialLoad]);
 
   /**
-   * 무한 스크롤 뷰 감지하고 size+1 해줌
+   * Year 를 선택할 때마다 Round 필터 값에 '전체'를 추가하는 기능
+   */
+  useEffect(() => {
+    if (mockExams) {
+      const newExamRounds = ['전체', ...mockExams];
+      setRoundsWithAllOption(newExamRounds);
+    }
+  }, [mockExams]);
+
+  /**
+   * 무한 스크롤 뷰 감지하고 size + 1 해줌
    */
   const getMoreItem = useCallback(async () => {
     if (commentarySearchResults) {
       await setSize((prev: number) => prev + 1);
     }
     return;
-  }, []);
+  }, [setSize]);
 
   useEffect(() => {
     if (inView) {
       getMoreItem();
     }
-  }, [inView]);
+  }, [inView, getMoreItem]);
 
   const commentaryTopElement = (year: number, round: number, number: number) => {
     return (
@@ -87,17 +105,19 @@ const CommentaryBoardList = (props: Props) => {
    * 쿼리파라미터에서 검색어
    */
   useEffect(() => {
-    const query = {
-      keyword: debouncedValue,
-    };
+    if (debouncedValue !== undefined) {
+      const query = {
+        keyword: debouncedValue || '',
+      };
 
-    const url = qs.stringifyUrl({
-      url: '/community/1',
-      query: query,
-    });
+      const url = qs.stringifyUrl({
+        url: '/community/1',
+        query: query,
+      });
 
-    router.push(url);
-  }, [debouncedValue, router, commentarySearchResults]);
+      router.push(url);
+    }
+  }, [debouncedValue, router]);
 
   /**
    * 해설 게시판 년도 필터가 전체면 회차 필터도 전체로 변경
@@ -115,22 +135,38 @@ const CommentaryBoardList = (props: Props) => {
     setSelectedCommentaryYearFilterContent('전체');
   }, [boardType]);
 
+  // 디바운싱 적용된 상태 업데이트
+  const handleSearchValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value ? parseInt(e.target.value, 10) : 0;
+    setSearchValue(value);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+
+    // 년, 월, 일 추출
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
+    const day = String(date.getDate()).padStart(2, '0'); // 일자를 2자리로 맞춤
+
+    // 원하는 형식으로 반환
+    return `${year}.${month}.${day}`;
+  };
+
   return (
     <div className={'relative px-5 flex flex-col gap-y-4 '}>
       {/*필터*/}
       <div className={'flex gap-x-2'}>
         {/*년도 필터*/}
-        <div className={'flex-shrink-0 w-fit flex px-3 py-1 rounded-full bg-white '}>
+        <div
+          onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)}
+          className={'flex-shrink-0 w-fit flex px-3 py-1 rounded-full bg-white '}>
           <span className={'text-gray4 text-h6'}>{selectedCommentaryYearFilterContent}년도</span>
-          {isOpenCommentaryYearFilter ? (
-            <ActivationIcon onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)} />
-          ) : (
-            <DisableIcon onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)} />
-          )}
+          {isOpenCommentaryYearFilter ? <ActivationIcon /> : <DisableIcon />}
         </div>
         {isOpenCommentaryYearFilter ? (
           <YearFilter
-            data={examYears}
+            data={yearsWithAllOption}
             isOpenFilter={isOpenCommentaryYearFilter}
             setSelectedFilterContent={setSelectedCommentaryYearFilterContent}
             setIsOpenFilter={setIsOpenCommentaryYearFilter}
@@ -139,18 +175,21 @@ const CommentaryBoardList = (props: Props) => {
 
         {/*회차 필터*/}
         <button
+          onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)}
           disabled={controlDisabledFilter()}
           className={'flex-shrink-0 w-fit flex px-3 py-1 rounded-full bg-white '}>
           <span className={'text-gray4 text-h6'}>{selectedCommentaryRoundFilterContent}회차</span>
-          {isOpenCommentaryRoundFilter ? (
-            <ActivationIcon onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)} />
-          ) : (
-            <DisableIcon onClick={() => setIsOpenCommentaryRoundFilter(!isOpenCommentaryRoundFilter)} />
-          )}
+          {selectedCommentaryYearFilterContent !== '전체' ? (
+            isOpenCommentaryRoundFilter ? (
+              <ActivationIcon />
+            ) : (
+              <DisableIcon />
+            )
+          ) : null}
         </button>
         {isOpenCommentaryRoundFilter ? (
           <RoundFilter
-            data={mockExams}
+            data={roundsWithAllOption}
             isOpenFilter={isOpenCommentaryRoundFilter}
             setSelectedFilterContent={setSelectedCommentaryRoundFilterContent}
             setIsOpenFilter={setIsOpenCommentaryRoundFilter}
@@ -164,11 +203,9 @@ const CommentaryBoardList = (props: Props) => {
           }}
           className={'flex items-center gap-x-1 py-1 px-3 bg-white rounded-full w-fit'}>
           <input
-            value={searchValue}
+            value={searchValue === 0 || undefined ? '' : searchValue}
             type={'number'}
-            onChange={(e) => {
-              setSearchValue(parseInt(e.target.value));
-            }}
+            onChange={handleSearchValueChange}
             className={'text-h6 text-black outline-none w-[80px] placeholder:text-gray4 border-b-[1px] border-black'}
             placeholder={'문항번호 검색'}
           />
@@ -176,16 +213,18 @@ const CommentaryBoardList = (props: Props) => {
         </form>
       </div>
       <div className={'flex flex-col gap-y-4'}>
-        {commentarySearchResults.map((userPosts: ResponsePostType) => {
-          return userPosts?.result.content.map((userPost: PostType) => {
+        {commentarySearchResults.map((userPosts: ResponsePostType, index: number) => {
+          return userPosts?.result.content.map((userPost: PostType, postIndex: number) => {
+            const isLastElement =
+              index === commentarySearchResults.length - 1 && postIndex === userPosts?.result.content.length - 1;
             return (
-              <div key={userPost.postId} ref={ref}>
+              <div key={userPost.postId} ref={isLastElement ? ref : null}>
                 <Post
                   postId={userPost.postId}
                   content={userPost.postContent.content}
                   title={userPost.postContent.title}
                   commentCount={userPost.postStatus.commentCount}
-                  createdAt={'2023.7.12'}
+                  createdAt={formatDate(userPost.dateTime.createdAt)}
                   imageUrl={userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null}
                   likeCount={userPost.postStatus.likeCount}
                   topElement={
@@ -195,7 +234,7 @@ const CommentaryBoardList = (props: Props) => {
                           userPost.question.mockExam.round,
                           userPost.question.questionSeq,
                         )
-                      : null
+                      : undefined
                   }></Post>
               </div>
             );

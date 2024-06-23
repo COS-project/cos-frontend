@@ -11,7 +11,6 @@ const MyPageHeader = () => {
   const router = useRouter();
   const { userProfile } = useGetUserProfile();
   const { interestCertificates } = useGetInterestCertificates();
-  const router = useRouter();
 
   const onMoveProfilePage = () => {
     router.push('/mypage/profile');
@@ -30,12 +29,13 @@ const MyPageHeader = () => {
             onMoveProfilePage();
           }}
           className={'flex gap-x-4 items-center'}>
-          <Image
-            src={userProfile?.profileImage}
-            alt={userProfile?.profileImage}
-            height={72}
-            width={72}
-            className={'rounded-full'}></Image>
+          <div className={'relative h-[72px] w-[72px]'}>
+            <Image
+              src={userProfile?.profileImage}
+              alt={userProfile?.profileImage}
+              fill
+              className={'object-cover rounded-full'}></Image>
+          </div>
           <div className={'flex items-center'}>
             <div className={'text-h3'}>{userProfile?.nickname}</div>
             <EditProfileIcon />

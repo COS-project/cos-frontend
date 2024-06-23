@@ -18,8 +18,6 @@ import WriteTipPost from '@/components/community/WriteTipPost';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import useDebounce from '@/hooks/useDebounce';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
-import useGetMockExams from '@/lib/hooks/useGetMockExams';
-import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
 import { BoardType } from '@/types/community/type';
@@ -27,9 +25,6 @@ import { BoardType } from '@/types/community/type';
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
   //필터값
-  const [isOpenNormalAndTipFilter, setIsOpenNormalAndTipFilter] = useState<boolean>(false);
-  const [isOpenCommentaryYearFilter, setIsOpenCommentaryYearFilter] = useState<boolean>(false);
-  const [isOpenCommentaryRoundFilter, setIsOpenCommentaryRoundFilter] = useState<boolean>(false);
   const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<string>('최신순');
   const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number | string>(
     '전체',
@@ -38,8 +33,6 @@ export default function CommunityCategoryPage() {
     '전체',
   );
   const [sortField, setSortField] = useState<string>('createdAt'); //최신순 인기순
-  const { examYears } = useGetMockExamYears(); //해설 년도 필터값
-  const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent); //해설 회차 필터값
   //보드 타입
   const [boardType, setBoardType] = useState<BoardType>('REVIEW');
   const { userPostsList, setSize } = useGetTotalSearchResults(boardType, 1, sortField);
@@ -56,13 +49,6 @@ export default function CommunityCategoryPage() {
     selectedCommentaryRoundFilterContent,
     searchValue,
   );
-
-  /**
-   * 전체를 선택했을 경우 회차 선택되지 않도록
-   */
-  const controlDisabledFilter = () => {
-    return selectedCommentaryYearFilterContent === '전체';
-  };
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -124,24 +110,29 @@ export default function CommunityCategoryPage() {
     router.push(url);
   }, [debouncedValue, router, commentarySearchResults]);
 
-  const onMoveSrearchPage = () => {
+  const onMoveSearchPage = () => {
     router.push('/search');
   };
 
+  const onMoveCommunityMenuPage = () => {
+    router.push('/community');
+  };
+
   return boardTypeForPost === 'COMMENTARY' && isClickedWriteButton ? (
-    <WriteExplanationPost />
+    <WriteExplanationPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : boardTypeForPost === 'TIP' && isClickedWriteButton ? (
-    <WriteTipPost />
+    <WriteTipPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : boardTypeForPost === 'NORMAL' && isClickedWriteButton ? (
-    <WriteNormalPost />
+    <WriteNormalPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : (
     <>
       <Header
         headerType={'dynamic'}
+        onBack={onMoveCommunityMenuPage}
         rightElement={
           <SearchIcon
             onClick={() => {
-              onMoveSrearchPage();
+              onMoveSearchPage();
             }}
           />
         }
@@ -166,7 +157,7 @@ export default function CommunityCategoryPage() {
           <NormalAndTipBoardList boardType={boardType} />
         ) : null}
       </div>
-      {boardTypeForPost === 'REVIEW' ? null : (
+      {boardType === 'REVIEW' ? null : (
         <WriteButton
           setIsClickedWriteButton={setIsClickedWriteButton}
           boardType={boardType}
