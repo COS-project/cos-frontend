@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PerparePeriod } from '@/utils/community/FilterContent';
+import { preparePeriod } from '@/utils/community/FilterContent';
 
 export interface Props {
   setIsPreparePeriodOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,8 +11,8 @@ export interface Props {
 const PreparePeriodFilter = (props: Props) => {
   const { setStartMonths, setEndPreMonths, setIsPreparePeriodOpen, setSelectedPreparePeriodContent } = props;
 
-  const formatDate = (startMonth: number, endMonth: number) => {
-    if (startMonth < 12) {
+  const formatDate = (startMonth: number | undefined, endMonth: number | undefined) => {
+    if (startMonth && startMonth < 12) {
       return `${startMonth} ~ ${endMonth} 개월`;
     } else if (startMonth === 12) {
       return '1년 이상';
@@ -30,7 +30,7 @@ const PreparePeriodFilter = (props: Props) => {
       className={
         'absolute top-[27%] border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 h-[250px] overflow-y-scroll'
       }>
-      {PerparePeriod.map((period, index) => {
+      {preparePeriod.map((period, index) => {
         return (
           <div
             onClick={() => {

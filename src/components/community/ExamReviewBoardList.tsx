@@ -16,7 +16,7 @@ const ExamReviewBoardList = () => {
   const [selectedExamDifficultyContent, setSelectedExamDifficultyContent] = useState<string>('난이도 전체');
   const [isExamDifficultyOpen, setIsExamDifficultyOpen] = useState<boolean>(false);
   const [examDifficulty, setExamDifficulty] = useState<ExamDifficulty | undefined>();
-  const [selectedPreparePeriodContent, setSelectedPreparePeriodContent] = useState<string>('준비기간 전체');
+  const [selectedPreparePeriodContent, setSelectedPreparePeriodContent] = useState<string | undefined>('준비기간 전체');
   const [isPreparePeriodOpen, setIsPreparePeriodOpen] = useState<boolean>(false);
   const [startMonths, setStartMonths] = useState<number | undefined>();
   const [endPreMonths, setEndPreMonths] = useState<number | undefined>();
@@ -125,7 +125,7 @@ const ExamReviewBoardList = () => {
                           <div className={'truncate text-gray4 text-h6'}>{review.user.nickname}</div>
                           <div
                             className={'rounded-full border-[1px] border-gray2 py-[2px] px-[10px] text-gray4 text-h6'}>
-                            준비기간 3개월
+                            {`준비기간 ${review.prepareMonths}개월`}
                           </div>
                         </div>
                         {changeTagForExamDifficulty(review.examDifficulty)}
