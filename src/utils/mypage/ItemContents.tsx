@@ -8,13 +8,8 @@ export const boardContents: ItemType[] = [
 export const goalContents: ItemType[] = [{ title: '이전 목표', path: '/home/goal-setting' }];
 
 export const alarmContents: ItemType[] = [{ title: '알림설정', path: '/home/goal-setting' }];
-export const accountManagementContents: ItemType[] = [
-  { title: '로그아웃', path: '/home/goal-setting' },
-  { title: '탈퇴하기', path: '/home/goal-setting' },
-];
-
 export const etcContents: ItemType[] = [
   { title: '문의하기', path: '/home/goal-setting' },
   { title: '약관 및 개인정보 처리', path: '/home/goal-setting' },
-  { title: '앱버전', path: '/home/goal-setting' },
+  { title: '앱버전', version: 0.1 },
 ];

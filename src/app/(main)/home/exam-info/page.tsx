@@ -1,32 +1,22 @@
 'use client';
 
-import { format, getHours } from 'date-fns';
-import { useRouter } from 'next/navigation';
+import { format } from 'date-fns';
+import Link from 'next/link';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
-import Button from '@/components/common/Button';
+import Header from '@/components/common/Header';
 import ExamInfoItem from '@/components/home/ExamInfoItem';
 import useGetCertificationInfo from '@/lib/hooks/useGetCertificationInfo';
-import { layoutState } from '@/recoil/atom';
 import { certificationInfoState } from '@/recoil/home/atom';
-import { CertificateInfoType, GoalSettingInfo } from '@/types/global';
+import { CertificateInfoType } from '@/types/home/type';
 import { commonTitle } from '@/utils/exam-info/CommonTitle';
 
 const ExamInfo = () => {
   // 데이터 패칭
-  const { certificationInfo, isLoading, isError } = useGetCertificationInfo();
-
+  const { certificationInfo } = useGetCertificationInfo();
   const [data, setData] = useRecoilState(certificationInfoState);
-
-  const [step, setStep] = useRecoilState(layoutState);
-  const router = useRouter();
-
-  // TODO:접수하기 링크 바꾸기
-  const onMove = () => {
-    router.push('/home');
-  };
 
   /**
    * Recoil 상태를 초기화하는 함수
@@ -34,34 +24,40 @@ const ExamInfo = () => {
    */
   const initializeCertificationInfoState = (apiResponse: CertificateInfoType) => {
     return {
-      examSchedule: {
-        applicationStartDateTime:
-          '• 접수 시작: ' + format(apiResponse.examSchedule.applicationStartDateTime, 'yyyy.MM.dd'),
-        applicationDeadlineDateTime:
-          '• 접수 종료: ' + format(apiResponse.examSchedule.applicationDeadlineDateTime, 'yyyy.MM.dd'),
-        examDateTime: '• 시험 날짜: ' + format(apiResponse.examSchedule.examDateTime, 'yyyy.MM.dd'),
+      certificate: {
+        certificateId: apiResponse.certificate.certificateId,
+        certificateName: apiResponse.certificate.certificateName,
       },
-      examFee: {
-        writtenExamFee: '• 필기 시험: ' + apiResponse.examFee.writtenExamFee.toString() + '원',
-        practicalExamFee: '• 실기 시험: ' + apiResponse.examFee.practicalExamFee.toString() + '원',
+      examInfo: {
+        examYear: apiResponse.examInfo.examYear,
+        round: apiResponse.examInfo.round,
+        examSchedule: {
+          applicationStartDateTime:
+            '• 접수 시작 : ' + format(apiResponse.examInfo.examSchedule.applicationStartDateTime, 'yyyy.MM.dd'),
+          applicationDeadlineDateTime:
+            '• 접수 종료 : ' + format(apiResponse.examInfo.examSchedule.applicationDeadlineDateTime, 'yyyy.MM.dd'),
+          resultAnnouncementDateTime:
+            '• 합격 발표 : ' + format(apiResponse.examInfo.examSchedule.resultAnnouncementDateTime, 'yyyy.MM.dd'),
+          examDateTime: '• 시험 날짜 : ' + format(apiResponse.examInfo.examSchedule.examDateTime, 'yyyy.MM.dd'),
+        },
+        examFee: {
+          writtenExamFee: apiResponse.examInfo.examFee.writtenExamFee,
+          practicalExamFee: apiResponse.examInfo.examFee.practicalExamFee,
+        },
+        examTimeLimit: {
+          writtenExamTimeLimit: apiResponse.examInfo.examTimeLimit.writtenExamTimeLimit,
+          practicalExamTimeLimit: apiResponse.examInfo.examTimeLimit.practicalExamTimeLimit,
+        },
+        passingCriteria: {
+          subjectPassingCriteria: apiResponse.examInfo.passingCriteria.subjectPassingCriteria,
+          totalAvgCriteria: apiResponse.examInfo.passingCriteria.totalAvgCriteria,
+          practicalPassingCriteria: apiResponse.examInfo.passingCriteria.practicalPassingCriteria,
+        },
+        subjectsInfo: apiResponse.examInfo.subjectsInfo,
+        description: apiResponse.examInfo.description,
+        examFormat: apiResponse.examInfo.examFormat,
+        examEligibility: apiResponse.examInfo.examEligibility,
       },
-      examTimeLimit: {
-        writtenExamTimeLimit:
-          '• 필기 시험 시간: ' + getHours(apiResponse.examTimeLimit.writtenExamTimeLimit).toString() + '분',
-        practicalExamTimeLimit:
-          '• 실기 시험 시간: ' + apiResponse.examTimeLimit.practicalExamTimeLimit.toString() + '분',
-      },
-      passingCriteria: {
-        subjectPassingCriteria:
-          '• 과목당 합격 기준: ' + apiResponse.passingCriteria.subjectPassingCriteria.toString() + '점',
-        totalAvgCriteria: '• 전체 합격 기준: ' + apiResponse.passingCriteria.totalAvgCriteria.toString() + '점',
-        practicalPassingCriteria:
-          '• 실기 시험 합격 기준: ' + apiResponse.passingCriteria.practicalPassingCriteria.toString() + '점',
-      },
-      subjectsInfo: apiResponse.subjectsInfo,
-      description: apiResponse.description,
-      examFormat: apiResponse.examFormat,
-      examEligibility: apiResponse.examEligibility,
     };
   };
 
@@ -71,7 +67,6 @@ const ExamInfo = () => {
   const fetchDataAndUpdateState = async () => {
     try {
       const response = certificationInfo;
-      console.log('response', response);
       if (response) {
         const initialState: CertificateInfoType = initializeCertificationInfoState(response.result);
         setData(initialState);
@@ -90,24 +85,104 @@ const ExamInfo = () => {
     fetchDataAndUpdateState();
   }, [certificationInfo]);
 
-  return (
-    <div className="bg-gray0">
-      <Button onStep={setStep('ExamInfo')} Icon={Icon} onClick={onMove}>
+  /**
+   * 접수하기 버튼
+   */
+  const registerCertificateButton = () => {
+    return (
+      <Link
+        href={'https://www.pct.or.kr/sub.html?page=apply_intro'}
+        className={'flex items-center bg-primary text-white py-1 px-3 rounded-full text-h6'}>
         접수하기
-      </Button>
-      <div className="flex flex-col gap-y-5 m-5 mt-4">
-        {Object.entries(data).map(([key, item]) => (
-          <div key={key}>
-            <ExamInfoItem Icon={commonTitle[key].Icon} title={commonTitle[key].title} content={item} />
+        <Icon />
+      </Link>
+    );
+  };
+
+  /**
+   * 공통 컴포넌트 내용 가공
+   */
+  const renderElement = (content: string) => {
+    switch (content) {
+      case 'description':
+        return <div className="text-h4">{data.examInfo.description}</div>;
+      case 'examFee':
+        return (
+          <div className="flex flex-col text-h4">
+            {Object.entries(data.examInfo.examFee).map(([key, value]) => {
+              return (
+                <div key={key}>
+                  • {key === 'writtenExamFee' ? '필기 :' : '실기 :'} {value}원
+                </div>
+              );
+            })}
           </div>
-        ))}
+        );
+      case 'examSchedule':
+        return (
+          <div>
+            {Object.entries(data.examInfo.examSchedule).map(([key, value]) => {
+              return <div key={key}>{value}</div>;
+            })}
+          </div>
+        );
+      case 'subjectsInfo':
+        return <div>{data.examInfo.subjectsInfo}</div>;
+      case 'examFormat':
+        return <div>{data.examInfo.examFormat}</div>;
+      case 'examEligibility':
+        return <div>{data.examInfo.examEligibility}</div>;
+      case 'examTimeLimit':
+        return (
+          <div>
+            {Object.entries(data.examInfo.examTimeLimit).map(([key, value]) => {
+              return (
+                <div key={key}>
+                  • {key === 'writtenExamTimeLimit' ? '필기 :' : '실기 :'} {value}분
+                </div>
+              );
+            })}
+          </div>
+        );
+      case 'passingCriteria':
+        return (
+          <div>
+            {Object.entries(data.examInfo.passingCriteria).map(([key, value]) => {
+              return (
+                <div key={key}>
+                  {' '}
+                  •{' '}
+                  {key === 'subjectPassingCriteria'
+                    ? '과목당 '
+                    : key === 'practicalPassingCriteria'
+                    ? ' 실기 '
+                    : '전과목 '}{' '}
+                  {value}점 이상
+                </div>
+              );
+            })}
+          </div>
+        );
+      default:
+        return <div></div>;
+    }
+  };
+
+  return (
+    <div className="bg-gray0 min-h-screen">
+      <Header headerType={'dynamic'} title={'응시정보'} rightElement={registerCertificateButton()}></Header>
+      <div className="flex flex-col gap-y-5 m-5 mt-4">
+        {Object.entries(commonTitle).map(([key, value]) => {
+          return <ExamInfoItem key={key} Icon={value.Icon} title={value.title} element={renderElement(key)} />;
+        })}
       </div>
+      <div className={'h-[50px]'} />
     </div>
   );
 };
 export default ExamInfo;
 
-function Icon(props) {
+function Icon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg width={16} height={17} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path d="M5 11.5l6-6M5 5.5h6v6" stroke="#ffffff" strokeLinecap="round" strokeLinejoin="round" />

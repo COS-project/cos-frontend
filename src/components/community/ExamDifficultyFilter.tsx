@@ -14,14 +14,14 @@ const ExamDifficultyFilter = (props: Props) => {
 
   const colorCircle = (difficulty: string) => {
     if (difficulty === '어려워요') {
-      return <div className={'h-[6px] w-[6px] rounded-full bg-[#F85349]'} />;
+      return <div className={'h-[6px] w-[6px] rounded-full bg-[#F85449]'} />;
     } else if (difficulty === '조금 어려워요') {
       return <div className={'h-[6px] w-[6px] rounded-full bg-[#F89249]'} />;
     } else if (difficulty === '보통이에요') {
       return <div className={'h-[6px] w-[6px] rounded-full bg-[#F8BC49]'} />;
     } else if (difficulty === '쉬워요') {
       return <div className={'h-[6px] w-[6px] rounded-full bg-[#4BEA3E]'} />;
-    } else if (difficulty === '매우 쉬워요') {
+    } else if (difficulty === '너무 쉬워요') {
       return <div className={'h-[6px] w-[6px] rounded-full bg-[#49D8F8]'} />;
     }
   };
@@ -41,7 +41,7 @@ const ExamDifficultyFilter = (props: Props) => {
       case '쉬워요':
         difficultyEnum = 'EASY';
         break;
-      case '매우 쉬워요':
+      case '너무 쉬워요':
         difficultyEnum = 'TOO_EASY';
         break;
       default:
@@ -55,7 +55,7 @@ const ExamDifficultyFilter = (props: Props) => {
   return (
     <div
       className={
-        'absolute left-36 top-[10%] border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 h-[250px] overflow-y-scroll'
+        'absolute left-[40%] top-[27%] border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 h-[250px] overflow-y-scroll'
       }>
       {examDifficulty.map((difficulty, index) => {
         return (

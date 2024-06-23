@@ -1,40 +1,53 @@
 'use client';
 
-import React, { SVGProps, useState } from 'react';
+import React, { SVGProps, useCallback, useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import Post from '@/components/mypage/Post';
+import useGetUserCommentPost from '@/lib/hooks/useGetUserCommentPost';
+import { PostType, ResponsePostType } from '@/types/community/type';
 import { filterContent } from '@/utils/mypage/FilterContent';
 
 export default function MyComment() {
-  // 최신순:createdAt, 인기순:popular
-  const [selectedFilterContent, setSelectedFilterContent] = useState('최신순');
+  const [ref, inView] = useInView();
+  const [selectedFilterContent, setSelectedFilterContent] = useState<'최신순' | '작성순'>('최신순');
   const [isOpenFilter, setIsOpenFilter] = useState(false);
-  const commentaryTopElement = () => {
+  const { userCommentPostsList, setSize } = useGetUserCommentPost(selectedFilterContent);
+
+  /**
+   * 무한 스크롤 뷰 감지하고 size+1 해줌
+   */
+  const getMoreItem = useCallback(async () => {
+    if (userCommentPostsList) {
+      setSize((prev: number) => prev + 1);
+    }
+    return;
+  }, []);
+
+  useEffect(() => {
+    if (inView) {
+      getMoreItem();
+    }
+  }, [inView]);
+
+  const commentaryTopElement = (year: number, round: number, number: number) => {
     return (
       <div className={'flex gap-x-[6px] pb-3'}>
-        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>2023년도</div>
-        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>1회차</div>
-        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>23번</div>
+        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{year}년도</div>
+        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{round}회차</div>
+        <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{number}번</div>
       </div>
     );
   };
 
+  // TODO: 마무리 해야 한다.
   const tipTopElement = () => {
     return (
       <div className={'pb-2'}>
         <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
-      </div>
-    );
-  };
-
-  const bottomElement = () => {
-    return (
-      <div className={'flex justify-end gap-x-2'}>
-        <button className={'bg-gray0 py-2 px-4 rounded-[12px]'}>수정</button>
-        <button className={'bg-black text-white py-2 px-4 rounded-[12px]'}>삭제</button>
       </div>
     );
   };
@@ -55,39 +68,46 @@ export default function MyComment() {
           </div>
           {isOpenFilter ? (
             <MyPageFilter
-              isOpenFilter={isOpenFilter}
+              isFilterOpen={isOpenFilter}
               setSelectedFilterContent={setSelectedFilterContent}
-              setIsOpenFilter={setIsOpenFilter}
+              setIsFilterOpen={setIsOpenFilter}
               data={filterContent}
             />
           ) : null}
           <div className={'flex flex-col gap-y-4'}>
-            <Post
-              content={'어려운 문제였어요. 데이터베이스 관계형 데이터 베이스...'}
-              title={'스프레드시트 23번 문제'}
-              commentCount={32}
-              bottomElement={bottomElement}
-              createdAt={'2023.7.12'}
-              imageUrl={'/황유림.jpg'}
-              likeCount={12}
-              topElement={commentaryTopElement}></Post>
-            <Post
-              content={'어려운 문제였어요. 데이터베이스 관계형 데이터 베이스...'}
-              title={'스프레드시트 23번 문제'}
-              commentCount={32}
-              bottomElement={bottomElement}
-              createdAt={'2023.7.12'}
-              imageUrl={'/황유림.jpg'}
-              likeCount={12}></Post>
-            <Post
-              content={'어려운 문제였어요. 데이터베이스 관계형 데이터 베이스...'}
-              title={'스프레드시트 23번 문제'}
-              commentCount={32}
-              bottomElement={bottomElement}
-              createdAt={'2023.7.12'}
-              imageUrl={'/황유림.jpg'}
-              likeCount={12}
-              topElement={tipTopElement}></Post>
+            {userCommentPostsList
+              ? userCommentPostsList.map((userCommentPosts: ResponsePostType) => {
+                  return userCommentPosts?.result.content.map((userCommentPost: PostType) => {
+                    return (
+                      <div key={userCommentPost.postId} ref={ref}>
+                        <Post
+                          postId={userCommentPost.postId}
+                          content={userCommentPost.postContent.content}
+                          title={userCommentPost.postContent.title}
+                          commentCount={userCommentPost.postStatus.commentCount}
+                          createdAt={'2021.07.31'}
+                          topElement={
+                            userCommentPost.recommendTags
+                              ? tipTopElement()
+                              : userCommentPost.question
+                              ? commentaryTopElement(
+                                  userCommentPost.question.mockExam.examYear,
+                                  userCommentPost.question.mockExam.round,
+                                  userCommentPost.question.questionSeq,
+                                )
+                              : null
+                          }
+                          likeCount={userCommentPost.postStatus.likeCount}
+                          imageUrl={
+                            userCommentPost.postContent.images.length !== 0
+                              ? userCommentPost.postContent.images[0].imageUrl
+                              : null
+                          }></Post>
+                      </div>
+                    );
+                  });
+                })
+              : null}
           </div>
         </div>
       </div>

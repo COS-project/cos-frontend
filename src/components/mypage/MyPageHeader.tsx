@@ -8,12 +8,16 @@ import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import { InterestCertificate } from '@/types/global';
 
 const MyPageHeader = () => {
+  const router = useRouter();
   const { userProfile } = useGetUserProfile();
   const { interestCertificates } = useGetInterestCertificates();
-  const router = useRouter();
 
-  const onMove = () => {
+  const onMoveProfilePage = () => {
     router.push('/mypage/profile');
+  };
+
+  const onMoveEditInterestCertification = () => {
+    router.push('/mypage/interest-certification');
   };
 
   return (
@@ -22,15 +26,16 @@ const MyPageHeader = () => {
         {/*프로필 설정*/}
         <div
           onClick={() => {
-            onMove();
+            onMoveProfilePage();
           }}
           className={'flex gap-x-4 items-center'}>
-          <Image
-            src={userProfile?.profileImage}
-            alt={userProfile?.profileImage}
-            height={72}
-            width={72}
-            className={'rounded-full'}></Image>
+          <div className={'relative h-[72px] w-[72px]'}>
+            <Image
+              src={userProfile?.profileImage}
+              alt={userProfile?.profileImage}
+              fill
+              className={'object-cover rounded-full'}></Image>
+          </div>
           <div className={'flex items-center'}>
             <div className={'text-h3'}>{userProfile?.nickname}</div>
             <EditProfileIcon />
@@ -38,7 +43,11 @@ const MyPageHeader = () => {
         </div>
 
         {/*나의 관심 종목*/}
-        <div className={'flex flex-col gap-y-3'}>
+        <div
+          onClick={() => {
+            onMoveEditInterestCertification();
+          }}
+          className={'flex flex-col gap-y-3'}>
           <div className={'flex justify-between'}>
             <div className={'text-h4 font-semibold'}>나의 관심 종목</div>
             <div className={'flex'}>
@@ -46,10 +55,12 @@ const MyPageHeader = () => {
               <EditInterestCertificationIcon />
             </div>
           </div>
-          <div className={'overflow-x-scroll'}>
+          <div className={'flex overflow-x-scroll gap-x-3'}>
             {interestCertificates?.map((interestCertificate: InterestCertificate, index: number) => {
               return (
-                <div key={index} className={'w-fit bg-primary rounded-[20px] px-[16px] py-[32px] text-white text-h6'}>
+                <div
+                  key={index}
+                  className={'flex-shrink-0 w-fit bg-primary rounded-[20px] px-[16px] py-[32px] text-white text-h6'}>
                   {interestCertificate.certificate.certificateName}
                 </div>
               );

@@ -1,11 +1,12 @@
 //커뮤니티 대댓글
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
-import React from 'react';
-import CommentContent from './CommentContent';
-import { PostComments } from '@/types/global';
 import { format } from 'date-fns';
+import React from 'react';
+
+import { PostComments } from '@/types/global';
+
+import CommentContent from './CommentContent';
 import CommunityProfile from './CommunityProfile';
 
 interface Props {
@@ -20,8 +21,8 @@ const CommentReply = (props: Props) => {
     <div className="pb-3 pl-[48px]">
       <CommunityProfile
         fontsizing={true}
-        date={format(info.createdAt, 'yy.MM.dd')}
-        time={format(info.createdAt, 'HH:mm')}
+        date={info.dateTime.createdAt ? format(info.dateTime.createdAt, 'yy.MM.dd') : null}
+        time={info.dateTime.createdAt ? format(info.dateTime.createdAt, 'HH:mm') : null}
         imgSrc={info.user.profileImage}
         onClick={profileModal}>
         {info.user.nickname}

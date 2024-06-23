@@ -1,22 +1,30 @@
 import React from 'react';
 
-import { QuestionsResponse } from '@/types/global';
+import { MockExam, QuestionsResponse } from '@/types/global';
 import { UserInfo } from '@/types/mypage/type';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
+
+export type SortDirections = 'DESC' | 'ASC';
 
 export type ExamReviewPostType = {
   examDifficulty: string;
   content: string;
 };
-export interface YearsAndRounds {
-  2017: number[];
-  2018: number[];
-  2019: number[];
-  2020: number[];
-  2021: number[];
-  2022: number[];
-  2023: number[];
+
+export interface LikeStatusResponseType {
+  responseCode: string;
+  result: boolean;
+}
+
+export interface MockExamsYearResponseType {
+  responseCode: string;
+  result: number[];
+}
+
+export interface MockExamsByYearResponseType {
+  responseCode: string;
+  result: MockExam[];
 }
 
 export interface CreatePostDataType {
@@ -52,6 +60,15 @@ export interface PopularSearchKeyword {
   sequence: number;
   keyword: string;
   icon: React.JSX.Element;
+}
+
+/**
+ ************ post Detail *************
+ */
+
+export interface ResponseBest3PostType {
+  responseCode: string;
+  result: PostType[];
 }
 
 export interface ResponsePostType {
@@ -103,8 +120,8 @@ export interface ResponseReviewPost {
   responseCode: string;
   result: {
     content: ReviewPost[];
+    hasNext: boolean;
   };
-  hasNext: boolean;
 }
 
 export interface RecommendTags {
@@ -123,7 +140,7 @@ export interface TrendingKeyword {
   status: TrendingKeywordState;
 }
 
-export interface PerparePeriodType {
+export interface PreparePeriodType {
   startMonth: number | undefined;
   endMonth: number | undefined;
 }

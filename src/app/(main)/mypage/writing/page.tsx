@@ -7,22 +7,22 @@ import { useInView } from 'react-intersection-observer';
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import DeleteWarningModal from '@/components/mypage/DeleteWarningModal';
+import MyPageCommentaryBoardList from '@/components/mypage/MyPageCommentaryBoardList';
+import MyPageExamReviewBoardList from '@/components/mypage/MyPageExamReviewBoardList';
 import MyPageFilter from '@/components/mypage/MyPageFilter';
+import MyPageNormalAndTipBoardList from '@/components/mypage/MyPageNormalAndTipBoardList';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import Post from '@/components/mypage/Post';
-import ReviewPost from '@/components/mypage/ReviewPost';
-import useAllIncorrectQuestions from '@/lib/hooks/useAllIncorrectQuestions';
 import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
 import { filterContent } from '@/utils/mypage/FilterContent';
-
 export default function MyWriting() {
-  const [ref, inView] = useInView();
   // REVIEW, COMMENTARY, TIP, NORMAL
+  const [ref, inView] = useInView();
   const [boardType, setBoardType] = useState<BoardType>('COMMENTARY');
   // 최신순:createdAt, 인기순:popular
   const [selectedFilterContent, setSelectedFilterContent] = useState('최신순');
-  const [isOpenFilter, setIsOpenFilter] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const { userPostsList, setSize, mutate } = useGetUserPosts(boardType);
   const [isDeleteWarningModalOpen, setIsDeleteWarningModalOpen] = useState<boolean>(false);
   const [deletePostId, setDeletePostId] = useState<number>(0);
@@ -89,24 +89,59 @@ export default function MyWriting() {
         />
       ) : null}
       <Header headerType={'dynamic'} title={'내가 작성한 글'} rightElement={<EmptyIcon />} />
-      <div className={'flex flex-col gap-y-4 bg-gray0 min-h-screen'}>
-        <MyWritingMenu boardType={boardType} setBoardType={setBoardType} />
-        <div className={'relative px-5 flex flex-col gap-y-4 '}>
-          {/*필터*/}
-          <div className={' w-fit flex px-3 py-1 rounded-full bg-white '}>
-            <span className={'text-gray4 text-h6'}>{selectedFilterContent}</span>
-            {isOpenFilter ? (
-              <ActivationIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
-            ) : (
-              <DisableIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
-            )}
-          </div>
-          {isOpenFilter ? (
-            <MyPageFilter
-              isOpenFilter={isOpenFilter}
-              setSelectedFilterContent={setSelectedFilterContent}
-              setIsOpenFilter={setIsOpenFilter}
-              data={filterContent}
+      {/* 게시판 종류 선택 메뉴 */}
+      <MyWritingMenu boardType={boardType} setBoardType={setBoardType} />
+      {/* 필터 */}
+      <div className={'flex flex-col bg-gray0 min-h-screen px-5'}>
+        <div
+          onClick={() => {
+            setIsFilterOpen(!isFilterOpen);
+          }}
+          className={'my-4 flex w-fit items-center px-3 rounded-full bg-white text-h6 py-1'}>
+          {selectedFilterContent}
+          {isFilterOpen ? <ActivationIcon /> : <InActivationIcon />}
+        </div>
+        {isFilterOpen ? (
+          <MyPageFilter
+            data={filterContent}
+            setIsFilterOpen={setIsFilterOpen}
+            isFilterOpen={isFilterOpen}
+            setSelectedFilterContent={setSelectedFilterContent}
+          />
+        ) : null}
+        {/* boardList */}
+        <div className={'flex flex-col gap-y-4'}>
+          {boardType === 'REVIEW' ? (
+            <MyPageExamReviewBoardList
+              setDeletePostId={setDeletePostId}
+              isDeleteWarningModalOpen={isDeleteWarningModalOpen}
+              setIsDeleteWarningModalOpen={setIsDeleteWarningModalOpen}
+              boardType={boardType}
+              selectedFilterContent={selectedFilterContent}
+            />
+          ) : boardType === 'COMMENTARY' ? (
+            <MyPageCommentaryBoardList
+              setDeletePostId={setDeletePostId}
+              isDeleteWarningModalOpen={isDeleteWarningModalOpen}
+              setIsDeleteWarningModalOpen={setIsDeleteWarningModalOpen}
+              boardType={boardType}
+              selectedFilterContent={selectedFilterContent}
+            />
+          ) : boardType === 'TIP' ? (
+            <MyPageNormalAndTipBoardList
+              setDeletePostId={setDeletePostId}
+              isDeleteWarningModalOpen={isDeleteWarningModalOpen}
+              setIsDeleteWarningModalOpen={setIsDeleteWarningModalOpen}
+              boardType={boardType}
+              selectedFilterContent={selectedFilterContent}
+            />
+          ) : boardType === 'NORMAL' ? (
+            <MyPageNormalAndTipBoardList
+              setDeletePostId={setDeletePostId}
+              isDeleteWarningModalOpen={isDeleteWarningModalOpen}
+              setIsDeleteWarningModalOpen={setIsDeleteWarningModalOpen}
+              boardType={boardType}
+              selectedFilterContent={selectedFilterContent}
             />
           ) : null}
           <div className={'flex flex-col gap-y-4'}>
@@ -149,7 +184,7 @@ export default function MyWriting() {
     </>
   );
 }
-const DisableIcon = (props: SVGProps<SVGSVGElement>) => (
+const InActivationIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none" {...props}>
     <path stroke="#727375" strokeLinecap="round" d="M13.5 9 10 12 6.5 9" />
   </svg>

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { ReviewIncorrectMockExam } from '@/types/global';
+import { MockExam, ReviewIncorrectMockExam } from '@/types/global';
 
 interface Props {
-  data: ReviewIncorrectMockExam[];
+  data: (string | MockExam)[];
   setSelectedFilterContent: React.Dispatch<React.SetStateAction<number | string>>;
   setIsOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
   isOpenFilter: boolean;
@@ -13,20 +13,24 @@ const RoundFilter = (props: Props) => {
   const { data, setSelectedFilterContent, setIsOpenFilter, isOpenFilter } = props;
 
   return (
-    <div className={'absolute top-8 left-32 border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10'}>
+    <div className={'absolute top-9 left-32 border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10'}>
       {!data || data.length === 0 ? (
         <div>error</div>
       ) : (
-        data.map((datum: ReviewIncorrectMockExam, index: number) => {
+        data.map((datum: ReviewIncorrectMockExam | string, index: number) => {
           return (
             <div
               key={index}
               className="text-h4 text-gray3 py-3 px-4 hover:text-black transition"
               onClick={() => {
-                setSelectedFilterContent(datum.round);
+                if (typeof datum === 'string') {
+                  setSelectedFilterContent('전체');
+                } else {
+                  setSelectedFilterContent(datum.round);
+                }
                 setIsOpenFilter(!isOpenFilter);
               }}>
-              {datum.round}회차
+              {typeof datum === 'string' ? '전체' : datum.round + '회차'}
             </div>
           );
         })

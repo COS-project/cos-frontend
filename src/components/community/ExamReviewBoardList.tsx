@@ -16,7 +16,7 @@ const ExamReviewBoardList = () => {
   const [selectedExamDifficultyContent, setSelectedExamDifficultyContent] = useState<string>('난이도 전체');
   const [isExamDifficultyOpen, setIsExamDifficultyOpen] = useState<boolean>(false);
   const [examDifficulty, setExamDifficulty] = useState<ExamDifficulty | undefined>();
-  const [selectedPreparePeriodContent, setSelectedPreparePeriodContent] = useState<string>('준비기간 전체');
+  const [selectedPreparePeriodContent, setSelectedPreparePeriodContent] = useState<string | undefined>('준비기간 전체');
   const [isPreparePeriodOpen, setIsPreparePeriodOpen] = useState<boolean>(false);
   const [startMonths, setStartMonths] = useState<number | undefined>();
   const [endPreMonths, setEndPreMonths] = useState<number | undefined>();
@@ -30,13 +30,13 @@ const ExamReviewBoardList = () => {
       await setSize((prev: number) => prev + 1);
     }
     return;
-  }, []);
+  }, [setSize]);
 
   useEffect(() => {
     if (inView) {
       getMoreItem();
     }
-  }, [inView]);
+  }, [inView, getMoreItem]);
 
   const changeTagForExamDifficulty = (examDifficulty: ExamDifficulty) => {
     if (examDifficulty === 'TOO_EASY') {
@@ -48,7 +48,7 @@ const ExamReviewBoardList = () => {
     } else if (examDifficulty === 'LITTLE_DIFFICULT') {
       return <div className={'px-[10px] py-[2px] bg-[#F89249] text-white rounded-full text-h6'}>조금 어려워요</div>;
     } else {
-      return <div className={'px-[10px] py-[2px] bg-[#49D8F8] text-white rounded-full text-h6'}>어려워요</div>;
+      return <div className={'px-[10px] py-[2px] bg-[#F85449] text-white rounded-full text-h6'}>어려워요</div>;
     }
   };
 
@@ -115,17 +115,22 @@ const ExamReviewBoardList = () => {
       </div>
       <div className={'flex flex-col gap-y-4'}>
         {examReviews
-          ? examReviews.map((examReview) => {
-              return examReview?.result.content.map((review: ReviewPost, index: number) => {
+          ? examReviews.map((examReview, index) => {
+              return examReview?.result.content.map((review: ReviewPost, postIndex: number) => {
+                const isLastElement =
+                  index === examReviews.length - 1 && postIndex === examReview?.result.content.length - 1;
                 return (
-                  <div key={index} ref={ref} className={'flex flex-col gap-y-1 py-4 px-5 rounded-[32px] bg-white'}>
+                  <div
+                    key={review.createdAt}
+                    ref={isLastElement ? ref : null}
+                    className={'flex flex-col gap-y-1 py-4 px-5 rounded-[32px] bg-white'}>
                     <div className={'flex flex-col gap-y-3'}>
                       <div className={'w-full flex items-center gap-x-[6px]'}>
                         <div className={'flex items-center gap-x-[9px]'}>
                           <div className={'truncate text-gray4 text-h6'}>{review.user.nickname}</div>
                           <div
                             className={'rounded-full border-[1px] border-gray2 py-[2px] px-[10px] text-gray4 text-h6'}>
-                            준비기간 3개월
+                            {`준비기간 ${review.prepareMonths}개월`}
                           </div>
                         </div>
                         {changeTagForExamDifficulty(review.examDifficulty)}

@@ -385,7 +385,7 @@ const EditPost = () => {
               </div>
               {isYearsFilterOpen && (
                 <MockExamYearsFilter
-                  data={examYears?.examYearWithRounds}
+                  years={examYears?.examYearWithRounds}
                   setIsOpen={setIsYearsFilterOpen}
                   setDataState={setEditPostData}
                 />

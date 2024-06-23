@@ -1,10 +1,10 @@
-import { AxiosResponse } from 'axios';
 import useSWR from 'swr';
 
 import { swrGetFetcher } from '@/lib/axios';
+import { CertificateInfoResponseType } from '@/types/home/type';
 
 const useGetCertificationInfo = () => {
-  const { data, error } = useSWR<AxiosResponse>('certificates/1/exam-infos', swrGetFetcher);
+  const { data, error } = useSWR<CertificateInfoResponseType>('certificates/1/certificate-exams', swrGetFetcher);
 
   return {
     certificationInfo: data,

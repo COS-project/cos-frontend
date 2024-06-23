@@ -11,7 +11,7 @@ interface Props {
   likeCount: number;
   commentCount: number;
   createdAt: string;
-  topElement?: React.JSX.Element | null;
+  topElement?: JSX.Element | undefined;
   bottomElement?: React.JSX.Element | null;
 }
 const Post = (props: Props) => {
@@ -20,6 +20,7 @@ const Post = (props: Props) => {
   const onMove = () => {
     router.push(`/community/1/${postId}`); //TODO:자격증 바꾸기
   };
+
   return (
     <div className={'flex flex-col gap-y-1 bg-white p-5 rounded-[32px]'}>
       <div
@@ -29,7 +30,7 @@ const Post = (props: Props) => {
         {/*best 태그, 해설게시판 태그*/}
         {topElement ? topElement : null}
         <div className={'flex gap-x-3 items-center justify-between'}>
-          <div className={'flex flex-col gap-y-1 w-[60%]'}>
+          <div className={imageUrl ? 'flex flex-col gap-y-1 w-[60%]' : 'flex flex-col gap-y-1 w-full'}>
             <div className={'text-h4 font-semibold truncate'}>{title}</div>
             <div className={'text-h4 font-normal line-clamp-2'}>{content}</div>
             {/*좋아요 수, 댓글 수*/}
@@ -45,7 +46,9 @@ const Post = (props: Props) => {
             </div>
           </div>
           {imageUrl ? (
-            <Image src={imageUrl} alt={imageUrl} height={104} width={100} className={'rounded-[5px]'} />
+            <div className={'relative h-[104px] w-[100px]'}>
+              <Image src={imageUrl} alt={imageUrl} fill className={'object-cover rounded-[5px]'} />
+            </div>
           ) : null}
         </div>
       </div>
@@ -55,7 +58,6 @@ const Post = (props: Props) => {
 
       {/*수정, 삭제버튼*/}
       {bottomElement ? bottomElement : null}
-      {/*{!bottomElement || bottomElement(postId) ? (bottomElement ? bottomElement(postId) : null) : null}*/}
     </div>
   );
 };
