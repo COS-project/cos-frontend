@@ -166,7 +166,7 @@ export default function CommunityCategoryPage() {
           <NormalAndTipBoardList boardType={boardType} />
         ) : null}
       </div>
-      {boardTypeForPost === 'REVIEW' ? null : (
+      {boardType === 'REVIEW' ? null : (
         <WriteButton
           setIsClickedWriteButton={setIsClickedWriteButton}
           boardType={boardType}
