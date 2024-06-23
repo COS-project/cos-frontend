@@ -29,14 +29,14 @@ export default function Header(props: Props) {
     switch (headerType) {
       case 'static':
         return (
-          <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-1">
+          <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
             <Logo />
             <AlarmIcon />
           </header>
         );
       case 'dynamic':
         return (
-          <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-3">
+          <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-3 z-10">
             {CancelIcon ? (
               <CancelIcon
                 onClick={() => {
@@ -66,7 +66,7 @@ export default function Header(props: Props) {
         );
       case 'second':
         return (
-          <header className="bg-white flex sticky top-12 justify-between items-center px-5 py-3 border-b-[1px] border-gray0">
+          <header className="bg-white flex sticky top-12 justify-between items-center px-5 py-3 border-b-[1px] border-gray0 z-10">
             <div
               onClick={() => {
                 setIsFilterOpen(!isFilterOpen);

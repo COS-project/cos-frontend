@@ -128,6 +128,10 @@ export default function CommunityCategoryPage() {
     router.push('/search');
   };
 
+  const onMoveCommunityMenuPage = () => {
+    router.push('/community');
+  };
+
   return boardTypeForPost === 'COMMENTARY' && isClickedWriteButton ? (
     <WriteExplanationPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : boardTypeForPost === 'TIP' && isClickedWriteButton ? (
@@ -138,6 +142,7 @@ export default function CommunityCategoryPage() {
     <>
       <Header
         headerType={'dynamic'}
+        onBack={onMoveCommunityMenuPage}
         rightElement={
           <SearchIcon
             onClick={() => {
