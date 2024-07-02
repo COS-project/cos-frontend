@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
+import NavBar from '@/components/common/NavBar';
 import Comment from '@/components/community/Comment';
 import CommentBar from '@/components/community/CommentBar';
 import CommentReply from '@/components/community/CommentReply';
@@ -232,6 +233,7 @@ const CommunityDetailPage = () => {
             </div>
           </div>
         ) : null}
+        <NavBar />
       </div>
     </>
   );
