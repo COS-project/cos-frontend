@@ -2,7 +2,7 @@
 import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
 import { SVGProps } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
@@ -25,10 +25,6 @@ const CommunityDetailPage = () => {
   const params = useParams();
   //커뮤니티 포스트에 해당하는 데이터를 가져옴
   const { communityPostData, isLoading, isError, communityPostDataMutate } = useGetCommunityPost(params.id);
-  //데이터 잘 들어왔는지 확인
-  useEffect(() => {
-    console.log('communityPostData', communityPostData);
-  }, [communityPostData]);
 
   //댓글의 답글달기 버튼을 클릭했을 때 사용
   const [replyOnOff, setReplyOnOff] = useState<boolean>(false);
