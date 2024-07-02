@@ -19,6 +19,7 @@ import useGetLikeStatus from '@/lib/hooks/useGetLikeStatus';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 import { PostComments, RecommendTags } from '@/types/global';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
+import Question from '@/components/community/Question';
 
 const CommunityDetailPage = () => {
   const params = useParams();
@@ -47,6 +48,8 @@ const CommunityDetailPage = () => {
   const { likeStatus, likeStatusMutate } = useGetLikeStatus(likeTargetType, params.id);
   //현재 사용자 정보 가져오기, (글, 댓글) 작성자인지 아닌지 체크하기 위함.
   const { userProfile } = useGetUserProfile();
+  //해설 게시글 문제보기 버튼을 클릭했는지 체크하기 위해 사용
+  const [isClickQuestionButton, setIsClickQuestionButton] = useState(false);
 
   //답글달기 버튼 클릭시에 사용
   const commentReplyControll = (index: number, id: number) => {
@@ -75,6 +78,18 @@ const CommunityDetailPage = () => {
 
   return (
     <>
+      {isClickQuestionButton ? (
+        <Question
+          isClickQuestionButton={isClickQuestionButton}
+          setIsClickQuestionButton={setIsClickQuestionButton}
+          examYear={communityPostData?.postResponse?.question?.mockExam.examYear}
+          questionSeq={communityPostData?.postResponse?.question?.questionSeq}
+          examRound={communityPostData?.postResponse?.question?.mockExam.round}
+          content={communityPostData?.postResponse?.question?.questionText}
+          questionOptions={communityPostData?.postResponse.question?.questionOptions}
+          correctOption={communityPostData?.postResponse?.question?.correctOption}
+        />
+      ) : null}
       <div className="mb-[100px]">
         {/* <ImgModal></ImgModa> */}
         {/* 나중에 이 부분에 이미지 모달창을 넣을 예정 */}
@@ -121,11 +136,14 @@ const CommunityDetailPage = () => {
                     <CommunityTag>{communityPostData.postResponse?.question?.mockExam.round}회차</CommunityTag>
                     <CommunityTag>{communityPostData.postResponse?.question?.questionSeq}번</CommunityTag>
                   </div>
-                  <div
+                  <button
+                    onClick={() => {
+                      setIsClickQuestionButton(!isClickQuestionButton);
+                    }}
                     className={'flex items-center px-3 py-1 rounded-full border-[1px] border-gray2 text-gray4 text-h6'}>
                     문제보기
                     <MoveIcon />
-                  </div>
+                  </button>
                 </div>
               ) : null}
               <CommunityPost
