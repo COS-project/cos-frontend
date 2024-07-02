@@ -50,6 +50,8 @@ const CommunityDetailPage = () => {
   const { userProfile } = useGetUserProfile();
   //해설 게시글 문제보기 버튼을 클릭했는지 체크하기 위해 사용
   const [isClickQuestionButton, setIsClickQuestionButton] = useState(false);
+  //꿀팁 게시판 Best 태그
+  const { bestTipPosts } = useBest3TipPosts(1);
 
   //답글달기 버튼 클릭시에 사용
   const commentReplyControll = (index: number, id: number) => {
@@ -120,14 +122,13 @@ const CommunityDetailPage = () => {
                 {communityPostData.postResponse.user.nickname}
               </CommunityProfile>
               <div className="pb-[16px]"></div>
-              {/* 꿀팁 태그 */}
-              <div className={'flex gap-x-2'}>
-                {communityPostData.postResponse.recommendTags
-                  ? communityPostData.postResponse.recommendTags?.map((tag: RecommendTags, index: number) => {
-                      return <CommunityTag key={index}>{tag.tagName}</CommunityTag>;
-                    })
-                  : null}
-              </div>
+              {/* 꿀팁 게시글 Best 태그 */}
+              {bestTipPosts?.map((bestTipPost, index) => {
+                if (bestTipPost.postId === communityPostData?.postResponse.postId)
+                  return (
+                    <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
+                  );
+              })}
               {/* 해설 태그 && 문제보기 버튼 */}
               {communityPostData.postResponse?.question ? (
                 <div className={'flex w-full justify-between'}>
@@ -150,6 +151,14 @@ const CommunityDetailPage = () => {
                 subject={communityPostData.postResponse?.postContent.title}
                 content={communityPostData.postResponse?.postContent.content}
                 images={communityPostData.postResponse?.postContent.images}></CommunityPost>
+              {/* 꿀팁 태그 */}
+              <div className={'flex gap-x-2'}>
+                {communityPostData.postResponse.recommendTags
+                  ? communityPostData.postResponse.recommendTags?.map((tag: RecommendTags, index: number) => {
+                      return <CommunityTag key={index}>{tag.tagName}</CommunityTag>;
+                    })
+                  : null}
+              </div>
               <CommentBar
                 empathy={communityPostData.postResponse?.postStatus.likeCount} //공감수
                 comment={communityPostData.postResponse?.postStatus.commentCount} //댓글수
