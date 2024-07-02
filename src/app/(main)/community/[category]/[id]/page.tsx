@@ -13,13 +13,14 @@ import CommentWriting from '@/components/community/CommentWriting';
 import CommunityPost from '@/components/community/CommunityPosting';
 import CommunityProfile from '@/components/community/CommunityProfile';
 import CommunityTag from '@/components/community/CommunityTag';
+import Question from '@/components/community/Question';
 import { postToggleLikeData } from '@/lib/api/communityPost';
+import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import useGetLikeStatus from '@/lib/hooks/useGetLikeStatus';
+import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 import { PostComments, RecommendTags } from '@/types/global';
-import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
-import Question from '@/components/community/Question';
 
 const CommunityDetailPage = () => {
   const params = useParams();
