@@ -1,4 +1,5 @@
 import React, { SVGProps } from 'react';
+
 import { QuestionOptions } from '@/types/global';
 interface Props {
   setIsClickQuestionButton: React.Dispatch<React.SetStateAction<boolean>>;
@@ -94,13 +95,7 @@ const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 const CorrectOptionIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={17}
-    height={16}
-    fill="none"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width={17} height={16} fill="none" {...props}>
     <rect width={16} height={16} x={0.894} fill="#3B3DFF" rx={8} />
     <path stroke="#fff" d="M4.394 7.455 7.736 11l5.658-6" />
   </svg>
