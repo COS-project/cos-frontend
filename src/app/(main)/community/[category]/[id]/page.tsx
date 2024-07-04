@@ -22,6 +22,7 @@ import useGetLikeStatus from '@/lib/hooks/useGetLikeStatus';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 import { PostComments, RecommendTags } from '@/types/global';
+import PostingModal from '@/components/community/PostingModal';
 
 const CommunityDetailPage = () => {
   const params = useParams();
@@ -78,6 +79,17 @@ const CommunityDetailPage = () => {
 
   return (
     <>
+      {onPostModal ? ( //글 삭제 및 수정 모달창
+        <PostingModal editOnOff={true} afterDelete="/community/Comhwal_level1/" postId={params.id}>
+          글 메뉴
+        </PostingModal>
+      ) : null}
+      {/* 댓글 삭제 모달창 */}
+      {onCommentModal ? (
+        <PostingModal editOnOff={false} postId={params.id}>
+          댓글 메뉴
+        </PostingModal>
+      ) : null}
       {isClickQuestionButton ? (
         <Question
           isClickQuestionButton={isClickQuestionButton}
