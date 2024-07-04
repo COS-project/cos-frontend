@@ -7,10 +7,10 @@ import { SubjectResultRequests, UserAnswerRequests } from '@/types/global';
 /**
  * 채점해주는 커스텀 훅
  */
-const useCalculateScore = () => {
+const useCalculateScore = (mockExamId: number) => {
   const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
   const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList);
-  const { questions, isLoading, isError } = useMockExamQuestions();
+  const { questions, isLoading, isError } = useMockExamQuestions(mockExamId);
 
   /**
    * 사용자가 선택한 각 선택지가 맞았는지 틀렸는지 채점
@@ -46,7 +46,7 @@ const useCalculateScore = () => {
           const newSubjectResult: SubjectResultRequests = {
             subjectId: question.subject.subjectId - 1,
             score: newUserAnswerList.filter((userAnswer) => userAnswer.isCorrect).length * questions[index].score,
-            userAnswerRequests: newUserAnswerList,
+            createUserAnswerRequests: newUserAnswerList,
           };
           newSubjectResultList.push(newSubjectResult);
           newUserAnswerList = [];
@@ -57,7 +57,7 @@ const useCalculateScore = () => {
           const newSubjectResult: SubjectResultRequests = {
             subjectId: question.subject.subjectId,
             score: newUserAnswerList.filter((userAnswer) => userAnswer.isCorrect).length * questions[index].score,
-            userAnswerRequests: newUserAnswerList,
+            createUserAnswerRequests: newUserAnswerList,
           };
           newSubjectResultList.push(newSubjectResult);
           newUserAnswerList = [];

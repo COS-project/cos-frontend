@@ -1,7 +1,10 @@
 import { sendRequest } from '@/lib/axios';
 import { SubjectResultRequests } from '@/types/global';
 
-export const postSubjectResultRequestsList = async (subjectResultRequestsList: SubjectResultRequests[]) => {
+export const postSubjectResultRequestsList = async (
+  subjectResultRequestsList: SubjectResultRequests[],
+  mockExamId: number,
+) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
@@ -9,8 +12,8 @@ export const postSubjectResultRequestsList = async (subjectResultRequestsList: S
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'POST',
-      data: { subjectResultRequests: subjectResultRequestsList },
-      url: 'mock-exams/1/mock-exam-results',
+      data: { createSubjectResultRequests: subjectResultRequestsList },
+      url: `mock-exams/${mockExamId}/mock-exam-results`,
     });
     // 성공적인 응답 처리
     return response.data;

@@ -37,6 +37,11 @@ export let userAnswerRequestsList = atom<UserAnswerRequests[]>({
   default: [],
 });
 
+export const sessionRecordedState = atom<boolean>({
+  key: 'sessionRecordedState',
+  default: false,
+});
+
 export const questionIndex = atom<number>({
   key: 'questionIndex',
   default: 0,
@@ -50,4 +55,30 @@ export const stopwatchTime = atom<number>({
 export const stopwatchIsRunning = atom<boolean>({
   key: 'stopwatchIsRunning',
   default: true,
+});
+
+export const timerIsPaused = atom<boolean>({
+  key: 'timerIsPaused',
+  default: false,
+});
+
+export const stopwatchIsPaused = atom<boolean>({
+  key: 'stopwatchIsPaused',
+  default: false,
+});
+
+//모의고사 응시 번호
+export const mockExamIdState = atom<number>({
+  key: 'mockExamIdState',
+  default: 1,
+});
+
+export const timeLimitState = atom<number>({
+  key: 'timeLimitState',
+  default: 0,
+});
+
+export const submittedMockExamResultIdState = atom<number>({
+  key: 'submittedMockExamResultIdState',
+  default: 0,
 });

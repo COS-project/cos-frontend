@@ -1,40 +1,41 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useRecoilState } from 'recoil';
 
+import Header from '@/components/common/Header';
 import DoneButton from '@/components/onboarding/DoneButton';
 import { postInterestCertificates } from '@/lib/api/onboarding';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
-import { InterestCertificate } from '@/types/global';
+import { InterestCertificateOnboarding } from '@/types/global';
 
 export interface CertificationPriorityProps {
   onNext: () => void;
   onBefore: () => void;
 }
 
-// CertificationPriority 컴포넌트는 사용자가 자격증의 우선 순위를 설정할 수 있는 UI를 제공합니다.
 const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, onBefore }) => {
   const [interestCertificates, setInterestCertificates] = useRecoilState(interestCertificatesState);
+  const [isClickedDoneButton, setIsClickedDoneButton] = useState(false); // 제출할 때, useEffect 를 움직이기 위한 트리거
 
   // 드래그 앤 드롭 작업이 끝났을 때 호출되는 함수입니다. 자격증의 순서를 변경합니다.
-  const handleDragEnd = (result) => {
+  const handleDragEnd = (result: any) => {
     if (!result.destination) return;
 
-    const reorderedCertificates = Array.from(interestCertificates);
+    const reorderedCertificates = Array.from(interestCertificates.interestTargetList);
     const [selectedCertificate] = reorderedCertificates.splice(result.source.index, 1);
     reorderedCertificates.splice(result.destination.index, 0, selectedCertificate);
 
-    setInterestCertificates(reorderedCertificates);
+    setInterestCertificates(() => ({ interestTargetList: reorderedCertificates }));
   };
 
   // 자격증 객체에서 certificateName 속성을 제거합니다. API 요청을 위한 데이터 정제 과정입니다.
-  const sanitizeCertificates = (certificates: InterestCertificate[]) =>
+  const sanitizeCertificates = (certificates: InterestCertificateOnboarding[]) =>
     certificates.map(({ certificateName, ...rest }) => rest);
 
   // 각 자격증에 새로운 우선 순위를 할당합니다. 이는 사용자가 설정한 드래그 앤 드롭 순서에 기반합니다.
-  const updateCertificatesPriority = (certificates: InterestCertificate[]) =>
+  const updateCertificatesPriority = (certificates: InterestCertificateOnboarding[]) =>
     certificates.map((certificate, index) => ({
       ...certificate,
       interestPriority: ['HIGH', 'NORMAL', 'LOW'][index] || certificate.interestPriority,
@@ -42,17 +43,22 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
 
   // 우선 순위가 업데이트된 자격증 목록을 서버에 전송하고, 로컬 상태를 업데이트합니다.
   const handleSubmit = () => {
-    const prioritizedCertificates = updateCertificatesPriority(interestCertificates);
+    const prioritizedCertificates = updateCertificatesPriority(interestCertificates.interestTargetList);
     const sanitizedCertificates = sanitizeCertificates(prioritizedCertificates);
-    setInterestCertificates(sanitizedCertificates);
-    postInterestCertificates(sanitizedCertificates);
+    setInterestCertificates(() => ({ interestTargetList: sanitizedCertificates }));
+    setIsClickedDoneButton(true);
   };
+
+  // post 요청
+  useEffect(() => {
+    if (!interestCertificates.interestTargetList[0].certificateName && isClickedDoneButton) {
+      postInterestCertificates(interestCertificates).then((r) => {console.log('r', r)});
+    }
+  }, [isClickedDoneButton]);
 
   return (
     <div>
-      <div>
-        <button onClick={onBefore}>이전</button>
-      </div>
+      <Header headerType={'dynamic'} onBack={onBefore} title={'종목설정'}></Header>
 
       <div className="grid gap-y-8 m-4">
         <div className="grid">
@@ -66,7 +72,7 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
           <Droppable droppableId="certificates">
             {(provided) => (
               <div className="grid gap-y-[16px]" ref={provided.innerRef} {...provided.droppableProps}>
-                {interestCertificates.map(({ certificateId, certificateName }, index) => (
+                {interestCertificates.interestTargetList.map(({ certificateId, certificateName }, index) => (
                   <Draggable key={certificateId} draggableId={certificateId.toString()} index={index}>
                     {(provided) => (
                       <div
@@ -89,9 +95,16 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
         </DragDropContext>
       </div>
 
-      <DoneButton onNext={onNext} postData={handleSubmit}>
-        완료
-      </DoneButton>
+      <button
+        className={
+          'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0 hover:bg-primary transition'
+        }
+        onClick={() => {
+          handleSubmit();
+          onNext();
+        }}>
+        <div className="text-white text-h3 py-[25px]">완료</div>
+      </button>
     </div>
   );
 };

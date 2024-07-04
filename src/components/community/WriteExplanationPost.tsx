@@ -1,18 +1,25 @@
 import Image from 'next/image';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import FilterModal from '@/components/common/FilterModal';
+import Header from '@/components/common/Header';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
+import MockExamRoundFilter from '@/components/community/MockExamRoundFilter';
 import { postCommentary } from '@/lib/api/community';
-import useGetMockExamYearsAndRounds from '@/lib/hooks/useGetMockExamYearsAndRounds';
+import useGetMockExams from '@/lib/hooks/useGetMockExams';
+import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 
-const WriteExplanationPost = () => {
-  const { examYearWithRounds } = useGetMockExamYearsAndRounds();
-  const { questions } = useMockExamQuestions();
+interface Props {
+  setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const WriteExplanationPost = (props: Props) => {
+  const { setIsClickedWriteButton } = props;
+  const { examYears } = useGetMockExamYears();
+  const { questions } = useMockExamQuestions(1); //TODO: 나중에 모의고사 번호로 변경해야 함.
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
 
@@ -24,6 +31,19 @@ const WriteExplanationPost = () => {
   const [isEmpty, setIsEmpty] = useState(true);
   const [isQuestionSequenceNumeric, setIsQuestionSequenceNumeric] = useState(true);
   const [questionSequence, setQuestionSequence] = useState(0);
+  const { mockExams } = useGetMockExams(1, postData.examYear); //해설 회차 필터값
+  const [filteredExamYears, setFilteredExamYears] = useState<number[]>([]);
+
+  useEffect(() => {
+    console.log('mockExams', mockExams);
+  }, [mockExams, postData]);
+
+  useEffect(() => {
+    if (examYears.includes('전체')) {
+      const filterData = examYears.filter((item) => item !== '전체');
+      setFilteredExamYears(filterData);
+    }
+  }, [examYears]);
 
   /**
    * 문제 번호를 변경하는 함수
@@ -93,7 +113,7 @@ const WriteExplanationPost = () => {
     const formData = new FormData();
 
     imageUrlList.forEach((file, index) => {
-      formData.append('images', file);
+      formData.append('files', file);
     });
 
     formData.append(
@@ -110,12 +130,24 @@ const WriteExplanationPost = () => {
     }
   };
 
+  const onBack = () => {
+    setIsClickedWriteButton(false);
+  };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <button type={'submit'} className={'p-3 bg-second text-white'}>
-          저장
-        </button>
+        <Header
+          onBack={onBack}
+          CancelIcon={CancelIcon}
+          headerType={'dynamic'}
+          title={'해설 쓰기'}
+          rightElement={
+            <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
+              완료
+            </button>
+          }></Header>
+
         <div className={'flex flex-col m-5 gap-y-4'}>
           {/* 년도 선택 세션 */}
           <div className={'flex flex-col relative gap-y-2'}>
@@ -130,7 +162,7 @@ const WriteExplanationPost = () => {
             </div>
             {isYearsFilterOpen && (
               <MockExamYearsFilter
-                data={examYearWithRounds?.examYearWithRounds}
+                years={filteredExamYears}
                 setIsOpen={setIsYearsFilterOpen}
                 setDataState={setPostData}
               />
@@ -149,8 +181,9 @@ const WriteExplanationPost = () => {
               {isRoundsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
             </div>
             {isRoundsFilterOpen && (
-              <FilterModal
-                data={postData.examYear ? examYearWithRounds?.examYearWithRounds[postData.examYear] : null}
+              <MockExamRoundFilter
+                //TODO: 회차 모의고사
+                mockExams={postData.examYear ? mockExams : null}
                 setDataState={setPostData}
                 setIsOpen={setIsRoundsFilterOpen}
                 className={'absolute w-full top-[100%]'}
@@ -288,3 +321,10 @@ function DeleteIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+
+const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none" {...props}>
+    <path stroke="#000" strokeLinecap="round" d="m8 8 16 16M24 8 8 24" />
+  </svg>
+);

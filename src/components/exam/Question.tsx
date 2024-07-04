@@ -6,7 +6,9 @@ import { useRecoilState } from 'recoil';
 import QuestionContent from '@/components/exam/QuestionContent';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import {
+  mockExamIdState,
   questionIndex,
+  stopwatchIsPaused,
   stopwatchIsRunning,
   stopwatchTime,
   userAnswerRequests,
@@ -17,7 +19,8 @@ import { Question, QuestionsResponse, UserAnswerRequests } from '@/types/global'
 import { AllQuestionModal } from './AllQuestionModal';
 
 const Question = () => {
-  const { questions, isLoading, isError } = useMockExamQuestions();
+  const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
+  const { questions, isLoading, isError } = useMockExamQuestions(selectedMockExamId);
   const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
   const [allQuestionModalIsOpen, setAllQuestionModalIsOpen] = useState(false);
   const [userAnswer, setUserAnswer] = useRecoilState<UserAnswerRequests>(userAnswerRequests);
@@ -25,6 +28,8 @@ const Question = () => {
   // 각 문제당 걸린 시간
   const [time, setTime] = useRecoilState<number>(stopwatchTime);
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);
+  // 문제당 머문시간을 잠시 멈추는
+  const [isPaused, setIsPaused] = useRecoilState(stopwatchIsPaused);
   const [progressBarLength, setProgressBarLength] = useState(60); // 초기값을 60으로 설정
 
   const toggleQuestionModal = () => {
@@ -82,7 +87,7 @@ const Question = () => {
   };
 
   /**
-   * 처음 랜더링 될 때, userAnswerLis t을 기본값으로 채워주는 기능
+   * 처음 랜더링 될 때, userAnswerList 을 기본값으로 채워주는 기능
    */
   useEffect(() => {
     if (questions?.length > 0 && userAnswerList.length === 0) {
@@ -103,16 +108,16 @@ const Question = () => {
   useEffect(() => {
     let interval: NodeJS.Timer | undefined;
 
-    if (isRunning) {
+    if (isRunning && !isPaused) {
       interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
-      }, 1);
+        setTime((prevTime) => prevTime + 1000);
+      }, 1000);
     } else {
       clearInterval(interval);
     }
 
     return () => clearInterval(interval);
-  }, [isRunning]);
+  }, [isRunning, isPaused]);
 
   /**
    * 다음 문제로 넘어갈 때, 스톱워치를 다시 키고, 다시 0으로 릿셋

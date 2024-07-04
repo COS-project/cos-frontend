@@ -20,6 +20,8 @@ export interface Props {
   children?: React.ReactNode;
   isMoveButton?: boolean;
   path?: number;
+  isErrorModalOpen?: boolean,
+  setIsErrorModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CertificationClassificationItem = (props: Props) => {
@@ -33,10 +35,12 @@ const CertificationClassificationItem = (props: Props) => {
     isMoveButton = false,
     path,
     className,
+    isErrorModalOpen,
+    setIsErrorModalOpen,
   } = props;
   const router = useRouter();
   const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
-  const [interestCertificatesList, setInterestCertificatesList] = useRecoilState(interestCertificatesState);
+  const [interestCertificates, setInterestCertificates] = useRecoilState(interestCertificatesState);
   const { mutate } = useSWRConfig();
 
   //CertificationClassificationItem 컴포넌트의 이동버튼 클릭했을 때 함수
@@ -49,7 +53,7 @@ const CertificationClassificationItem = (props: Props) => {
     setAllCertifications((currentCertifications) =>
       currentCertifications.map((certification) => {
         // interestCertificates의 길이를 기반으로 isClick 상태를 조건적으로 업데이트
-        const shouldUpdateClickState = interestCertificatesList.length < 3 || certification.isClick;
+        const shouldUpdateClickState = interestCertificates.interestTargetList.length < 3 || certification.isClick;
         return certification.certificateId === certificateId && shouldUpdateClickState
           ? { ...certification, isClick: !certification.isClick }
           : certification;
@@ -59,18 +63,23 @@ const CertificationClassificationItem = (props: Props) => {
 
   //온보딩 관심 자격증 리스트 만드는 함수
   const createInterestCertification = () => {
-    if (interestCertificatesList.some((item) => item.certificateId === certificateId)) {
-      setInterestCertificatesList(
-        interestCertificatesList.filter((interestCertificate) => interestCertificate.certificateId !== certificateId),
-      );
-    } else if (interestCertificatesList.length < 3) {
-      setInterestCertificatesList((interestCertificates) => [
-        ...interestCertificates,
-        { certificateId: certificateId, certificateName: certificateName, interestPriority: 'LOW' },
-      ]);
+    if (interestCertificates.interestTargetList.some((item) => item.certificateId === certificateId)) {
+      setInterestCertificates(() => ({
+        interestTargetList: interestCertificates.interestTargetList.filter(
+          (interestCertificate) => interestCertificate.certificateId !== certificateId,
+        ),
+      }));
+    } else if (interestCertificates.interestTargetList.length < 3) {
+      setInterestCertificates((interestCertificates) => ({
+        interestTargetList: [
+          ...interestCertificates.interestTargetList,
+          { certificateId: certificateId, certificateName: certificateName, interestPriority: 'LOW' },
+        ],
+      }));
     } else {
-      //TODO:모달창 디자인되면 변경
-      alert('리스트에 값 3개만 넣어야함');
+      if (setIsErrorModalOpen) {
+        setIsErrorModalOpen(!isErrorModalOpen);
+      }
     }
   };
 

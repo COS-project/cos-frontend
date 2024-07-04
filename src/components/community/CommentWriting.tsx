@@ -1,30 +1,57 @@
 //댓글 입력하는 칸
-
+//link부분 수정 필요함
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
-import React from 'react';
-import { twMerge } from 'tailwind-merge';
+import React, { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+
+import { postCommentData } from '@/lib/api/communityPost';
+import { GenerateCommentState } from '@/recoil/community/atom';
 
 interface Props {
   link?: string; //버튼 눌렀을 때 데이터를 저장하는 경로 입력, api연결하면서 "?"수정 필요함
   padding?: string; //pl설정
+  commentId?: number; //부모댓글 id
+  postId: number; //포스트 id
 }
 
 const CommentWriting = (props: Props) => {
-  const { link, padding } = props;
+  const { link, padding, commentId, postId } = props;
+  const [generateComment, setGenerateComment] = useRecoilState(GenerateCommentState);
+
+  useEffect(() => {
+    if (commentId != null) {
+      //부모댓글이 있을 때(대댓글일 때)
+      setGenerateComment({ ...generateComment, parentCommentId: commentId });
+    }
+  }, [commentId]);
+
+  useEffect(() => {
+    console.log(generateComment);
+  }, [generateComment]);
+
   return (
     <div className={padding}>
       <form
-        action={link}
-        method="post"
+        // action={link}
+        // method="post"
         className="mt-6 mb-3 w-full h-14 px-4 py-2 bg-gray0 rounded-2xl border border-white justify-between items-center inline-flex ">
         <textarea
           className="text-gray4 text-[15px] font-normal font-['Pretendard Variable'] leading-snug bg-gray0 w-full outline-none "
           maxLength={500}
-          placeholder="의견을 남겨주세요."></textarea>
+          placeholder="의견을 남겨주세요."
+          onChange={(e) => {
+            setGenerateComment({ ...generateComment, content: e.target.value }); //textarea의 내용으로 content값을 바꿈
+          }}></textarea>
         <div className="w-10 h-10 relative">
-          <button type="submit" className="w-10 h-10 left-0 top-0 absolute bg-indigo-600 grid place-content-center">
+          <button
+            type="submit"
+            className="w-10 h-10 left-0 top-0 absolute bg-indigo-600 grid place-content-center"
+            onClick={() => {
+              //제출 버튼 클릭 시 동작
+              postCommentData(postId, generateComment);
+              setGenerateComment({ ...generateComment, content: '' });
+            }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="29" fill="none" viewBox="0 0 30 29">
               <path
                 fill="#3B3DFF"

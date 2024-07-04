@@ -1,14 +1,20 @@
 'use client';
 
 import Image from 'next/image';
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { SVGProps, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
+import Header from '@/components/common/Header';
 
-const WriteTipPost = () => {
+interface Props {
+  setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const WriteTipPost = (props: Props) => {
+  const {setIsClickedWriteButton} = props;
   const [postData, setPostData] = useRecoilState(createPostDataState);
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState);
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
@@ -142,7 +148,7 @@ const WriteTipPost = () => {
       // 태그가 업데이트된 후 실행할 로직
       const formData = new FormData();
       imageUrlList.forEach((file) => {
-        formData.append('images', file);
+        formData.append('files', file);
       });
       formData.append('request', new Blob([JSON.stringify(postData)], { type: 'application/json' }));
 
@@ -157,131 +163,145 @@ const WriteTipPost = () => {
     }
   }, [postData.tags]);
 
+
+  const onBack = () => {
+    setIsClickedWriteButton(false);
+  };
+
   return (
-    <div className={'m-5'}>
+    <div className={''}>
       <form onSubmit={handleSubmit} className={'flex flex-col gap-y-3'}>
-        <button type={'submit'} className={'p-3 bg-second text-white'}>
-          저장
-        </button>
+        <Header
+          onBack={onBack}
+          CancelIcon={CancelIcon}
+          headerType={'dynamic'}
+          title={'꿀팁게시판 쓰기'}
+          rightElement={
+            <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
+              완료
+            </button>
+          }></Header>
 
-        {/* 제목, 글 작성 세션 */}
-        <div className={'flex flex-col gap-y-2 mt-[16px]'}>
-          <div className={'text-h3 font-bold ml-2'}>꿀팁 작성</div>
-          <div className={'flex flex-col gap-y-3'}>
-            <input
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                changePostDataTitle(e.target.value);
-              }}
-              className={
-                'w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
-              }
-              placeholder={'제목'}></input>
-            <textarea
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                changePostDataContent(e.target.value);
-              }}
-              placeholder={'내용을 입력해주세요.'}
-              className={
-                'w-full h-[300px] border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
-              }></textarea>
+        <div className={'mx-5'}>
+          {/* 제목, 글 작성 세션 */}
+          <div className={'flex flex-col gap-y-2 mt-[16px]'}>
+            <div className={'text-h3 font-bold ml-2'}>꿀팁 작성</div>
+            <div className={'flex flex-col gap-y-3'}>
+              <input
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  changePostDataTitle(e.target.value);
+                }}
+                className={
+                  'w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
+                }
+                placeholder={'제목'}></input>
+              <textarea
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                  changePostDataContent(e.target.value);
+                }}
+                placeholder={'내용을 입력해주세요.'}
+                className={
+                  'w-full h-[300px] border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
+                }></textarea>
+            </div>
           </div>
-        </div>
 
-        {/* 인강 추천 태그 세션*/}
-        <div className={'flex flex-col gap-y-2 mt-[16px]'}>
-          <div className={'text-h3 font-bold ml-2'}>
-            추천 인강 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
-          </div>
-          <div className={'flex flex-col gap-y-3'}>
-            {onlineCourseInputs.map((input: string, index: number) => (
-              <div
-                key={index}
-                className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
-                <input
-                  type="text"
-                  value={input}
-                  placeholder={'인강 제목'}
-                  className={'w-[90%] placeholder:text-gray4 focus:outline-0'}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChangeOnlineCourseInput(index, event)}
-                />
-                <button
-                  type={'button'}
-                  onClick={() => deleteOnlineCourseInputs(index)}
-                  className={'bg-gray2 rounded-full p-1'}>
-                  x
-                </button>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={() => addOnlineCourseInput()}
-            type={'button'}
-            className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
-            + 추가
-          </button>
-        </div>
-
-        {/* 문제집 추천 태그 세션*/}
-        <div className={'flex flex-col gap-y-2 mt-[16px]'}>
-          <div className={'text-h3 font-bold ml-2'}>
-            추천 문제집 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
-          </div>
-          <div className={'flex flex-col gap-y-3'}>
-            {workbookInputs.map((input: string, index: number) => (
-              <div
-                key={index}
-                className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
-                <input
-                  type="text"
-                  value={input}
-                  placeholder={'문제집 제목'}
-                  className={'w-[90%] placeholder:text-gray4 focus:outline-0'}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChangeWorkBookInput(index, event)}
-                />
-                <button
-                  type={'button'}
-                  onClick={() => deleteWorkBookInputs(index)}
-                  className={'bg-gray2 rounded-full p-1'}>
-                  x
-                </button>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={() => addWorkbookInputs()}
-            type={'button'}
-            className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
-            + 추가
-          </button>
-        </div>
-
-        {/* 이미지 추가 세션 */}
-        <div className={'flex gap-x-2 '}>
-          <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
-            <label htmlFor="image">
-              <AddImageIcon />
-            </label>
-            <input
-              type={'file'}
-              accept={'image/*'}
-              id="image"
-              name="image"
-              ref={imgRef}
-              onChange={saveImgFile}
-              multiple
-              style={{ display: 'none' }}></input>
-          </div>
-          <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
-            {imagePreviews.map((img, i) => {
-              return (
-                <div key={i} className={'relative rounded-[8px]'}>
-                  <ImageDeleteButton i={i} usage={'create'} />
-                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                    <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
-                  </div>
+          {/* 인강 추천 태그 세션*/}
+          <div className={'flex flex-col gap-y-2 mt-[16px]'}>
+            <div className={'text-h3 font-bold ml-2'}>
+              추천 인강 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
+            </div>
+            <div className={'flex flex-col gap-y-3'}>
+              {onlineCourseInputs.map((input: string, index: number) => (
+                <div
+                  key={index}
+                  className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
+                  <input
+                    type="text"
+                    value={input}
+                    placeholder={'인강 제목'}
+                    className={'w-[90%] placeholder:text-gray4 focus:outline-0'}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChangeOnlineCourseInput(index, event)}
+                  />
+                  <button
+                    type={'button'}
+                    onClick={() => deleteOnlineCourseInputs(index)}
+                    className={'bg-gray2 rounded-full p-1'}>
+                    x
+                  </button>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+            <button
+              onClick={() => addOnlineCourseInput()}
+              type={'button'}
+              className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
+              + 추가
+            </button>
+          </div>
+
+          {/* 문제집 추천 태그 세션*/}
+          <div className={'flex flex-col gap-y-2 mt-[16px]'}>
+            <div className={'text-h3 font-bold ml-2'}>
+              추천 문제집 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
+            </div>
+            <div className={'flex flex-col gap-y-3'}>
+              {workbookInputs.map((input: string, index: number) => (
+                <div
+                  key={index}
+                  className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
+                  <input
+                    type="text"
+                    value={input}
+                    placeholder={'문제집 제목'}
+                    className={'w-[90%] placeholder:text-gray4 focus:outline-0'}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChangeWorkBookInput(index, event)}
+                  />
+                  <button
+                    type={'button'}
+                    onClick={() => deleteWorkBookInputs(index)}
+                    className={'bg-gray2 rounded-full p-1'}>
+                    x
+                  </button>
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => addWorkbookInputs()}
+              type={'button'}
+              className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
+              + 추가
+            </button>
+          </div>
+
+          {/* 이미지 추가 세션 */}
+          <div className={'flex gap-x-2 '}>
+            <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
+              <label htmlFor="image">
+                <AddImageIcon />
+              </label>
+              <input
+                type={'file'}
+                accept={'image/*'}
+                id="image"
+                name="image"
+                ref={imgRef}
+                onChange={saveImgFile}
+                multiple
+                style={{ display: 'none' }}></input>
+            </div>
+            <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
+              {imagePreviews.map((img, i) => {
+                return (
+                  <div key={i} className={'relative rounded-[8px]'}>
+                    <ImageDeleteButton i={i} usage={'create'} />
+                    <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                      <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </form>
@@ -300,3 +320,15 @@ function AddImageIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={32}
+    height={32}
+    fill="none"
+    {...props}
+  >
+    <path stroke="#000" strokeLinecap="round" d="m8 8 16 16M24 8 8 24" />
+  </svg>
+);

@@ -1,16 +1,33 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
+import { useEffect } from 'react';
 
 import CorrectRateGraph from '@/components/exam/CorrectRateGraph';
 import StayTimeGraph from '@/components/exam/StayTimeGraph';
 import CarouselCardView from '@/components/home/goal-attaining/Carousel';
 import GoalRunningGraph from '@/components/home/goal-attaining/GoalRunningGraph';
 import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
+import Header from '@/components/common/Header';
+import NavBar from '@/components/common/NavBar';
 
 export default function Home() {
+  const parameter = useSearchParams();
+  const accessToken = parameter.get('accessToken');
+  const refreshToken = parameter.get('refreshToken');
+
+  useEffect(() => {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    console.log('액세스 토큰', localStorage.getItem('accessToken'));
+    console.log('리프레시 토큰', localStorage.getItem('refreshToken'));
+  }, [accessToken, refreshToken]);
+
   return (
     <div className="bg-gray0 items-center h-screen overflow-y-auto">
+      <Header />
+      <Header headerType={'second'}></Header>
       <div className="w-[90%] mx-auto">
         <DayBox />
         <GoalBox />
@@ -20,6 +37,7 @@ export default function Home() {
         <BestTip />
         <StayTimeGraphBox />
       </div>
+      <NavBar />
     </div>
   );
 }

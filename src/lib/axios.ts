@@ -1,13 +1,7 @@
 import axios from 'axios';
-import { string } from 'prop-types';
-
-import { atom } from 'recoil';
-import qs from 'qs';
-
-import { Param } from '@/types/global';
 
 const client = axios.create({
-  baseURL: 'http://cercat.o-r.kr/api/v1',
+  baseURL: 'http://cercat.o-r.kr/api/v2',
   headers: {
     'Content-type': 'application/json',
     'Access-Token':
@@ -112,8 +106,6 @@ export const swrGetFetcher = async (url) => {
       method: 'GET',
       url: url,
     });
-    // 성공적인 응답 처리
-    console.log('데이터:', response.data);
     return response.data;
   } catch (error) {
     // 에러 처리

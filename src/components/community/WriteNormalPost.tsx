@@ -1,14 +1,20 @@
 'use client';
 
 import Image from 'next/image';
-import React, { FormEvent, useRef } from 'react';
+import React, { FormEvent, SVGProps, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
+import Header from '@/components/common/Header';
 
-const WriteNormalPost = () => {
+interface Props {
+  setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const WriteNormalPost = (props: Props) => {
+  const { setIsClickedWriteButton } = props;
   const [postData, setPostData] = useRecoilState(createPostDataState);
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState);
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
@@ -64,7 +70,7 @@ const WriteNormalPost = () => {
     const formData = new FormData();
 
     imageUrlList.forEach((file, index) => {
-      formData.append('images', file);
+      formData.append('files', file);
     });
 
     formData.append(
@@ -81,62 +87,75 @@ const WriteNormalPost = () => {
     }
   };
 
-  return (
-    <div className={'m-5'}>
-      <form onSubmit={handleSubmit} className={'flex flex-col gap-y-3'}>
-        <button type={'submit'} className={'p-3 bg-second text-white'}>
-          저장
-        </button>
-        {/* 제목, 글 작성 세션 */}
-        <div className={'flex flex-col gap-y-2 mt-[16px]'}>
-          <div className={'text-h3 font-bold ml-2'}>자유 게시글 작성</div>
-          <div className={'flex flex-col gap-y-3'}>
-            <input
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                changePostDataTitle(e.target.value);
-              }}
-              className={
-                'w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
-              }
-              placeholder={'제목'}></input>
-            <textarea
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                changePostDataContent(e.target.value);
-              }}
-              placeholder={'내용을 입력해주세요.'}
-              className={
-                'w-full h-[300px] border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
-              }></textarea>
-          </div>
-        </div>
+  const onBack = () => {
+    setIsClickedWriteButton(false);
+  };
 
-        {/* 이미지 추가 세션 */}
-        <div className={'flex gap-x-2 '}>
-          <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
-            <label htmlFor="image">
-              <AddImageIcon />
-            </label>
-            <input
-              type={'file'}
-              accept={'image/*'}
-              id="image"
-              name="image"
-              ref={imgRef}
-              onChange={saveImgFile}
-              multiple
-              style={{ display: 'none' }}></input>
+  return (
+    <div>
+      <form onSubmit={handleSubmit} className={'flex flex-col gap-y-3'}>
+        <Header
+          onBack={onBack}
+          CancelIcon={CancelIcon}
+          headerType={'dynamic'}
+          title={'자유게시판 쓰기'}
+          rightElement={
+            <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
+              완료
+            </button>
+          }></Header>
+        <div className={'m-5'}>
+          {/* 제목, 글 작성 세션 */}
+          <div className={'flex flex-col gap-y-2 mt-[16px]'}>
+            <div className={'text-h3 font-bold ml-2'}>자유 게시글 작성</div>
+            <div className={'flex flex-col gap-y-3'}>
+              <input
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  changePostDataTitle(e.target.value);
+                }}
+                className={
+                  'w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
+                }
+                placeholder={'제목'}></input>
+              <textarea
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                  changePostDataContent(e.target.value);
+                }}
+                placeholder={'내용을 입력해주세요.'}
+                className={
+                  'w-full h-[300px] border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
+                }></textarea>
+            </div>
           </div>
-          <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
-            {imagePreviews.map((img, i) => {
-              return (
-                <div key={i} className={'relative rounded-[8px]'}>
-                  <ImageDeleteButton i={i} usage={'create'} />
-                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                    <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
+
+          {/* 이미지 추가 세션 */}
+          <div className={'flex gap-x-2 '}>
+            <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
+              <label htmlFor="image">
+                <AddImageIcon />
+              </label>
+              <input
+                type={'file'}
+                accept={'image/*'}
+                id="image"
+                name="image"
+                ref={imgRef}
+                onChange={saveImgFile}
+                multiple
+                style={{ display: 'none' }}></input>
+            </div>
+            <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
+              {imagePreviews.map((img, i) => {
+                return (
+                  <div key={i} className={'relative rounded-[8px]'}>
+                    <ImageDeleteButton i={i} usage={'create'} />
+                    <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                      <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </form>
@@ -155,3 +174,10 @@ function AddImageIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none" {...props}>
+    <path stroke="#000" strokeLinecap="round" d="m8 8 16 16M24 8 8 24" />
+  </svg>
+);
+
