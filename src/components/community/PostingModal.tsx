@@ -1,20 +1,22 @@
-import { postCommentDelete, postingDelete } from '@/lib/api/communityPost';
-import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
-import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { useSWRConfig } from 'swr';
 
+import { postCommentDelete, postingDelete } from '@/lib/api/communityPost';
+import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
+import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
+
 interface Props {
   children: React.ReactNode; //글메뉴, 댓글메뉴, 대댓글메뉴 등등 입력
   editOnOff: boolean; //true이면 "수정하기" 있음
   afterDelete?: string; //게시글 삭제 후 보이는 페이지
+  postId: string | string[];
 }
 
 const PostingModal = (props: Props) => {
-  const { children, editOnOff, afterDelete } = props;
-  const { communityPostData, isLoading, isError, mutate } = useGetCommunityPost(); //뮤테이트를 사용하기 위해 데이터를 가져옴
+  const { children, editOnOff, afterDelete, postId } = props;
+  const { communityPostData, isLoading, isError, communityPostDataMutate } = useGetCommunityPost(postId); //뮤테이트를 사용하기 위해 데이터를 가져옴
 
   const [onCommentModal, setOnCommentModal] = useRecoilState(commentModalState); //댓글 삭제 모달창
   const [onPostModal, setOnPostModal] = useRecoilState(postingModalState); //게시글 수정 및 삭제 모달창
@@ -33,8 +35,7 @@ const PostingModal = (props: Props) => {
             </div>
             <div className="self-stretch h-px bg-neutral-100"></div>
             {editOnOff ? (
-              <div
-                className="self-stretch h-14 p-2 bg-neutral-100 justify-center items-center gap-2 inline-flex hover:bg-[#F5F5F5]">
+              <div className="self-stretch h-14 p-2 bg-neutral-100 justify-center items-center gap-2 inline-flex hover:bg-[#F5F5F5]">
                 <div className="text-center text-black text-h3 font-normal font-['Pretendard Variable']">수정하기</div>
               </div>
             ) : null}
@@ -55,7 +56,7 @@ const PostingModal = (props: Props) => {
                 }
                 setCommentDelete(0); //삭제할 댓글 아이디 정보 초기화
                 setPostDelete(0); //삭제할 게시글 아이디 정보 초기화
-                mutate(); //삭제 정보를 바로 불러옴
+                communityPostDataMutate(); //삭제 정보를 바로 불러옴
               }}>
               <div className="text-center text-black text-h3 font-normal font-['Pretendard Variable']">삭제하기</div>
             </div>
