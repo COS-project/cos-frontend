@@ -1,6 +1,4 @@
 'use client';
-
-import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 import Comment from '@/components/community/Comment';
@@ -14,8 +12,6 @@ import CommunityTag from '@/components/community/CommunityTag';
 
 export default function CommunityDetailPage() {
   const [replyOnOff, setReplyOnOff] = useState<boolean>(false);
-  const pathname = usePathname();
-  const router = useRouter();
   //2023년 반복으로 작성한 부분은 api연결하면서 map으로 바꾸겠습니다!
 
   const onOff = () => {
