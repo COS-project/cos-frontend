@@ -1,7 +1,7 @@
 'use client';
 import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
-import { SVGProps } from 'react';
+import { SVGProps, useEffect } from 'react';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -14,6 +14,8 @@ import CommentWriting from '@/components/community/CommentWriting';
 import CommunityPost from '@/components/community/CommunityPosting';
 import CommunityProfile from '@/components/community/CommunityProfile';
 import CommunityTag from '@/components/community/CommunityTag';
+import EditPost from '@/components/community/EditPost';
+import PostingModal from '@/components/community/PostingModal';
 import Question from '@/components/community/Question';
 import { postToggleLikeData } from '@/lib/api/communityPost';
 import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
@@ -22,7 +24,6 @@ import useGetLikeStatus from '@/lib/hooks/useGetLikeStatus';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 import { PostComments, RecommendTags } from '@/types/global';
-import PostingModal from '@/components/community/PostingModal';
 
 const CommunityDetailPage = () => {
   const params = useParams();
@@ -51,6 +52,8 @@ const CommunityDetailPage = () => {
   const [isClickQuestionButton, setIsClickQuestionButton] = useState(false);
   //꿀팁 게시판 Best 태그
   const { bestTipPosts } = useBest3TipPosts(1);
+  //수정 modal
+  const [isClickEditPost, setIsClickEditPost] = useState(false);
 
   //답글달기 버튼 클릭시에 사용
   const commentReplyControll = (index: number, id: number) => {
@@ -77,10 +80,21 @@ const CommunityDetailPage = () => {
     await communityPostDataMutate();
   };
 
+  useEffect(() => {
+    console.log('mockexamId', communityPostData?.postResponse)
+  }, [communityPostData]);
+
   return (
     <>
+      {isClickEditPost ? (
+        <EditPost postId={params.id} mockExamId={communityPostData?.postResponse?.question?.mockExam.mockExamId} />
+      ) : null}
       {onPostModal ? ( //글 삭제 및 수정 모달창
-        <PostingModal editOnOff={true} afterDelete="/community/Comhwal_level1/" postId={params.id}>
+        <PostingModal
+          editOnOff={true}
+          afterDelete="/community/Comhwal_level1/"
+          postId={params.id}
+          setIsClickEditPost={setIsClickEditPost}>
           글 메뉴
         </PostingModal>
       ) : null}
@@ -245,7 +259,7 @@ const CommunityDetailPage = () => {
             </div>
           </div>
         ) : null}
-        <NavBar />
+        {isClickEditPost ? null : <NavBar />}
       </div>
     </>
   );

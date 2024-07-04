@@ -12,10 +12,11 @@ interface Props {
   editOnOff: boolean; //true이면 "수정하기" 있음
   afterDelete?: string; //게시글 삭제 후 보이는 페이지
   postId: string | string[];
+  setIsClickEditPost?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PostingModal = (props: Props) => {
-  const { children, editOnOff, afterDelete, postId } = props;
+  const { children, editOnOff, afterDelete, postId, setIsClickEditPost } = props;
   const { communityPostData, isLoading, isError, communityPostDataMutate } = useGetCommunityPost(postId); //뮤테이트를 사용하기 위해 데이터를 가져옴
 
   const [onCommentModal, setOnCommentModal] = useRecoilState(commentModalState); //댓글 삭제 모달창
@@ -35,7 +36,11 @@ const PostingModal = (props: Props) => {
             </div>
             <div className="self-stretch h-px bg-neutral-100"></div>
             {editOnOff ? (
-              <div className="self-stretch h-14 p-2 bg-neutral-100 justify-center items-center gap-2 inline-flex hover:bg-[#F5F5F5]">
+              <div
+                onClick={() => {
+                  if (setIsClickEditPost) setIsClickEditPost(true);
+                }}
+                className="self-stretch h-14 p-2 bg-neutral-100 justify-center items-center gap-2 inline-flex hover:bg-[#F5F5F5]">
                 <div className="text-center text-black text-h3 font-normal font-['Pretendard Variable']">수정하기</div>
               </div>
             ) : null}
