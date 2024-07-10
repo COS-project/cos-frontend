@@ -11,6 +11,9 @@ import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
+import SettingNewGoalModal from '@/components/home/goal-setting/SettingNewGoalModal';
+import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
+import QuestionNumberExceedingLimitAlertModal from '@/components/community/QuestionNumberExceedingLimitAlertModal';
 
 interface Props {
   setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,8 +35,8 @@ const WriteExplanationPost = (props: Props) => {
   const [isQuestionSequenceNumeric, setIsQuestionSequenceNumeric] = useState(true);
   const [questionSequence, setQuestionSequence] = useState(0);
   const { mockExams } = useGetMockExams(1, postData.examYear); //해설 회차 필터값
-  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
-
+  const [isQuestionNumberExceedingLimit, setIsQuestionNumberExceedingLimit] = useState(false);
+  const [isTitleEmpty, setIsTitleEmpty] = useState(false);
   //
   // useEffect(() => {
   //   if (examYears.includes('전체')) {
@@ -141,9 +144,40 @@ const WriteExplanationPost = (props: Props) => {
     setIsClickedWriteButton(false);
   };
 
+  /**
+   * 예외 처리에 따라 제출 폼 형식 변경 함수
+   */
+  const handleException = (e: FormEvent) => {
+    e.preventDefault(); // 폼 제출 시 새로고침 방지
+
+    let isValid = true;
+
+    if (questionSequence > questions?.length) {
+      setIsQuestionNumberExceedingLimit(true);
+      isValid = false;
+    } else {
+      setIsQuestionNumberExceedingLimit(false);
+    }
+
+    if (postData.title === '') {
+      setIsTitleEmpty(true);
+      isValid = false;
+    } else {
+      setIsTitleEmpty(false);
+    }
+
+    if (isValid) {
+      handleSubmit(e);
+    }
+  };
+
   return (
     <div>
-      <form onSubmit={questionSequence <= questions?.length ? handleSubmit : undefined}>
+      {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
+      {isQuestionNumberExceedingLimit ? (
+        <QuestionNumberExceedingLimitAlertModal setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit} />
+      ) : null}
+      <form onSubmit={handleException}>
         <Header
           onBack={onBack}
           CancelIcon={CancelIcon}
