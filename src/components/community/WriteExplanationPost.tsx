@@ -134,6 +134,9 @@ const WriteExplanationPost = (props: Props) => {
     }
   };
 
+  /**
+   * 뒤로가기
+   */
   const onBack = () => {
     setIsClickedWriteButton(false);
   };
