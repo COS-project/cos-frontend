@@ -119,6 +119,7 @@ const WriteExplanationPost = (props: Props) => {
       await postCommentary(1, 'COMMENTARY', formData).then(() => {
         //글쓰기 초기화
         setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
+        setIsTitleEmpty(true);
         setImageUrlList([]);
         setImagePreviews([]);
         //글쓰기 페이지 내리기
