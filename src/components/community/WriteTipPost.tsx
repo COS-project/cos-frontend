@@ -159,12 +159,20 @@ const WriteTipPost = (props: Props) => {
       postCommentary(1, 'TIP', formData)
         .then((response) => {
           console.log(response);
+          //글쓰기 초기화
+          setPostData(() => ({ title: '', content: '', tags: [] }));
+          setImageUrlList([]);
+          setImagePreviews([]);
+          //제출 트리거 조정
+          setIsSubmitEnabled(false);
+          //글쓰기 페이지 내리기
+          setIsClickedWriteButton(false);
         })
         .catch((error) => {
           console.error('폼 제출 중 오류 발생:', error);
         });
     }
-  }, [postData.tags]);
+  }, [isSubmitEnabled]);
 
   const onBack = () => {
     setIsClickedWriteButton(false);
