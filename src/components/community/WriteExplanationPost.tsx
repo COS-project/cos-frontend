@@ -238,8 +238,8 @@ const WriteExplanationPost = (props: Props) => {
         </div>
 
         {/* 이미지 추가 세션 */}
-        <div className={'flex gap-x-2 '}>
-          <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
+        <div className={'mx-5 flex gap-x-2 '}>
+          <div className={'rounded-[8px] p-2 bg-gray0 w-[48px] h-[48px]'}>
             <label htmlFor="image">
               <AddImageIcon />
             </label>
