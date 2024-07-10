@@ -121,7 +121,12 @@ const WriteExplanationPost = (props: Props) => {
     );
 
     try {
-      const response = await postCommentary(1, 'COMMENTARY', formData); // API 호출
+      await postCommentary(1, 'COMMENTARY', formData).then(() => {
+        //글쓰기 초기화
+        setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
+        setImageUrlList([]);
+        setImagePreviews([]);
+      }); // API 호출
     } catch (error) {
       console.error('폼 제출 중 오류 발생:', error);
     }
