@@ -134,6 +134,11 @@ const WriteExplanationPost = (props: Props) => {
    * 뒤로가기
    */
   const onBack = () => {
+    //글쓰기 초기화
+    setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
+    setIsTitleEmpty(true);
+    setImageUrlList([]);
+    setImagePreviews([]);
     setIsClickedWriteButton(false);
   };
 

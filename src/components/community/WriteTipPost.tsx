@@ -183,6 +183,14 @@ const WriteTipPost = (props: Props) => {
   }, [isSubmitEnabled]);
 
   const onBack = () => {
+    //글쓰기 초기화
+    setPostData(() => ({ title: '', content: '', tags: [] }));
+    setIsTitleEmpty(true);
+    setImageUrlList([]);
+    setImagePreviews([]);
+    //제출 트리거 조정
+    setIsSubmitEnabled(false);
+    //글쓰기 페이지 내리기
     setIsClickedWriteButton(false);
   };
 

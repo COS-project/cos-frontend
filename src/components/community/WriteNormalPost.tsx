@@ -118,6 +118,10 @@ const WriteNormalPost = (props: Props) => {
   };
 
   const onBack = () => {
+    setPostData(() => ({ title: '', content: '' }));
+    setIsTitleEmpty(true);
+    setImageUrlList([]);
+    setImagePreviews([]);
     setIsClickedWriteButton(false);
   };
 
