@@ -1,20 +1,25 @@
 'use client';
 
 import Image from 'next/image';
-import React, { SVGProps, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
+import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
+import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
+import { ResponsePostType } from '@/types/community/type';
+import { KeyedMutator } from 'swr';
 
 interface Props {
   setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
+  mutate: KeyedMutator<ResponsePostType[]>;
 }
 
 const WriteTipPost = (props: Props) => {
-  const { setIsClickedWriteButton } = props;
+  const { setIsClickedWriteButton, mutate } = props;
   const [postData, setPostData] = useRecoilState(createPostDataState);
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState);
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
@@ -23,6 +28,7 @@ const WriteTipPost = (props: Props) => {
   const [onlineCourseInputs, setOnlineCourseInputs] = useState<string[]>([]);
   const [workbookInputs, setWorkbookInputs] = useState<string[]>([]);
   const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const [isTitleEmpty, setIsTitleEmpty] = useState(false);
 
   /**
    * 추천 강의 새 입력 필드를 추가하는 함수
@@ -140,14 +146,14 @@ const WriteTipPost = (props: Props) => {
   /**
    * 제출 함수 postData.tags 가 변경됨에 따라 아래의 useEffect 가 실행되어 제출됨.
    */
-  const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     changeTags(); // 태그 변경 함수 호출
   };
 
   useEffect(() => {
-    if (isSubmitEnabled) {
+    if (isSubmitEnabled && !isTitleEmpty) {
       // 태그가 업데이트된 후 실행할 로직
       const formData = new FormData();
       imageUrlList.forEach((file) => {
@@ -156,11 +162,13 @@ const WriteTipPost = (props: Props) => {
       formData.append('request', new Blob([JSON.stringify(postData)], { type: 'application/json' }));
 
       // API 호출 로직
-      postCommentary(1, 'TIP', formData)
-        .then((response) => {
+      const response = postCommentary(1, 'TIP', formData)
+        .then(async (response) => {
+          //글 불러옴
           console.log(response);
           //글쓰기 초기화
           setPostData(() => ({ title: '', content: '', tags: [] }));
+          setIsTitleEmpty(true);
           setImageUrlList([]);
           setImagePreviews([]);
           //제출 트리거 조정
@@ -178,9 +186,35 @@ const WriteTipPost = (props: Props) => {
     setIsClickedWriteButton(false);
   };
 
+  /**
+   * 예외 처리에 따라 제출 폼 형식 변경 함수
+   */
+  const handleException = (e: FormEvent) => {
+    e.preventDefault(); // 폼 제출 시 새로고침 방지
+
+    let isValid = true;
+
+    if (postData.title === '') {
+      setIsTitleEmpty(true);
+      isValid = false;
+    } else {
+      setIsTitleEmpty(false);
+    }
+
+    if (isValid) {
+      handleSubmit(e);
+    }
+  };
+
+  useEffect(() => {
+    console.log('postData', postData.title)
+    console.log('isTitleEmpty', isTitleEmpty)
+  }, [isTitleEmpty]);
+
   return (
-    <div className={''}>
-      <form onSubmit={handleSubmit} className={'flex flex-col gap-y-3'}>
+    <div>
+      {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
+      <form onSubmit={handleException} className={'flex flex-col gap-y-3'}>
         <Header
           onBack={onBack}
           CancelIcon={CancelIcon}
