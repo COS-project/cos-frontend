@@ -22,6 +22,7 @@ const WriteTipPost = (props: Props) => {
   // 입력 필드 목록을 관리하는 상태
   const [onlineCourseInputs, setOnlineCourseInputs] = useState<string[]>([]);
   const [workbookInputs, setWorkbookInputs] = useState<string[]>([]);
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
   /**
    * 추천 강의 새 입력 필드를 추가하는 함수
@@ -132,6 +133,8 @@ const WriteTipPost = (props: Props) => {
       ...prevState,
       tags: updatedTags,
     }));
+
+    setIsSubmitEnabled(true);
   };
 
   /**
@@ -144,7 +147,7 @@ const WriteTipPost = (props: Props) => {
   };
 
   useEffect(() => {
-    if (postData?.tags.length > 0) {
+    if (isSubmitEnabled) {
       // 태그가 업데이트된 후 실행할 로직
       const formData = new FormData();
       imageUrlList.forEach((file) => {
