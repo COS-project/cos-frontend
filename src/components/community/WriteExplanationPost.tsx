@@ -19,7 +19,7 @@ interface Props {
 const WriteExplanationPost = (props: Props) => {
   const { setIsClickedWriteButton } = props;
   const { examYears } = useGetMockExamYears();
-  const { questions } = useMockExamQuestions(1); //TODO: 나중에 모의고사 번호로 변경해야 함.
+  const { questions } = useMockExamQuestions(2); //TODO: 나중에 모의고사 번호로 변경해야 함.
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
 
@@ -32,7 +32,8 @@ const WriteExplanationPost = (props: Props) => {
   const [isQuestionSequenceNumeric, setIsQuestionSequenceNumeric] = useState(true);
   const [questionSequence, setQuestionSequence] = useState(0);
   const { mockExams } = useGetMockExams(1, postData.examYear); //해설 회차 필터값
-  const [filteredExamYears, setFilteredExamYears] = useState<number[]>([]);
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+
   //
   // useEffect(() => {
   //   if (examYears.includes('전체')) {
@@ -40,10 +41,6 @@ const WriteExplanationPost = (props: Props) => {
   //     setFilteredExamYears(filterData);
   //   }
   // }, [examYears]);
-
-  useEffect(() => {
-    console.log(filteredExamYears);
-  }, [examYears]);
 
   /**
    * 문제 번호를 변경하는 함수
@@ -136,7 +133,7 @@ const WriteExplanationPost = (props: Props) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={questionSequence <= questions?.length ? handleSubmit : undefined}>
         <Header
           onBack={onBack}
           CancelIcon={CancelIcon}
@@ -317,7 +314,6 @@ function DeleteIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-
 
 const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none" {...props}>
