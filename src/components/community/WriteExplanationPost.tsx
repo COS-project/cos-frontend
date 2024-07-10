@@ -126,6 +126,8 @@ const WriteExplanationPost = (props: Props) => {
         setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
         setImageUrlList([]);
         setImagePreviews([]);
+        //글쓰기 페이지 내리기
+        setIsClickedWriteButton(false);
       }); // API 호출
     } catch (error) {
       console.error('폼 제출 중 오류 발생:', error);
