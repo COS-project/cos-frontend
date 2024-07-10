@@ -81,7 +81,15 @@ const WriteNormalPost = (props: Props) => {
     );
 
     try {
-      const response = await postCommentary(1, 'NORMAL', formData); // API 호출
+      await postCommentary(1, 'NORMAL', formData).then(() => {
+        //글쓰기 초기화
+        setPostData(() => ({ title: '', content: '' }));
+        setIsTitleEmpty(true);
+        setImageUrlList([]);
+        setImagePreviews([]);
+        //글쓰기 페이지 내리기
+        setIsClickedWriteButton(false);
+      }); // API 호출
     } catch (error) {
       console.error('폼 제출 중 오류 발생:', error);
     }
