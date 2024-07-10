@@ -4,11 +4,11 @@ import Image from 'next/image';
 import React, { FormEvent, SVGProps, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
+import Header from '@/components/common/Header';
+import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
-import Header from '@/components/common/Header';
-import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 
 interface Props {
   setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;

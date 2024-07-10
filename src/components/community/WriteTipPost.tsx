@@ -3,15 +3,14 @@
 import Image from 'next/image';
 import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
+import { KeyedMutator } from 'swr';
 
 import Header from '@/components/common/Header';
+import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
-import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
-import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { ResponsePostType } from '@/types/community/type';
-import { KeyedMutator } from 'swr';
 
 interface Props {
   setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
