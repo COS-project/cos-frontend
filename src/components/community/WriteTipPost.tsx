@@ -4,17 +4,17 @@ import Image from 'next/image';
 import React, { SVGProps, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
+import Header from '@/components/common/Header';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
-import Header from '@/components/common/Header';
 
 interface Props {
   setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const WriteTipPost = (props: Props) => {
-  const {setIsClickedWriteButton} = props;
+  const { setIsClickedWriteButton } = props;
   const [postData, setPostData] = useRecoilState(createPostDataState);
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState);
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
@@ -144,7 +144,7 @@ const WriteTipPost = (props: Props) => {
   };
 
   useEffect(() => {
-    if (postData.tags.length > 0) {
+    if (postData?.tags.length > 0) {
       // 태그가 업데이트된 후 실행할 로직
       const formData = new FormData();
       imageUrlList.forEach((file) => {
@@ -162,7 +162,6 @@ const WriteTipPost = (props: Props) => {
         });
     }
   }, [postData.tags]);
-
 
   const onBack = () => {
     setIsClickedWriteButton(false);
@@ -215,28 +214,27 @@ const WriteTipPost = (props: Props) => {
               {onlineCourseInputs.map((input: string, index: number) => (
                 <div
                   key={index}
-                  className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
+                  className={
+                    'flex justify-between items-center w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'
+                  }>
                   <input
                     type="text"
                     value={input}
                     placeholder={'인강 제목'}
                     className={'w-[90%] placeholder:text-gray4 focus:outline-0'}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChangeOnlineCourseInput(index, event)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChangeOnlineCourseInput(index, event)
+                    }
                   />
-                  <button
-                    type={'button'}
-                    onClick={() => deleteOnlineCourseInputs(index)}
-                    className={'bg-gray2 rounded-full p-1'}>
-                    x
-                  </button>
+                  <DeleteIcon onClick={() => deleteOnlineCourseInputs(index)} />
                 </div>
               ))}
             </div>
             <button
               onClick={() => addOnlineCourseInput()}
               type={'button'}
-              className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
-              + 추가
+              className={'flex items-center justify-center bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
+              <PlusIcon /> 추가
             </button>
           </div>
 
@@ -249,7 +247,9 @@ const WriteTipPost = (props: Props) => {
               {workbookInputs.map((input: string, index: number) => (
                 <div
                   key={index}
-                  className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
+                  className={
+                    'flex justify-between items-center w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'
+                  }>
                   <input
                     type="text"
                     value={input}
@@ -257,20 +257,15 @@ const WriteTipPost = (props: Props) => {
                     className={'w-[90%] placeholder:text-gray4 focus:outline-0'}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChangeWorkBookInput(index, event)}
                   />
-                  <button
-                    type={'button'}
-                    onClick={() => deleteWorkBookInputs(index)}
-                    className={'bg-gray2 rounded-full p-1'}>
-                    x
-                  </button>
+                  <DeleteIcon onClick={() => deleteWorkBookInputs(index)} />
                 </div>
               ))}
             </div>
             <button
               onClick={() => addWorkbookInputs()}
               type={'button'}
-              className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
-              + 추가
+              className={'flex items-center justify-center bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
+              <PlusIcon /> 추가
             </button>
           </div>
 
@@ -322,13 +317,17 @@ function AddImageIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={32}
-    height={32}
-    fill="none"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none" {...props}>
     <path stroke="#000" strokeLinecap="round" d="m8 8 16 16M24 8 8 24" />
+  </svg>
+);
+const DeleteIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={21} height={21} fill="none" {...props}>
+    <path stroke="#6E6F71" d="m13.827 6.964-7.07 7.071M6.756 6.964l7.071 7.071" />
+  </svg>
+);
+const PlusIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={21} height={20} fill="none" {...props}>
+    <path stroke="#fff" d="M15.792 10h-10M10.792 5v10" />
   </svg>
 );
