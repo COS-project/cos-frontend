@@ -16,6 +16,14 @@ const MockExamYearsFilter = (props: Props) => {
       examYear: year,
     }));
   };
+
+  const resetRoundOnYearChange = () => {
+    setDataState((prevState) => ({
+      ...prevState,
+      round: 1,
+    }));
+  };
+
   return (
     <div
       className={
@@ -31,6 +39,7 @@ const MockExamYearsFilter = (props: Props) => {
               className="text-h4 text-gray3 py-3 px-4 hover:text-black transition"
               onClick={() => {
                 changePostDataExamYear(year);
+                resetRoundOnYearChange();
                 setIsOpen(false);
               }}>
               {year}

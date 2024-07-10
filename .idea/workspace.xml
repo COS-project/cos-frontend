@@ -4,13 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="" />
+    <list default="true" id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/community/PostingModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/PostingModal.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="fix_mypage-final-bug" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -31,7 +41,11 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+<<<<<<< HEAD
     &quot;git-widget-placeholder&quot;: &quot;fix-post__creation__bug&quot;,
+=======
+    &quot;git-widget-placeholder&quot;: &quot;fix__community-detail&quot;,
+>>>>>>> ad0e0c14ada6bb7793097b096274e4f117f86d7b
     &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -133,8 +147,14 @@
       <workItem from="1718832852583" duration="5021000" />
       <workItem from="1718915454181" duration="613000" />
       <workItem from="1718962843109" duration="45199000" />
+<<<<<<< HEAD
       <workItem from="1720427179588" duration="5735000" />
       <workItem from="1720504902269" duration="1613000" />
+=======
+      <workItem from="1719657224658" duration="82000" />
+      <workItem from="1719660231680" duration="5255000" />
+      <workItem from="1719924995934" duration="7434000" />
+>>>>>>> ad0e0c14ada6bb7793097b096274e4f117f86d7b
     </task>
     <servers />
   </component>
