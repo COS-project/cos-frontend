@@ -33,16 +33,16 @@ const WriteExplanationPost = (props: Props) => {
   const [questionSequence, setQuestionSequence] = useState(0);
   const { mockExams } = useGetMockExams(1, postData.examYear); //해설 회차 필터값
   const [filteredExamYears, setFilteredExamYears] = useState<number[]>([]);
+  //
+  // useEffect(() => {
+  //   if (examYears.includes('전체')) {
+  //     const filterData = examYears.filter((item) => item !== '전체');
+  //     setFilteredExamYears(filterData);
+  //   }
+  // }, [examYears]);
 
   useEffect(() => {
-    console.log('mockExams', mockExams);
-  }, [mockExams, postData]);
-
-  useEffect(() => {
-    if (examYears.includes('전체')) {
-      const filterData = examYears.filter((item) => item !== '전체');
-      setFilteredExamYears(filterData);
-    }
+    console.log(filteredExamYears);
   }, [examYears]);
 
   /**
@@ -161,11 +161,7 @@ const WriteExplanationPost = (props: Props) => {
               {isYearsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
             </div>
             {isYearsFilterOpen && (
-              <MockExamYearsFilter
-                years={filteredExamYears}
-                setIsOpen={setIsYearsFilterOpen}
-                setDataState={setPostData}
-              />
+              <MockExamYearsFilter years={examYears} setIsOpen={setIsYearsFilterOpen} setDataState={setPostData} />
             )}
           </div>
 
