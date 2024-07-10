@@ -289,18 +289,18 @@ const WriteExplanationPost = (props: Props) => {
               multiple
               style={{ display: 'none' }}></input>
           </div>
-          <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
-            {imagePreviews.map((img, i) => {
-              return (
-                <div key={i} className={'relative rounded-[8px]'}>
-                  <ImageDeleteButton i={i} usage={'create'} />
-                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                    <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
-                  </div>
+        </div>
+        <div className={'mx-5 mt-3 w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
+          {imagePreviews.map((img, i) => {
+            return (
+              <div key={i} className={'relative rounded-[8px]'}>
+                <ImageDeleteButton i={i} usage={'create'} />
+                <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                  <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </form>
     </div>

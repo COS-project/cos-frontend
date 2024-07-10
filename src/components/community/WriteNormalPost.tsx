@@ -129,8 +129,8 @@ const WriteNormalPost = (props: Props) => {
           </div>
 
           {/* 이미지 추가 세션 */}
-          <div className={'flex gap-x-2 '}>
-            <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
+          <div className={'mt-3 flex gap-x-2 '}>
+            <div className={'rounded-[8px] p-2 bg-gray0 w-[48px] h-[48px]'}>
               <label htmlFor="image">
                 <AddImageIcon />
               </label>
@@ -144,18 +144,18 @@ const WriteNormalPost = (props: Props) => {
                 multiple
                 style={{ display: 'none' }}></input>
             </div>
-            <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
-              {imagePreviews.map((img, i) => {
-                return (
-                  <div key={i} className={'relative rounded-[8px]'}>
-                    <ImageDeleteButton i={i} usage={'create'} />
-                    <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                      <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
-                    </div>
+          </div>
+          <div className={'mt-3 w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
+            {imagePreviews.map((img, i) => {
+              return (
+                <div key={i} className={'relative rounded-[8px]'}>
+                  <ImageDeleteButton i={i} usage={'create'} />
+                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                    <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </form>
