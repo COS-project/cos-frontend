@@ -1,13 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import React, { FormEvent, SVGProps, useRef } from 'react';
+import React, { FormEvent, SVGProps, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 import Header from '@/components/common/Header';
+import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 
 interface Props {
   setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +20,7 @@ const WriteNormalPost = (props: Props) => {
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState);
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
   const imgRef = useRef<HTMLInputElement>(null);
+  const [isTitleEmpty, setIsTitleEmpty] = useState(false);
 
   /**
    * 이미지 업로드 및 미리보기 함수
@@ -95,13 +97,34 @@ const WriteNormalPost = (props: Props) => {
     }
   };
 
+  /**
+   * 예외 처리에 따라 제출 폼 형식 변경 함수
+   */
+  const handleException = (e: FormEvent) => {
+    e.preventDefault(); // 폼 제출 시 새로고침 방지
+
+    let isValid = true;
+
+    if (postData.title === '') {
+      setIsTitleEmpty(true);
+      isValid = false;
+    } else {
+      setIsTitleEmpty(false);
+    }
+
+    if (isValid) {
+      handleSubmit(e);
+    }
+  };
+
   const onBack = () => {
     setIsClickedWriteButton(false);
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className={'flex flex-col gap-y-3'}>
+      {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
+      <form onSubmit={handleException} className={'flex flex-col gap-y-3'}>
         <Header
           onBack={onBack}
           CancelIcon={CancelIcon}
