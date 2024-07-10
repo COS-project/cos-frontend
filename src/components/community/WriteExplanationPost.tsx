@@ -1,19 +1,18 @@
 import Image from 'next/image';
-import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, SVGProps, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
+import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import MockExamRoundFilter from '@/components/community/MockExamRoundFilter';
+import QuestionNumberExceedingLimitAlertModal from '@/components/community/QuestionNumberExceedingLimitAlertModal';
 import { postCommentary } from '@/lib/api/community';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
-import SettingNewGoalModal from '@/components/home/goal-setting/SettingNewGoalModal';
-import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
-import QuestionNumberExceedingLimitAlertModal from '@/components/community/QuestionNumberExceedingLimitAlertModal';
 
 interface Props {
   setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,13 +36,6 @@ const WriteExplanationPost = (props: Props) => {
   const { mockExams } = useGetMockExams(1, postData.examYear); //해설 회차 필터값
   const [isQuestionNumberExceedingLimit, setIsQuestionNumberExceedingLimit] = useState(false);
   const [isTitleEmpty, setIsTitleEmpty] = useState(false);
-  //
-  // useEffect(() => {
-  //   if (examYears.includes('전체')) {
-  //     const filterData = examYears.filter((item) => item !== '전체');
-  //     setFilteredExamYears(filterData);
-  //   }
-  // }, [examYears]);
 
   /**
    * 문제 번호를 변경하는 함수
@@ -338,22 +330,6 @@ function AddImageIcon(props: React.SVGProps<SVGSVGElement>) {
       <path
         d="M3.139 29.528c-.663 0-1.217-.224-1.664-.67-.446-.447-.67-1.001-.67-1.664V9.584c0-.667.224-1.223.67-1.667.447-.445 1.001-.667 1.664-.667h5l3.083-3.389h8.528v1h-8.083L8.583 8.25H3.14c-.389 0-.708.13-.958.389a1.31 1.31 0 00-.375.944v17.611c0 .39.125.709.375.959s.569.375.958.375h24.333c.39 0 .708-.125.958-.375s.375-.57.375-.959V13.917h1v13.277c0 .663-.222 1.217-.666 1.664-.445.446-1 .67-1.667.67H3.14zM28.805 8.25V4.86h-3.388v-1h3.388V.472h1v3.389h3.39v1h-3.39V8.25h-1zm-13.5 15.889c1.62 0 2.984-.553 4.09-1.66 1.107-1.106 1.66-2.47 1.66-4.09 0-1.62-.553-2.984-1.66-4.09-1.106-1.107-2.47-1.66-4.09-1.66-1.62 0-2.983.553-4.09 1.66-1.106 1.106-1.66 2.47-1.66 4.09 0 1.62.554 2.984 1.66 4.09 1.107 1.107 2.47 1.66 4.09 1.66zm0-1c-1.351 0-2.48-.454-3.388-1.361-.908-.908-1.361-2.037-1.361-3.39 0-1.351.453-2.48 1.36-3.388.908-.908 2.038-1.361 3.39-1.361 1.351 0 2.481.454 3.388 1.36.908.908 1.361 2.038 1.361 3.39 0 1.352-.453 2.481-1.36 3.389-.908.907-2.038 1.36-3.39 1.36z"
         fill="#1C1B1F"
-      />
-    </svg>
-  );
-}
-
-function DeleteIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg width={11} height={10} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path fill="#9E9FA1" d="M.507 0h9.723v9.723H.507z" />
-      <path
-        d="M.949 8.986a.63.63 0 010-.884l7.66-7.66a.63.63 0 01.884 0 .63.63 0 010 .884l-7.66 7.66a.63.63 0 01-.884 0z"
-        fill="#fff"
-      />
-      <path
-        d="M6.842 7.218L.949 1.326a.63.63 0 010-.884.63.63 0 01.884 0l5.892 5.893a.63.63 0 010 .883.63.63 0 01-.883 0zM8.462 9.133a.833.833 0 101.179-1.178.833.833 0 00-1.179 1.178z"
-        fill="#fff"
       />
     </svg>
   );
