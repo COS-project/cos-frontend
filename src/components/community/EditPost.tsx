@@ -355,8 +355,6 @@ const EditPost = (props: Props) => {
         }
       }
 
-      // API 호출 로직
-      console.log('수정할 데이터', editPostData);
       putPostDetail(1, 'TIP', formData)
         .then((response) => {
           //수정된 게시글 불러오기
@@ -364,11 +362,17 @@ const EditPost = (props: Props) => {
           setIsTipSubmitEnabled(false);
           //수정 페이지 닫기
           setIsClickEditPost(false);
+          //이미지 삭제
+          setImageUrlList([]);
+          setImagePreviews([]);
           console.log(response);
         })
         .catch((error) => {
           setIsTipSubmitEnabled(false);
           setIsClickEditPost(false);
+          //이미지 삭제
+          setImageUrlList([]);
+          setImagePreviews([]);
           console.error('폼 제출 중 오류 발생:', error);
         });
     }
@@ -396,6 +400,9 @@ const EditPost = (props: Props) => {
         await putPostDetail(1, 'COMMENTARY', formData).then(() => {
           //수정된 게시글 불러오기
           mutate();
+          //이미지 삭제
+          setImageUrlList([]);
+          setImagePreviews([]);
           //수정 페이지 닫기
           setIsClickEditPost(false);
         }); // API 호출
@@ -407,6 +414,9 @@ const EditPost = (props: Props) => {
         await putPostDetail(1, 'NORMAL', formData).then(() => {
           //수정된 게시글 불러오기
           mutate();
+          //이미지 삭제
+          setImageUrlList([]);
+          setImagePreviews([]);
           //수정 페이지 닫기
           setIsClickEditPost(false);
         }); // API 호출
