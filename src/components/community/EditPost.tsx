@@ -23,7 +23,7 @@ interface Props {
 }
 const EditPost = (props: Props) => {
   const { postId, mockExamId, setIsClickEditPost } = props;
-  const { postDetailData } = useGetPost(postId);
+  const { postDetailData, mutate } = useGetPost(postId);
   const { questions } = useMockExamQuestions(mockExamId);
   const { examYears } = useGetMockExamYears();
   const [editPostData, setEditPostData] = useRecoilState(editPostDataState);
@@ -359,11 +359,16 @@ const EditPost = (props: Props) => {
       console.log('수정할 데이터', editPostData);
       putPostDetail(1, 'TIP', formData)
         .then((response) => {
+          //수정된 게시글 불러오기
+          mutate();
           setIsTipSubmitEnabled(false);
+          //수정 페이지 닫기
+          setIsClickEditPost(false);
           console.log(response);
         })
         .catch((error) => {
           setIsTipSubmitEnabled(false);
+          setIsClickEditPost(false);
           console.error('폼 제출 중 오류 발생:', error);
         });
     }
@@ -388,15 +393,23 @@ const EditPost = (props: Props) => {
     );
     try {
       if (postDetailData?.postResponse.postStatus.postType === 'COMMENTARY') {
-        const response = await putPostDetail(1, 'COMMENTARY', formData); // API 호출
-        console.log('COMMENTARY', response.data);
+        await putPostDetail(1, 'COMMENTARY', formData).then(() => {
+          //수정된 게시글 불러오기
+          mutate();
+          //수정 페이지 닫기
+          setIsClickEditPost(false);
+        }); // API 호출
       }
       if (
         postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
         postDetailData?.postResponse.postStatus.postType !== 'TIP'
       ) {
-        const response = await putPostDetail(1, 'NORMAL', formData); // API 호출
-        console.log('TIP', response.data);
+        await putPostDetail(1, 'NORMAL', formData).then(() => {
+          //수정된 게시글 불러오기
+          mutate();
+          //수정 페이지 닫기
+          setIsClickEditPost(false);
+        }); // API 호출
       }
     } catch (error) {
       console.error('폼 제출 중 오류 발생:', error);
