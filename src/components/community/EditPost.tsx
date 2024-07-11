@@ -38,7 +38,7 @@ const EditPost = (props: Props) => {
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
   // 기존 코드는 유지하고, 입력 필드의 상태를 관리하기 위한 새로운 state를 추가합니다.
   const [inputValue, setInputValue] = useState('');
-  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const [isTipSubmitEnabled, setIsTipSubmitEnabled] = useState(false);
 
   useEffect(() => {
     console.log('postDetailData', postDetailData);
@@ -288,7 +288,7 @@ const EditPost = (props: Props) => {
       ...prevState,
       tags: updatedTags,
     }));
-    setIsSubmitEnabled(true);
+    setIsTipSubmitEnabled(true);
   };
 
   // 해설 게시글일 때, 문제 번호를 컨트롤하는 inputValue state 값을 과거 데이터로 초기화
@@ -357,15 +357,15 @@ const EditPost = (props: Props) => {
       console.log('수정할 데이터', editPostData);
       putPostDetail(1, 'TIP', formData)
         .then((response) => {
-          setIsSubmitEnabled(false);
+          setIsTipSubmitEnabled(false);
           console.log(response);
         })
         .catch((error) => {
-          setIsSubmitEnabled(false);
+          setIsTipSubmitEnabled(false);
           console.error('폼 제출 중 오류 발생:', error);
         });
     }
-  }, [isSubmitEnabled]);
+  }, [isTipSubmitEnabled]);
 
   /**
    * 자유 게시글, 해설 게시글 form 형식 제출 함수
