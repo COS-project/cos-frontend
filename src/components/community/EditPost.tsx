@@ -15,6 +15,7 @@ import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { editPostDataState, imagePreviewsState, imageUrlListState, pastImageUrlsState } from '@/recoil/community/atom';
 import { EditPostDataType, TipPostTagType } from '@/types/community/type';
 import { ImageType } from '@/types/global';
+import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 
 interface Props {
   postId: string | string[];
@@ -40,7 +41,10 @@ const EditPost = (props: Props) => {
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
   // 기존 코드는 유지하고, 입력 필드의 상태를 관리하기 위한 새로운 state를 추가합니다.
   const [inputValue, setInputValue] = useState('');
+  // 꿀팁 게시글 put 요청 트리거
   const [isTipSubmitEnabled, setIsTipSubmitEnabled] = useState(false);
+  // 제목 비어있는지 체크하는 state
+  const [isTitleEmpty, setIsTitleEmpty] = useState(false);
 
   useEffect(() => {
     console.log('postDetailData', postDetailData);
@@ -427,7 +431,6 @@ const EditPost = (props: Props) => {
   };
 
   const onBack = () => {
-    // setIsTitleEmpty(true);
     setImageUrlList([]);
     setImagePreviews([]);
     //제출 트리거 조정
@@ -436,17 +439,39 @@ const EditPost = (props: Props) => {
     setIsClickEditPost(false);
   };
 
+  /**
+   * 예외 처리에 따라 제출 폼 형식 변경 함수
+   */
+  const handleException = (e: FormEvent) => {
+    e.preventDefault(); // 폼 제출 시 새로고침 방지
+
+    let isValid = true;
+
+    if (editPostData.title === '') {
+      setIsTitleEmpty(true);
+      isValid = false;
+    } else {
+      setIsTitleEmpty(false);
+    }
+
+    if (isValid) {
+      if (
+        postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
+        postDetailData?.postResponse.postStatus.postType !== 'TIP'
+      ) {
+        return handleNormalAndCommentarySubmit(e);
+      } else if (postDetailData?.postResponse.postStatus.postType === 'COMMENTARY') {
+        return handleNormalAndCommentarySubmit(e);
+      } else if (postDetailData?.postResponse.postStatus.postType === 'TIP') {
+        return handleTipSubmit(e);
+      }
+    }
+  };
+
   return (
     <div className={'min-h-screen'}>
-      <form
-        onSubmit={
-          postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
-          postDetailData?.postResponse.postStatus.postType !== 'TIP'
-            ? handleNormalAndCommentarySubmit
-            : postDetailData?.postResponse.postStatus.postType === 'COMMENTARY'
-            ? handleNormalAndCommentarySubmit
-            : handleTipSubmit
-        }>
+      {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
+      <form onSubmit={handleException}>
         <Header
           onBack={onBack}
           CancelIcon={CancelIcon}
