@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import FilterModal from '@/components/common/FilterModal';
@@ -14,13 +14,15 @@ import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { editPostDataState, imagePreviewsState, imageUrlListState, pastImageUrlsState } from '@/recoil/community/atom';
 import { EditPostDataType, TipPostTagType } from '@/types/community/type';
 import { ImageType } from '@/types/global';
+import Header from '@/components/common/Header';
 
 interface Props {
   postId: string | string[];
   mockExamId: number | undefined;
+  setIsClickEditPost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const EditPost = (props: Props) => {
-  const { postId, mockExamId } = props;
+  const { postId, mockExamId, setIsClickEditPost } = props;
   const { postDetailData } = useGetPost(postId);
   const { questions } = useMockExamQuestions(mockExamId);
   const { examYears } = useGetMockExamYears();
@@ -322,7 +324,7 @@ const EditPost = (props: Props) => {
   };
 
   useEffect(() => {
-    if (postDetailData?.postResponse.postStatus.postType === 'TIP' && isSubmitEnabled) {
+    if (postDetailData?.postResponse.postStatus.postType === 'TIP' && isTipSubmitEnabled) {
       // removeImageUrls에서 id만 추출하여 배열로 변환
       const idsToRemove = editPostData.removeImageIds.map(item => item.id);
 
@@ -401,8 +403,18 @@ const EditPost = (props: Props) => {
     }
   };
 
+  const onBack = () => {
+    // setIsTitleEmpty(true);
+    setImageUrlList([]);
+    setImagePreviews([]);
+    //제출 트리거 조정
+    setIsTipSubmitEnabled(false);
+    //글쓰기 페이지 내리기
+    setIsClickEditPost(false);
+  };
+
   return (
-    <div className={'min-h-screen mx-5'}>
+    <div className={'min-h-screen'}>
       <form
         onSubmit={
           postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
@@ -412,222 +424,231 @@ const EditPost = (props: Props) => {
             ? handleNormalAndCommentarySubmit
             : handleTipSubmit
         }>
-        <button type={'submit'} className={'p-3 bg-second text-white'}>
-          저장
-        </button>
-        {postDetailData?.postResponse.postStatus.postType === 'COMMENTARY' && (
-          <div>
-            {/* 년도 선택 세션 */}
-            <div className={'flex flex-col relative gap-y-2'}>
-              <div className={'text-h3 font-bold ml-2'}>모의고사 연도 선택</div>
-              <div
-                onClick={() => {
-                  setIsYearsFilterOpen(!isYearsFilterOpen);
-                }}
-                className={'flex justify-between bg-gray0 rounded-[16px] py-3 px-4'}>
-                <div className={'text-h4'}>{editPostData.examYear}년</div>
-                {isYearsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
-              </div>
-              {isYearsFilterOpen && (
-                <MockExamYearsFilter
-                  years={examYears?.examYearWithRounds}
-                  setIsOpen={setIsYearsFilterOpen}
-                  setDataState={setEditPostData}
-                />
-              )}
-            </div>
-
-            {/* 회차 선택 세션 */}
-            <div className={'flex flex-col relative gap-y-2'}>
-              <div className={'text-h3 font-bold ml-2'}>모의고사 회차 선택</div>
-              <div
-                onClick={() => {
-                  setIsRoundsFilterOpen(!isRoundsFilterOpen);
-                }}
-                className={'flex justify-between bg-gray0 rounded-[16px] py-3 px-4'}>
-                <div className={'text-h4'}>{editPostData.round}회차</div>
-                {isRoundsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
-              </div>
-              {isRoundsFilterOpen && (
-                <FilterModal
-                  data={
-                    postDetailData.mockExam.examYear
-                      ? examYears?.examYearWithRounds[postDetailData.mockExam.examYear]
-                      : null
-                  }
-                  setDataState={setEditPostData}
-                  setIsOpen={setIsRoundsFilterOpen}
-                  className={'absolute w-full top-[100%]'}
-                />
-              )}
-            </div>
-
-            {/* 문제 번호 선택 세션 */}
-            <div className={'flex flex-col relative gap-y-2'}>
-              <div className={'text-h3 font-bold ml-2'}>문항 번호 입력</div>
-              <div>
-                <input
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  className={'w-full bg-gray0 rounded-[16px] py-3 px-4 focus:outline-0'}></input>
-                {/* 경고 문구 세션 */}
-                {isEmpty ? <div className={'text-point ml-1'}>내용을 입력해주세요.</div> : null}
-                {!isQuestionSequenceNumeric && !isEmpty ? (
-                  <div className={'text-point ml-1'}>숫자만 입력해주세요.</div>
-                ) : null}
-                {questionSequence > questions?.length && !isEmpty && isQuestionSequenceNumeric ? (
-                  <div className={'text-point ml-1'}>전체 문제 수({questions?.length}) 이하의 숫자를 입력해주세요.</div>
-                ) : null}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 제목, 글 작성 세션 */}
-        <div className={'flex flex-col gap-y-2 mt-[16px]'}>
-          <div className={'text-h3 font-bold ml-2'}>
-            {postDetailData?.postResponse.postStatus.postType === 'TIP'
-              ? '꿀팁'
-              : postDetailData?.postResponse.postStatus.postType === 'COMMENTARY'
-              ? '해설'
-              : '자유'}
-            작성
-          </div>
-          <div className={'flex flex-col gap-y-3'}>
-            <input
-              onChange={(e) => {
-                changePostDataTitle(e.target.value);
-              }}
-              className={
-                'w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
-              }
-              defaultValue={postDetailData?.postResponse.postContent.title}></input>
-            <textarea
-              onChange={(e) => {
-                changePostDataContent(e.target.value);
-              }}
-              defaultValue={postDetailData?.postResponse.postContent.content}
-              className={
-                'w-full h-[300px] border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
-              }></textarea>
-          </div>
-        </div>
-
-        {/* 인강 추천 태그 세션*/}
-        {postDetailData?.postResponse.postStatus.postType === 'TIP' && (
-          <div className={'flex flex-col gap-y-2 mt-[16px]'}>
-            <div className={'text-h3 font-bold ml-2'}>
-              추천 인강 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
-            </div>
-            <div className={'flex flex-col gap-y-3'}>
-              {onlineCourseInputs.map((input: string, index: number) => (
+        <Header
+          onBack={onBack}
+          CancelIcon={CancelIcon}
+          headerType={'dynamic'}
+          title={'꿀팁게시판 쓰기'}
+          rightElement={
+            <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
+              완료
+            </button>
+          }></Header>
+        <div className={'mx-5'}>
+          {postDetailData?.postResponse.postStatus.postType === 'COMMENTARY' && (
+            <div>
+              {/* 년도 선택 세션 */}
+              <div className={'flex flex-col relative gap-y-2'}>
+                <div className={'text-h3 font-bold ml-2'}>모의고사 연도 선택</div>
                 <div
-                  key={index}
-                  className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
-                  <input
-                    type="text"
-                    value={input}
-                    placeholder={'인강 제목'}
-                    className={'w-[90%] placeholder:text-gray4 focus:outline-0'}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                      handleChangeOnlineCourseInput(index, event)
+                  onClick={() => {
+                    setIsYearsFilterOpen(!isYearsFilterOpen);
+                  }}
+                  className={'flex justify-between bg-gray0 rounded-[16px] py-3 px-4'}>
+                  <div className={'text-h4'}>{editPostData.examYear}년</div>
+                  {isYearsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
+                </div>
+                {isYearsFilterOpen && (
+                  <MockExamYearsFilter
+                    years={examYears?.examYearWithRounds}
+                    setIsOpen={setIsYearsFilterOpen}
+                    setDataState={setEditPostData}
+                  />
+                )}
+              </div>
+
+              {/* 회차 선택 세션 */}
+              <div className={'flex flex-col relative gap-y-2'}>
+                <div className={'text-h3 font-bold ml-2'}>모의고사 회차 선택</div>
+                <div
+                  onClick={() => {
+                    setIsRoundsFilterOpen(!isRoundsFilterOpen);
+                  }}
+                  className={'flex justify-between bg-gray0 rounded-[16px] py-3 px-4'}>
+                  <div className={'text-h4'}>{editPostData.round}회차</div>
+                  {isRoundsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
+                </div>
+                {isRoundsFilterOpen && (
+                  <FilterModal
+                    data={
+                      postDetailData.mockExam.examYear
+                        ? examYears?.examYearWithRounds[postDetailData.mockExam.examYear]
+                        : null
                     }
+                    setDataState={setEditPostData}
+                    setIsOpen={setIsRoundsFilterOpen}
+                    className={'absolute w-full top-[100%]'}
                   />
-                  <button
-                    type={'button'}
-                    onClick={() => deleteOnlineCourseInputs(index)}
-                    className={'bg-gray2 rounded-full p-1'}>
-                    x
-                  </button>
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={() => addOnlineCourseInput()}
-              type={'button'}
-              className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
-              + 추가
-            </button>
-          </div>
-        )}
+                )}
+              </div>
 
-        {/* 문제집 추천 태그 세션*/}
-        {postDetailData?.postResponse.postStatus.postType === 'TIP' && (
+              {/* 문제 번호 선택 세션 */}
+              <div className={'flex flex-col relative gap-y-2'}>
+                <div className={'text-h3 font-bold ml-2'}>문항 번호 입력</div>
+                <div>
+                  <input
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    className={'w-full bg-gray0 rounded-[16px] py-3 px-4 focus:outline-0'}></input>
+                  {/* 경고 문구 세션 */}
+                  {isEmpty ? <div className={'text-point ml-1'}>내용을 입력해주세요.</div> : null}
+                  {!isQuestionSequenceNumeric && !isEmpty ? (
+                    <div className={'text-point ml-1'}>숫자만 입력해주세요.</div>
+                  ) : null}
+                  {questionSequence > questions?.length && !isEmpty && isQuestionSequenceNumeric ? (
+                    <div className={'text-point ml-1'}>전체 문제 수({questions?.length}) 이하의 숫자를 입력해주세요.</div>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 제목, 글 작성 세션 */}
           <div className={'flex flex-col gap-y-2 mt-[16px]'}>
             <div className={'text-h3 font-bold ml-2'}>
-              추천 문제집 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
+              {postDetailData?.postResponse.postStatus.postType === 'TIP'
+                ? '꿀팁'
+                : postDetailData?.postResponse.postStatus.postType === 'COMMENTARY'
+                ? '해설'
+                : '자유'}
+              작성
             </div>
             <div className={'flex flex-col gap-y-3'}>
-              {workbookInputs.map((input: string, index: number) => (
-                <div
-                  key={index}
-                  className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
-                  <input
-                    type="text"
-                    value={input}
-                    placeholder={'문제집 제목'}
-                    className={'w-[90%] placeholder:text-gray4 focus:outline-0'}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChangeWorkBookInput(index, event)}
-                  />
-                  <button
-                    type={'button'}
-                    onClick={() => deleteWorkBookInputs(index)}
-                    className={'bg-gray2 rounded-full p-1'}>
-                    x
-                  </button>
-                </div>
-              ))}
+              <input
+                onChange={(e) => {
+                  changePostDataTitle(e.target.value);
+                }}
+                className={
+                  'w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
+                }
+                defaultValue={postDetailData?.postResponse.postContent.title}></input>
+              <textarea
+                onChange={(e) => {
+                  changePostDataContent(e.target.value);
+                }}
+                defaultValue={postDetailData?.postResponse.postContent.content}
+                className={
+                  'w-full h-[300px] border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
+                }></textarea>
             </div>
-            <button
-              onClick={() => addWorkbookInputs()}
-              type={'button'}
-              className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
-              + 추가
-            </button>
-          </div>
-        )}
-
-        {/* 이미지 추가 세션 */}
-        <div className={'flex gap-x-2 '}>
-          <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
-            <label htmlFor="image">
-              <AddImageIcon />
-            </label>
-            <input
-              type={'file'}
-              accept={'image/*'}
-              id="image"
-              name="image"
-              ref={imgRef}
-              onChange={saveImgFile}
-              multiple
-              style={{ display: 'none' }}></input>
           </div>
 
-          <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
-            {/* API에서 받은 과거의 urls */}
-            {pastImageUrls?.map((img, i) => {
-              return (
-                <div key={img.id} className={'relative rounded-[8px]'}>
-                  <ImageDeleteButton i={i} type={'과거 이미지 URL'} usage={'edit'} />
-                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                    <Image key={img.id} src={img.imageUrl} fill alt={img.imageUrl} className={'object-cover'}></Image>;
+          {/* 인강 추천 태그 세션*/}
+          {postDetailData?.postResponse.postStatus.postType === 'TIP' && (
+            <div className={'flex flex-col gap-y-2 mt-[16px]'}>
+              <div className={'text-h3 font-bold ml-2'}>
+                추천 인강 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
+              </div>
+              <div className={'flex flex-col gap-y-3'}>
+                {onlineCourseInputs.map((input: string, index: number) => (
+                  <div
+                    key={index}
+                    className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
+                    <input
+                      type="text"
+                      value={input}
+                      placeholder={'인강 제목'}
+                      className={'w-[90%] placeholder:text-gray4 focus:outline-0'}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        handleChangeOnlineCourseInput(index, event)
+                      }
+                    />
+                    <button
+                      type={'button'}
+                      onClick={() => deleteOnlineCourseInputs(index)}
+                      className={'bg-gray2 rounded-full p-1'}>
+                      x
+                    </button>
                   </div>
-                </div>
-              );
-            })}
+                ))}
+              </div>
+              <button
+                onClick={() => addOnlineCourseInput()}
+                type={'button'}
+                className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
+                + 추가
+              </button>
+            </div>
+          )}
 
-            {/* 현재 추가된 urls */}
-            {imagePreviews.map((img, i) => {
-              return (
-                <div key={i} className={'relative rounded-[8px]'}>
-                  <ImageDeleteButton i={i} type={'현재 이미지 URL'} usage={'edit'} />
-                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                    <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
+          {/* 문제집 추천 태그 세션*/}
+          {postDetailData?.postResponse.postStatus.postType === 'TIP' && (
+            <div className={'flex flex-col gap-y-2 mt-[16px]'}>
+              <div className={'text-h3 font-bold ml-2'}>
+                추천 문제집 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
+              </div>
+              <div className={'flex flex-col gap-y-3'}>
+                {workbookInputs.map((input: string, index: number) => (
+                  <div
+                    key={index}
+                    className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
+                    <input
+                      type="text"
+                      value={input}
+                      placeholder={'문제집 제목'}
+                      className={'w-[90%] placeholder:text-gray4 focus:outline-0'}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChangeWorkBookInput(index, event)}
+                    />
+                    <button
+                      type={'button'}
+                      onClick={() => deleteWorkBookInputs(index)}
+                      className={'bg-gray2 rounded-full p-1'}>
+                      x
+                    </button>
                   </div>
-                </div>
-              );
-            })}
+                ))}
+              </div>
+              <button
+                onClick={() => addWorkbookInputs()}
+                type={'button'}
+                className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
+                + 추가
+              </button>
+            </div>
+          )}
+
+          {/* 이미지 추가 세션 */}
+          <div className={'flex gap-x-2 '}>
+            <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
+              <label htmlFor="image">
+                <AddImageIcon />
+              </label>
+              <input
+                type={'file'}
+                accept={'image/*'}
+                id="image"
+                name="image"
+                ref={imgRef}
+                onChange={saveImgFile}
+                multiple
+                style={{ display: 'none' }}></input>
+            </div>
+
+            <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
+              {/* API에서 받은 과거의 urls */}
+              {pastImageUrls?.map((img, i) => {
+                return (
+                  <div key={img.id} className={'relative rounded-[8px]'}>
+                    <ImageDeleteButton i={i} type={'과거 이미지 URL'} usage={'edit'} />
+                    <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                      <Image key={img.id} src={img.imageUrl} fill alt={img.imageUrl} className={'object-cover'}></Image>;
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* 현재 추가된 urls */}
+              {imagePreviews.map((img, i) => {
+                return (
+                  <div key={i} className={'relative rounded-[8px]'}>
+                    <ImageDeleteButton i={i} type={'현재 이미지 URL'} usage={'edit'} />
+                    <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                      <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </form>
@@ -661,3 +682,9 @@ function DropUpIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none" {...props}>
+    <path stroke="#000" strokeLinecap="round" d="m8 8 16 16M24 8 8 24" />
+  </svg>
+);
