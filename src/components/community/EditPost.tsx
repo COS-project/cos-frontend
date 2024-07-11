@@ -45,6 +45,7 @@ const EditPost = (props: Props) => {
   const [isTipSubmitEnabled, setIsTipSubmitEnabled] = useState(false);
   // 제목 비어있는지 체크하는 state
   const [isTitleEmpty, setIsTitleEmpty] = useState(false);
+  const { mockExams } = useGetMockExams(1, editPostData.examYear); //해설 회차 필터값
 
   useEffect(() => {
     console.log('postDetailData', postDetailData);
@@ -303,22 +304,6 @@ const EditPost = (props: Props) => {
   }, [editPostData.questionSequence]);
 
   /**
-   * Input 이벤트에 따라 안내문구 변경 함수
-   * @param e input 이벤트
-   */
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    isNumeric(value);
-    setIsEmpty(value.length === 0);
-    setQuestionSequence(parseInt(value) || 0); // 입력값을 상태에 저장, NaN이면 0으로 설정
-
-    if (/^\d+$/.test(value) && value.length !== 0 && parseInt(value) < questions.length) {
-      changePostDataQuestionSequence(value);
-    }
-    setInputValue(value); // 입력 필드 상태 업데이트
-  };
-
-  /**
    * 꿀팁 게시글 제출 함수 postData.tags 가 변경됨에 따라 아래의 useEffect 가 실행되어 제출됨.
    */
   const handleTipSubmit = async (e: FormEvent) => {
@@ -505,7 +490,7 @@ const EditPost = (props: Props) => {
                 </div>
                 {isYearsFilterOpen && (
                   <MockExamYearsFilter
-                    years={examYears?.examYearWithRounds}
+                    years={examYears}
                     setIsOpen={setIsYearsFilterOpen}
                     setDataState={setEditPostData}
                   />
@@ -524,12 +509,9 @@ const EditPost = (props: Props) => {
                   {isRoundsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
                 </div>
                 {isRoundsFilterOpen && (
-                  <FilterModal
-                    data={
-                      postDetailData.mockExam.examYear
-                        ? examYears?.examYearWithRounds[postDetailData.mockExam.examYear]
-                        : null
-                    }
+                  <MockExamRoundFilter
+                    //TODO: 회차 모의고사
+                    mockExams={editPostData.examYear ? mockExams : null}
                     setDataState={setEditPostData}
                     setIsOpen={setIsRoundsFilterOpen}
                     className={'absolute w-full top-[100%]'}
@@ -542,8 +524,19 @@ const EditPost = (props: Props) => {
                 <div className={'text-h3 font-bold ml-2'}>문항 번호 입력</div>
                 <div>
                   <input
-                    value={inputValue}
-                    onChange={handleInputChange}
+                    defaultValue={inputValue}
+                    onChange={(e) => {
+                      isNumeric(e.target.value);
+                      setIsEmpty(e.target.value.length === 0);
+                      setQuestionSequence(parseInt(e.target.value));
+                      if (
+                        /^\d+$/.test(e.target.value) &&
+                        e.target.value.length !== 0 &&
+                        parseInt(e.target.value) < questions?.length
+                      ) {
+                        changePostDataQuestionSequence(e.target.value);
+                      }
+                    }}
                     className={'w-full bg-gray0 rounded-[16px] py-3 px-4 focus:outline-0'}></input>
                   {/* 경고 문구 세션 */}
                   {isEmpty ? <div className={'text-point ml-1'}>내용을 입력해주세요.</div> : null}
