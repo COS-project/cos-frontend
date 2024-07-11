@@ -7,7 +7,10 @@ import { useRecoilState } from 'recoil';
 import FilterModal from '@/components/common/FilterModal';
 import Header from '@/components/common/Header';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
+import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
+import MockExamRoundFilter from '@/components/community/MockExamRoundFilter';
+import QuestionNumberExceedingLimitAlertModal from '@/components/community/QuestionNumberExceedingLimitAlertModal';
 import { putPostDetail } from '@/lib/api/community';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useGetPost from '@/lib/hooks/useGetPost';
@@ -15,7 +18,6 @@ import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { editPostDataState, imagePreviewsState, imageUrlListState, pastImageUrlsState } from '@/recoil/community/atom';
 import { EditPostDataType, TipPostTagType } from '@/types/community/type';
 import { ImageType } from '@/types/global';
-import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 
 interface Props {
   postId: string | string[];
@@ -46,6 +48,7 @@ const EditPost = (props: Props) => {
   // 제목 비어있는지 체크하는 state
   const [isTitleEmpty, setIsTitleEmpty] = useState(false);
   const { mockExams } = useGetMockExams(1, editPostData.examYear); //해설 회차 필터값
+  const [isQuestionNumberExceedingLimit, setIsQuestionNumberExceedingLimit] = useState(false);
 
   useEffect(() => {
     console.log('postDetailData', postDetailData);
@@ -432,6 +435,13 @@ const EditPost = (props: Props) => {
 
     let isValid = true;
 
+    if (questionSequence > questions?.length) {
+      setIsQuestionNumberExceedingLimit(true);
+      isValid = false;
+    } else {
+      setIsQuestionNumberExceedingLimit(false);
+    }
+
     if (editPostData.title === '') {
       setIsTitleEmpty(true);
       isValid = false;
@@ -456,6 +466,9 @@ const EditPost = (props: Props) => {
   return (
     <div className={'min-h-screen'}>
       {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
+      {isQuestionNumberExceedingLimit ? (
+        <QuestionNumberExceedingLimitAlertModal setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit} />
+      ) : null}
       <form onSubmit={handleException}>
         <Header
           onBack={onBack}
