@@ -13,6 +13,7 @@ import useGetPost from '@/lib/hooks/useGetPost';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { editPostDataState, imagePreviewsState, imageUrlListState, pastImageUrlsState } from '@/recoil/community/atom';
 import { EditPostDataType, TipPostTagType } from '@/types/community/type';
+import { ImageType } from '@/types/global';
 
 interface Props {
   postId: string | string[];
@@ -29,7 +30,7 @@ const EditPost = (props: Props) => {
   const imgRef = useRef<HTMLInputElement>(null);
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState);
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
-  const [pastImageUrls, setPastImageUrls] = useRecoilState<string[]>(pastImageUrlsState);
+  const [pastImageUrls, setPastImageUrls] = useRecoilState<ImageType[]>(pastImageUrlsState);
   const [isEmpty, setIsEmpty] = useState(false);
   const [isQuestionSequenceNumeric, setIsQuestionSequenceNumeric] = useState(true);
   const [questionSequence, setQuestionSequence] = useState(0);
@@ -37,6 +38,11 @@ const EditPost = (props: Props) => {
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
   // 기존 코드는 유지하고, 입력 필드의 상태를 관리하기 위한 새로운 state를 추가합니다.
   const [inputValue, setInputValue] = useState('');
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+
+  useEffect(() => {
+    console.log('postDetailData', postDetailData);
+  }, [postDetailData]);
 
   /**
    * 해설 게시글 Recoil 상태를 초기화하는 함수
@@ -44,13 +50,13 @@ const EditPost = (props: Props) => {
    */
   const initializeCommentaryEditPostData = (apiResponse) => {
     return {
-      postId: apiResponse.postId,
-      title: apiResponse.title,
-      content: apiResponse.content,
-      examYear: apiResponse.question.mockExam.examYear,
-      round: apiResponse.question.mockExam.round,
-      questionSequence: apiResponse.question.questionSeq,
-      removeImageUrls: [],
+      postId: apiResponse.postResponse.postId,
+      title: apiResponse.postResponse.postContent.title,
+      content: apiResponse.postResponse.postContent.content,
+      examYear: apiResponse.postResponse.question.mockExam.examYear,
+      round: apiResponse.postResponse.question.mockExam.round,
+      questionSequence: apiResponse.postResponse.question.questionSeq,
+      removeImageIds: [],
     };
   };
 
@@ -60,10 +66,10 @@ const EditPost = (props: Props) => {
    */
   const initializeTipEditPostData = (apiResponse) => {
     return {
-      postId: apiResponse.postId,
-      title: apiResponse.title,
-      content: apiResponse.content,
-      removeImageUrls: [],
+      postId: apiResponse.postResponse.postId,
+      title: apiResponse.postResponse.postContent.title,
+      content: apiResponse.postResponse.postContent.content,
+      removeImageIds: [],
     };
   };
 
@@ -73,10 +79,10 @@ const EditPost = (props: Props) => {
    */
   const initializeNormalEditPostData = (apiResponse) => {
     return {
-      postId: apiResponse.postId,
-      title: apiResponse.title,
-      content: apiResponse.content,
-      removeImageUrls: [],
+      postId: apiResponse.postResponse.postId,
+      title: apiResponse.postResponse.postContent.title,
+      content: apiResponse.postResponse.postContent.content,
+      removeImageIds: [],
     };
   };
 
@@ -85,24 +91,27 @@ const EditPost = (props: Props) => {
    */
   const fetchDataAndUpdateState = async () => {
     try {
-      const response = await postDetailData;
+      const response = postDetailData;
       if (response) {
         // 해설 게시글일 때,
-        if (postDetailData?.hasOwnProperty('mockExam')) {
+        if (postDetailData?.postResponse.postStatus.postType === 'COMMENTARY') {
           const initialCommentaryState: EditPostDataType = initializeCommentaryEditPostData(response);
           setEditPostData(initialCommentaryState);
         }
         // 꿀팁 게시글일 때,
-        if (postDetailData?.hasOwnProperty('recommendTags')) {
+        if (postDetailData?.postResponse.postStatus.postType === 'TIP') {
           const initialTipState: EditPostDataType = initializeTipEditPostData(response);
           setEditPostData(initialTipState);
         }
         //자유게시글일 때,
-        if (!postDetailData?.hasOwnProperty('mockExam') && !postDetailData?.hasOwnProperty('recommendTags')) {
+        if (
+          postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
+          postDetailData?.postResponse.postStatus.postType !== 'TIP'
+        ) {
           const initialNormalState: EditPostDataType = initializeNormalEditPostData(response);
           setEditPostData(initialNormalState);
         }
-        setPastImageUrls(postDetailData.postImages);
+        setPastImageUrls(postDetailData.postResponse.postContent.images);
       } else {
         // 에러 처리를 수행할 수 있습니다.
         console.error('Failed to fetch');
@@ -122,8 +131,8 @@ const EditPost = (props: Props) => {
    * 꿀팁 게시글 수정하기 전 과거 remonnedTags 값을 가져와서 onlineCourseInputs 값을 초기화해주는 함수
    */
   const updateNewOnlineCourseInput = () => {
-    if (postDetailData?.hasOwnProperty('recommendTags')) {
-      postDetailData.recommendTags.map((recommendTag: TipPostTagType) => {
+    if (postDetailData?.postResponse.recommendTags && postDetailData?.postResponse.postStatus.postType === 'TIP') {
+      postDetailData.postResponse.recommendTags.map((recommendTag: TipPostTagType) => {
         if (!onlineCourseInputs.includes(recommendTag.tagName)) {
           if (recommendTag.tagType === 'LECTURE') {
             setOnlineCourseInputs((prevState) => [...prevState, recommendTag.tagName]);
@@ -137,8 +146,8 @@ const EditPost = (props: Props) => {
    * 꿀팁 게시 과거 remonnedTags 값을 가져와서 workbookInputs 값을 초기화해주는 함수
    */
   const updateNewWorkBookInput = () => {
-    if (postDetailData?.hasOwnProperty('recommendTags')) {
-      postDetailData.recommendTags.map((recommendTag: TipPostTagType) => {
+    if (postDetailData?.postResponse.recommendTags && postDetailData?.postResponse.postStatus.postType === 'TIP') {
+      postDetailData.postResponse.recommendTags.map((recommendTag: TipPostTagType) => {
         if (!workbookInputs.includes(recommendTag.tagName)) {
           if (recommendTag.tagType === 'BOOK') {
             setWorkbookInputs((prevState) => [...prevState, recommendTag.tagName]);
@@ -277,8 +286,9 @@ const EditPost = (props: Props) => {
 
     setEditPostData((prevState) => ({
       ...prevState,
-      newTags: updatedTags,
+      tags: updatedTags,
     }));
+    setIsSubmitEnabled(true);
   };
 
   // 해설 게시글일 때, 문제 번호를 컨트롤하는 inputValue state 값을 과거 데이터로 초기화
@@ -305,31 +315,57 @@ const EditPost = (props: Props) => {
   /**
    * 꿀팁 게시글 제출 함수 postData.tags 가 변경됨에 따라 아래의 useEffect 가 실행되어 제출됨.
    */
-  const handleTipSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTipSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     changeTags(); // 태그 변경 함수 호출
   };
 
   useEffect(() => {
-    if (postDetailData?.hasOwnProperty('recommendTags')) {
+    if (postDetailData?.postResponse.postStatus.postType === 'TIP' && isSubmitEnabled) {
+      // removeImageUrls에서 id만 추출하여 배열로 변환
+      const idsToRemove = editPostData.removeImageIds.map(item => item.id);
+
+      // editPostData를 복제하고 removeImageUrls를 id 배열로 대체
+      const updatedEditPostData = {
+        ...editPostData,
+        removeImageIds: idsToRemove,
+      };
+
       // 태그가 업데이트된 후 실행할 로직
       const formData = new FormData();
       imageUrlList.forEach((file) => {
-        formData.append('images', file);
+        formData.append('files', file);
       });
-      formData.append('request', new Blob([JSON.stringify(editPostData)], { type: 'application/json' }));
+      formData.append('request', new Blob([JSON.stringify(updatedEditPostData)], { type: 'application/json' }));
+
+      // FormData의 내용을 확인하는 로직
+      for (let [key, value] of formData.entries()) {
+        if (value instanceof Blob) {
+          // Blob인 경우 내용을 문자열로 변환
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            console.log(`${key}: ${reader.result}`);
+          };
+          reader.readAsText(value);
+        } else {
+          console.log(`${key}: ${value}`);
+        }
+      }
 
       // API 호출 로직
+      console.log('수정할 데이터', editPostData);
       putPostDetail(1, 'TIP', formData)
         .then((response) => {
+          setIsSubmitEnabled(false);
           console.log(response);
         })
         .catch((error) => {
+          setIsSubmitEnabled(false);
           console.error('폼 제출 중 오류 발생:', error);
         });
     }
-  }, [editPostData.newTags]);
+  }, [isSubmitEnabled]);
 
   /**
    * 자유 게시글, 해설 게시글 form 형식 제출 함수
@@ -339,7 +375,7 @@ const EditPost = (props: Props) => {
     const formData = new FormData();
 
     imageUrlList.forEach((file, index) => {
-      formData.append('images', file);
+      formData.append('files', file);
     });
 
     formData.append(
@@ -349,11 +385,14 @@ const EditPost = (props: Props) => {
       }),
     );
     try {
-      if (postDetailData?.hasOwnProperty('mockExam')) {
+      if (postDetailData?.postResponse.postStatus.postType === 'COMMENTARY') {
         const response = await putPostDetail(1, 'COMMENTARY', formData); // API 호출
         console.log('COMMENTARY', response.data);
       }
-      if (!postDetailData?.hasOwnProperty('mockExam') && !postDetailData?.hasOwnProperty('recommendTags')) {
+      if (
+        postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
+        postDetailData?.postResponse.postStatus.postType !== 'TIP'
+      ) {
         const response = await putPostDetail(1, 'NORMAL', formData); // API 호출
         console.log('TIP', response.data);
       }
@@ -363,19 +402,20 @@ const EditPost = (props: Props) => {
   };
 
   return (
-    <div className={'min-h-screen'}>
+    <div className={'min-h-screen mx-5'}>
       <form
         onSubmit={
-          !postDetailData?.hasOwnProperty('mockExam') && !postDetailData?.hasOwnProperty('recommendTags')
+          postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
+          postDetailData?.postResponse.postStatus.postType !== 'TIP'
             ? handleNormalAndCommentarySubmit
-            : postDetailData?.hasOwnProperty('mockExam')
+            : postDetailData?.postResponse.postStatus.postType === 'COMMENTARY'
             ? handleNormalAndCommentarySubmit
             : handleTipSubmit
         }>
         <button type={'submit'} className={'p-3 bg-second text-white'}>
           저장
         </button>
-        {postDetailData?.hasOwnProperty('mockExam') && (
+        {postDetailData?.postResponse.postStatus.postType === 'COMMENTARY' && (
           <div>
             {/* 년도 선택 세션 */}
             <div className={'flex flex-col relative gap-y-2'}>
@@ -445,7 +485,14 @@ const EditPost = (props: Props) => {
 
         {/* 제목, 글 작성 세션 */}
         <div className={'flex flex-col gap-y-2 mt-[16px]'}>
-          <div className={'text-h3 font-bold ml-2'}>해설 작성</div>
+          <div className={'text-h3 font-bold ml-2'}>
+            {postDetailData?.postResponse.postStatus.postType === 'TIP'
+              ? '꿀팁'
+              : postDetailData?.postResponse.postStatus.postType === 'COMMENTARY'
+              ? '해설'
+              : '자유'}
+            작성
+          </div>
           <div className={'flex flex-col gap-y-3'}>
             <input
               onChange={(e) => {
@@ -454,12 +501,12 @@ const EditPost = (props: Props) => {
               className={
                 'w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
               }
-              value={editPostData.title}></input>
+              defaultValue={postDetailData?.postResponse.postContent.title}></input>
             <textarea
               onChange={(e) => {
                 changePostDataContent(e.target.value);
               }}
-              value={editPostData.content}
+              defaultValue={postDetailData?.postResponse.postContent.content}
               className={
                 'w-full h-[300px] border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
               }></textarea>
@@ -467,7 +514,7 @@ const EditPost = (props: Props) => {
         </div>
 
         {/* 인강 추천 태그 세션*/}
-        {postDetailData?.hasOwnProperty('recommendTags') && (
+        {postDetailData?.postResponse.postStatus.postType === 'TIP' && (
           <div className={'flex flex-col gap-y-2 mt-[16px]'}>
             <div className={'text-h3 font-bold ml-2'}>
               추천 인강 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
@@ -505,7 +552,7 @@ const EditPost = (props: Props) => {
         )}
 
         {/* 문제집 추천 태그 세션*/}
-        {postDetailData?.hasOwnProperty('recommendTags') && (
+        {postDetailData?.postResponse.postStatus.postType === 'TIP' && (
           <div className={'flex flex-col gap-y-2 mt-[16px]'}>
             <div className={'text-h3 font-bold ml-2'}>
               추천 문제집 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
@@ -561,10 +608,10 @@ const EditPost = (props: Props) => {
             {/* API에서 받은 과거의 urls */}
             {pastImageUrls?.map((img, i) => {
               return (
-                <div key={i} className={'relative rounded-[8px]'}>
+                <div key={img.id} className={'relative rounded-[8px]'}>
                   <ImageDeleteButton i={i} type={'과거 이미지 URL'} usage={'edit'} />
                   <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                    <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
+                    <Image key={img.id} src={img.imageUrl} fill alt={img.imageUrl} className={'object-cover'}></Image>;
                   </div>
                 </div>
               );

@@ -4,6 +4,7 @@ import React, { SVGProps, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { editPostDataState, imagePreviewsState, imageUrlListState, pastImageUrlsState } from '@/recoil/community/atom';
+import { ImageType } from '@/types/global';
 
 interface Props {
   usage: string; //create(글생성), edit(글수정)
@@ -15,7 +16,7 @@ const ImageDeleteButton = (props: Props) => {
   const { usage, i, type } = props;
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState); // 파일 업로드
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
-  const [pastImageUrls, setPastImageUrls] = useRecoilState<string[]>(pastImageUrlsState);
+  const [pastImageUrls, setPastImageUrls] = useRecoilState<ImageType[]>(pastImageUrlsState);
   const [editPostData, setEditPostData] = useRecoilState(editPostDataState);
 
   //수정글에서(usage==edit) 미리보기에서 X버튼 클릭했을 때 삭제되도록 하는 함수
@@ -40,12 +41,12 @@ const ImageDeleteButton = (props: Props) => {
    * 수정글에서(usage==edit) 진짜 삭제할 수 있도록 deleteImageUrls 리스트에 삭제할 url 을 추가하는 함수
    */
   const deleteImageData = () => {
-    const copy = [...editPostData.removeImageUrls];
+    const copy = [...editPostData.removeImageIds];
     const copyPastImageUrls = [...pastImageUrls];
 
     if (type === '과거 이미지 URL' && !copy.includes(copyPastImageUrls[i])) {
       copy.push(copyPastImageUrls[i]);
-      setEditPostData((prevState) => ({ ...prevState, removeImageUrls: copy }));
+      setEditPostData((prevState) => ({ ...prevState, removeImageIds: copy }));
     }
   };
 

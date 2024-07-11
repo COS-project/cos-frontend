@@ -362,7 +362,6 @@ interface PostComments {
   user: User;
   parentCommentId?: number;
   likeCount: number;
-  isLiked: boolean;
   content: string;
   dateTime: DateTime;
   childPostComments?: PostComments[];
