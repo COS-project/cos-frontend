@@ -80,10 +80,6 @@ const CommunityDetailPage = () => {
     await communityPostDataMutate();
   };
 
-  useEffect(() => {
-    console.log('mockexamId', communityPostData?.postResponse);
-  }, [communityPostData]);
-
   return (
     <>
       {onPostModal ? ( //글 삭제 및 수정 모달창
@@ -116,7 +112,7 @@ const CommunityDetailPage = () => {
       {isClickEditPost ? (
         <EditPost
           postId={params.id}
-          mockExamId={communityPostData?.postResponse?.question?.mockExam.mockExamId}
+          mockExamId={communityPostData?.postResponse.question?.mockExam.MockExamId}
           setIsClickEditPost={setIsClickEditPost}
         />
       ) : (
@@ -169,7 +165,9 @@ const CommunityDetailPage = () => {
                       onClick={() => {
                         setIsClickQuestionButton(!isClickQuestionButton);
                       }}
-                      className={'flex items-center px-3 py-1 rounded-full border-[1px] border-gray2 text-gray4 text-h6'}>
+                      className={
+                        'flex items-center px-3 py-1 rounded-full border-[1px] border-gray2 text-gray4 text-h6'
+                      }>
                       문제보기
                       <MoveIcon />
                     </button>
