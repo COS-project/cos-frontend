@@ -35,7 +35,7 @@ export default function CommunityCategoryPage() {
   const [sortField, setSortField] = useState<string>('createdAt'); //최신순 인기순
   //보드 타입
   const [boardType, setBoardType] = useState<BoardType>('REVIEW');
-  const { userPostsList, setSize } = useGetTotalSearchResults(boardType, 1, sortField);
+  const { userPostsList, setSize, mutate } = useGetTotalSearchResults(boardType, 1, sortField);
   const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('COMMENTARY');
   //글쓰기 버튼
   const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
@@ -121,7 +121,7 @@ export default function CommunityCategoryPage() {
   return boardTypeForPost === 'COMMENTARY' && isClickedWriteButton ? (
     <WriteExplanationPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : boardTypeForPost === 'TIP' && isClickedWriteButton ? (
-    <WriteTipPost setIsClickedWriteButton={setIsClickedWriteButton} />
+    <WriteTipPost setIsClickedWriteButton={setIsClickedWriteButton} mutate={mutate} />
   ) : boardTypeForPost === 'NORMAL' && isClickedWriteButton ? (
     <WriteNormalPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : (

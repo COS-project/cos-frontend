@@ -68,8 +68,8 @@ export const pastImageUrlsState = atom<string[]>({
 export const createPostDataState = atom<CreatePostDataType>({
   key: 'createPostDataState',
   default: {
-    title: '제목',
-    content: '내용',
+    title: '',
+    content: '',
     tags: [],
     examYear: 2023,
     round: 1,
