@@ -499,7 +499,7 @@ const EditPost = (props: Props) => {
           }></Header>
         <div className={'mx-5'}>
           {postDetailData?.postResponse.postStatus.postType === 'COMMENTARY' && (
-            <div>
+            <div className={'flex flex-col gap-y-4 mt-5 my-8'}>
               {/* 년도 선택 세션 */}
               <div className={'flex flex-col relative gap-y-2'}>
                 <div className={'text-h3 font-bold ml-2'}>모의고사 연도 선택</div>
