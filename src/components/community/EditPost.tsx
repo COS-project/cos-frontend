@@ -428,7 +428,14 @@ const EditPost = (props: Props) => {
           onBack={onBack}
           CancelIcon={CancelIcon}
           headerType={'dynamic'}
-          title={'꿀팁게시판 쓰기'}
+          title={
+            postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
+            postDetailData?.postResponse.postStatus.postType !== 'TIP'
+              ? '자유게시판 수정'
+              : postDetailData?.postResponse.postStatus.postType === 'COMMENTARY'
+              ? '해설게시판 수정'
+              : '꿀팁게시판 수정'
+          }
           rightElement={
             <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
               완료
