@@ -112,7 +112,7 @@ const CommunityDetailPage = () => {
       {isClickEditPost ? (
         <EditPost
           postId={params.id}
-          mockExamId={communityPostData?.postResponse.question?.mockExam.MockExamId}
+          mockExamId={communityPostData?.postResponse.question?.mockExam.mockExamId}
           setIsClickEditPost={setIsClickEditPost}
         />
       ) : (
