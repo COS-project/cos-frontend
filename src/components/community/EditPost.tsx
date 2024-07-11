@@ -4,7 +4,6 @@ import Image from 'next/image';
 import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import FilterModal from '@/components/common/FilterModal';
 import Header from '@/components/common/Header';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
 import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
@@ -50,10 +49,6 @@ const EditPost = (props: Props) => {
   const [isTitleEmpty, setIsTitleEmpty] = useState(false);
   const { mockExams } = useGetMockExams(1, editPostData.examYear); //해설 회차 필터값
   const [isQuestionNumberExceedingLimit, setIsQuestionNumberExceedingLimit] = useState(false);
-
-  useEffect(() => {
-    console.log('postDetailData', postDetailData);
-  }, [postDetailData]);
 
   /**
    * 해설 게시글 Recoil 상태를 초기화하는 함수
@@ -332,21 +327,8 @@ const EditPost = (props: Props) => {
       imageUrlList.forEach((file) => {
         formData.append('files', file);
       });
-      formData.append('request', new Blob([JSON.stringify(updatedEditPostData)], { type: 'application/json' }));
 
-      // FormData의 내용을 확인하는 로직
-      for (let [key, value] of formData.entries()) {
-        if (value instanceof Blob) {
-          // Blob인 경우 내용을 문자열로 변환
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            console.log(`${key}: ${reader.result}`);
-          };
-          reader.readAsText(value);
-        } else {
-          console.log(`${key}: ${value}`);
-        }
-      }
+      formData.append('request', new Blob([JSON.stringify(updatedEditPostData)], { type: 'application/json' }));
 
       putPostDetail(1, 'TIP', formData)
         .then((response) => {
@@ -376,10 +358,10 @@ const EditPost = (props: Props) => {
    */
   const handleNormalAndCommentarySubmit = async (e: FormEvent) => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
-    // removeImageUrls에서 id만 추출하여 배열로 변환
+    // removeImageUrls 에서 id만 추출하여 배열로 변환
     const idsToRemove = editPostData.removeImageIds.map((item) => item.id);
 
-    // editPostData를 복제하고 removeImageUrls를 id 배열로 대체
+    // editPostData 를 복제하고 removeImageUrls 를 id 배열로 대체
     const updatedEditPostData = {
       ...editPostData,
       removeImageIds: idsToRemove,
@@ -429,6 +411,7 @@ const EditPost = (props: Props) => {
   };
 
   const onBack = () => {
+    //이미지 추가 초기화
     setImageUrlList([]);
     setImagePreviews([]);
     //제출 트리거 조정
@@ -445,6 +428,7 @@ const EditPost = (props: Props) => {
 
     let isValid = true;
 
+    // 입력한 번호가 모의고사 전체 문제 개수를 초과하지 않도록 alert
     if (questionSequence > questions?.length) {
       setIsQuestionNumberExceedingLimit(true);
       isValid = false;
@@ -452,6 +436,7 @@ const EditPost = (props: Props) => {
       setIsQuestionNumberExceedingLimit(false);
     }
 
+    // title 을 입력하지 않을 경우 alert
     if (editPostData.title === '') {
       setIsTitleEmpty(true);
       isValid = false;
