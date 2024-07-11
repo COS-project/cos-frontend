@@ -12,6 +12,7 @@ import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import MockExamRoundFilter from '@/components/community/MockExamRoundFilter';
 import QuestionNumberExceedingLimitAlertModal from '@/components/community/QuestionNumberExceedingLimitAlertModal';
 import { putPostDetail } from '@/lib/api/community';
+import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useGetPost from '@/lib/hooks/useGetPost';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
@@ -375,6 +376,15 @@ const EditPost = (props: Props) => {
    */
   const handleNormalAndCommentarySubmit = async (e: FormEvent) => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
+    // removeImageUrls에서 id만 추출하여 배열로 변환
+    const idsToRemove = editPostData.removeImageIds.map((item) => item.id);
+
+    // editPostData를 복제하고 removeImageUrls를 id 배열로 대체
+    const updatedEditPostData = {
+      ...editPostData,
+      removeImageIds: idsToRemove,
+    };
+
     const formData = new FormData();
 
     imageUrlList.forEach((file, index) => {
@@ -383,7 +393,7 @@ const EditPost = (props: Props) => {
 
     formData.append(
       'request',
-      new Blob([JSON.stringify(editPostData)], {
+      new Blob([JSON.stringify(updatedEditPostData)], {
         type: 'application/json',
       }),
     );
