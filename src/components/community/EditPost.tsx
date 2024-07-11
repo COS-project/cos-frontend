@@ -5,6 +5,7 @@ import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import FilterModal from '@/components/common/FilterModal';
+import Header from '@/components/common/Header';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { putPostDetail } from '@/lib/api/community';
@@ -14,7 +15,6 @@ import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { editPostDataState, imagePreviewsState, imageUrlListState, pastImageUrlsState } from '@/recoil/community/atom';
 import { EditPostDataType, TipPostTagType } from '@/types/community/type';
 import { ImageType } from '@/types/global';
-import Header from '@/components/common/Header';
 
 interface Props {
   postId: string | string[];
@@ -326,7 +326,7 @@ const EditPost = (props: Props) => {
   useEffect(() => {
     if (postDetailData?.postResponse.postStatus.postType === 'TIP' && isTipSubmitEnabled) {
       // removeImageUrls에서 id만 추출하여 배열로 변환
-      const idsToRemove = editPostData.removeImageIds.map(item => item.id);
+      const idsToRemove = editPostData.removeImageIds.map((item) => item.id);
 
       // editPostData를 복제하고 removeImageUrls를 id 배열로 대체
       const updatedEditPostData = {
@@ -503,7 +503,9 @@ const EditPost = (props: Props) => {
                     <div className={'text-point ml-1'}>숫자만 입력해주세요.</div>
                   ) : null}
                   {questionSequence > questions?.length && !isEmpty && isQuestionSequenceNumeric ? (
-                    <div className={'text-point ml-1'}>전체 문제 수({questions?.length}) 이하의 숫자를 입력해주세요.</div>
+                    <div className={'text-point ml-1'}>
+                      전체 문제 수({questions?.length}) 이하의 숫자를 입력해주세요.
+                    </div>
                   ) : null}
                 </div>
               </div>
@@ -550,7 +552,9 @@ const EditPost = (props: Props) => {
                 {onlineCourseInputs.map((input: string, index: number) => (
                   <div
                     key={index}
-                    className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
+                    className={
+                      'flex justify-between items-center w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'
+                    }>
                     <input
                       type="text"
                       value={input}
@@ -560,20 +564,15 @@ const EditPost = (props: Props) => {
                         handleChangeOnlineCourseInput(index, event)
                       }
                     />
-                    <button
-                      type={'button'}
-                      onClick={() => deleteOnlineCourseInputs(index)}
-                      className={'bg-gray2 rounded-full p-1'}>
-                      x
-                    </button>
+                    <DeleteIcon onClick={() => deleteOnlineCourseInputs(index)} />
                   </div>
                 ))}
               </div>
               <button
                 onClick={() => addOnlineCourseInput()}
                 type={'button'}
-                className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
-                + 추가
+                className={'flex items-center justify-center bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
+                <PlusIcon /> 추가
               </button>
             </div>
           )}
@@ -588,7 +587,9 @@ const EditPost = (props: Props) => {
                 {workbookInputs.map((input: string, index: number) => (
                   <div
                     key={index}
-                    className={'flex justify-between w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'}>
+                    className={
+                      'flex justify-between items-center w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4'
+                    }>
                     <input
                       type="text"
                       value={input}
@@ -596,26 +597,21 @@ const EditPost = (props: Props) => {
                       className={'w-[90%] placeholder:text-gray4 focus:outline-0'}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChangeWorkBookInput(index, event)}
                     />
-                    <button
-                      type={'button'}
-                      onClick={() => deleteWorkBookInputs(index)}
-                      className={'bg-gray2 rounded-full p-1'}>
-                      x
-                    </button>
+                    <DeleteIcon onClick={() => deleteWorkBookInputs(index)} />
                   </div>
                 ))}
               </div>
               <button
                 onClick={() => addWorkbookInputs()}
                 type={'button'}
-                className={'bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
-                + 추가
+                className={'flex items-center justify-center bg-second rounded-[16px] py-3 px-4 text-white text-h6'}>
+                <PlusIcon /> 추가
               </button>
             </div>
           )}
 
           {/* 이미지 추가 세션 */}
-          <div className={'flex gap-x-2 '}>
+          <div className={'my-3 flex gap-x-2 w-[48px] h-[48px]'}>
             <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
               <label htmlFor="image">
                 <AddImageIcon />
@@ -630,32 +626,31 @@ const EditPost = (props: Props) => {
                 multiple
                 style={{ display: 'none' }}></input>
             </div>
-
-            <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
-              {/* API에서 받은 과거의 urls */}
-              {pastImageUrls?.map((img, i) => {
-                return (
-                  <div key={img.id} className={'relative rounded-[8px]'}>
-                    <ImageDeleteButton i={i} type={'과거 이미지 URL'} usage={'edit'} />
-                    <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                      <Image key={img.id} src={img.imageUrl} fill alt={img.imageUrl} className={'object-cover'}></Image>;
-                    </div>
+          </div>
+          <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
+            {/* API에서 받은 과거의 urls */}
+            {pastImageUrls?.map((img, i) => {
+              return (
+                <div key={img.id} className={'relative rounded-[8px]'}>
+                  <ImageDeleteButton i={i} type={'과거 이미지 URL'} usage={'edit'} />
+                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                    <Image key={img.id} src={img.imageUrl} fill alt={img.imageUrl} className={'object-cover'}></Image>;
                   </div>
-                );
-              })}
+                </div>
+              );
+            })}
 
-              {/* 현재 추가된 urls */}
-              {imagePreviews.map((img, i) => {
-                return (
-                  <div key={i} className={'relative rounded-[8px]'}>
-                    <ImageDeleteButton i={i} type={'현재 이미지 URL'} usage={'edit'} />
-                    <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                      <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
-                    </div>
+            {/* 현재 추가된 urls */}
+            {imagePreviews.map((img, i) => {
+              return (
+                <div key={i} className={'relative rounded-[8px]'}>
+                  <ImageDeleteButton i={i} type={'현재 이미지 URL'} usage={'edit'} />
+                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                    <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </form>
@@ -693,5 +688,17 @@ function DropUpIcon(props: React.SVGProps<SVGSVGElement>) {
 const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none" {...props}>
     <path stroke="#000" strokeLinecap="round" d="m8 8 16 16M24 8 8 24" />
+  </svg>
+);
+
+const PlusIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={21} height={20} fill="none" {...props}>
+    <path stroke="#fff" d="M15.792 10h-10M10.792 5v10" />
+  </svg>
+);
+
+const DeleteIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={21} height={21} fill="none" {...props}>
+    <path stroke="#6E6F71" d="m13.827 6.964-7.07 7.071M6.756 6.964l7.071 7.071" />
   </svg>
 );
