@@ -91,7 +91,6 @@ const CommunityDetailPage = () => {
           editOnOff={true}
           afterDelete="/community/Comhwal_level1/"
           postId={params.id}
-          setOnPostModal={setOnPostModal}
           setIsClickEditPost={setIsClickEditPost}>
           글 메뉴
         </PostingModal>
@@ -115,7 +114,11 @@ const CommunityDetailPage = () => {
         />
       ) : null}
       {isClickEditPost ? (
-        <EditPost postId={params.id} mockExamId={communityPostData?.postResponse?.question?.mockExam.mockExamId} />
+        <EditPost
+          postId={params.id}
+          mockExamId={communityPostData?.postResponse?.question?.mockExam.mockExamId}
+          setIsClickEditPost={setIsClickEditPost}
+        />
       ) : (
         <div className="mb-[100px]">
           {/* <ImgModal></ImgModa> */}

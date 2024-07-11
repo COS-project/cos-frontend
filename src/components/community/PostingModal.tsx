@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
-import { useSWRConfig } from 'swr';
 
 import { postCommentDelete, postingDelete } from '@/lib/api/communityPost';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
