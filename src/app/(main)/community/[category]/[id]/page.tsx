@@ -81,19 +81,17 @@ const CommunityDetailPage = () => {
   };
 
   useEffect(() => {
-    console.log('mockexamId', communityPostData?.postResponse)
+    console.log('mockexamId', communityPostData?.postResponse);
   }, [communityPostData]);
 
   return (
     <>
-      {isClickEditPost ? (
-        <EditPost postId={params.id} mockExamId={communityPostData?.postResponse?.question?.mockExam.mockExamId} />
-      ) : null}
       {onPostModal ? ( //글 삭제 및 수정 모달창
         <PostingModal
           editOnOff={true}
           afterDelete="/community/Comhwal_level1/"
           postId={params.id}
+          setOnPostModal={setOnPostModal}
           setIsClickEditPost={setIsClickEditPost}>
           글 메뉴
         </PostingModal>
