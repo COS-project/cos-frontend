@@ -39,6 +39,7 @@ const PostingModal = (props: Props) => {
               <div
                 onClick={() => {
                   if (setIsClickEditPost) setIsClickEditPost(true);
+                  setOnPostModal(false);
                 }}
                 className="self-stretch h-14 p-2 bg-neutral-100 justify-center items-center gap-2 inline-flex hover:bg-[#F5F5F5]">
                 <div className="text-center text-black text-h3 font-normal font-['Pretendard Variable']">수정하기</div>
