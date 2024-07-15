@@ -11,6 +11,8 @@ export default function StopWatch() {
   const [now, setNow] = useState<number | null>(null);
   const intervalRef = useRef<number | null>(null);
   const [timebool, setTimebool] = useState<boolean>(true);
+  const [onModal, setOnModal] = useState<boolean>(false);
+  const [onAccumulatedModal, setOnAccumulatedModal] = useState<boolean>(false);
   const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState);
   const [mStopwachTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState);
   const [sSopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState);
@@ -28,27 +30,23 @@ export default function StopWatch() {
     }, 100);
   }
 
-  function handleContinue() {
-    setStartTime(Date.now());
-    setNow(Date.now());
-
-    if (intervalRef.current !== null) {
-      clearInterval(intervalRef.current);
-    }
-
-    intervalRef.current = setInterval(() => {
-      setNow(Date.now());
-    }, 100);
-  }
-
-  function handleStop(): void {
+  function handleStop() {
     if (intervalRef.current !== null) {
       clearInterval(intervalRef.current);
     }
     if (startTime != null && now != null) {
-      setIntegralTime(secondsPassed);
+      setIntegralTime((prevIntegralTime) => prevIntegralTime + (now - startTime) / 1000);
     }
+    setStartTime(Date.now());
+    setNow(Date.now());
   }
+
+  function handleSetZero() {
+    setStartTime(Date.now());
+    setNow(Date.now());
+    setIntegralTime(0);
+  }
+
   let secondsPassed = 0;
   if (startTime != null && now != null) {
     secondsPassed = (now - startTime) / 1000 + integralTime;
@@ -90,8 +88,143 @@ export default function StopWatch() {
     setSStopwatchTime(ts);
   }, [ts]);
 
+  function StopwatchAlert() {
+    return (
+      <>
+        <div className="">
+          <div className="absolute z-40 w-full h-full px-5 py-8 bg-black bg-opacity-60 flex-col justify-center items-center gap-2 inline-flex ">
+            <div className="relative self-stretch px-2 justify-center items-center inline-flex">
+              <div className="w-64"></div>
+              <div
+                className="flex cursor-pointer"
+                onClick={() => {
+                  setOnModal(false);
+                }}>
+                <div className="text-center text-white text-base font-medium font-['Pretendard Variable'] leading-normal">
+                  닫기
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" fill="none" viewBox="0 0 25 24">
+                  <mask id="a" width="25" height="24" x="0" y="0" maskUnits="userSpaceOnUse">
+                    <path fill="#D9D9D9" d="M.646 0h24v24h-24z" />
+                  </mask>
+                  <g mask="url(#a)">
+                    <path
+                      fill="#fff"
+                      d="M12.646 12.708 7.4 17.954a.503.503 0 0 1-.345.15.467.467 0 0 1-.363-.15.49.49 0 0 1-.16-.354.49.49 0 0 1 .16-.354L11.938 12 6.692 6.754a.504.504 0 0 1-.15-.344.467.467 0 0 1 .15-.364.49.49 0 0 1 .354-.16.49.49 0 0 1 .354.16l5.246 5.246 5.246-5.246a.503.503 0 0 1 .344-.15.467.467 0 0 1 .364.15.49.49 0 0 1 .16.354.49.49 0 0 1-.16.354L13.353 12l5.247 5.246a.504.504 0 0 1 .15.344.467.467 0 0 1-.15.364.491.491 0 0 1-.354.16.49.49 0 0 1-.354-.16l-5.246-5.246Z"
+                    />
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div className="px-5 py-6 bg-white rounded-[32px] flex-col justify-center gap-2 flex">
+              <div className="self-stretch flex-col gap-4 flex">
+                <div className="self-stretch text-center flex-col gap-1 flex">
+                  <div className="self-stretch text-neutral-900 text-h6 font-bold font-['Pretendard Variable'] leading-[30px]">
+                    누적 시간
+                  </div>
+                  <div className="self-stretch text-primary text-h2 font-bold font-['Pretendard Variable'] leading-[30px]">
+                    {th}시간 {tm}분 {ts}초
+                  </div>
+                  <div className="self-stretch text-neutral-950 text-h6 font-normal font-['Pretendard Variable'] leading-[21px]">
+                    기록하시겠습니까?
+                  </div>
+                </div>
+                <div className="justify-end items-center gap-2 inline-flex">
+                  <div
+                    className="h-9 px-4 py-1 bg-gray1 cursor-pointer rounded-[999px] justify-center items-center gap-2 flex"
+                    onClick={() => {
+                      setStartTime(Date.now());
+                      setNow(Date.now());
+                      setOnModal(false);
+                      handleSetZero();
+                    }}>
+                    <div className="text-gray4 text-h6 font-medium font-['Pretendard Variable'] leading-[21px]">
+                      아니요, 괜찮아요
+                    </div>
+                  </div>
+                  <div className="h-9 px-4 py-1 cursor-pointer bg-black rounded-[999px] justify-center items-center gap-2 flex">
+                    <div
+                      className="text-white text-h6 font-medium font-['Pretendard Variable'] leading-[21px]"
+                      onClick={() => {
+                        setOnAccumulatedModal(true);
+                        setOnModal(false);
+                        setStartTime(Date.now());
+                        setNow(Date.now());
+                        handleSetZero();
+                      }}>
+                      네, 기록할게요
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  function AccumulatedTime() {
+    return (
+      <>
+        <div className="">
+          <div className="absolute z-40 w-full h-full px-5 py-8 bg-black bg-opacity-60 flex-col justify-center items-center gap-2 inline-flex ">
+            <div className="relative self-stretch px-2 justify-center items-center inline-flex">
+              <div className="w-52"></div>
+              <div
+                className="flex cursor-pointer"
+                onClick={() => {
+                  setOnAccumulatedModal(false);
+                }}>
+                <div className="text-center text-white text-base font-medium font-['Pretendard Variable'] leading-normal">
+                  닫기
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" fill="none" viewBox="0 0 25 24">
+                  <mask id="a" width="25" height="24" x="0" y="0" maskUnits="userSpaceOnUse">
+                    <path fill="#D9D9D9" d="M.646 0h24v24h-24z" />
+                  </mask>
+                  <g mask="url(#a)">
+                    <path
+                      fill="#fff"
+                      d="M12.646 12.708 7.4 17.954a.503.503 0 0 1-.345.15.467.467 0 0 1-.363-.15.49.49 0 0 1-.16-.354.49.49 0 0 1 .16-.354L11.938 12 6.692 6.754a.504.504 0 0 1-.15-.344.467.467 0 0 1 .15-.364.49.49 0 0 1 .354-.16.49.49 0 0 1 .354.16l5.246 5.246 5.246-5.246a.503.503 0 0 1 .344-.15.467.467 0 0 1 .364.15.49.49 0 0 1 .16.354.49.49 0 0 1-.16.354L13.353 12l5.247 5.246a.504.504 0 0 1 .15.344.467.467 0 0 1-.15.364.491.491 0 0 1-.354.16.49.49 0 0 1-.354-.16l-5.246-5.246Z"
+                    />
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div className="px-5 py-6 w-[257px] bg-white rounded-[32px] flex-col justify-center gap-2 flex">
+              <div className="self-stretch flex-col gap-4 flex">
+                <div className="self-stretch flex-col gap-1 flex">
+                  <div className="self-stretch text-neutral-900 text-h4 font-bold font-['Pretendard Variable'] leading-[30px]">
+                    전체 누적 시간
+                  </div>
+                  <div className="self-stretch text-primary text-h1 font-bold font-['Pretendard Variable'] leading-[30px]">
+                    {th}시간 {tm}분 {ts}초
+                  </div>
+                  <div className="self-stretch text-neutral-900 text-h4 font-bold font-['Pretendard Variable'] leading-[30px]">
+                    <br />
+                    목표 기간 동안의 누적 시간
+                  </div>
+                  <div className="self-stretch text-primary text-h1 font-bold font-['Pretendard Variable'] leading-[30px]">
+                    {th}시간 {tm}분 {ts}초
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
+      {onModal ? ( //글 삭제 및 수정 모달창
+        <StopwatchAlert></StopwatchAlert>
+      ) : null}
+      {onAccumulatedModal ? ( //글 삭제 및 수정 모달창
+        <AccumulatedTime></AccumulatedTime>
+      ) : null}
       <div className="relative flex justify-center items-center">
         <div className="w-80 h-[449px] flex-col justify-start items-center gap-6 flex">
           {/* <div className={twMerge('h-[320px] w-[320px] border border-gray2 rounded-full', className)}> */}
@@ -108,7 +241,11 @@ export default function StopWatch() {
           <div className="self-stretch px-2 justify-between items-start inline-flex">
             <div className="flex-col justify-start items-center gap-1 inline-flex">
               <button
-                onClick={() => handleStart()}
+                onClick={() => {
+                  setOnModal(true);
+                  handleStop();
+                  setTimebool(true);
+                }}
                 className="w-20 h-20 p-2 bg-gray0 rounded-[999px] justify-center items-center gap-2 inline-flex">
                 <div className="w-[18px] h-[18px] bg-gray4 rounded-sm"></div>
               </button>
@@ -121,11 +258,8 @@ export default function StopWatch() {
                 <div className="flex-col justify-start items-center gap-1 inline-flex">
                   <button
                     onClick={() => {
-                      if (secondsPassed == 0) {
-                        handleStart();
-                      } else {
-                        handleContinue();
-                      }
+                      handleStart();
+
                       setTimebool(false);
                     }}
                     className="w-20 h-20 p-2 bg-second rounded-[999px] justify-center items-center gap-2 inline-flex">
