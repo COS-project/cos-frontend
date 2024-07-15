@@ -1,13 +1,14 @@
 'use client';
 
 import Image from 'next/image';
-import React, { FormEvent, SVGProps, useRef } from 'react';
+import React, { FormEvent, SVGProps, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
+import Header from '@/components/common/Header';
+import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
-import Header from '@/components/common/Header';
 
 interface Props {
   setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +20,7 @@ const WriteNormalPost = (props: Props) => {
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState);
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
   const imgRef = useRef<HTMLInputElement>(null);
+  const [isTitleEmpty, setIsTitleEmpty] = useState(false);
 
   /**
    * 이미지 업로드 및 미리보기 함수
@@ -81,19 +83,52 @@ const WriteNormalPost = (props: Props) => {
     );
 
     try {
-      const response = await postCommentary(1, 'NORMAL', formData); // API 호출
+      await postCommentary(1, 'NORMAL', formData).then(() => {
+        //글쓰기 초기화
+        setPostData(() => ({ title: '', content: '' }));
+        setIsTitleEmpty(true);
+        setImageUrlList([]);
+        setImagePreviews([]);
+        //글쓰기 페이지 내리기
+        setIsClickedWriteButton(false);
+      }); // API 호출
     } catch (error) {
       console.error('폼 제출 중 오류 발생:', error);
     }
   };
 
+  /**
+   * 예외 처리에 따라 제출 폼 형식 변경 함수
+   */
+  const handleException = (e: FormEvent) => {
+    e.preventDefault(); // 폼 제출 시 새로고침 방지
+
+    let isValid = true;
+
+    if (postData.title === '') {
+      setIsTitleEmpty(true);
+      isValid = false;
+    } else {
+      setIsTitleEmpty(false);
+    }
+
+    if (isValid) {
+      handleSubmit(e);
+    }
+  };
+
   const onBack = () => {
+    setPostData(() => ({ title: '', content: '' }));
+    setIsTitleEmpty(true);
+    setImageUrlList([]);
+    setImagePreviews([]);
     setIsClickedWriteButton(false);
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className={'flex flex-col gap-y-3'}>
+      {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
+      <form onSubmit={handleException} className={'flex flex-col gap-y-3'}>
         <Header
           onBack={onBack}
           CancelIcon={CancelIcon}
@@ -129,8 +164,8 @@ const WriteNormalPost = (props: Props) => {
           </div>
 
           {/* 이미지 추가 세션 */}
-          <div className={'flex gap-x-2 '}>
-            <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
+          <div className={'mt-3 flex gap-x-2 '}>
+            <div className={'rounded-[8px] p-2 bg-gray0 w-[48px] h-[48px]'}>
               <label htmlFor="image">
                 <AddImageIcon />
               </label>
@@ -144,18 +179,18 @@ const WriteNormalPost = (props: Props) => {
                 multiple
                 style={{ display: 'none' }}></input>
             </div>
-            <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
-              {imagePreviews.map((img, i) => {
-                return (
-                  <div key={i} className={'relative rounded-[8px]'}>
-                    <ImageDeleteButton i={i} usage={'create'} />
-                    <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                      <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
-                    </div>
+          </div>
+          <div className={'mt-3 w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
+            {imagePreviews.map((img, i) => {
+              return (
+                <div key={i} className={'relative rounded-[8px]'}>
+                  <ImageDeleteButton i={i} usage={'create'} />
+                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                    <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </form>

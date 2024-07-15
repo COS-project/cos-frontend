@@ -1,11 +1,13 @@
 import Image from 'next/image';
-import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, SVGProps, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
+import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import MockExamRoundFilter from '@/components/community/MockExamRoundFilter';
+import QuestionNumberExceedingLimitAlertModal from '@/components/community/QuestionNumberExceedingLimitAlertModal';
 import { postCommentary } from '@/lib/api/community';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
@@ -19,7 +21,7 @@ interface Props {
 const WriteExplanationPost = (props: Props) => {
   const { setIsClickedWriteButton } = props;
   const { examYears } = useGetMockExamYears();
-  const { questions } = useMockExamQuestions(1); //TODO: 나중에 모의고사 번호로 변경해야 함.
+  const { questions } = useMockExamQuestions(2); //TODO: 나중에 모의고사 번호로 변경해야 함.
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
 
@@ -32,18 +34,8 @@ const WriteExplanationPost = (props: Props) => {
   const [isQuestionSequenceNumeric, setIsQuestionSequenceNumeric] = useState(true);
   const [questionSequence, setQuestionSequence] = useState(0);
   const { mockExams } = useGetMockExams(1, postData.examYear); //해설 회차 필터값
-  const [filteredExamYears, setFilteredExamYears] = useState<number[]>([]);
-
-  useEffect(() => {
-    console.log('mockExams', mockExams);
-  }, [mockExams, postData]);
-
-  useEffect(() => {
-    if (examYears.includes('전체')) {
-      const filterData = examYears.filter((item) => item !== '전체');
-      setFilteredExamYears(filterData);
-    }
-  }, [examYears]);
+  const [isQuestionNumberExceedingLimit, setIsQuestionNumberExceedingLimit] = useState(false);
+  const [isTitleEmpty, setIsTitleEmpty] = useState(false);
 
   /**
    * 문제 번호를 변경하는 함수
@@ -124,19 +116,66 @@ const WriteExplanationPost = (props: Props) => {
     );
 
     try {
-      const response = await postCommentary(1, 'COMMENTARY', formData); // API 호출
+      await postCommentary(1, 'COMMENTARY', formData).then(() => {
+        //글쓰기 초기화
+        setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
+        setIsTitleEmpty(true);
+        setImageUrlList([]);
+        setImagePreviews([]);
+        //글쓰기 페이지 내리기
+        setIsClickedWriteButton(false);
+      }); // API 호출
     } catch (error) {
       console.error('폼 제출 중 오류 발생:', error);
     }
   };
 
+  /**
+   * 뒤로가기
+   */
   const onBack = () => {
+    //글쓰기 초기화
+    setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
+    setIsTitleEmpty(true);
+    setImageUrlList([]);
+    setImagePreviews([]);
     setIsClickedWriteButton(false);
+  };
+
+  /**
+   * 예외 처리에 따라 제출 폼 형식 변경 함수
+   */
+  const handleException = (e: FormEvent) => {
+    e.preventDefault(); // 폼 제출 시 새로고침 방지
+
+    let isValid = true;
+
+    if (questionSequence > questions?.length) {
+      setIsQuestionNumberExceedingLimit(true);
+      isValid = false;
+    } else {
+      setIsQuestionNumberExceedingLimit(false);
+    }
+
+    if (postData.title === '') {
+      setIsTitleEmpty(true);
+      isValid = false;
+    } else {
+      setIsTitleEmpty(false);
+    }
+
+    if (isValid) {
+      handleSubmit(e);
+    }
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
+      {isQuestionNumberExceedingLimit ? (
+        <QuestionNumberExceedingLimitAlertModal setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit} />
+      ) : null}
+      <form onSubmit={handleException}>
         <Header
           onBack={onBack}
           CancelIcon={CancelIcon}
@@ -161,11 +200,7 @@ const WriteExplanationPost = (props: Props) => {
               {isYearsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
             </div>
             {isYearsFilterOpen && (
-              <MockExamYearsFilter
-                years={filteredExamYears}
-                setIsOpen={setIsYearsFilterOpen}
-                setDataState={setPostData}
-              />
+              <MockExamYearsFilter years={examYears} setIsOpen={setIsYearsFilterOpen} setDataState={setPostData} />
             )}
           </div>
 
@@ -245,8 +280,8 @@ const WriteExplanationPost = (props: Props) => {
         </div>
 
         {/* 이미지 추가 세션 */}
-        <div className={'flex gap-x-2 '}>
-          <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
+        <div className={'mx-5 flex gap-x-2 '}>
+          <div className={'rounded-[8px] p-2 bg-gray0 w-[48px] h-[48px]'}>
             <label htmlFor="image">
               <AddImageIcon />
             </label>
@@ -260,18 +295,18 @@ const WriteExplanationPost = (props: Props) => {
               multiple
               style={{ display: 'none' }}></input>
           </div>
-          <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
-            {imagePreviews.map((img, i) => {
-              return (
-                <div key={i} className={'relative rounded-[8px]'}>
-                  <ImageDeleteButton i={i} usage={'create'} />
-                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                    <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
-                  </div>
+        </div>
+        <div className={'mx-5 mt-3 w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
+          {imagePreviews.map((img, i) => {
+            return (
+              <div key={i} className={'relative rounded-[8px]'}>
+                <ImageDeleteButton i={i} usage={'create'} />
+                <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                  <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </form>
     </div>
@@ -305,23 +340,6 @@ function AddImageIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-
-function DeleteIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg width={11} height={10} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path fill="#9E9FA1" d="M.507 0h9.723v9.723H.507z" />
-      <path
-        d="M.949 8.986a.63.63 0 010-.884l7.66-7.66a.63.63 0 01.884 0 .63.63 0 010 .884l-7.66 7.66a.63.63 0 01-.884 0z"
-        fill="#fff"
-      />
-      <path
-        d="M6.842 7.218L.949 1.326a.63.63 0 010-.884.63.63 0 01.884 0l5.892 5.893a.63.63 0 010 .883.63.63 0 01-.883 0zM8.462 9.133a.833.833 0 101.179-1.178.833.833 0 00-1.179 1.178z"
-        fill="#fff"
-      />
-    </svg>
-  );
-}
-
 
 const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none" {...props}>

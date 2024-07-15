@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 
 import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
-import { SVGProps } from 'react';
-import React, { useEffect, useState } from 'react';
+import { SVGProps, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
+import NavBar from '@/components/common/NavBar';
 import Comment from '@/components/community/Comment';
 import CommentBar from '@/components/community/CommentBar';
 import CommentReply from '@/components/community/CommentReply';
@@ -15,9 +16,14 @@ import CommentWriting from '@/components/community/CommentWriting';
 import CommunityPost from '@/components/community/CommunityPosting';
 import CommunityProfile from '@/components/community/CommunityProfile';
 import CommunityTag from '@/components/community/CommunityTag';
+import EditPost from '@/components/community/EditPost';
+import PostingModal from '@/components/community/PostingModal';
+import Question from '@/components/community/Question';
 import { postToggleLikeData } from '@/lib/api/communityPost';
+import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import useGetLikeStatus from '@/lib/hooks/useGetLikeStatus';
+import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 import { PostComments, RecommendTags } from '@/types/global';
 
@@ -25,10 +31,6 @@ const CommunityDetailPage = () => {
   const params = useParams();
   //커뮤니티 포스트에 해당하는 데이터를 가져옴
   const { communityPostData, isLoading, isError, communityPostDataMutate } = useGetCommunityPost(params.id);
-  //데이터 잘 들어왔는지 확인
-  useEffect(() => {
-    console.log('communityPostData', communityPostData);
-  }, [communityPostData]);
 
   //댓글의 답글달기 버튼을 클릭했을 때 사용
   const [replyOnOff, setReplyOnOff] = useState<boolean>(false);
@@ -46,6 +48,14 @@ const CommunityDetailPage = () => {
   const [postDelete, setPostDelete] = useRecoilState(postDeleteState);
   const [likeTargetType, setLikeTargetType] = useState<'POST' | 'COMMENT'>('POST');
   const { likeStatus, likeStatusMutate } = useGetLikeStatus(likeTargetType, params.id);
+  //현재 사용자 정보 가져오기, (글, 댓글) 작성자인지 아닌지 체크하기 위함.
+  const { userProfile } = useGetUserProfile();
+  //해설 게시글 문제보기 버튼을 클릭했는지 체크하기 위해 사용
+  const [isClickQuestionButton, setIsClickQuestionButton] = useState(false);
+  //꿀팁 게시판 Best 태그
+  const { bestTipPosts } = useBest3TipPosts(1);
+  //수정 modal
+  const [isClickEditPost, setIsClickEditPost] = useState(false);
 
   //답글달기 버튼 클릭시에 사용
   const commentReplyControll = (index: number, id: number) => {
@@ -72,8 +82,42 @@ const CommunityDetailPage = () => {
     await communityPostDataMutate();
   };
 
+  useEffect(() => {
+    console.log('mockexamId', communityPostData?.postResponse)
+  }, [communityPostData]);
+
   return (
     <>
+      {isClickEditPost ? (
+        <EditPost postId={params.id} mockExamId={communityPostData?.postResponse?.question?.mockExam.mockExamId} />
+      ) : null}
+      {onPostModal ? ( //글 삭제 및 수정 모달창
+        <PostingModal
+          editOnOff={true}
+          afterDelete="/community/Comhwal_level1/"
+          postId={params.id}
+          setIsClickEditPost={setIsClickEditPost}>
+          글 메뉴
+        </PostingModal>
+      ) : null}
+      {/* 댓글 삭제 모달창 */}
+      {onCommentModal ? (
+        <PostingModal editOnOff={false} postId={params.id}>
+          댓글 메뉴
+        </PostingModal>
+      ) : null}
+      {isClickQuestionButton ? (
+        <Question
+          isClickQuestionButton={isClickQuestionButton}
+          setIsClickQuestionButton={setIsClickQuestionButton}
+          examYear={communityPostData?.postResponse?.question?.mockExam.examYear}
+          questionSeq={communityPostData?.postResponse?.question?.questionSeq}
+          examRound={communityPostData?.postResponse?.question?.mockExam.round}
+          content={communityPostData?.postResponse?.question?.questionText}
+          questionOptions={communityPostData?.postResponse.question?.questionOptions}
+          correctOption={communityPostData?.postResponse?.question?.correctOption}
+        />
+      ) : null}
       <div className="mb-[100px]">
         {/* <ImgModal></ImgModa> */}
         {/* 나중에 이 부분에 이미지 모달창을 넣을 예정 */}
@@ -91,6 +135,7 @@ const CommunityDetailPage = () => {
             <div className="pt-[21px]"></div>
             <div className="mx-[20px]">
               <CommunityProfile
+                isWriter={userProfile?.userId === communityPostData.postResponse?.user.userId}
                 fontsizing={true} //폰트 크기를 작게
                 date={format(communityPostData.postResponse?.dateTime.createdAt, 'yy.MM.dd')} //날짜
                 time={format(communityPostData.postResponse?.dateTime.createdAt, 'HH:mm')} //시간
@@ -103,14 +148,13 @@ const CommunityDetailPage = () => {
                 {communityPostData.postResponse.user.nickname}
               </CommunityProfile>
               <div className="pb-[16px]"></div>
-              {/* 꿀팁 태그 */}
-              <div className={'flex gap-x-2'}>
-                {communityPostData.postResponse.recommendTags
-                  ? communityPostData.postResponse.recommendTags?.map((tag: RecommendTags, index: number) => {
-                      return <CommunityTag key={index}>{tag.tagName}</CommunityTag>;
-                    })
-                  : null}
-              </div>
+              {/* 꿀팁 게시글 Best 태그 */}
+              {bestTipPosts?.map((bestTipPost, index) => {
+                if (bestTipPost.postId === communityPostData?.postResponse.postId)
+                  return (
+                    <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
+                  );
+              })}
               {/* 해설 태그 && 문제보기 버튼 */}
               {communityPostData.postResponse?.question ? (
                 <div className={'flex w-full justify-between'}>
@@ -119,17 +163,28 @@ const CommunityDetailPage = () => {
                     <CommunityTag>{communityPostData.postResponse?.question?.mockExam.round}회차</CommunityTag>
                     <CommunityTag>{communityPostData.postResponse?.question?.questionSeq}번</CommunityTag>
                   </div>
-                  <div
+                  <button
+                    onClick={() => {
+                      setIsClickQuestionButton(!isClickQuestionButton);
+                    }}
                     className={'flex items-center px-3 py-1 rounded-full border-[1px] border-gray2 text-gray4 text-h6'}>
                     문제보기
                     <MoveIcon />
-                  </div>
+                  </button>
                 </div>
               ) : null}
               <CommunityPost
                 subject={communityPostData.postResponse?.postContent.title}
                 content={communityPostData.postResponse?.postContent.content}
                 images={communityPostData.postResponse?.postContent.images}></CommunityPost>
+              {/* 꿀팁 태그 */}
+              <div className={'flex gap-x-2'}>
+                {communityPostData.postResponse.recommendTags
+                  ? communityPostData.postResponse.recommendTags?.map((tag: RecommendTags, index: number) => {
+                      return <CommunityTag key={index}>{tag.tagName}</CommunityTag>;
+                    })
+                  : null}
+              </div>
               <CommentBar
                 empathy={communityPostData.postResponse?.postStatus.likeCount} //공감수
                 comment={communityPostData.postResponse?.postStatus.commentCount} //댓글수
@@ -139,12 +194,15 @@ const CommunityDetailPage = () => {
                   handlePostLikeClick('POST', communityPostData.postResponse.postId);
                   //mutete를 사용하여 반영이 바로 되도록 구현
                 }}></CommentBar>
-              <CommentWriting postId={communityPostData.postResponse.postId}></CommentWriting>
+              <CommentWriting
+                postId={communityPostData.postResponse.postId}
+                communityPostDataMutate={communityPostDataMutate}></CommentWriting>
               <div className="h-2"></div>
               {communityPostData.postComments?.toReversed().map((postComment: PostComments, index: number) => {
                 return (
                   <div key={index}>
                     <Comment
+                      isWriter={userProfile?.userId === postComment.user.userId}
                       profileModal={() => {
                         //프로필 부분의 ...버튼 클릭시 동작
                         setOnCommentModal(!onCommentModal); //댓글 삭제 모달창 띄움
@@ -156,7 +214,10 @@ const CommunityDetailPage = () => {
                       info={postComment}
                       //추천버튼 클릭시에 동작
                       DdabongClick={async () => {
-                        handlePostLikeClick('COMMENT', postComment.postCommentId);
+                        //추천버튼 클릭 시 동작
+                        handlePostLikeClick('COMMENT', postComment.postCommentId).then(() => {
+                          communityPostDataMutate();
+                        });
                       }}></Comment>
                     {postComment.childPostComments?.map(
                       //대댓글
@@ -165,6 +226,7 @@ const CommunityDetailPage = () => {
                         return (
                           <CommentReply //대댓글
                             key={index}
+                            isWriter={userProfile?.userId === childPostComment.user.userId}
                             profileModal={() => {
                               //프로필의 ...버튼 클릭 시 동작
                               setOnCommentModal(!onCommentModal);
@@ -173,7 +235,9 @@ const CommunityDetailPage = () => {
                             info={childPostComment} //하위 컴포넌트에 넘겨줄 정보
                             DdabongClick={async () => {
                               //추천버튼 클릭 시 동작
-                              handlePostLikeClick('COMMENT', childPostComment.postCommentId);
+                              handlePostLikeClick('COMMENT', childPostComment.postCommentId).then(() => {
+                                communityPostDataMutate();
+                              });
                             }}></CommentReply>
                         );
                       },
@@ -183,6 +247,8 @@ const CommunityDetailPage = () => {
                         <div>
                           {/* 대댓글을 생성하는 입력란이 보여짐 */}
                           <CommentWriting
+                            setReplyOnOff={setReplyOnOff}
+                            communityPostDataMutate={communityPostDataMutate}
                             postId={communityPostData.postResponse.postId}
                             commentId={parentId}
                             padding="pl-[48px]"></CommentWriting>
@@ -195,6 +261,7 @@ const CommunityDetailPage = () => {
             </div>
           </div>
         ) : null}
+        {isClickEditPost ? null : <NavBar />}
       </div>
     </>
   );

@@ -14,10 +14,15 @@ import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { editPostDataState, imagePreviewsState, imageUrlListState, pastImageUrlsState } from '@/recoil/community/atom';
 import { EditPostDataType, TipPostTagType } from '@/types/community/type';
 
-const EditPost = () => {
-  const { postDetailData } = useGetPost();
-  const { questions } = useMockExamQuestions();
-  const { examYears } = useGetMockExamYears('EditPost');
+interface Props {
+  postId: string | string[];
+  mockExamId: number | undefined;
+}
+const EditPost = (props: Props) => {
+  const { postId, mockExamId } = props;
+  const { postDetailData } = useGetPost(postId);
+  const { questions } = useMockExamQuestions(mockExamId);
+  const { examYears } = useGetMockExamYears();
   const [editPostData, setEditPostData] = useRecoilState(editPostDataState);
   const [onlineCourseInputs, setOnlineCourseInputs] = useState<string[]>([]);
   const [workbookInputs, setWorkbookInputs] = useState<string[]>([]);
@@ -358,7 +363,7 @@ const EditPost = () => {
   };
 
   return (
-    <div>
+    <div className={'min-h-screen'}>
       <form
         onSubmit={
           !postDetailData?.hasOwnProperty('mockExam') && !postDetailData?.hasOwnProperty('recommendTags')
@@ -554,7 +559,7 @@ const EditPost = () => {
 
           <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
             {/* API에서 받은 과거의 urls */}
-            {pastImageUrls.map((img, i) => {
+            {pastImageUrls?.map((img, i) => {
               return (
                 <div key={i} className={'relative rounded-[8px]'}>
                   <ImageDeleteButton i={i} type={'과거 이미지 URL'} usage={'edit'} />
