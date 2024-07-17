@@ -1,21 +1,22 @@
 import React, { SetStateAction } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { CreatePostDataType } from '@/types/community/type';
+import { CreatePostDataType, EditPostDataType } from '@/types/community/type';
 import { MockExam } from '@/types/global';
+import { SetterOrUpdater } from 'recoil';
 
 interface Props {
   mockExams: MockExam[] | null | undefined;
   className?: string;
   setIdState?: React.Dispatch<React.SetStateAction<number>>;
-  setDataState: React.Dispatch<React.SetStateAction<CreatePostDataType>>;
+  setDataState: React.Dispatch<React.SetStateAction<CreatePostDataType>> | SetterOrUpdater<EditPostDataType>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const MockExamRoundFilter = (props: Props) => {
   const { mockExams, className, setIdState, setDataState, setIsOpen } = props;
 
   const changePostDataRound = (round: number) => {
-    setDataState((prevState: CreatePostDataType) => ({
+    setDataState((prevState) => ({
       ...prevState,
       round: round,
     }));

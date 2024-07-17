@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MockExam, QuestionsResponse } from '@/types/global';
+import { MockExam, PostComments, QuestionsResponse } from '@/types/global';
 import { UserInfo } from '@/types/mypage/type';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
@@ -44,11 +44,11 @@ export interface EditPostDataType {
   postId: number;
   title: string;
   content: string;
-  newTags?: TipPostTagType[];
+  tags?: TipPostTagType[];
   examYear?: number;
   round?: number;
   questionSequence?: number;
-  removeImageUrls?: string[];
+  removeImageIds?: number[];
 }
 
 export interface RecentSearchResult {
@@ -73,9 +73,10 @@ export interface ResponseBest3PostType {
 
 export interface ResponsePostType {
   responseCode: string;
+  message: string;
   result: {
-    content: PostType[];
-    hasNext: boolean;
+    postResponse: PostType;
+    postComments: PostComments[];
   };
 }
 

@@ -80,15 +80,8 @@ const CommunityDetailPage = () => {
     await communityPostDataMutate();
   };
 
-  useEffect(() => {
-    console.log('mockexamId', communityPostData?.postResponse)
-  }, [communityPostData]);
-
   return (
     <>
-      {isClickEditPost ? (
-        <EditPost postId={params.id} mockExamId={communityPostData?.postResponse?.question?.mockExam.mockExamId} />
-      ) : null}
       {onPostModal ? ( //글 삭제 및 수정 모달창
         <PostingModal
           editOnOff={true}
@@ -116,151 +109,161 @@ const CommunityDetailPage = () => {
           correctOption={communityPostData?.postResponse?.question?.correctOption}
         />
       ) : null}
-      <div className="mb-[100px]">
-        {/* <ImgModal></ImgModa> */}
-        {/* 나중에 이 부분에 이미지 모달창을 넣을 예정 */}
-        <Header
-          headerType={'dynamic'}
-          title={
-            communityPostData && communityPostData.postResponse?.postStatus.postType === 'COMMENTARY'
-              ? '해설 게시글'
-              : communityPostData?.postResponse?.postStatus.postType === 'TIP'
-              ? '꿀팁 게시글'
-              : '자유 게시글'
-          }></Header>
-        {communityPostData ? ( //데이터가 있을 때만 뜨도록 함
-          <div>
-            <div className="pt-[21px]"></div>
-            <div className="mx-[20px]">
-              <CommunityProfile
-                isWriter={userProfile?.userId === communityPostData.postResponse?.user.userId}
-                fontsizing={true} //폰트 크기를 작게
-                date={format(communityPostData.postResponse?.dateTime.createdAt, 'yy.MM.dd')} //날짜
-                time={format(communityPostData.postResponse?.dateTime.createdAt, 'HH:mm')} //시간
-                imgSrc={communityPostData.postResponse.user.profileImage} //프로필 이미지
-                onClick={() => {
-                  //...버튼 클릭했을 때 동작
-                  setOnPostModal(!onPostModal);
-                  setPostDelete(communityPostData.postResponse.postId);
-                }}>
-                {communityPostData.postResponse.user.nickname}
-              </CommunityProfile>
-              <div className="pb-[16px]"></div>
-              {/* 꿀팁 게시글 Best 태그 */}
-              {bestTipPosts?.map((bestTipPost, index) => {
-                if (bestTipPost.postId === communityPostData?.postResponse.postId)
-                  return (
-                    <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
-                  );
-              })}
-              {/* 해설 태그 && 문제보기 버튼 */}
-              {communityPostData.postResponse?.question ? (
-                <div className={'flex w-full justify-between'}>
-                  <div className={'flex gap-x-2'}>
-                    <CommunityTag>{communityPostData.postResponse?.question?.mockExam.examYear}년도</CommunityTag>
-                    <CommunityTag>{communityPostData.postResponse?.question?.mockExam.round}회차</CommunityTag>
-                    <CommunityTag>{communityPostData.postResponse?.question?.questionSeq}번</CommunityTag>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setIsClickQuestionButton(!isClickQuestionButton);
-                    }}
-                    className={'flex items-center px-3 py-1 rounded-full border-[1px] border-gray2 text-gray4 text-h6'}>
-                    문제보기
-                    <MoveIcon />
-                  </button>
-                </div>
-              ) : null}
-              <CommunityPost
-                subject={communityPostData.postResponse?.postContent.title}
-                content={communityPostData.postResponse?.postContent.content}
-                images={communityPostData.postResponse?.postContent.images}></CommunityPost>
-              {/* 꿀팁 태그 */}
-              <div className={'flex gap-x-2'}>
-                {communityPostData.postResponse.recommendTags
-                  ? communityPostData.postResponse.recommendTags?.map((tag: RecommendTags, index: number) => {
-                      return <CommunityTag key={index}>{tag.tagName}</CommunityTag>;
-                    })
-                  : null}
-              </div>
-              <CommentBar
-                empathy={communityPostData.postResponse?.postStatus.likeCount} //공감수
-                comment={communityPostData.postResponse?.postStatus.commentCount} //댓글수
-                isLike={likeStatus} //사용자 좋아요 클릭 여부
-                onClick={async () => {
-                  //추천버튼 클릭 시 동작
-                  handlePostLikeClick('POST', communityPostData.postResponse.postId);
-                  //mutete를 사용하여 반영이 바로 되도록 구현
-                }}></CommentBar>
-              <CommentWriting
-                postId={communityPostData.postResponse.postId}
-                communityPostDataMutate={communityPostDataMutate}></CommentWriting>
-              <div className="h-2"></div>
-              {communityPostData.postComments?.toReversed().map((postComment: PostComments, index: number) => {
-                return (
-                  <div key={index}>
-                    <Comment
-                      isWriter={userProfile?.userId === postComment.user.userId}
-                      profileModal={() => {
-                        //프로필 부분의 ...버튼 클릭시 동작
-                        setOnCommentModal(!onCommentModal); //댓글 삭제 모달창 띄움
-                        setCommentDelete(postComment.postCommentId); //삭제 버튼 클릭시에 넘겨줄 댓글id를 저장함
+      {isClickEditPost ? (
+        <EditPost
+          postId={params.id}
+          mockExamId={communityPostData?.postResponse.question?.mockExam.mockExamId}
+          setIsClickEditPost={setIsClickEditPost}
+        />
+      ) : (
+        <div className="mb-[100px]">
+          {/* <ImgModal></ImgModa> */}
+          {/* 나중에 이 부분에 이미지 모달창을 넣을 예정 */}
+          <Header
+            headerType={'dynamic'}
+            title={
+              communityPostData && communityPostData.postResponse?.postStatus.postType === 'COMMENTARY'
+                ? '해설 게시글'
+                : communityPostData?.postResponse?.postStatus.postType === 'TIP'
+                ? '꿀팁 게시글'
+                : '자유 게시글'
+            }></Header>
+          {communityPostData ? ( //데이터가 있을 때만 뜨도록 함
+            <div>
+              <div className="pt-[21px]"></div>
+              <div className="mx-[20px]">
+                <CommunityProfile
+                  isWriter={userProfile?.userId === communityPostData.postResponse?.user.userId}
+                  fontsizing={true} //폰트 크기를 작게
+                  date={format(communityPostData.postResponse?.dateTime.createdAt, 'yy.MM.dd')} //날짜
+                  time={format(communityPostData.postResponse?.dateTime.createdAt, 'HH:mm')} //시간
+                  imgSrc={communityPostData.postResponse.user.profileImage} //프로필 이미지
+                  onClick={() => {
+                    //...버튼 클릭했을 때 동작
+                    setOnPostModal(!onPostModal);
+                    setPostDelete(communityPostData.postResponse.postId);
+                  }}>
+                  {communityPostData.postResponse.user.nickname}
+                </CommunityProfile>
+                <div className="pb-[16px]"></div>
+                {/* 꿀팁 게시글 Best 태그 */}
+                {bestTipPosts?.map((bestTipPost, index) => {
+                  if (bestTipPost.postId === communityPostData?.postResponse.postId)
+                    return (
+                      <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
+                    );
+                })}
+                {/* 해설 태그 && 문제보기 버튼 */}
+                {communityPostData.postResponse?.question ? (
+                  <div className={'flex w-full justify-between'}>
+                    <div className={'flex gap-x-2'}>
+                      <CommunityTag>{communityPostData.postResponse?.question?.mockExam.examYear}년도</CommunityTag>
+                      <CommunityTag>{communityPostData.postResponse?.question?.mockExam.round}회차</CommunityTag>
+                      <CommunityTag>{communityPostData.postResponse?.question?.questionSeq}번</CommunityTag>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setIsClickQuestionButton(!isClickQuestionButton);
                       }}
-                      //답글하기 버튼 클릭시 동작
-                      onClick={() => commentReplyControll(index, postComment.postCommentId)}
-                      //하위 컴포넌트에 넘겨줄 정보
-                      info={postComment}
-                      //추천버튼 클릭시에 동작
-                      DdabongClick={async () => {
-                        //추천버튼 클릭 시 동작
-                        handlePostLikeClick('COMMENT', postComment.postCommentId).then(() => {
-                          communityPostDataMutate();
-                        });
-                      }}></Comment>
-                    {postComment.childPostComments?.map(
-                      //대댓글
-                      //AxiosResponse<PostComments>
-                      (childPostComment: PostComments, index: number) => {
-                        return (
-                          <CommentReply //대댓글
-                            key={index}
-                            isWriter={userProfile?.userId === childPostComment.user.userId}
-                            profileModal={() => {
-                              //프로필의 ...버튼 클릭 시 동작
-                              setOnCommentModal(!onCommentModal);
-                              setCommentDelete(childPostComment.postCommentId);
-                            }}
-                            info={childPostComment} //하위 컴포넌트에 넘겨줄 정보
-                            DdabongClick={async () => {
-                              //추천버튼 클릭 시 동작
-                              handlePostLikeClick('COMMENT', childPostComment.postCommentId).then(() => {
-                                communityPostDataMutate();
-                              });
-                            }}></CommentReply>
-                        );
-                      },
-                    )}
-                    {replyOnOff ? ( //답글달기 버튼이 눌러졌고
-                      commentNumber == index ? ( //답글달기가 눌러진 댓글의 순서와 현재 보여져야할 댓글의 순서가 일치하면
-                        <div>
-                          {/* 대댓글을 생성하는 입력란이 보여짐 */}
-                          <CommentWriting
-                            setReplyOnOff={setReplyOnOff}
-                            communityPostDataMutate={communityPostDataMutate}
-                            postId={communityPostData.postResponse.postId}
-                            commentId={parentId}
-                            padding="pl-[48px]"></CommentWriting>
-                        </div>
-                      ) : null
-                    ) : null}
+                      className={
+                        'flex items-center px-3 py-1 rounded-full border-[1px] border-gray2 text-gray4 text-h6'
+                      }>
+                      문제보기
+                      <MoveIcon />
+                    </button>
                   </div>
-                );
-              })}
+                ) : null}
+                <CommunityPost
+                  subject={communityPostData.postResponse?.postContent.title}
+                  content={communityPostData.postResponse?.postContent.content}
+                  images={communityPostData.postResponse?.postContent.images}></CommunityPost>
+                {/* 꿀팁 태그 */}
+                <div className={'flex gap-x-2'}>
+                  {communityPostData.postResponse.recommendTags
+                    ? communityPostData.postResponse.recommendTags?.map((tag: RecommendTags, index: number) => {
+                        return <CommunityTag key={index}>{tag.tagName}</CommunityTag>;
+                      })
+                    : null}
+                </div>
+                <CommentBar
+                  empathy={communityPostData.postResponse?.postStatus.likeCount} //공감수
+                  comment={communityPostData.postResponse?.postStatus.commentCount} //댓글수
+                  isLike={likeStatus} //사용자 좋아요 클릭 여부
+                  onClick={async () => {
+                    //추천버튼 클릭 시 동작
+                    handlePostLikeClick('POST', communityPostData.postResponse.postId);
+                    //mutete를 사용하여 반영이 바로 되도록 구현
+                  }}></CommentBar>
+                <CommentWriting
+                  postId={communityPostData.postResponse.postId}
+                  communityPostDataMutate={communityPostDataMutate}></CommentWriting>
+                <div className="h-2"></div>
+                {communityPostData.postComments?.toReversed().map((postComment: PostComments, index: number) => {
+                  return (
+                    <div key={index}>
+                      <Comment
+                        isWriter={userProfile?.userId === postComment.user.userId}
+                        profileModal={() => {
+                          //프로필 부분의 ...버튼 클릭시 동작
+                          setOnCommentModal(!onCommentModal); //댓글 삭제 모달창 띄움
+                          setCommentDelete(postComment.postCommentId); //삭제 버튼 클릭시에 넘겨줄 댓글id를 저장함
+                        }}
+                        //답글하기 버튼 클릭시 동작
+                        onClick={() => commentReplyControll(index, postComment.postCommentId)}
+                        //하위 컴포넌트에 넘겨줄 정보
+                        info={postComment}
+                        //추천버튼 클릭시에 동작
+                        DdabongClick={async () => {
+                          //추천버튼 클릭 시 동작
+                          handlePostLikeClick('COMMENT', postComment.postCommentId).then(() => {
+                            communityPostDataMutate();
+                          });
+                        }}></Comment>
+                      {postComment.childPostComments?.map(
+                        //대댓글
+                        //AxiosResponse<PostComments>
+                        (childPostComment: PostComments, index: number) => {
+                          return (
+                            <CommentReply //대댓글
+                              key={index}
+                              isWriter={userProfile?.userId === childPostComment.user.userId}
+                              profileModal={() => {
+                                //프로필의 ...버튼 클릭 시 동작
+                                setOnCommentModal(!onCommentModal);
+                                setCommentDelete(childPostComment.postCommentId);
+                              }}
+                              info={childPostComment} //하위 컴포넌트에 넘겨줄 정보
+                              DdabongClick={async () => {
+                                //추천버튼 클릭 시 동작
+                                handlePostLikeClick('COMMENT', childPostComment.postCommentId).then(() => {
+                                  communityPostDataMutate();
+                                });
+                              }}></CommentReply>
+                          );
+                        },
+                      )}
+                      {replyOnOff ? ( //답글달기 버튼이 눌러졌고
+                        commentNumber == index ? ( //답글달기가 눌러진 댓글의 순서와 현재 보여져야할 댓글의 순서가 일치하면
+                          <div>
+                            {/* 대댓글을 생성하는 입력란이 보여짐 */}
+                            <CommentWriting
+                              setReplyOnOff={setReplyOnOff}
+                              communityPostDataMutate={communityPostDataMutate}
+                              postId={communityPostData.postResponse.postId}
+                              commentId={parentId}
+                              padding="pl-[48px]"></CommentWriting>
+                          </div>
+                        ) : null
+                      ) : null}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ) : null}
-        {isClickEditPost ? null : <NavBar />}
-      </div>
+          ) : null}
+          {isClickEditPost ? null : <NavBar />}
+        </div>
+      )}
     </>
   );
 };
