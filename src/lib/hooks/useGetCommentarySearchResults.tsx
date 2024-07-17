@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 import useSWRInfinite from 'swr/infinite';
 
 import { swrGetFetcher } from '@/lib/axios';
@@ -12,14 +11,12 @@ const getKey = (
   round: number | string,
   questionSequence: number,
 ) => {
-  console.log('examYear', examYear == '전체');
-  console.log('round', round);
   // 초기 요청
   if (pageIndex === 0) {
     return `/certificates/${certificateId}/posts?${examYear == '전체' ? ' ' : `examYear=${examYear}`}${
       round == '전체' ? '' : `&round=${round}`
     }${
-      (questionSequence === undefined) || (questionSequence === 0) ? ' ' : `&questionSequence=${questionSequence}`
+      questionSequence === undefined || questionSequence === 0 ? ' ' : `&questionSequence=${questionSequence}`
     }&page=${pageIndex}&size=10`;
   }
 
@@ -30,7 +27,9 @@ const getKey = (
   if (previousPageData.result.hasNext) {
     return `/certificates/${certificateId}/posts?${examYear == '전체' ? ' ' : `examYear=${examYear}`}${
       round == '전체' ? ' ' : `&round=${round}`
-    }${(questionSequence === undefined) || (questionSequence === 0) ? ' ' : `&questionSequence=${questionSequence}`}&page=${pageIndex}&size=10`;
+    }${
+      questionSequence === undefined || questionSequence === 0 ? ' ' : `&questionSequence=${questionSequence}`
+    }&page=${pageIndex}&size=10`;
   }
 
   // 이전 페이지에 더 이상 데이터가 없으면 null 반환

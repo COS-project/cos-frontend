@@ -1,10 +1,9 @@
-import { AxiosResponse } from 'axios';
 import React, { useCallback, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import Post from '@/components/mypage/Post';
 import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
-import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
+import { BoardType, PostType } from '@/types/community/type';
 import { MyPostsResponseType } from '@/types/mypage/type';
 
 interface Props {
