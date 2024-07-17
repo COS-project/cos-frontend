@@ -12,22 +12,6 @@ interface Props {
   selectedFilterContent: '최신순' | '작성순';
 }
 const MyPageExamReviewBoardList = (props: Props) => {
-  const { boardType,isDeleteWarningModalOpen , setIsDeleteWarningModalOpen, setDeletePostId } = props;
-  const [ref, inView] = useInView();
-  const { userPostsList, setSize } = useGetUserPosts(boardType);
-
-  const getMoreItem = useCallback(async () => {
-    if (userPostsList) {
-      setSize((prev: number) => prev + 1);
-    }
-    return;
-  }, []);
-
-  useEffect(() => {
-    if (inView) {
-      getMoreItem();
-    }
-  }, [inView]);
 
   return (
     <>

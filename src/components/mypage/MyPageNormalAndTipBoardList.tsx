@@ -18,7 +18,8 @@ const MyPageNormalAndTipBoardList = (props: Props) => {
   const { boardType, isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, setDeletePostId, selectedFilterContent } =
     props;
   const [ref, inView] = useInView();
-  const { userPostsList, setSize } = useGetUserPosts(boardType, selectedFilterContent == '최신순' ? 'ASC' : 'DESC');
+  const { userPostsList, setSize } = useGetUserPosts(boardType, selectedFilterContent == '최신순' ? 'DESC' : 'ASC');
+
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -72,7 +73,7 @@ const MyPageNormalAndTipBoardList = (props: Props) => {
                   content={userPost.postContent.content}
                   title={userPost.postContent.title}
                   commentCount={userPost.postStatus.commentCount}
-                  createdAt={'2023.7.12'}
+                  createdAt={userPost.dateTime.modifiedAt ? userPost.dateTime.modifiedAt : userPost.dateTime.createdAt}
                   bottomElement={bottomElement(userPost.postId)}
                   imageUrl={userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null}
                   likeCount={userPost.postStatus.likeCount}
