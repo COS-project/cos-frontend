@@ -20,7 +20,7 @@ import { EditPostDataType, TipPostTagType } from '@/types/community/type';
 import { ImageType } from '@/types/global';
 
 interface Props {
-  postId: string | string[];
+  postId: string | string[] | number;
   mockExamId: number | undefined;
   setIsClickEditPost: React.Dispatch<React.SetStateAction<boolean>>;
 }

@@ -3,19 +3,26 @@ import { useInView } from 'react-intersection-observer';
 
 import Post from '@/components/mypage/Post';
 import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
-import { BoardType, PostType } from '@/types/community/type';
-import { MyPostsResponseType } from '@/types/mypage/type';
+import { PostType } from '@/types/community/type';
+import { MyPageBoardType, MyPostsResponseType } from '@/types/mypage/type';
 
 interface Props {
-  boardType: BoardType;
+  boardType: MyPageBoardType;
   isDeleteWarningModalOpen: boolean;
   setIsDeleteWarningModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setDeletePostId: React.Dispatch<React.SetStateAction<number>>;
   selectedFilterContent: '최신순' | '작성순';
+  setIsClickEditPost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const MyPageCommentaryBoardList = (props: Props) => {
-  const { boardType, isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, setDeletePostId, selectedFilterContent } =
-    props;
+  const {
+    boardType,
+    isDeleteWarningModalOpen,
+    setIsDeleteWarningModalOpen,
+    setDeletePostId,
+    selectedFilterContent,
+    setIsClickEditPost,
+  } = props;
   const [ref, inView] = useInView();
   const { userPostsList, setSize } = useGetUserPosts(boardType, selectedFilterContent == '최신순' ? 'DESC' : 'ASC');
   /**
@@ -47,7 +54,14 @@ const MyPageCommentaryBoardList = (props: Props) => {
   const bottomElement = (postId: number) => {
     return (
       <div className={'flex justify-end gap-x-2'}>
-        <button className={'bg-gray0 py-2 px-4 rounded-[12px]'}>수정</button>
+        <button
+          onClick={() => {
+            setIsClickEditPost(true);
+            setDeletePostId(postId);
+          }}
+          className={'bg-gray0 py-2 px-4 rounded-[12px]'}>
+          수정
+        </button>
         <button
           onClick={() => {
             setIsDeleteWarningModalOpen(!isDeleteWarningModalOpen);
