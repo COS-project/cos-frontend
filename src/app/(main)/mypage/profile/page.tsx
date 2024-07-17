@@ -5,21 +5,22 @@ import React, { FormEvent, SVGProps, useCallback, useEffect, useRef, useState } 
 import Header from '@/components/common/Header';
 import { patchProfileData } from '@/lib/api/onboarding';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
-import Header from '@/components/common/Header';
+import { useRouter } from 'next/navigation';
 
-interface Props {
+const ProfileSettings = () => {
   const { userProfile, isLoading, isError, userProfileMutate } = useGetUserProfile();
-  onBefore: () => void;
-}
-const ProfileSettings = (props: Props) => {
-  const { onNext, onBefore } = props;
   const imgRef = useRef<HTMLInputElement>(null);
   const [uploadImage, setUploadImage] = useState();
+  const router = useRouter();
 
   // 모든 자격증 리스트 불러오는 함수
   const getUserProfile = useCallback(async () => {
     return userProfile;
   }, []);
+
+  const onNext = () => {
+    router.push('/mypage');
+  };
 
   // 이미지 미리보기 설정
   const handleImagePreview = async () => {
@@ -48,7 +49,7 @@ const ProfileSettings = (props: Props) => {
 
     try {
       await patchProfileData(formData).then(async () => {
-      onNext();
+        onNext();
         await userProfileMutate();
       });
     } catch (error) {
