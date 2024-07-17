@@ -25,7 +25,7 @@ export default function MyPage() {
         />
       ) : null}
       <Header />
-      <div className={'flex flex-col gap-y-6 bg-gray0 min-h-screen'}>
+      <div className={'flex flex-col gap-y-6 bg-gray0 min-h-screen border-t-[1px] border-t-gray1'}>
         <MyPageHeader />
         <div className={'mx-5 flex flex-col gap-y-3'}>
           {/* 게시판 */}
