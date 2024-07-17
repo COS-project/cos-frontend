@@ -2,7 +2,7 @@ import useSWRInfinite from 'swr/infinite';
 
 import { swrGetFetcher } from '@/lib/axios';
 import { BoardType, SortDirections } from '@/types/community/type';
-import { MyPostsResponseType } from '@/types/mypage/type';
+import { MyPageBoardType, MyPostsResponseType } from '@/types/mypage/type';
 
 const getKey = (
   pageIndex: number,
@@ -26,7 +26,7 @@ const getKey = (
   // 이전 페이지에 더 이상 데이터가 없으면 null 반환
   return null;
 };
-const useGetUserPosts = (postType: BoardType, sortDirections: SortDirections) => {
+const useGetUserPosts = (postType: MyPageBoardType, sortDirections: SortDirections) => {
   const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<MyPostsResponseType>(
     (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType, sortDirections),
     swrGetFetcher,

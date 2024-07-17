@@ -1,5 +1,7 @@
 import { PostType } from '@/types/community/type';
 
+export type MyPageBoardType = 'COMMENTARY' | 'TIP' | 'NORMAL';
+
 export interface ItemType {
   title: string;
   path?: string;
