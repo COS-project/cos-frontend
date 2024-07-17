@@ -68,7 +68,7 @@ const ProfileSettings = () => {
       <Header headerType={'dynamic'} title={'프로필 변경'} rightElement={<EmptyIcon />} />
       <form onSubmit={handleSubmit} className="bg-gray0 min-h-screen">
         <div className="w-full mt-2"></div>
-        <div className="flex flex-col gap-y-5 m-5">
+        <div className="flex flex-col gap-y-5 mx-5">
           {/* 프로필 사진 설정 섹션 */}
           <div className="flex flex-col justify-center items-center mt-5">
             <div className="relative w-fit">
