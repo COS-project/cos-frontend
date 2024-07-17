@@ -1,12 +1,12 @@
-import { AxiosResponse } from 'axios';
 import useSWRInfinite from 'swr/infinite';
 
 import { swrGetFetcher } from '@/lib/axios';
-import { BoardType, ResponsePostType, SortDirections } from '@/types/community/type';
+import { BoardType, SortDirections } from '@/types/community/type';
+import { MyPostsResponseType } from '@/types/mypage/type';
 
 const getKey = (
   size: number,
-  previousPageData: ResponsePostType,
+  previousPageData: MyPostsResponseType,
   postType: BoardType,
   sortDirections: SortDirections,
 ) => {
@@ -21,7 +21,7 @@ const getKey = (
   }
 };
 const useGetUserPosts = (postType: BoardType, sortDirections: SortDirections) => {
-  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
+  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<MyPostsResponseType>(
     (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType, sortDirections),
     swrGetFetcher,
     {

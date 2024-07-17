@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import Post from '@/components/mypage/Post';
 import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
+import { MyPostsResponseType } from '@/types/mypage/type';
 
 interface Props {
   boardType: BoardType;
@@ -14,7 +15,8 @@ interface Props {
   selectedFilterContent: '최신순' | '작성순';
 }
 const MyPageCommentaryBoardList = (props: Props) => {
-  const { boardType, isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, setDeletePostId, selectedFilterContent } = props;
+  const { boardType, isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, setDeletePostId, selectedFilterContent } =
+    props;
   const [ref, inView] = useInView();
   const { userPostsList, setSize } = useGetUserPosts(boardType, selectedFilterContent == '최신순' ? 'ASC' : 'DESC');
   /**
@@ -62,7 +64,7 @@ const MyPageCommentaryBoardList = (props: Props) => {
   return (
     <>
       <div className={'flex flex-col gap-y-4'}>
-        {userPostsList.map((userPosts: AxiosResponse<ResponsePostType>) => {
+        {userPostsList.map((userPosts: MyPostsResponseType) => {
           return userPosts?.result.content.map((userPost: PostType) => {
             return (
               <div key={userPost.postId} ref={ref}>

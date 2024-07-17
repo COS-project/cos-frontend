@@ -132,7 +132,7 @@ export interface RecommendTags {
 
 export interface DateTime {
   createdAt: string;
-  modifiedAt: string;
+  modifiedAt?: string;
 }
 
 export type TrendingKeywordState = 'UNCHANGED' | 'NEW' | 'RANK_UP' | 'RANK_DOWN';

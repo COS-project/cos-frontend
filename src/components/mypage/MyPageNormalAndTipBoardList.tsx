@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import Post from '@/components/mypage/Post';
 import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
+import { MyPostsResponseType } from '@/types/mypage/type';
 
 interface Props {
   boardType: BoardType;
@@ -62,7 +63,7 @@ const MyPageNormalAndTipBoardList = (props: Props) => {
   return (
     <>
       <div className={'flex flex-col gap-y-4'}>
-        {userPostsList.map((userPosts: AxiosResponse<ResponsePostType>) => {
+        {userPostsList.map((userPosts: MyPostsResponseType) => {
           return userPosts?.result.content.map((userPost: PostType) => {
             return (
               <div key={userPost.postId} ref={ref}>

@@ -1,3 +1,5 @@
+import { PostType } from '@/types/community/type';
+
 export interface ItemType {
   title: string;
   path?: string;
@@ -11,4 +13,16 @@ export interface UserInfo {
   nickname: string;
   email: string;
   profileImage: string;
+}
+
+/**
+ ************ 내가 쓴 글 data-type *************
+ */
+export interface MyPostsResponseType {
+  responseCode: string;
+  message: string;
+  result: {
+    content: PostType[];
+    hasNext: true;
+  };
 }
