@@ -2,17 +2,17 @@
 import Image from 'next/image';
 import React, { FormEvent, SVGProps, useCallback, useEffect, useRef, useState } from 'react';
 
+import Header from '@/components/common/Header';
 import { patchProfileData } from '@/lib/api/onboarding';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import Header from '@/components/common/Header';
 
 interface Props {
-  onNext: () => void;
+  const { userProfile, isLoading, isError, userProfileMutate } = useGetUserProfile();
   onBefore: () => void;
 }
 const ProfileSettings = (props: Props) => {
   const { onNext, onBefore } = props;
-  const { userProfile, isLoading, isError } = useGetUserProfile();
   const imgRef = useRef<HTMLInputElement>(null);
   const [uploadImage, setUploadImage] = useState();
 
@@ -47,8 +47,10 @@ const ProfileSettings = (props: Props) => {
     );
 
     try {
-      const response = await patchProfileData(formData); // API 호출
+      await patchProfileData(formData).then(async () => {
       onNext();
+        await userProfileMutate();
+      });
     } catch (error) {
       console.error('폼 제출 중 오류 발생:', error);
     }
