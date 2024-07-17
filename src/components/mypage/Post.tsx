@@ -11,7 +11,7 @@ interface Props {
   likeCount: number;
   commentCount: number;
   createdAt: string;
-  topElement?: JSX.Element | undefined;
+  topElement?: JSX.Element | null;
   bottomElement?: React.JSX.Element | null;
 }
 const Post = (props: Props) => {
@@ -19,6 +19,19 @@ const Post = (props: Props) => {
   const router = useRouter();
   const onMove = () => {
     router.push(`/community/1/${postId}`); //TODO:자격증 바꾸기
+  };
+
+  const formatDate = (dateString: string) => {
+    // ISO 8601 형식의 날짜 문자열을 Date 객체로 변환
+    const date = new Date(dateString);
+
+    // 연도, 월, 일을 추출
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    // 'YYYY.MM.DD' 형식으로 반환
+    return `${year}.${month}.${day}`;
   };
 
   return (
@@ -54,7 +67,7 @@ const Post = (props: Props) => {
       </div>
 
       {/*작성일*/}
-      <div className={'text-h6 text-gray3'}>작성일 {createdAt}</div>
+      <div className={'text-h6 text-gray3'}>작성일 {formatDate(createdAt)}</div>
 
       {/*수정, 삭제버튼*/}
       {bottomElement ? bottomElement : null}
