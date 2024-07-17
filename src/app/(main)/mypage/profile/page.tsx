@@ -1,11 +1,11 @@
 'use client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { FormEvent, SVGProps, useCallback, useEffect, useRef, useState } from 'react';
 
 import Header from '@/components/common/Header';
 import { patchProfileData } from '@/lib/api/onboarding';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
-import { useRouter } from 'next/navigation';
 
 const ProfileSettings = () => {
   const { userProfile, isLoading, isError, userProfileMutate } = useGetUserProfile();
