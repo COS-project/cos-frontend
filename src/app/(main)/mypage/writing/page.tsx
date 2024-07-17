@@ -83,6 +83,7 @@ export default function MyWriting() {
                   setIsDeleteWarningModalOpen={setIsDeleteWarningModalOpen}
                   boardType={boardType}
                   selectedFilterContent={selectedFilterContent}
+                  setIsClickEditPost={setIsClickEditPost}
                 />
               ) : boardType === 'NORMAL' ? (
                 <MyPageNormalAndTipBoardList
@@ -91,6 +92,7 @@ export default function MyWriting() {
                   setIsDeleteWarningModalOpen={setIsDeleteWarningModalOpen}
                   boardType={boardType}
                   selectedFilterContent={selectedFilterContent}
+                  setIsClickEditPost={setIsClickEditPost}
                 />
               ) : null}
             </div>
