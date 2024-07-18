@@ -1,10 +1,9 @@
-import { AxiosResponse } from 'axios';
 import React, { useCallback, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import Post from '@/components/mypage/Post';
 import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
-import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
+import { PostType } from '@/types/community/type';
 import { MyPageBoardType, MyPostsResponseType } from '@/types/mypage/type';
 
 interface Props {
@@ -42,14 +41,6 @@ const MyPageNormalAndTipBoardList = (props: Props) => {
       getMoreItem();
     }
   }, [inView]);
-
-  const tipTopElement = () => {
-    return (
-      <div className={'pb-2'}>
-        <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
-      </div>
-    );
-  };
 
   const bottomElement = (postId: number) => {
     return (

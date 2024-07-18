@@ -10,9 +10,10 @@ const getKey = (
   postType: BoardType,
   sortDirections: SortDirections,
 ) => {
+  console.log('sortDirections', sortDirections);
   // 초기 요청
   if (pageIndex === 0) {
-    return `/${postType}/posts/my-posts?page=${pageIndex}&size=10&sortKey=createdAt, id&$sortDirections=${sortDirections}`;
+    return `/${postType}/posts/my-posts?page=${pageIndex}&size=10&sortKey=createdAt, id&sortDirections=${sortDirections}`;
   }
 
   // 이전 페이지 데이터가 없으면 종료
@@ -20,7 +21,7 @@ const getKey = (
 
   // 이전 페이지에 더 많은 데이터가 있으면 다음 페이지 요청
   if (previousPageData.result.hasNext) {
-    return `/${postType}/posts/my-posts?page=${pageIndex}&size=10&sortKey=createdAt, id&$sortDirections=${sortDirections}`;
+    return `/${postType}/posts/my-posts?page=${pageIndex}&size=10&sortKey=createdAt, id&sortDirections=${sortDirections}`;
   }
 
   // 이전 페이지에 더 이상 데이터가 없으면 null 반환
