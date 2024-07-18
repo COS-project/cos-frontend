@@ -8,6 +8,7 @@ import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import BoardTypeMenu from '@/components/community/BoardTypeMenu';
 import CommentaryBoardList from '@/components/community/CommentaryBoardList';
 import ExamReviewBoardList from '@/components/community/ExamReviewBoardList';
 import NormalAndTipBoardList from '@/components/community/NormalAndTipBoardList';
@@ -15,13 +16,11 @@ import WriteButton from '@/components/community/WriteButton';
 import WriteExplanationPost from '@/components/community/WriteExplanationPost';
 import WriteNormalPost from '@/components/community/WriteNormalPost';
 import WriteTipPost from '@/components/community/WriteTipPost';
-import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import useDebounce from '@/hooks/useDebounce';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
 import { BoardType } from '@/types/community/type';
-import BoardTypeMenu from '@/components/community/BoardTypeMenu';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
