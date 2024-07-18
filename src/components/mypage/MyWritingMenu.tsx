@@ -7,10 +7,11 @@ import { MyPageBoardType } from '@/types/mypage/type';
 interface Props {
   boardType: MyPageBoardType | BoardType;
   setBoardType: React.Dispatch<React.SetStateAction<MyPageBoardType | BoardType>>;
+  setSelectedFilterContent: React.Dispatch<React.SetStateAction<'최신순' | '작성순'>>;
 }
 
 const MyWritingMenu = (props: Props) => {
-  const { boardType, setBoardType } = props;
+  const { boardType, setBoardType, setSelectedFilterContent } = props;
   const changeBoardType = (type: MyPageBoardType | BoardType) => {
     setBoardType(type);
   };
@@ -20,6 +21,7 @@ const MyWritingMenu = (props: Props) => {
       <button
         onClick={() => {
           changeBoardType('COMMENTARY');
+          setSelectedFilterContent('최신순');
         }}
         className={boardType === 'COMMENTARY' ? 'tag-clicked' : 'tag-not-clicked'}>
         해설게시판
@@ -27,6 +29,7 @@ const MyWritingMenu = (props: Props) => {
       <button
         onClick={() => {
           changeBoardType('TIP');
+          setSelectedFilterContent('최신순');
         }}
         className={boardType === 'TIP' ? 'tag-clicked' : 'tag-not-clicked'}>
         꿀팁게시판
@@ -34,6 +37,7 @@ const MyWritingMenu = (props: Props) => {
       <button
         onClick={() => {
           changeBoardType('NORMAL');
+          setSelectedFilterContent('최신순');
         }}
         className={boardType === 'NORMAL' ? 'tag-clicked' : 'tag-not-clicked'}>
         자유게시판
