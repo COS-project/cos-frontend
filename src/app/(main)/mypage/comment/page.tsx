@@ -15,7 +15,7 @@ export default function MyComment() {
   const [ref, inView] = useInView();
   const [selectedFilterContent, setSelectedFilterContent] = useState<'최신순' | '작성순'>('최신순');
   const [isOpenFilter, setIsOpenFilter] = useState(false);
-  const { userCommentPostsList, setSize } = useGetUserCommentPost(selectedFilterContent);
+  const { userCommentPostsList, setSize } = useGetUserCommentPost(selectedFilterContent === '최신순' ? 'DESC' : 'ASC');
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
