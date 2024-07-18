@@ -1,23 +1,29 @@
-import { AxiosResponse } from 'axios';
 import useSWRInfinite from 'swr/infinite';
 
 import { swrGetFetcher } from '@/lib/axios';
-import { BoardType, ResponsePostType, SortDirections } from '@/types/community/type';
+import { SortDirections } from '@/types/community/type';
+import { MyPostsResponseType } from '@/types/mypage/type';
 
-const getKey = (size: number, previousPageData: ResponsePostType, sortDirections: SortDirections) => {
-  if (size === 0) {
-    return `/comment-posts/my-comment-posts?page=${size}&size=10&sortKey=createdAt, id&$sortDirections=${sortDirections}`;
+const getKey = (pageIndex: number, previousPageData: MyPostsResponseType, sortDirections: SortDirections) => {
+  // 초기 요청
+  if (pageIndex === 0) {
+    return `/comment-posts/my-comment-posts?page=${pageIndex}&size=10&sortKey=createdAt, id&sortDirections=${sortDirections}`;
   }
-  if (previousPageData && !previousPageData.result.hasNext) {
-    return `/comment-posts/my-comment-posts?page=${size}&size=10&sortFields=createdAt, id&$sortDirections=${sortDirections}`;
-  }
+
+  // 이전 페이지 데이터가 없으면 종료
+  if (!previousPageData) return null;
+
+  // 이전 페이지에 더 많은 데이터가 있으면 다음 페이지 요청
   if (previousPageData.result.hasNext) {
-    return null;
+    return `/comment-posts/my-comment-posts?page=${pageIndex}&size=10&sortFields=createdAt, id&sortDirections=${sortDirections}`;
   }
+
+  // 이전 페이지에 더 이상 데이터가 없으면 null 반환
+  return null;
 };
-const useGetUserCommentPost = (sortDirections: '최신순' | '작성순') => {
-  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<ResponsePostType>(
-    (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType, sortDirections),
+const useGetUserCommentPost = (sortDirections: SortDirections) => {
+  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<MyPostsResponseType>(
+    (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, sortDirections),
     swrGetFetcher,
     {
       revalidateAll: true,
