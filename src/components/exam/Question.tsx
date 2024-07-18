@@ -14,7 +14,7 @@ import {
   userAnswerRequests,
   userAnswerRequestsList,
 } from '@/recoil/exam/atom';
-import { Question, QuestionsResponse, UserAnswerRequests } from '@/types/global';
+import { QuestionOptions, QuestionsResponse, UserAnswerRequests } from '@/types/global';
 
 import { AllQuestionModal } from './AllQuestionModal';
 
@@ -166,14 +166,14 @@ const Question = () => {
             <div className="text-h3 font-semibold">{questions ? questions[questionIdx].questionText : null}</div>
             <div className="flex flex-col gap-y-4">
               {questions
-                ? questions[questionIdx].questionOptions.map((option: Question) => {
+                ? questions[questionIdx].questionOptions.map((option: QuestionOptions) => {
                     return (
                       <QuestionContent
                         usage={'mockExam'}
                         key={option.optionSequence}
                         questionId={questions[questionIdx].questionSeq}
                         questionContent={option.optionContent}
-                        questionImage={option.optionImage ? option.optionImage : null}
+                        questionImage={option.optionImage ? option.optionImage : undefined}
                         questionSequence={option.optionSequence}
                         userAnswer={userAnswer}
                         setUserAnswer={setUserAnswer}
