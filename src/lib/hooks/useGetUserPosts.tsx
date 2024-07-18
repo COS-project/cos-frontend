@@ -10,7 +10,6 @@ const getKey = (
   postType: BoardType,
   sortDirections: SortDirections,
 ) => {
-  console.log('sortDirections', sortDirections);
   // 초기 요청
   if (pageIndex === 0) {
     return `/${postType}/posts/my-posts?page=${pageIndex}&size=10&sortKey=createdAt, id&sortDirections=${sortDirections}`;
