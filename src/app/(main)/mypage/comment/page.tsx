@@ -43,15 +43,6 @@ export default function MyComment() {
     );
   };
 
-  // TODO: 마무리 해야 한다.
-  const tipTopElement = () => {
-    return (
-      <div className={'pb-2'}>
-        <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
-      </div>
-    );
-  };
-
   return (
     <>
       <Header headerType={'dynamic'} title={'내가 작성한 댓글'} rightElement={<EmptyIcon />} />
@@ -87,9 +78,7 @@ export default function MyComment() {
                           commentCount={userCommentPost.postStatus.commentCount}
                           createdAt={'2021.07.31'}
                           topElement={
-                            userCommentPost.recommendTags
-                              ? tipTopElement()
-                              : userCommentPost.question
+                            userCommentPost.question
                               ? commentaryTopElement(
                                   userCommentPost.question.mockExam.examYear,
                                   userCommentPost.question.mockExam.round,
