@@ -8,7 +8,8 @@ import NavBar from '@/components/common/NavBar';
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import Post from '@/components/mypage/Post';
 import useGetUserCommentPost from '@/lib/hooks/useGetUserCommentPost';
-import { PostType, ResponsePostType } from '@/types/community/type';
+import { PostType } from '@/types/community/type';
+import { MyPostsResponseType } from '@/types/mypage/type';
 import { filterContent } from '@/utils/mypage/FilterContent';
 
 export default function MyComment() {
@@ -67,7 +68,7 @@ export default function MyComment() {
           ) : null}
           <div className={'flex flex-col gap-y-4'}>
             {userCommentPostsList
-              ? userCommentPostsList.map((userCommentPosts: ResponsePostType) => {
+              ? userCommentPostsList.map((userCommentPosts: MyPostsResponseType) => {
                   return userCommentPosts?.result.content.map((userCommentPost: PostType) => {
                     return (
                       <div key={userCommentPost.postId} ref={ref}>
