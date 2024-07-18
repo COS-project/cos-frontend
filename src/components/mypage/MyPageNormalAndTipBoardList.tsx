@@ -89,8 +89,7 @@ const MyPageNormalAndTipBoardList = (props: Props) => {
                   createdAt={userPost.dateTime.modifiedAt ? userPost.dateTime.modifiedAt : userPost.dateTime.createdAt}
                   bottomElement={bottomElement(userPost.postId)}
                   imageUrl={userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null}
-                  likeCount={userPost.postStatus.likeCount}
-                  topElement={userPost.recommendTags ? tipTopElement() : null}></Post>
+                  likeCount={userPost.postStatus.likeCount}></Post>
               </div>
             );
           });
