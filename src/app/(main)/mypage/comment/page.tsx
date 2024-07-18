@@ -101,6 +101,7 @@ export default function MyComment() {
           </div>
         </div>
       </div>
+      <div className={'h-[60px]'} />
       <NavBar />
     </>
   );

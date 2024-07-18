@@ -101,6 +101,7 @@ export default function MyWriting() {
               ) : null}
             </div>
           </div>
+          <div className={'h-[60px]'} />
           <NavBar />
         </>
       )}
