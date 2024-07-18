@@ -21,6 +21,7 @@ import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchRes
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
 import { BoardType } from '@/types/community/type';
+import BoardTypeMenu from '@/components/community/BoardTypeMenu';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
@@ -140,7 +141,7 @@ export default function CommunityCategoryPage() {
       />
       <div className={'flex flex-col gap-y-4 bg-gray0 min-h-screen'}>
         {/*boardType 변경 메뉴*/}
-        <MyWritingMenu boardType={boardType} setBoardType={setBoardType} />
+        <BoardTypeMenu boardType={boardType} setBoardType={setBoardType} />
         {/*post*/}
         {boardType === 'REVIEW' ? (
           <ExamReviewBoardList />
