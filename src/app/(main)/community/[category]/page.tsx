@@ -8,6 +8,7 @@ import { useRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import BoardTypeMenu from '@/components/community/BoardTypeMenu';
 import CommentaryBoardList from '@/components/community/CommentaryBoardList';
 import ExamReviewBoardList from '@/components/community/ExamReviewBoardList';
 import NormalAndTipBoardList from '@/components/community/NormalAndTipBoardList';
@@ -15,7 +16,6 @@ import WriteButton from '@/components/community/WriteButton';
 import WriteExplanationPost from '@/components/community/WriteExplanationPost';
 import WriteNormalPost from '@/components/community/WriteNormalPost';
 import WriteTipPost from '@/components/community/WriteTipPost';
-import MyWritingMenu from '@/components/mypage/MyWritingMenu';
 import useDebounce from '@/hooks/useDebounce';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
@@ -140,7 +140,7 @@ export default function CommunityCategoryPage() {
       />
       <div className={'flex flex-col gap-y-4 bg-gray0 min-h-screen'}>
         {/*boardType 변경 메뉴*/}
-        <MyWritingMenu boardType={boardType} setBoardType={setBoardType} />
+        <BoardTypeMenu boardType={boardType} setBoardType={setBoardType} />
         {/*post*/}
         {boardType === 'REVIEW' ? (
           <ExamReviewBoardList />

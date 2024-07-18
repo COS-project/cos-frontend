@@ -8,14 +8,15 @@ import NavBar from '@/components/common/NavBar';
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import Post from '@/components/mypage/Post';
 import useGetUserCommentPost from '@/lib/hooks/useGetUserCommentPost';
-import { PostType, ResponsePostType } from '@/types/community/type';
+import { PostType } from '@/types/community/type';
+import { MyPostsResponseType } from '@/types/mypage/type';
 import { filterContent } from '@/utils/mypage/FilterContent';
 
 export default function MyComment() {
   const [ref, inView] = useInView();
   const [selectedFilterContent, setSelectedFilterContent] = useState<'최신순' | '작성순'>('최신순');
   const [isOpenFilter, setIsOpenFilter] = useState(false);
-  const { userCommentPostsList, setSize } = useGetUserCommentPost(selectedFilterContent);
+  const { userCommentPostsList, setSize } = useGetUserCommentPost(selectedFilterContent === '최신순' ? 'DESC' : 'ASC');
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -25,13 +26,13 @@ export default function MyComment() {
       setSize((prev: number) => prev + 1);
     }
     return;
-  }, []);
+  }, [userCommentPostsList]);
 
   useEffect(() => {
     if (inView) {
       getMoreItem();
     }
-  }, [inView]);
+  }, [inView, getMoreItem]);
 
   const commentaryTopElement = (year: number, round: number, number: number) => {
     return (
@@ -39,15 +40,6 @@ export default function MyComment() {
         <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{year}년도</div>
         <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{round}회차</div>
         <div className={'px-2 py-[2px] text-gray4 bg-gray0 rounded-[8px]'}>{number}번</div>
-      </div>
-    );
-  };
-
-  // TODO: 마무리 해야 한다.
-  const tipTopElement = () => {
-    return (
-      <div className={'pb-2'}>
-        <div className={'px-3 py-[2px] text-white bg-primary rounded-full w-fit font-light'}>BEST</div>
       </div>
     );
   };
@@ -76,7 +68,7 @@ export default function MyComment() {
           ) : null}
           <div className={'flex flex-col gap-y-4'}>
             {userCommentPostsList
-              ? userCommentPostsList.map((userCommentPosts: ResponsePostType) => {
+              ? userCommentPostsList.map((userCommentPosts: MyPostsResponseType) => {
                   return userCommentPosts?.result.content.map((userCommentPost: PostType) => {
                     return (
                       <div key={userCommentPost.postId} ref={ref}>
@@ -87,9 +79,7 @@ export default function MyComment() {
                           commentCount={userCommentPost.postStatus.commentCount}
                           createdAt={'2021.07.31'}
                           topElement={
-                            userCommentPost.recommendTags
-                              ? tipTopElement()
-                              : userCommentPost.question
+                            userCommentPost.question
                               ? commentaryTopElement(
                                   userCommentPost.question.mockExam.examYear,
                                   userCommentPost.question.mockExam.round,
@@ -111,6 +101,7 @@ export default function MyComment() {
           </div>
         </div>
       </div>
+      <div className={'h-[60px]'} />
       <NavBar />
     </>
   );

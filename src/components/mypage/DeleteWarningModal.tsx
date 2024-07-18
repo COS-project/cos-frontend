@@ -1,18 +1,19 @@
 import type { SVGProps } from 'react';
 import * as React from 'react';
+import { KeyedMutator } from 'swr';
 
 import { postingDelete } from '@/lib/api/communityPost';
-import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
 import { BoardType } from '@/types/community/type';
+import { MyPostsResponseType } from '@/types/mypage/type';
 interface Props {
   isDeleteWarningModalOpen: boolean;
   setIsDeleteWarningModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   postId: number;
   boardType: BoardType;
+  mutate: KeyedMutator<MyPostsResponseType[]>;
 }
 const DeleteWarningModal = (props: Props) => {
-  const { isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, postId, boardType } = props;
-  const { mutate } = useGetUserPosts(boardType);
+  const { isDeleteWarningModalOpen, setIsDeleteWarningModalOpen, postId, boardType, mutate } = props;
 
   return (
     <>
