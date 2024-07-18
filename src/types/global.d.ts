@@ -237,32 +237,9 @@ export interface Param {
 
 export interface ReviewIncorrectAnswers {
   responseCode: string;
-  message: string;
   result: {
-    pageable: {
-      pageNumber: number;
-      unpaged: boolean;
-      pageSize: number;
-      paged: boolean;
-      offset: number;
-      sort: {
-        unsorted: boolean;
-        sorted: boolean;
-        empty: boolean;
-      };
-    };
-    numberOfElements: number;
-    size: number;
     content: ReviewIncorrectAnswersContent[];
-    number: number;
-    sort: {
-      unsorted: boolean;
-      sorted: boolean;
-      empty: boolean;
-    };
-    first: boolean;
-    last: boolean;
-    empty: boolean;
+    hasNext: boolean;
   };
 }
 
