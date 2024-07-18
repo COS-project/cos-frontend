@@ -25,13 +25,13 @@ export default function MyComment() {
       setSize((prev: number) => prev + 1);
     }
     return;
-  }, []);
+  }, [userCommentPostsList]);
 
   useEffect(() => {
     if (inView) {
       getMoreItem();
     }
-  }, [inView]);
+  }, [inView, getMoreItem]);
 
   const commentaryTopElement = (year: number, round: number, number: number) => {
     return (
