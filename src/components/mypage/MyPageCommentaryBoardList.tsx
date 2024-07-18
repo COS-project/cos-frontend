@@ -33,13 +33,13 @@ const MyPageCommentaryBoardList = (props: Props) => {
       await setSize((prev: number) => prev + 1);
     }
     return;
-  }, []);
+  }, [userPostsList]);
 
   useEffect(() => {
     if (inView) {
       getMoreItem();
     }
-  }, [inView]);
+  }, [inView, getMoreItem]);
 
   const commentaryTopElement = (year: number, round: number, number: number) => {
     return (

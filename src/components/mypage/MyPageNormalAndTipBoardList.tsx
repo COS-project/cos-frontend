@@ -34,13 +34,13 @@ const MyPageNormalAndTipBoardList = (props: Props) => {
       setSize((prev: number) => prev + 1);
     }
     return;
-  }, []);
+  }, [userPostsList]);
 
   useEffect(() => {
     if (inView) {
       getMoreItem();
     }
-  }, [inView]);
+  }, [inView, getMoreItem]);
 
   const bottomElement = (postId: number) => {
     return (
