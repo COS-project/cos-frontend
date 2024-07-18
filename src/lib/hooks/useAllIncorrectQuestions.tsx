@@ -22,8 +22,9 @@ const getKey = (pageIndex: number, previousPageData: ReviewIncorrectAnswers) => 
 };
 const useAllIncorrectQuestions = () => {
   const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<ReviewIncorrectAnswers>(getKey, swrGetFetcher, {
-    revalidateAll: true,
-  });
+      revalidateAll: true,
+    },
+  );
 
   const parseResultList = data ? data.map((item) => item).flat() : null;
 

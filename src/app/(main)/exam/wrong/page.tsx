@@ -25,10 +25,6 @@ const IncorrectQuestion = () => {
     }
   }, [inView]);
 
-  useEffect(() => {
-    console.log('incorrectQuestions', incorrectQuestions);
-  }, [incorrectQuestions]);
-
   return (
     <>
       <Header headerType={'dynamic'} title={'틀린문제 모아보기'}></Header>
