@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 
 import Banner from '@/components/common/Banner';
 import Header from '@/components/common/Header';
+import NavBar from '@/components/common/NavBar';
 import SubjectSessionCard from '@/components/exam/SubjectList';
 import YearSelector from '@/components/exam/YearSelector';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
-import NavBar from '@/components/common/NavBar';
 
 const Exam = () => {
   return (
@@ -19,7 +19,7 @@ const Exam = () => {
 };
 
 const SolveExamBox = () => {
-  const { examYears } = useGetMockExamYears('YearSelector');
+  const { examYears } = useGetMockExamYears();
   const [isClickedYearSelector, setIsClickedYearSelector] = useState<boolean>(false);
   const [selectedYear, setSelectedYear] = useState<number>(2017);
 

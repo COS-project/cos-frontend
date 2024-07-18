@@ -30,6 +30,7 @@ export interface MockExamResultType {
 export interface SubjectResultsType {
   subject: Subject;
   score: number;
+  numberOfQuestions: number;
   numberOfCorrect: number;
   totalTakenTime: number;
   correctRate: number;

@@ -42,11 +42,11 @@ const TimerModal: React.FC<SessionModalProps> = ({
               <div className="flex justify-center font-semibold">시험 시간 설정</div>
               <div className="flex gap-x-8 justify-center rounded-[24px] bg-gray0 p-4">
                 <div className={'flex items-end gap-x-[2px]'}>
-                  <span className={'text-h2 font-semibold text-gray3'}>{Math.floor(timeLimit / 3600000)}</span>
+                  <span className={'text-h2 mb-[1px] text-gray3'}>{Math.floor(timeLimit / 3600000)}</span>
                   <span className={'text-h4 font-normal text-black pb-[3px]'}>시간</span>
                 </div>
                 <div className={'flex items-end gap-x-[2px]'}>
-                  <span className={'text-h2 font-semibold text-gray3'}>{Math.floor(timeLimit / 60000)}</span>
+                  <span className={'text-h2 mb-[1px] text-gray3'}>{Math.floor(timeLimit / 60000)}</span>
                   <span className={'text-h4 font-normal text-black pb-[3px]'}>분</span>
                 </div>
               </div>
@@ -90,4 +90,3 @@ const CancleIcon = (props: SVGProps<SVGSVGElement>) => (
     </g>
   </svg>
 );
-
