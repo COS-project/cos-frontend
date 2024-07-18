@@ -7,7 +7,7 @@ import MockExamYearsFilter from '@/components/exam/MockExamYearsFilter';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 
 interface Props {
-  examYears: number[];
+  examYears: number[] | undefined;
   isClickedYearSelector: boolean;
   setIsClickedYearSelector: React.Dispatch<React.SetStateAction<boolean>>;
   selectedYear: number;

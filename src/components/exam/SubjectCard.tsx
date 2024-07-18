@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import useGetExamResultRecent from '@/lib/hooks/useGetExamResultRecent';
-import { Session, SubjectInfo } from '@/types/global';
-import { selectedSessionState, selectedSubjectState } from '@/utils/recoilState';
+import { timeLimitState } from '@/recoil/exam/atom';
+import { Session } from '@/types/global';
+import { selectedSessionState } from '@/utils/recoilState';
 
 import SessionModal from './SessionModal';
 import TimerModal from './TimerModal';
-import { timeLimitState } from '@/recoil/exam/atom';
 
 interface SubjectCard {
   timeLimit: number;
@@ -18,7 +18,6 @@ interface SubjectCard {
 
 const SubjectCard: React.FC<SubjectCard> = ({ timeLimit, round, mockExamId, total }) => {
   const { examResultRecent } = useGetExamResultRecent(mockExamId);
-  const [selectedSubject, setSelectedSubject] = useRecoilState<SubjectInfo | null>(selectedSubjectState);
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
 
   // 모달 관련 states
@@ -35,8 +34,6 @@ const SubjectCard: React.FC<SubjectCard> = ({ timeLimit, round, mockExamId, tota
 
   // 모달이 열릴때 세션 상태 설정
   const openSessionModal = () => {
-    // setSelectedSession(session);
-    // setSelectedRound(round);
     setSessionModalIsOpen(true);
   };
 
