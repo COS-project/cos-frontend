@@ -59,6 +59,7 @@ const SubmitConfirmationModal = (props: Props) => {
             </button>
             <button
               onClick={async () => {
+                setIsPausedTimer(!isPausedTimer);
                 setIsRunning(false); //제출 트릭
                 // 체점 결과 초기화
                 setIsSubmitConfirmationModalOpen(!isSubmitConfirmationModalOpen);

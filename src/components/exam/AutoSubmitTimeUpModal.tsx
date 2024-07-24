@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 
 import {
   questionIndex,
-  subjectResultRequestsList,
+  subjectResultRequestsList, timerIsPaused,
   userAnswerRequests,
   userAnswerRequestsList,
 } from '@/recoil/exam/atom';
@@ -18,6 +18,8 @@ interface Props {
 const AutoSubmitTimeUpModal = (props: Props) => {
   const { isAutoSubmitTimeUpModalOpen, setIsAutoSubmitTimeUpModalOpen } = props;
   const router = useRouter();
+  // 모달창을 띄우면 타이머를 잠시 멈추게 하는 state
+  const [isPausedTimer, setIsPausedTimer] = useRecoilState(timerIsPaused);
   const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
   const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList);
   // 현재 머물고 있는 문제 번호
@@ -48,6 +50,7 @@ const AutoSubmitTimeUpModal = (props: Props) => {
           <div className={'flex justify-end gap-x-2'}>
             <button
               onClick={() => {
+                setIsPausedTimer(!isPausedTimer);
                 //체점 결과 초기화
                 setUserAnswerList([]);
                 setSubjectResultList([]);

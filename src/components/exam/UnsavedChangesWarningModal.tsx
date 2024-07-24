@@ -63,6 +63,7 @@ const UnsavedChangesWarningModal = (props: Props) => {
             </button>
             <button
               onClick={() => {
+                setIsPausedTimer(!isPausedTimer);
                 onMove();
                 //체점 결과 초기화
                 setUserAnswerList([]);
