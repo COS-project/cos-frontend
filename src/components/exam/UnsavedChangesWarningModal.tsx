@@ -2,7 +2,15 @@ import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useRecoilState } from 'recoil';
 
-import { stopwatchIsPaused, timerIsPaused } from '@/recoil/exam/atom';
+import {
+  questionIndex,
+  stopwatchIsPaused,
+  subjectResultRequestsList,
+  timerIsPaused,
+  userAnswerRequests,
+  userAnswerRequestsList,
+} from '@/recoil/exam/atom';
+import { UserAnswerRequests } from '@/types/global';
 
 interface Props {
   isUnsavedChangesWarningModalOpen: boolean;
@@ -16,7 +24,12 @@ const UnsavedChangesWarningModal = (props: Props) => {
   // 문제당 머문시간을 잠시 멈추는
   const [isPausedStopWatch, setIsPausedStopWatch] = useRecoilState(stopwatchIsPaused);
   const router = useRouter();
-
+  const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
+  const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList);
+  // 현재 머물고 있는 문제 번호
+  const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
+  // 현재 머물고 있는 문제 번호에 내가 찍은 답 번호
+  const [userAnswer, setUserAnswer] = useRecoilState<UserAnswerRequests>(userAnswerRequests);
   /**
    * 응시를 그만둘때, 이전 페이지로 이동하는 함수
    */
@@ -51,6 +64,17 @@ const UnsavedChangesWarningModal = (props: Props) => {
             <button
               onClick={() => {
                 onMove();
+                //체점 결과 초기화
+                setUserAnswerList([]);
+                setSubjectResultList([]);
+                // 문제를 다시 풀 때, 마지막 번호에서 시작하지 않도록 초기화해줌.
+                setQuestionIdx(0);
+                setUserAnswer((prevState) => ({
+                  ...prevState,
+                  selectOptionSeq: 0,
+                  takenTime: 0,
+                  questionId: 0,
+                }));
                 setIsUnsavedChangesWarningModalOpen(!isUnsavedChangesWarningModalOpen);
               }}
               className={'bg-black rounded-full text-white py-[7px] px-3'}>
