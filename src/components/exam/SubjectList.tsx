@@ -22,7 +22,7 @@ const SubjectSessionCard = (props: Props) => {
               timeLimit={mockExam.timeLimit}
               total={300}
               round={mockExam.round}
-              mockExamId={mockExam.MockExamId}></SubjectCard>
+              mockExamId={mockExam.mockExamId}></SubjectCard>
           </div>
         );
       })}
