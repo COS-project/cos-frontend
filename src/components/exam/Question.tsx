@@ -79,10 +79,12 @@ const Question = () => {
 
   const resetOptionOnReclick = () => {
     if (userAnswer.selectOptionSeq === userAnswerList[questionIdx]?.selectOptionSeq) {
-      setUserAnswer((prevState) => ({
-        ...prevState,
-        selectOptionSeq: 0,
-      }));
+      if (userAnswerList[questionIdx]?.selectOptionSeq !== 0 && userAnswer.selectOptionSeq !== 0) {
+        setUserAnswer((prevState) => ({
+          ...prevState,
+          selectOptionSeq: 0,
+        }));
+      }
     }
   };
 
@@ -129,6 +131,9 @@ const Question = () => {
 
   useEffect(() => {
     updateUserAnswerInUserAnswerList();
+  }, [userAnswer]);
+
+  useEffect(() => {
     resetOptionOnReclick();
   }, [userAnswer]);
 
