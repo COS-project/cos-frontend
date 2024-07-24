@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import StickGraph from '@/components/exam/StickGraph';
 import { SubjectResultsType } from '@/types/exam/type';
 
@@ -34,7 +36,16 @@ const TakenTimeGraphReport = (props: Props) => {
               {subjectResults?.map((subjectResult, index) => {
                 return (
                   <div key={index} className="w-full flex justify-center space-x-2">
-                    <StickGraph height={millisecondsToMinutes(subjectResult.totalTakenTime)} color="second" />
+                    <StickGraph
+                      height={millisecondsToMinutes(subjectResult.totalTakenTime)}
+                      color="second"
+                      totalTakenTime={millisecondsToMinutes(timeLimit)}
+                    />
+                    <StickGraph
+                      height={millisecondsToMinutes(subjectResult.totalTakenTime)}
+                      color="gray2"
+                      totalTakenTime={millisecondsToMinutes(timeLimit)}
+                    />
                   </div>
                 );
               })}

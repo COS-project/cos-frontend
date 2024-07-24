@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface StickGraphProps {
-  height: number | null;
+  height: number;
   color: string;
+  totalTakenTime: number;
 }
 
-const StickGraph: React.FC<StickGraphProps> = ({ height, color }) => {
+const StickGraph: React.FC<StickGraphProps> = ({ height, color, totalTakenTime }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
@@ -21,7 +22,7 @@ const StickGraph: React.FC<StickGraphProps> = ({ height, color }) => {
 
   return (
     <div
-      style={{ height: height != null ? `${height}%` : 'auto' }}
+      style={{ height: height != null ? `${(height / totalTakenTime) * 100}%` : 'auto' }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={`relative w-[20%] mt-auto bg-${isHovered ? hoverColor : defaultColor} rounded-t-full`}>

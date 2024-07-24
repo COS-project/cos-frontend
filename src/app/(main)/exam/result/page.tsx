@@ -52,6 +52,7 @@ const Result = () => {
    * @param examResults 시험 결과
    */
   const displayComponentBasedOnExamResults = (examResults: MockExamResultType[] | null | undefined) => {
+    // 모의고사를 1회만 본 경우
     if (examResults && examResults.length === 1) {
       return (
         <>
@@ -81,6 +82,7 @@ const Result = () => {
         </>
       );
     } else if (examResults && examResults.length >= 2) {
+      // 모의고사를 2회 이상 본 경우
       return (
         <>
           <UserExamAttemptsFilterContent
