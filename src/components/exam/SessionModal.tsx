@@ -25,6 +25,10 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
     }
   }, [round]);
 
+  useEffect(() => {
+    console.log('examResults', examResults);
+  }, [examResults]);
+
   return (
     <div>
       <div className="fixed z-20 inset-0 flex items-center justify-center bg-black bg-opacity-30">
@@ -34,7 +38,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
           </button>
           <div className="relative bg-white rounded-[32px]">
             <div className="flex flex-col gap-y-4 p-5">
-              <div className=" flex justify-center text-h4 font-bold">
+              <div className=" flex justify-center">
                 <div>{`${round}회차`}</div>
               </div>
               <div className="border-t border-gray1"></div>
@@ -47,8 +51,11 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                   </Link>
                 ) : null}
                 <div>
+                  {/* 점수 */}
                   <div className="font-semibold text-h6">최근 점수</div>
-                  {examResults && examResults[examResults?.length - 1]?.totalScore ? (
+                  {examResults &&
+                  examResults.length > 0 &&
+                  examResults[examResults.length - 1].totalScore !== undefined ? (
                     <div className={''}>
                       <div className="flex items-end">
                         <div className="font-bold text-h1">{examResults[examResults?.length - 1].totalScore}점</div>
@@ -60,6 +67,8 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                   )}
                 </div>
               </div>
+
+              {/* 과목별 맞춘 문제 갯수 표 */}
               <div>
                 {examResults && examResults[examResults?.length - 1]?.subjectResults ? (
                   <div className={'flex flex-col gap-y-2'}>
@@ -71,7 +80,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                             <SubjectGradeCard
                               name={subjectResult.subject.subjectName}
                               correctAnswer={subjectResult.numberOfCorrect}
-                              totalCorrect={20}
+                              totalCorrect={subjectResult.subject.numberOfQuestions}
                             />
                           </div>
                         );
