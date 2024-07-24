@@ -8,10 +8,11 @@ import { UserAnswerRequests } from '@/types/global';
 
 interface AllQuestionModalProps {
   toggleQuestionModal: () => void;
+  recordSessionTime: () => void;
 }
 
 export const AllQuestionModal = (props: AllQuestionModalProps) => {
-  const { toggleQuestionModal } = props;
+  const { toggleQuestionModal, recordSessionTime } = props;
 
   const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
   const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
@@ -47,6 +48,7 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
                         key={userAnswer.questionId}
                         onClick={() => {
                           setQuestionIdx(userAnswer.questionId - 1);
+                          recordSessionTime();
                           toggleQuestionModal();
                         }}
                         className={'flex justify-center items-center bg-[#6283FD]/30 w-12 h-12 rounded-[8px]'}>
@@ -57,6 +59,7 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
                         key={userAnswer.questionId}
                         onClick={() => {
                           setQuestionIdx(userAnswer.questionId - 1);
+                          recordSessionTime();
                           toggleQuestionModal();
                         }}
                         className={'flex justify-center items-center bg-second text-white w-12 h-12 rounded-[8px]'}>

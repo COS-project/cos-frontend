@@ -236,7 +236,9 @@ const Question = () => {
         )}
 
         {/* 문제 전체 모아보기 session */}
-        {allQuestionModalIsOpen ? <AllQuestionModal toggleQuestionModal={toggleQuestionModal} /> : null}
+        {allQuestionModalIsOpen ? (
+          <AllQuestionModal toggleQuestionModal={toggleQuestionModal} recordSessionTime={recordSessionTime} />
+        ) : null}
       </div>
     </>
   );
