@@ -54,7 +54,7 @@ const UnsavedChangesWarningModal = (props: Props) => {
           <div className={'flex justify-end gap-x-2'}>
             <button
               onClick={() => {
-                setIsPausedTimer(!isPausedTimer);
+                setIsPausedTimer(false);
                 setIsPausedStopWatch(!isPausedStopWatch);
                 setIsUnsavedChangesWarningModalOpen(!isUnsavedChangesWarningModalOpen);
               }}
@@ -63,7 +63,7 @@ const UnsavedChangesWarningModal = (props: Props) => {
             </button>
             <button
               onClick={() => {
-                setIsPausedTimer(!isPausedTimer);
+                setIsPausedTimer(true);
                 onMove();
                 //체점 결과 초기화
                 setUserAnswerList([]);

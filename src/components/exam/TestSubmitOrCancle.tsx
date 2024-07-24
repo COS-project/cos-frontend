@@ -147,8 +147,6 @@ const TestSubmitOrCancle = (props: Props) => {
    */
   useEffect(() => {
     if (subjectResultList.length !== 0) {
-      console.log('제출될 때 subjectResultList', subjectResultList);
-      console.log('선택된 모의고사 id', selectedMockExamId);
       postSubjectResultRequestsList(subjectResultList, selectedMockExamId).then((r) => {
         console.log(r);
         setSubmittedMockExamResultId(r.result.mockExamResultId);
@@ -172,7 +170,7 @@ const TestSubmitOrCancle = (props: Props) => {
         <button
           className={'border-primary-button'}
           onClick={() => {
-            setIsPausedTimer(!isPausedTimer);
+            setIsPausedTimer(true);
             setIsPausedStopWatch(!isPausedStopWatch);
             setIsUnsavedChangesWarningModalOpen(!isUnsavedChangesWarningModalOpen);
           }}>
@@ -183,7 +181,7 @@ const TestSubmitOrCancle = (props: Props) => {
         </span>
         <button
           onClick={() => {
-            setIsPausedTimer(!isPausedTimer);
+            setIsPausedTimer(true);
             setIsPausedStopWatch(!isPausedStopWatch);
             setIsSubmitConfirmationModalOpen(!isSubmitConfirmationModalOpen);
           }}

@@ -50,7 +50,7 @@ const AutoSubmitTimeUpModal = (props: Props) => {
           <div className={'flex justify-end gap-x-2'}>
             <button
               onClick={() => {
-                setIsPausedTimer(!isPausedTimer);
+                setIsPausedTimer(true);
                 //체점 결과 초기화
                 setUserAnswerList([]);
                 setSubjectResultList([]);

@@ -56,7 +56,7 @@ const TimerModal: React.FC<SessionModalProps> = ({
           </div>
           <button
             onClick={() => {
-              setIsPausedTimer(!isPausedTimer);
+              setIsPausedTimer(false);
               setSelectedMockExamId(mockExamId);
               router.push('/exam/test');
             }}

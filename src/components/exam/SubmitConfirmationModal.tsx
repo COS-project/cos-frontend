@@ -50,7 +50,7 @@ const SubmitConfirmationModal = (props: Props) => {
           <div className={'flex justify-end gap-x-2'}>
             <button
               onClick={() => {
-                setIsPausedTimer(!isPausedTimer);
+                setIsPausedTimer(false);
                 setIsPausedStopWatch(!isPausedStopWatch);
                 setIsSubmitConfirmationModalOpen(!isSubmitConfirmationModalOpen);
               }}
@@ -59,7 +59,7 @@ const SubmitConfirmationModal = (props: Props) => {
             </button>
             <button
               onClick={async () => {
-                setIsPausedTimer(!isPausedTimer);
+                setIsPausedTimer(true);
                 setIsRunning(false); //제출 트릭
                 // 체점 결과 초기화
                 setIsSubmitConfirmationModalOpen(!isSubmitConfirmationModalOpen);
