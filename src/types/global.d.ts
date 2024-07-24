@@ -252,7 +252,7 @@ export interface ReviewIncorrectAnswersContent {
 }
 
 export interface ReviewIncorrectMockExam {
-  MockExamId: number;
+  mockExamId: number;
   examYear: number;
   round: number;
   timeLimit: number;

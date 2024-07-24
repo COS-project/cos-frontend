@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import SubjectCard from '@/components/exam/SubjectCard';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
@@ -22,7 +22,7 @@ const SubjectSessionCard = (props: Props) => {
               timeLimit={mockExam.timeLimit}
               total={300}
               round={mockExam.round}
-              mockExamId={mockExam.MockExamId}></SubjectCard>
+              mockExamId={mockExam.mockExamId}></SubjectCard>
           </div>
         );
       })}

@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import React, { SVGProps, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { mockExamIdState } from '@/recoil/exam/atom';
+import { mockExamIdState, timerIsPaused } from '@/recoil/exam/atom';
 
 interface SessionModalProps {
   mockExamId: number;
@@ -21,6 +21,8 @@ const TimerModal: React.FC<SessionModalProps> = ({
   closeSessionModal,
 }) => {
   const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
+  // 모달창을 띄우면 타이머를 잠시 멈추게 하는 state
+  const [isPausedTimer, setIsPausedTimer] = useRecoilState(timerIsPaused);
   const router = useRouter();
   // 타이머 모달이 나타나면 기존 세션 모달을 종료 위한 동작
   useEffect(() => {
@@ -54,6 +56,7 @@ const TimerModal: React.FC<SessionModalProps> = ({
           </div>
           <button
             onClick={() => {
+              setIsPausedTimer(false);
               setSelectedMockExamId(mockExamId);
               router.push('/exam/test');
             }}

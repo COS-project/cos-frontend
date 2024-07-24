@@ -79,10 +79,12 @@ const Question = () => {
 
   const resetOptionOnReclick = () => {
     if (userAnswer.selectOptionSeq === userAnswerList[questionIdx]?.selectOptionSeq) {
-      setUserAnswer((prevState) => ({
-        ...prevState,
-        selectOptionSeq: 0,
-      }));
+      if (userAnswerList[questionIdx]?.selectOptionSeq !== 0 && userAnswer.selectOptionSeq !== 0) {
+        setUserAnswer((prevState) => ({
+          ...prevState,
+          selectOptionSeq: 0,
+        }));
+      }
     }
   };
 
@@ -129,6 +131,9 @@ const Question = () => {
 
   useEffect(() => {
     updateUserAnswerInUserAnswerList();
+  }, [userAnswer]);
+
+  useEffect(() => {
     resetOptionOnReclick();
   }, [userAnswer]);
 
@@ -236,7 +241,9 @@ const Question = () => {
         )}
 
         {/* 문제 전체 모아보기 session */}
-        {allQuestionModalIsOpen ? <AllQuestionModal toggleQuestionModal={toggleQuestionModal} /> : null}
+        {allQuestionModalIsOpen ? (
+          <AllQuestionModal toggleQuestionModal={toggleQuestionModal} recordSessionTime={recordSessionTime} />
+        ) : null}
       </div>
     </>
   );
