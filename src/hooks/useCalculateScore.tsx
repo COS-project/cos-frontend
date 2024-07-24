@@ -11,7 +11,6 @@ const useCalculateScore = (mockExamId: number) => {
   const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
   const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList);
   const { questions, isLoading, isError } = useMockExamQuestions(mockExamId);
-
   /**
    * 사용자가 선택한 각 선택지가 맞았는지 틀렸는지 채점
    */
@@ -63,7 +62,6 @@ const useCalculateScore = (mockExamId: number) => {
           newUserAnswerList = [];
         }
       });
-
       setSubjectResultList(newSubjectResultList);
     }
   };

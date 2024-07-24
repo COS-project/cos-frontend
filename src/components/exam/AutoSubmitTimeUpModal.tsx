@@ -4,7 +4,8 @@ import { useRecoilState } from 'recoil';
 
 import {
   questionIndex,
-  subjectResultRequestsList, timerIsPaused,
+  subjectResultRequestsList,
+  timerIsPaused,
   userAnswerRequests,
   userAnswerRequestsList,
 } from '@/recoil/exam/atom';

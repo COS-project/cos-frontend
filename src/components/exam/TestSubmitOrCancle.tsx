@@ -136,7 +136,6 @@ const TestSubmitOrCancle = (props: Props) => {
   useEffect(() => {
     if (userAnswerList.some((answer) => answer.isCorrect !== undefined)) {
       prepareAndScoreSubjectResults().then(() => {
-        console.log('과목별 모의고사 체점', subjectResultList, userAnswerList);
       });
     }
   }, [userAnswerList]);
