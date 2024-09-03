@@ -1,10 +1,45 @@
-import React, { SVGProps } from 'react';
+'use client';
+import { EventSourcePolyfill } from 'event-source-polyfill';
+import React, { SVGProps, useEffect } from 'react';
 
 import AlarmItem from '@/components/alarm/AlarmItem';
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import { getAlarms } from '@/lib/api/alarm';
 
 export default function Alarm() {
+  useEffect(() => {
+    const connect = () => {
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (!accessToken) {
+        console.error('Access token is missing.');
+        return;
+      }
+
+      const eventSource = new EventSourcePolyfill('http://cercat.o-r.kr/api/v2/alarms/subscribe', {
+        headers: {
+          'Access-Token': accessToken,
+        },
+      });
+
+      eventSource.onopen = () => {
+        console.log('Connection opened.');
+        getAlarms();
+      };
+
+      eventSource.onerror = (error) => {
+        console.error('EventSource error:', error);
+        eventSource.close();
+      };
+
+      return () => {
+        eventSource.close();
+      };
+    };
+
+    connect();
+  }, []);
   return (
     <>
       <Header headerType={'dynamic'} title={'알림'} rightElement={<EmptyIcon />} />
