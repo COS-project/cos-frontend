@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import StickGraph from '@/components/exam/StickGraph';
 import { SubjectResultsType } from '@/types/exam/type';
 
