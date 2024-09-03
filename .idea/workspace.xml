@@ -6,8 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/src/components/alarm/AlarmItem.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetAlarm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/alarm/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/alarm/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/home/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,6 +125,8 @@
       <workItem from="1715154350854" duration="16864000" />
       <workItem from="1715184765387" duration="3394000" />
       <workItem from="1715261809381" duration="311000" />
+      <workItem from="1715154350854" duration="16864000" />
+      <workItem from="1715184765387" duration="3394000" />
     </task>
     <servers />
   </component>
