@@ -1,43 +1,108 @@
-import React, { ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { ReactNode, SVGProps, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
+import FilterModal from '@/components/common/FilterModal';
+import useGetInterestCertificates from '@/lib/hooks/useGetInterestCertificates';
+import { certificateIdAtom, certificateNameAtom } from '@/recoil/atom';
 import { HeaderType } from '@/types/global';
 
 interface Props {
   headerType?: HeaderType;
   title?: string;
   rightElement?: ReactNode;
+  onBack?: () => void;
+  CancelIcon?: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
 }
 
 export default function Header(props: Props) {
-  const { headerType = 'static', title, rightElement } = props;
+  const { headerType = 'static', title, rightElement, onBack, CancelIcon } = props;
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  // 선택된 자격증
+  const [selectedCertificationName, setSelectedCertificationName] = useRecoilState<string>(certificateNameAtom);
+  // 선택된 자격증 Id
+  const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number>(certificateIdAtom);
+  const { interestCertificates } = useGetInterestCertificates();
+  const router = useRouter();
 
   const renderHeader = (headerType: HeaderType) => {
     switch (headerType) {
       case 'static':
         return (
-          <>
+          <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
             <Logo />
             <AlarmIcon />
-          </>
+          </header>
         );
       case 'dynamic':
         return (
-          <>
-            <PrevArrow />
-            <h1 className="text-black font-h1">{title}</h1>
-            {rightElement ? rightElement : <div />}
-          </>
+          <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-3 z-10">
+            {CancelIcon ? (
+              <CancelIcon
+                onClick={() => {
+                  if (onBack) {
+                    onBack();
+                  } else {
+                    router.back();
+                  }
+                }}
+              />
+            ) : (
+              <PrevArrow
+                onClick={() => {
+                  if (onBack) {
+                    onBack();
+                  } else {
+                    router.back();
+                  }
+                }}
+              />
+            )}
+            <h1 className="absolute left-1/2 right1-1/2 transform -translate-x-1/2 text-black font-h1 flex-shrink-0">
+              {title}
+            </h1>
+            {rightElement ? rightElement : <div className={'h-[32px] w-[32px]'} />}
+          </header>
         );
-
+      case 'second':
+        return (
+          <header className="bg-white flex sticky top-12 justify-between items-center px-5 py-3 border-b-[1px] border-gray0 z-10">
+            <div
+              onClick={() => {
+                setIsFilterOpen(!isFilterOpen);
+              }}
+              className={'flex gap-x-1 items-center font-semibold'}>
+              {selectedCertificationName}
+              {isFilterOpen ? <FilterOpenIcon /> : <FilterCloseIcon />}
+            </div>
+            <button
+              onClick={() => {
+                router.push('/home/exam-info');
+              }}
+              className={'flex items-center text-h6 border-[1px] border-gray2 py-1 px-3 rounded-full'}>
+              응시정보 확인
+              <ArrowIcon />
+            </button>
+          </header>
+        );
       default:
         break;
     }
   };
 
   return (
-    <header className="bg-white flex sticky top-0 justify-between items-center px-4 py-2">
+    <>
       {renderHeader(headerType)}
-    </header>
+      {isFilterOpen ? (
+        <FilterModal
+          setIsOpen={setIsFilterOpen}
+          className={'absolute top-[12%] left-5 w-[90%]'}
+          data={interestCertificates}
+          setDataState={setSelectedCertificationName}
+          setIdState={setSelectedCertificationId}
+        />
+      ) : null}
+    </>
   );
 }
 
@@ -67,5 +132,28 @@ function AlarmIcon(props: React.SVGProps<SVGSVGElement>) {
 const PrevArrow = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={33} height={32} fill="none" {...props}>
     <path stroke="#0D0E10" strokeLinecap="round" strokeLinejoin="round" d="m21.646 26-10-10 10-10" />
+  </svg>
+);
+
+const ArrowIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={16} height={17} fill="none" {...props}>
+    <path stroke="#0D0E10" strokeLinecap="round" strokeLinejoin="round" d="m5 11.5 6-6M5 5.5h6v6" />
+  </svg>
+);
+
+const FilterCloseIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={10} height={7} fill="none" {...props}>
+    <path
+      fill="#0D0E10"
+      d="M4.293 5.793.707 2.207C.077 1.577.523.5 1.414.5h7.172c.89 0 1.337 1.077.707 1.707L5.707 5.793a1 1 0 0 1-1.414 0"
+    />
+  </svg>
+);
+const FilterOpenIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={10} height={7} fill="none" {...props}>
+    <path
+      fill="#0D0E10"
+      d="m5.707 1.207 3.586 3.586c.63.63.184 1.707-.707 1.707H1.414C.524 6.5.077 5.423.707 4.793l3.586-3.586a1 1 0 0 1 1.414 0"
+    />
   </svg>
 );

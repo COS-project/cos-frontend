@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { FormEvent, useRef, useState } from 'react';
 
+import Header from '@/components/common/Header';
 import { patchProfileData } from '@/lib/api/onboarding';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 
@@ -40,7 +41,7 @@ const ProfileSettings = (props: Props) => {
     );
 
     try {
-      const response = await patchProfileData(formData); // API 호출
+      await patchProfileData(formData); // API 호출
       onNext();
     } catch (error) {
       console.error('폼 제출 중 오류 발생:', error);
@@ -49,8 +50,8 @@ const ProfileSettings = (props: Props) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <button onClick={onBefore}>이전</button>
+      <form className={'min-h-screen bg-gray0'} onSubmit={handleSubmit}>
+        <Header headerType={'dynamic'} title={'프로필 변경'} />
         <div className="flex flex-col gap-y-5 m-5">
           {/* 프로필 사진 설정 섹션 */}
           <div className="flex flex-col justify-center items-center">

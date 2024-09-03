@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { SVGProps } from 'react';
 import * as React from 'react';
 
@@ -7,20 +8,34 @@ import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import { InterestCertificate } from '@/types/global';
 
 const MyPageHeader = () => {
+  const router = useRouter();
   const { userProfile } = useGetUserProfile();
   const { interestCertificates } = useGetInterestCertificates();
+
+  const onMoveProfilePage = () => {
+    router.push('/mypage/profile');
+  };
+
+  const onMoveEditInterestCertification = () => {
+    router.push('/mypage/interest-certification');
+  };
 
   return (
     <>
       <div className={'flex flex-col bg-white p-5 gap-y-4'}>
         {/*프로필 설정*/}
-        <div className={'flex gap-x-4 items-center'}>
-          <Image
-            src={userProfile?.profileImage}
-            alt={userProfile?.profileImage}
-            height={72}
-            width={72}
-            className={'rounded-full'}></Image>
+        <div
+          onClick={() => {
+            onMoveProfilePage();
+          }}
+          className={'flex gap-x-4 items-center'}>
+          <div className={'relative h-[72px] w-[72px]'}>
+            <Image
+              src={userProfile?.profileImage}
+              alt={userProfile?.profileImage}
+              fill
+              className={'object-cover rounded-full'}></Image>
+          </div>
           <div className={'flex items-center'}>
             <div className={'text-h3'}>{userProfile?.nickname}</div>
             <EditProfileIcon />
@@ -29,17 +44,23 @@ const MyPageHeader = () => {
 
         {/*나의 관심 종목*/}
         <div className={'flex flex-col gap-y-3'}>
-          <div className={'flex justify-between'}>
+          <div
+            onClick={() => {
+              onMoveEditInterestCertification();
+            }}
+            className={'flex justify-between'}>
             <div className={'text-h4 font-semibold'}>나의 관심 종목</div>
             <div className={'flex'}>
               <div className={'text-h4 text-gray3'}>변경</div>
               <EditInterestCertificationIcon />
             </div>
           </div>
-          <div className={'overflow-x-scroll'}>
+          <div className={'flex overflow-x-scroll gap-x-3'}>
             {interestCertificates?.map((interestCertificate: InterestCertificate, index: number) => {
               return (
-                <div key={index} className={'w-fit bg-primary rounded-[20px] px-[16px] py-[32px] text-white text-h6'}>
+                <div
+                  key={index}
+                  className={'flex-shrink-0 w-fit bg-primary rounded-[20px] px-[16px] py-[32px] text-white text-h6'}>
                   {interestCertificate.certificate.certificateName}
                 </div>
               );

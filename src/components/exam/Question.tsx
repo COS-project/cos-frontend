@@ -6,18 +6,21 @@ import { useRecoilState } from 'recoil';
 import QuestionContent from '@/components/exam/QuestionContent';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import {
-  questionIndex, stopwatchIsPaused,
+  mockExamIdState,
+  questionIndex,
+  stopwatchIsPaused,
   stopwatchIsRunning,
   stopwatchTime,
   userAnswerRequests,
   userAnswerRequestsList,
 } from '@/recoil/exam/atom';
-import { Question, QuestionsResponse, UserAnswerRequests } from '@/types/global';
+import { QuestionOptions, QuestionsResponse, UserAnswerRequests } from '@/types/global';
 
 import { AllQuestionModal } from './AllQuestionModal';
 
 const Question = () => {
-  const { questions, isLoading, isError } = useMockExamQuestions();
+  const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
+  const { questions, isLoading, isError } = useMockExamQuestions(selectedMockExamId);
   const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
   const [allQuestionModalIsOpen, setAllQuestionModalIsOpen] = useState(false);
   const [userAnswer, setUserAnswer] = useRecoilState<UserAnswerRequests>(userAnswerRequests);
@@ -76,15 +79,17 @@ const Question = () => {
 
   const resetOptionOnReclick = () => {
     if (userAnswer.selectOptionSeq === userAnswerList[questionIdx]?.selectOptionSeq) {
-      setUserAnswer((prevState) => ({
-        ...prevState,
-        selectOptionSeq: 0,
-      }));
+      if (userAnswerList[questionIdx]?.selectOptionSeq !== 0 && userAnswer.selectOptionSeq !== 0) {
+        setUserAnswer((prevState) => ({
+          ...prevState,
+          selectOptionSeq: 0,
+        }));
+      }
     }
   };
 
   /**
-   * 처음 랜더링 될 때, userAnswerLis t을 기본값으로 채워주는 기능
+   * 처음 랜더링 될 때, userAnswerList 을 기본값으로 채워주는 기능
    */
   useEffect(() => {
     if (questions?.length > 0 && userAnswerList.length === 0) {
@@ -107,8 +112,8 @@ const Question = () => {
 
     if (isRunning && !isPaused) {
       interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
-      }, 1);
+        setTime((prevTime) => prevTime + 1000);
+      }, 1000);
     } else {
       clearInterval(interval);
     }
@@ -126,6 +131,9 @@ const Question = () => {
 
   useEffect(() => {
     updateUserAnswerInUserAnswerList();
+  }, [userAnswer]);
+
+  useEffect(() => {
     resetOptionOnReclick();
   }, [userAnswer]);
 
@@ -163,14 +171,14 @@ const Question = () => {
             <div className="text-h3 font-semibold">{questions ? questions[questionIdx].questionText : null}</div>
             <div className="flex flex-col gap-y-4">
               {questions
-                ? questions[questionIdx].questionOptions.map((option: Question) => {
+                ? questions[questionIdx].questionOptions.map((option: QuestionOptions) => {
                     return (
                       <QuestionContent
                         usage={'mockExam'}
                         key={option.optionSequence}
                         questionId={questions[questionIdx].questionSeq}
                         questionContent={option.optionContent}
-                        questionImage={option.optionImage ? option.optionImage : null}
+                        questionImage={option.optionImage ? option.optionImage : undefined}
                         questionSequence={option.optionSequence}
                         userAnswer={userAnswer}
                         setUserAnswer={setUserAnswer}
@@ -233,7 +241,9 @@ const Question = () => {
         )}
 
         {/* 문제 전체 모아보기 session */}
-        {allQuestionModalIsOpen ? <AllQuestionModal toggleQuestionModal={toggleQuestionModal} /> : null}
+        {allQuestionModalIsOpen ? (
+          <AllQuestionModal toggleQuestionModal={toggleQuestionModal} recordSessionTime={recordSessionTime} />
+        ) : null}
       </div>
     </>
   );

@@ -1,30 +1,43 @@
-import { AxiosResponse } from 'axios';
 import useSWRInfinite from 'swr/infinite';
 
 import { swrGetFetcher } from '@/lib/axios';
 import { BoardType, ResponsePostType } from '@/types/community/type';
 
-const getKey = (size: number, previousPageData: ResponsePostType, postType: BoardType, certificateId: number) => {
-  if (size === 0) {
-    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortKey=id`;
+const getKey = (
+  pageIndex: number,
+  previousPageData: ResponsePostType | null,
+  postType: BoardType,
+  certificateId: number,
+  sortField: string,
+) => {
+  // 초기 요청 또는 이전 페이지 데이터가 없을 때
+  if (pageIndex === 0) {
+    return sortField === 'createdAt'
+      ? `/certificates/${certificateId}/search?postType=${postType}&page=${pageIndex}&size=10`
+      : `/certificates/${certificateId}/search?postType=${postType}&page=${pageIndex}&size=10&sortFields=${sortField}`;
   }
-  if (previousPageData && !previousPageData.result.hasNext) {
-    return `/certificates/${certificateId}/search?postType=${postType}&page=${size}&size=10&sortKey=id`;
+
+  // 이전 페이지 데이터가 없으면 종료
+  if (!previousPageData) return null;
+
+  // 이전 페이지에 더 많은 데이터가 있으면 다음 페이지 요청
+  if (previousPageData?.result.hasNext) {
+    return sortField === 'createdAt'
+      ? `/certificates/${certificateId}/search?postType=${postType}&page=${pageIndex}&size=10`
+      : `/certificates/${certificateId}/search?postType=${postType}&page=${pageIndex}&size=10&sortFields=${sortField}`;
   }
-  if (previousPageData.result.hasNext) {
-    return null;
-  }
+
+  // 이전 페이지에 더 이상 데이터가 없으면 null 반환
+  return null;
 };
-const useGetTotalSearchResults = (postType: BoardType, certificateId: number) => {
-  const { data, isLoading, error, size, setSize } = useSWRInfinite<AxiosResponse<ResponsePostType>>(
-    (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType, certificateId),
+const useGetTotalSearchResults = (postType: BoardType, certificateId: number, sortField: string) => {
+  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<ResponsePostType>(
+    (pageIndex, previousPageData) => getKey(pageIndex, previousPageData, postType, certificateId, sortField),
     swrGetFetcher,
     {
       revalidateAll: true,
     },
   );
-
-  const parseResultList = data ? data.map((item) => item).flat() : [];
 
   return {
     userPostsList: data ? data : [],
@@ -32,6 +45,7 @@ const useGetTotalSearchResults = (postType: BoardType, certificateId: number) =>
     isError: error,
     size,
     setSize,
+    mutate,
   };
 };
 export default useGetTotalSearchResults;

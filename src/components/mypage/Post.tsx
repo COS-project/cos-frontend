@@ -1,7 +1,7 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import type { SVGProps } from 'react';
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
 
 interface Props {
   title: string;
@@ -11,8 +11,8 @@ interface Props {
   likeCount: number;
   commentCount: number;
   createdAt: string;
-  topElement?: React.JSX.Element | null;
-  bottomElement?: () => React.JSX.Element | null;
+  topElement?: JSX.Element | null;
+  bottomElement?: React.JSX.Element | null;
 }
 const Post = (props: Props) => {
   const { title, postId, content, imageUrl, likeCount, commentCount, createdAt, bottomElement, topElement } = props;
@@ -20,18 +20,31 @@ const Post = (props: Props) => {
   const onMove = () => {
     router.push(`/community/1/${postId}`); //TODO:자격증 바꾸기
   };
+
+  const formatDate = (dateString: string) => {
+    // ISO 8601 형식의 날짜 문자열을 Date 객체로 변환
+    const date = new Date(dateString);
+
+    // 연도, 월, 일을 추출
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    // 'YYYY.MM.DD' 형식으로 반환
+    return `${year}.${month}.${day}`;
+  };
+
   return (
-    <div
-      onClick={() => {
-        onMove();
-      }}
-      className={'flex flex-col gap-y-1 bg-white p-5 rounded-[32px]'}>
-      <div>
+    <div className={'flex flex-col gap-y-1 bg-white p-5 rounded-[32px]'}>
+      <div
+        onClick={() => {
+          onMove();
+        }}>
         {/*best 태그, 해설게시판 태그*/}
         {topElement ? topElement : null}
         <div className={'flex gap-x-3 items-center justify-between'}>
-          <div className={'flex flex-col gap-y-1'}>
-            <div className={'text-h4 font-semibold'}>{title}</div>
+          <div className={imageUrl ? 'flex flex-col gap-y-1 w-[60%]' : 'flex flex-col gap-y-1 w-full'}>
+            <div className={'text-h4 font-semibold truncate'}>{title}</div>
             <div className={'text-h4 font-normal line-clamp-2'}>{content}</div>
             {/*좋아요 수, 댓글 수*/}
             <div className={'flex gap-x-2'}>
@@ -46,16 +59,18 @@ const Post = (props: Props) => {
             </div>
           </div>
           {imageUrl ? (
-            <Image src={imageUrl} alt={imageUrl} height={104} width={100} className={'rounded-[5px]'} />
+            <div className={'relative h-[104px] w-[100px]'}>
+              <Image src={imageUrl} alt={imageUrl} fill className={'object-cover rounded-[5px]'} />
+            </div>
           ) : null}
         </div>
       </div>
 
       {/*작성일*/}
-      <div className={'text-h6 text-gray3'}>작성일 {createdAt}</div>
+      <div className={'text-h6 text-gray3'}>작성일 {formatDate(createdAt)}</div>
 
       {/*수정, 삭제버튼*/}
-      {!bottomElement || bottomElement() ? (bottomElement ? bottomElement() : null) : null}
+      {bottomElement ? bottomElement : null}
     </div>
   );
 };

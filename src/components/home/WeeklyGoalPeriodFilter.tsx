@@ -3,14 +3,13 @@ import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { WeeklyGoalPeriodType } from '@/types/home/type';
-import { da } from 'date-fns/locale';
 
 interface Props {
   className?: string;
   data: WeeklyGoalPeriodType[];
   setDataState: React.Dispatch<React.SetStateAction<WeeklyGoalPeriodType>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  reportType?: 'WEEK' | 'MONTH' | 'YEAR';
+  reportType?: 'WEEKLY' | 'MONTHLY' | 'YEARLY';
 }
 const WeeklyGoalPeriodFilter = (props: Props) => {
   const { className, data, setDataState, reportType, setIsOpen } = props;
@@ -21,11 +20,11 @@ const WeeklyGoalPeriodFilter = (props: Props) => {
    */
   const adjustFilterContentsByReportType = (weeklyGoalPeriod: WeeklyGoalPeriodType) => {
     switch (reportType) {
-      case 'WEEK':
+      case 'WEEKLY':
         return weeklyGoalPeriod.formattedWeeklyPrepTime;
-      case 'MONTH':
+      case 'MONTHLY':
         return `${weeklyGoalPeriod.prepareMonth}월`;
-      case 'YEAR':
+      case 'YEARLY':
         return `${weeklyGoalPeriod.prepareYear}년`;
       default:
         return '에러';
@@ -34,7 +33,6 @@ const WeeklyGoalPeriodFilter = (props: Props) => {
 
   return (
     <div
-<<<<<<< HEAD
       className={
         data.length >= 5
           ? twMerge(
@@ -42,16 +40,6 @@ const WeeklyGoalPeriodFilter = (props: Props) => {
               className,
             )
           : twMerge('border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 overflow-y-scroll', className)
-=======
-      className={data.length >= 5 ? twMerge(
-              'border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 h-[250px] overflow-y-scroll',
-              className,
-            )
-          : twMerge(
-              'border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 overflow-y-scroll',
-              className,
-            )
->>>>>>> 027e19d1702360a8a46067e704a48354e529d88d
       }>
       {!data || data.length === 0 ? (
         <div>error</div>

@@ -1,18 +1,30 @@
 import React from 'react';
 
+import { MockExam, PostComments, QuestionsResponse } from '@/types/global';
 import { UserInfo } from '@/types/mypage/type';
-import { QuestionsResponse } from '@/types/global';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
 
-export interface YearsAndRounds {
-  2017: number[];
-  2018: number[];
-  2019: number[];
-  2020: number[];
-  2021: number[];
-  2022: number[];
-  2023: number[];
+export type SortDirections = 'DESC' | 'ASC';
+
+export type ExamReviewPostType = {
+  examDifficulty: string;
+  content: string;
+};
+
+export interface LikeStatusResponseType {
+  responseCode: string;
+  result: boolean;
+}
+
+export interface MockExamsYearResponseType {
+  responseCode: string;
+  result: number[];
+}
+
+export interface MockExamsByYearResponseType {
+  responseCode: string;
+  result: MockExam[];
 }
 
 export interface CreatePostDataType {
@@ -32,11 +44,11 @@ export interface EditPostDataType {
   postId: number;
   title: string;
   content: string;
-  newTags?: TipPostTagType[];
+  tags?: TipPostTagType[];
   examYear?: number;
   round?: number;
   questionSequence?: number;
-  removeImageUrls?: string[];
+  removeImageIds?: number[];
 }
 
 export interface RecentSearchResult {
@@ -50,11 +62,21 @@ export interface PopularSearchKeyword {
   icon: React.JSX.Element;
 }
 
+/**
+ ************ post Detail *************
+ */
+
+export interface ResponseBest3PostType {
+  responseCode: string;
+  result: PostType[];
+}
+
 export interface ResponsePostType {
   responseCode: string;
+  message: string;
   result: {
-    content: PostType[];
-    hasNext: boolean;
+    postResponse: PostType;
+    postComments: PostComments[];
   };
 }
 
@@ -85,6 +107,24 @@ export interface PostStatus {
   commentCount: number;
 }
 
+export interface ReviewPost {
+  examDifficulty: ExamDifficulty;
+  prepareMonths: number;
+  content: string;
+  user: UserInfo;
+  createdAt: string;
+}
+
+export type ExamDifficulty = 'TOO_EASY' | 'EASY' | 'NORMAL' | 'TOO_DIFFICULT' | 'LITTLE_DIFFICULT';
+
+export interface ResponseReviewPost {
+  responseCode: string;
+  result: {
+    content: ReviewPost[];
+    hasNext: boolean;
+  };
+}
+
 export interface RecommendTags {
   tagType: string;
   tagName: string;
@@ -92,5 +132,16 @@ export interface RecommendTags {
 
 export interface DateTime {
   createdAt: string;
-  modifiedAt: string;
+  modifiedAt?: string;
+}
+
+export type TrendingKeywordState = 'UNCHANGED' | 'NEW' | 'RANK_UP' | 'RANK_DOWN';
+export interface TrendingKeyword {
+  keyword: string;
+  status: TrendingKeywordState;
+}
+
+export interface PreparePeriodType {
+  startMonth: number | undefined;
+  endMonth: number | undefined;
 }

@@ -1,7 +1,6 @@
 //공감수, 댓글 수, 추천버튼 라인
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
 import React from 'react';
 
 import DdbongIcon from './DdabongIcon';
@@ -9,11 +8,12 @@ import DdbongIcon from './DdabongIcon';
 interface Props {
   empathy: number; //공감 수
   comment: number; //댓글 수
-  onClick?: () => void; //추천 버튼 눌렀을 때 동작, "?"경로 설정하면서 수정 필요함
+  onClick?: () => void; //추천 버튼 눌렀을 때 동작
+  isLike: boolean | undefined; //사용자 게시글 좋아요 클릭 여부
 }
 
 const CommentBar = (props: Props) => {
-  const { empathy, comment, onClick } = props;
+  const { empathy, comment, onClick, isLike } = props;
   return (
     <div className="flex justify-between">
       <div className="flex gap-2 items-end">
@@ -34,12 +34,21 @@ const CommentBar = (props: Props) => {
           <div className="text-point text-h6 font-normal font-['Pretendard Variable'] leading-[21px]">{comment}</div>
         </div>
       </div>
-      <div
-        onClick={onClick}
-        className="cursor-pointer w-[72px] h-9 px-2 py-1 bg-gray0 rounded-lg justify-start items-center gap-1 inline-flex">
-        <DdbongIcon color="#727375" width="23" height="20"></DdbongIcon>
-        <div className="text-gray4 text-h6 font-normal font-['Pretendard Variable'] leading-[21px]">추천</div>
-      </div>
+      {isLike ? (
+        <div
+          onClick={onClick}
+          className="cursor-pointer w-[72px] h-9 px-2 py-1 bg-second rounded-lg justify-start items-center gap-1 inline-flex">
+          <DdbongIcon color="#FFFFFF" width="23" height="20"></DdbongIcon>
+          <div className="text-white text-h6 font-normal font-['Pretendard Variable'] leading-[21px]">추천</div>
+        </div>
+      ) : (
+        <div
+          onClick={onClick}
+          className="cursor-pointer w-[72px] h-9 px-2 py-1 bg-gray0 rounded-lg justify-start items-center gap-1 inline-flex">
+          <DdbongIcon color="#727375" width="23" height="20"></DdbongIcon>
+          <div className="text-gray4 text-h6 font-normal font-['Pretendard Variable'] leading-[21px]">추천</div>
+        </div>
+      )}
     </div>
   );
 };

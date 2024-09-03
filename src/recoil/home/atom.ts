@@ -2,35 +2,44 @@
 
 import { atom } from 'recoil';
 
-import { CertificateInfoType, GoalSettingInfo } from '@/types/global';
-import { UserCertGoalPeriodType, WeeklyGoalPeriodType } from '@/types/home/type';
+import { GoalSettingInfo } from '@/types/global';
+import { CertificateInfoType, UserCertGoalPeriodType, WeeklyGoalPeriodType } from '@/types/home/type';
 
 //자격증 응시 정보 state
 export const certificationInfoState = atom<CertificateInfoType>({
   key: 'certificationInfoState',
   default: {
-    description: '',
-    examSchedule: {
-      applicationStartDateTime: '2024-01-23T07:40:42.986Z',
-      applicationDeadlineDateTime: '2024-01-23T07:40:42.986Z',
-      examDateTime: '2024-01-23T07:40:42.986Z',
+    certificate: {
+      certificateId: 0,
+      certificateName: '',
     },
-    subjectsInfo: '',
-    examFormat: '',
-    examFee: {
-      writtenExamFee: '',
-      practicalExamFee: '',
+    examInfo: {
+      examYear: 0,
+      round: 0,
+      examSchedule: {
+        applicationStartDateTime: '',
+        applicationDeadlineDateTime: '',
+        resultAnnouncementDateTime: '',
+        examDateTime: '',
+      },
+      examFee: {
+        writtenExamFee: 0,
+        practicalExamFee: 0,
+      },
+      examTimeLimit: {
+        writtenExamTimeLimit: 0,
+        practicalExamTimeLimit: 0,
+      },
+      passingCriteria: {
+        subjectPassingCriteria: 0,
+        totalAvgCriteria: 0,
+        practicalPassingCriteria: 0,
+      },
+      subjectsInfo: '',
+      description: '',
+      examFormat: '',
+      examEligibility: '',
     },
-    examTimeLimit: {
-      writtenExamTimeLimit: '',
-      practicalExamTimeLimit: '',
-    },
-    passingCriteria: {
-      subjectPassingCriteria: '',
-      totalAvgCriteria: '',
-      practicalPassingCriteria: '',
-    },
-    examEligibility: '',
   },
 });
 
@@ -52,9 +61,9 @@ export let goalSettingState = atom<GoalSettingInfo>({
 });
 
 // 성장그래프 자세히 보기(그래프)
-export const selectedReportTypeState = atom<'WEEK' | 'MONTH' | 'YEAR'>({
+export const selectedReportTypeState = atom<'WEEKLY' | 'MONTHLY' | 'YEARLY'>({
   key: 'selectedReportTypeState',
-  default: 'WEEK',
+  default: 'WEEKLY',
 });
 
 // 성장그래프 자세히 보기(각각 디테일)

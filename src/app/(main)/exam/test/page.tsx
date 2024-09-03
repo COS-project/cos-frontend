@@ -5,7 +5,7 @@ import { useState } from 'react';
 import AutoSubmitTimeUpModal from '@/components/exam/AutoSubmitTimeUpModal';
 import Question from '@/components/exam/Question';
 import SubmitConfirmationModal from '@/components/exam/SubmitConfirmationModal';
-import TestSubmitOrCancle from '@/components/exam/TestSubmitOrCancle';
+import TestSubmitOrCancel from '@/components/exam/TestSubmitOrCancle';
 import UnsavedChangesWarningModal from '@/components/exam/UnsavedChangesWarningModal';
 
 const Test = () => {
@@ -41,7 +41,7 @@ const Test = () => {
         ) : null}
 
         {/*Header*/}
-        <TestSubmitOrCancle
+        <TestSubmitOrCancel
           isUnsavedChangesWarningModalOpen={isUnsavedChangesWarningModalOpen}
           setIsUnsavedChangesWarningModalOpen={setIsUnsavedChangesWarningModalOpen}
           isSubmitConfirmationModalOpen={isSubmitConfirmationModalOpen}

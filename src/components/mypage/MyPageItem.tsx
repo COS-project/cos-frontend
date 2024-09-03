@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import type { SVGProps } from 'react';
+import { SVGProps, useState } from 'react';
 import * as React from 'react';
 
 import { ItemType } from '@/types/mypage/type';
@@ -20,7 +20,17 @@ const MyPageItem = (props: Props) => {
           return (
             <div key={index} className={'px-5 py-5 flex justify-between bg-gray0 rounded-[16px] '}>
               <div className={'text-h6'}>{content.title}</div>
-              <MoveIcon onClick={() => router.push(content.path)} />
+              {content.version ? (
+                <div className={'text-h6 text-gray3'}>{content.version}</div>
+              ) : (
+                <MoveIcon
+                  onClick={() => {
+                    if (content.path) {
+                      router.push(content.path);
+                    }
+                  }}
+                />
+              )}
             </div>
           );
         })}

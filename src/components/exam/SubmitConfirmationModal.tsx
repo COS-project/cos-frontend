@@ -2,7 +2,14 @@ import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useRecoilState } from 'recoil';
 
-import { stopwatchIsPaused, stopwatchIsRunning, timerIsPaused } from '@/recoil/exam/atom';
+import {
+  stopwatchIsPaused,
+  stopwatchIsRunning,
+  subjectResultRequestsList,
+  timerIsPaused,
+  userAnswerRequestsList,
+} from '@/recoil/exam/atom';
+import { UserAnswerRequests } from '@/types/global';
 
 interface Props {
   isSubmitConfirmationModalOpen: boolean;
@@ -17,11 +24,13 @@ const SubmitConfirmationModal = (props: Props) => {
   const [isPausedStopWatch, setIsPausedStopWatch] = useRecoilState(stopwatchIsPaused);
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);
   const router = useRouter();
+  const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
+  const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList);
 
   /**
    * 제출 버튼을 눌렀을 때, 결과 페이지로 이동하는 함수
    */
-  const onMove = () => {
+  const onMove = async () => {
     router.push('/exam/result');
   };
 
@@ -41,7 +50,7 @@ const SubmitConfirmationModal = (props: Props) => {
           <div className={'flex justify-end gap-x-2'}>
             <button
               onClick={() => {
-                setIsPausedTimer(!isPausedTimer);
+                setIsPausedTimer(false);
                 setIsPausedStopWatch(!isPausedStopWatch);
                 setIsSubmitConfirmationModalOpen(!isSubmitConfirmationModalOpen);
               }}
@@ -49,10 +58,12 @@ const SubmitConfirmationModal = (props: Props) => {
               닫기
             </button>
             <button
-              onClick={() => {
-                setIsRunning(false);
+              onClick={async () => {
+                setIsPausedTimer(true);
+                setIsRunning(false); //제출 트릭
+                // 체점 결과 초기화
                 setIsSubmitConfirmationModalOpen(!isSubmitConfirmationModalOpen);
-                onMove();
+                await onMove();
               }}
               className={'bg-black rounded-full text-white py-[7px] px-3'}>
               제출하기

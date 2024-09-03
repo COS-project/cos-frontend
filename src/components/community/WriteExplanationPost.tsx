@@ -1,18 +1,27 @@
 import Image from 'next/image';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, SVGProps, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import FilterModal from '@/components/common/FilterModal';
+import Header from '@/components/common/Header';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
+import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
+import MockExamRoundFilter from '@/components/community/MockExamRoundFilter';
+import QuestionNumberExceedingLimitAlertModal from '@/components/community/QuestionNumberExceedingLimitAlertModal';
 import { postCommentary } from '@/lib/api/community';
-import useGetMockExamYearsAndRounds from '@/lib/hooks/useGetMockExamYearsAndRounds';
+import useGetMockExams from '@/lib/hooks/useGetMockExams';
+import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 
-const WriteExplanationPost = () => {
-  const { examYearWithRounds } = useGetMockExamYearsAndRounds();
-  const { questions } = useMockExamQuestions();
+interface Props {
+  setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const WriteExplanationPost = (props: Props) => {
+  const { setIsClickedWriteButton } = props;
+  const { examYears } = useGetMockExamYears();
+  const { questions } = useMockExamQuestions(2); //TODO: 나중에 모의고사 번호로 변경해야 함.
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
 
@@ -24,6 +33,9 @@ const WriteExplanationPost = () => {
   const [isEmpty, setIsEmpty] = useState(true);
   const [isQuestionSequenceNumeric, setIsQuestionSequenceNumeric] = useState(true);
   const [questionSequence, setQuestionSequence] = useState(0);
+  const { mockExams } = useGetMockExams(1, postData.examYear); //해설 회차 필터값
+  const [isQuestionNumberExceedingLimit, setIsQuestionNumberExceedingLimit] = useState(false);
+  const [isTitleEmpty, setIsTitleEmpty] = useState(false);
 
   /**
    * 문제 번호를 변경하는 함수
@@ -104,18 +116,77 @@ const WriteExplanationPost = () => {
     );
 
     try {
-      const response = await postCommentary(1, 'COMMENTARY', formData); // API 호출
+      await postCommentary(1, 'COMMENTARY', formData).then(() => {
+        //글쓰기 초기화
+        setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
+        setIsTitleEmpty(true);
+        setImageUrlList([]);
+        setImagePreviews([]);
+        //글쓰기 페이지 내리기
+        setIsClickedWriteButton(false);
+      }); // API 호출
     } catch (error) {
       console.error('폼 제출 중 오류 발생:', error);
     }
   };
 
+  /**
+   * 뒤로가기
+   */
+  const onBack = () => {
+    //글쓰기 초기화
+    setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
+    setIsTitleEmpty(true);
+    setImageUrlList([]);
+    setImagePreviews([]);
+    setIsClickedWriteButton(false);
+  };
+
+  /**
+   * 예외 처리에 따라 제출 폼 형식 변경 함수
+   */
+  const handleException = (e: FormEvent) => {
+    e.preventDefault(); // 폼 제출 시 새로고침 방지
+
+    let isValid = true;
+
+    if (questionSequence > questions?.length) {
+      setIsQuestionNumberExceedingLimit(true);
+      isValid = false;
+    } else {
+      setIsQuestionNumberExceedingLimit(false);
+    }
+
+    if (postData.title === '') {
+      setIsTitleEmpty(true);
+      isValid = false;
+    } else {
+      setIsTitleEmpty(false);
+    }
+
+    if (isValid) {
+      handleSubmit(e);
+    }
+  };
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <button type={'submit'} className={'p-3 bg-second text-white'}>
-          저장
-        </button>
+      {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
+      {isQuestionNumberExceedingLimit ? (
+        <QuestionNumberExceedingLimitAlertModal setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit} />
+      ) : null}
+      <form onSubmit={handleException}>
+        <Header
+          onBack={onBack}
+          CancelIcon={CancelIcon}
+          headerType={'dynamic'}
+          title={'해설 쓰기'}
+          rightElement={
+            <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
+              완료
+            </button>
+          }></Header>
+
         <div className={'flex flex-col m-5 gap-y-4'}>
           {/* 년도 선택 세션 */}
           <div className={'flex flex-col relative gap-y-2'}>
@@ -129,11 +200,7 @@ const WriteExplanationPost = () => {
               {isYearsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
             </div>
             {isYearsFilterOpen && (
-              <MockExamYearsFilter
-                data={examYearWithRounds}
-                setIsOpen={setIsYearsFilterOpen}
-                setDataState={setPostData}
-              />
+              <MockExamYearsFilter years={examYears} setIsOpen={setIsYearsFilterOpen} setDataState={setPostData} />
             )}
           </div>
 
@@ -149,9 +216,9 @@ const WriteExplanationPost = () => {
               {isRoundsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
             </div>
             {isRoundsFilterOpen && (
-              <FilterModal
-                //TO DO: 회차 모의고사
-                data={postData.examYear ? examYearWithRounds?.examYearWithRounds[postData.examYear] : null}
+              <MockExamRoundFilter
+                //TODO: 회차 모의고사
+                mockExams={postData.examYear ? mockExams : null}
                 setDataState={setPostData}
                 setIsOpen={setIsRoundsFilterOpen}
                 className={'absolute w-full top-[100%]'}
@@ -213,8 +280,8 @@ const WriteExplanationPost = () => {
         </div>
 
         {/* 이미지 추가 세션 */}
-        <div className={'flex gap-x-2 '}>
-          <div className={'rounded-[8px] p-2 bg-gray0 w-fit'}>
+        <div className={'mx-5 flex gap-x-2 '}>
+          <div className={'rounded-[8px] p-2 bg-gray0 w-[48px] h-[48px]'}>
             <label htmlFor="image">
               <AddImageIcon />
             </label>
@@ -228,18 +295,18 @@ const WriteExplanationPost = () => {
               multiple
               style={{ display: 'none' }}></input>
           </div>
-          <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
-            {imagePreviews.map((img, i) => {
-              return (
-                <div key={i} className={'relative rounded-[8px]'}>
-                  <ImageDeleteButton i={i} usage={'create'} />
-                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                    <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
-                  </div>
+        </div>
+        <div className={'mx-5 mt-3 w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
+          {imagePreviews.map((img, i) => {
+            return (
+              <div key={i} className={'relative rounded-[8px]'}>
+                <ImageDeleteButton i={i} usage={'create'} />
+                <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                  <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </form>
     </div>
@@ -274,18 +341,8 @@ function AddImageIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function DeleteIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg width={11} height={10} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path fill="#9E9FA1" d="M.507 0h9.723v9.723H.507z" />
-      <path
-        d="M.949 8.986a.63.63 0 010-.884l7.66-7.66a.63.63 0 01.884 0 .63.63 0 010 .884l-7.66 7.66a.63.63 0 01-.884 0z"
-        fill="#fff"
-      />
-      <path
-        d="M6.842 7.218L.949 1.326a.63.63 0 010-.884.63.63 0 01.884 0l5.892 5.893a.63.63 0 010 .883.63.63 0 01-.883 0zM8.462 9.133a.833.833 0 101.179-1.178.833.833 0 00-1.179 1.178z"
-        fill="#fff"
-      />
-    </svg>
-  );
-}
+const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={32} height={32} fill="none" {...props}>
+    <path stroke="#000" strokeLinecap="round" d="m8 8 16 16M24 8 8 24" />
+  </svg>
+);

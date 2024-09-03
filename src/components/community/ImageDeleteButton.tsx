@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { SVGProps, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { editPostDataState, imagePreviewsState, imageUrlListState, pastImageUrlsState } from '@/recoil/community/atom';
+import { ImageType } from '@/types/global';
 
 interface Props {
   usage: string; //create(글생성), edit(글수정)
@@ -15,7 +16,7 @@ const ImageDeleteButton = (props: Props) => {
   const { usage, i, type } = props;
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState); // 파일 업로드
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
-  const [pastImageUrls, setPastImageUrls] = useRecoilState<string[]>(pastImageUrlsState);
+  const [pastImageUrls, setPastImageUrls] = useRecoilState<ImageType[]>(pastImageUrlsState);
   const [editPostData, setEditPostData] = useRecoilState(editPostDataState);
 
   //수정글에서(usage==edit) 미리보기에서 X버튼 클릭했을 때 삭제되도록 하는 함수
@@ -40,12 +41,12 @@ const ImageDeleteButton = (props: Props) => {
    * 수정글에서(usage==edit) 진짜 삭제할 수 있도록 deleteImageUrls 리스트에 삭제할 url 을 추가하는 함수
    */
   const deleteImageData = () => {
-    const copy = [...editPostData.removeImageUrls];
+    const copy = [...editPostData.removeImageIds];
     const copyPastImageUrls = [...pastImageUrls];
 
     if (type === '과거 이미지 URL' && !copy.includes(copyPastImageUrls[i])) {
       copy.push(copyPastImageUrls[i]);
-      setEditPostData((prevState) => ({ ...prevState, removeImageUrls: copy }));
+      setEditPostData((prevState) => ({ ...prevState, removeImageIds: copy }));
     }
   };
 
@@ -73,7 +74,7 @@ const ImageDeleteButton = (props: Props) => {
             deleteImageUrl();
           }
         }}>
-        <div className={'absolute top-0 right-0 bg-gray3 rounded-full p-[5px] w-fit'}>
+        <div className={'absolute top-0 right-0'}>
           <DeleteIcon />
         </div>
       </button>
@@ -81,18 +82,9 @@ const ImageDeleteButton = (props: Props) => {
   );
 };
 export default ImageDeleteButton;
-function DeleteIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg width={11} height={10} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path fill="#9E9FA1" d="M.507 0h9.723v9.723H.507z" />
-      <path
-        d="M.949 8.986a.63.63 0 010-.884l7.66-7.66a.63.63 0 01.884 0 .63.63 0 010 .884l-7.66 7.66a.63.63 0 01-.884 0z"
-        fill="#fff"
-      />
-      <path
-        d="M6.842 7.218L.949 1.326a.63.63 0 010-.884.63.63 0 01.884 0l5.892 5.893a.63.63 0 010 .883.63.63 0 01-.883 0zM8.462 9.133a.833.833 0 101.179-1.178.833.833 0 00-1.179 1.178z"
-        fill="#fff"
-      />
-    </svg>
-  );
-}
+const DeleteIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={21} height={20} fill="none" {...props}>
+    <rect width={20} height={20} x={0.312} fill="#F4F5F7" rx={10} />
+    <path stroke="#6E6F71" d="m13.848 6.464-7.071 7.071M6.777 6.464l7.071 7.071" />
+  </svg>
+);

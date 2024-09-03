@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import { AxiosResponse } from 'axios';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useRecoilState } from 'recoil';
+import { KeyedMutator } from 'swr';
 
-import DoneButton from '@/components/onboarding/DoneButton';
+import Header from '@/components/common/Header';
 import { postInterestCertificates } from '@/lib/api/onboarding';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
 import { InterestCertificateOnboarding } from '@/types/global';
@@ -12,14 +14,18 @@ import { InterestCertificateOnboarding } from '@/types/global';
 export interface CertificationPriorityProps {
   onNext: () => void;
   onBefore: () => void;
+  interestCertificateDataMutate?: KeyedMutator<AxiosResponse<any, any>>;
 }
 
-// CertificationPriority 컴포넌트는 사용자가 자격증의 우선 순위를 설정할 수 있는 UI를 제공합니다.
-const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, onBefore }) => {
+const CertificationPriority: React.FC<CertificationPriorityProps> = ({
+  onNext,
+  onBefore,
+  interestCertificateDataMutate,
+}) => {
   const [interestCertificates, setInterestCertificates] = useRecoilState(interestCertificatesState);
-
+  const [isClickedDoneButton, setIsClickedDoneButton] = useState(false); // 제출할 때, useEffect 를 움직이기 위한 트리거
   // 드래그 앤 드롭 작업이 끝났을 때 호출되는 함수입니다. 자격증의 순서를 변경합니다.
-  const handleDragEnd = (result) => {
+  const handleDragEnd = (result: any) => {
     if (!result.destination) return;
 
     const reorderedCertificates = Array.from(interestCertificates.interestTargetList);
@@ -45,19 +51,19 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
     const prioritizedCertificates = updateCertificatesPriority(interestCertificates.interestTargetList);
     const sanitizedCertificates = sanitizeCertificates(prioritizedCertificates);
     setInterestCertificates(() => ({ interestTargetList: sanitizedCertificates }));
+    setIsClickedDoneButton(true);
   };
 
+  // post 요청
   useEffect(() => {
-    if (!interestCertificates.interestTargetList[0].certificateName) {
-      postInterestCertificates(interestCertificates);
+    if (!interestCertificates.interestTargetList[0].certificateName && isClickedDoneButton) {
+      postInterestCertificates(interestCertificates).then((r) => {console.log('r', r)});
     }
-  }, [interestCertificates]);
+  }, [isClickedDoneButton]);
 
   return (
     <div>
-      <div>
-        <button onClick={onBefore}>이전</button>
-      </div>
+      <Header headerType={'dynamic'} onBack={onBefore} title={'종목설정'}></Header>
 
       <div className="grid gap-y-8 m-4">
         <div className="grid">
@@ -94,9 +100,17 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
         </DragDropContext>
       </div>
 
-      <DoneButton onNext={onNext} postData={handleSubmit}>
-        완료
-      </DoneButton>
+      <button
+        className={
+          'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0 hover:bg-primary transition'
+        }
+        onClick={() => {
+          handleSubmit();
+          onNext();
+          interestCertificateDataMutate ? interestCertificateDataMutate : null;
+        }}>
+        <div className="text-white text-h3 py-[25px]">완료</div>
+      </button>
     </div>
   );
 };
