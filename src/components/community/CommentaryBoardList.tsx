@@ -11,6 +11,8 @@ import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
 import { MockExam } from '@/types/global';
+import { useRecoilValue } from 'recoil';
+import { certificateIdAtom } from '@/recoil/atom';
 
 interface Props {
   boardType: BoardType;
@@ -20,6 +22,7 @@ interface Props {
 }
 const CommentaryBoardList = (props: Props) => {
   const { boardType, debouncedValue, searchValue, setSearchValue } = props;
+  const certificateId = useRecoilValue(certificateIdAtom);
   const [isOpenCommentaryRoundFilter, setIsOpenCommentaryRoundFilter] = useState<boolean>(false);
   const [isOpenCommentaryYearFilter, setIsOpenCommentaryYearFilter] = useState<boolean>(false);
   const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number | string>(
@@ -30,13 +33,13 @@ const CommentaryBoardList = (props: Props) => {
   );
   const { examYears } = useGetMockExamYears(); //해설 년도 필터값 데이터
   const [yearsWithAllOption, setYearsWithAllOption] = useState<Array<number | string>>([]); //해설 년도 필터값 데이터 Copy Array
-  const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent); //해설 회차 필터값
+  const { mockExams } = useGetMockExams(certificateId, selectedCommentaryYearFilterContent); //해설 회차 필터값
   const [roundsWithAllOption, setRoundsWithAllOption] = useState<Array<string | MockExam>>([]); //해설 회차 필터값 데이터 Copy Array
   const [ref, inView] = useInView();
   const router = useRouter();
   //해설 게시글 검색 결과
   const { commentarySearchResults, setSize } = useGetCommentarySearchResults(
-    1,
+    certificateId,
     selectedCommentaryYearFilterContent,
     selectedCommentaryRoundFilterContent,
     searchValue,
@@ -111,7 +114,7 @@ const CommentaryBoardList = (props: Props) => {
       };
 
       const url = qs.stringifyUrl({
-        url: '/community/1',
+        url: `/community/${certificateId}`,
         query: query,
       });
 

@@ -39,6 +39,13 @@ const config: Config = {
       h6: '14px', // SubTitle 2, Body2, Button
       h7: '12px',
     },
+    screens: {
+      sm: '375px',    // sm을 500px로 변경
+      md: '700px',    // md를 850px로 변경
+      lg: '1080px',   // lg를 1080px로 변경
+      xl: '1440px',   // xl을 1440px로 변경
+      '2xl': '1800px' // 2xl을 1800px로 변경
+    }
   },
   plugins: [],
 };

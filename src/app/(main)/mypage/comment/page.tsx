@@ -77,7 +77,11 @@ export default function MyComment() {
                           content={userCommentPost.postContent.content}
                           title={userCommentPost.postContent.title}
                           commentCount={userCommentPost.postStatus.commentCount}
-                          createdAt={'2021.07.31'}
+                          createdAt={
+                            userCommentPost.dateTime.modifiedAt
+                              ? userCommentPost.dateTime.modifiedAt
+                              : userCommentPost.dateTime.createdAt
+                          }
                           topElement={
                             userCommentPost.question
                               ? commentaryTopElement(

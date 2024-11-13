@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import DetailedGradeReport from '@/components/home/DetailedGradeReport';
 import GrowthChart from '@/components/home/GrowthChart';
@@ -10,9 +10,13 @@ import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import { selectedPrepareWeeksBetweenState, selectedReportTypeState } from '@/recoil/home/atom';
 import { ScoreAVGListType } from '@/types/home/type';
+import Header from '@/components/common/Header';
+import { useRouter } from 'next/navigation';
+import { certificateIdAtom } from '@/recoil/atom';
 
 const GrowthChartView = () => {
-  const { userGoals } = useGetUserGoals(1);
+  const certificateId = useRecoilValue(certificateIdAtom);
+  const { userGoals } = useGetUserGoals(certificateId);
   const [selectedPrepareWeeksBetween, setSelectedPrepareWeeksBetweenState] = useRecoilState(
     selectedPrepareWeeksBetweenState,
   );
@@ -21,7 +25,7 @@ const GrowthChartView = () => {
   );
 
   const { statisticsData } = useGetMockExamStatistics(
-    1,
+    certificateId,
     selectedReportType,
     selectedPrepareWeeksBetween.prepareYear,
     selectedPrepareWeeksBetween.prepareMonth,
@@ -29,6 +33,7 @@ const GrowthChartView = () => {
   );
   const [goalPeriod, setGoalPeriod] = useState<string>('목표 기간 선택');
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     console.log('성적그래프 통계', statisticsData);
@@ -102,8 +107,13 @@ const GrowthChartView = () => {
     return `${scoreAVG.month}월`;
   };
 
+  const onBack = () => {
+    router.push('/home');
+  };
+
   return (
-    <div className={'bg-gray0'}>
+    <div className={'bg-gray0 min-h-screen'}>
+      <Header title={'성장그래프 자세히보기'} headerType={'dynamic'} onBack={onBack}/>
       <div className={'relative m-5 flex flex-col gap-y-[24px]'}>
         {/*유저별 목표 기간 전체 필터*/}
         <div
@@ -170,7 +180,6 @@ const GrowthChartView = () => {
                 />
               );
             })}
-            `
           </div>
         </div>
       </div>

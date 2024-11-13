@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React, { FormEvent, SVGProps, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
@@ -12,6 +12,7 @@ import { postCommentary } from '@/lib/api/community';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
+import { certificateIdAtom } from '@/recoil/atom';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 
 interface Props {
@@ -19,9 +20,11 @@ interface Props {
 }
 
 const WriteExplanationPost = (props: Props) => {
+  const certificateId = useRecoilValue(certificateIdAtom);
+
   const { setIsClickedWriteButton } = props;
   const { examYears } = useGetMockExamYears();
-  const { questions } = useMockExamQuestions(2); //TODO: 나중에 모의고사 번호로 변경해야 함.
+  const { questions } = useMockExamQuestions(1); //TODO: 나중에 모의고사 번호로 변경해야 함.
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
 
@@ -33,7 +36,7 @@ const WriteExplanationPost = (props: Props) => {
   const [isEmpty, setIsEmpty] = useState(true);
   const [isQuestionSequenceNumeric, setIsQuestionSequenceNumeric] = useState(true);
   const [questionSequence, setQuestionSequence] = useState(0);
-  const { mockExams } = useGetMockExams(1, postData.examYear); //해설 회차 필터값
+  const { mockExams } = useGetMockExams(certificateId, postData.examYear); //해설 회차 필터값
   const [isQuestionNumberExceedingLimit, setIsQuestionNumberExceedingLimit] = useState(false);
   const [isTitleEmpty, setIsTitleEmpty] = useState(false);
 

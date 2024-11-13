@@ -3,15 +3,18 @@
 import { useRouter } from 'next/navigation';
 import React, { type SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useRecoilValue } from 'recoil';
 
 import ExamDifficultyFilter from '@/components/community/ExamDifficultyFilter';
 import PreparePeriodFilter from '@/components/community/PreparePeriodFilter';
 import UserActionReminder from '@/components/community/UserActionReminder';
 import useGetExamReview from '@/lib/hooks/useGetExamReview';
+import { certificateIdAtom } from '@/recoil/atom';
 import { ExamDifficulty, ReviewPost } from '@/types/community/type';
 
 const ExamReviewBoardList = () => {
   const [ref, inView] = useInView();
+  const certificateId = useRecoilValue(certificateIdAtom);
   const router = useRouter();
   const [selectedExamDifficultyContent, setSelectedExamDifficultyContent] = useState<string>('난이도 전체');
   const [isExamDifficultyOpen, setIsExamDifficultyOpen] = useState<boolean>(false);
@@ -20,7 +23,7 @@ const ExamReviewBoardList = () => {
   const [isPreparePeriodOpen, setIsPreparePeriodOpen] = useState<boolean>(false);
   const [startMonths, setStartMonths] = useState<number | undefined>();
   const [endPreMonths, setEndPreMonths] = useState<number | undefined>();
-  const { examReviews, setSize } = useGetExamReview(1, examDifficulty, startMonths, endPreMonths);
+  const { examReviews, setSize } = useGetExamReview(certificateId, examDifficulty, startMonths, endPreMonths);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌

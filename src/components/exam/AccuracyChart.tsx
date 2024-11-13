@@ -2,20 +2,23 @@ import { ResponsiveRadar } from '@nivo/radar';
 import { useEffect, useState } from 'react';
 
 import { CorrectRateGraphType, SubjectResultsType } from '@/types/exam/type';
+import { AverageSubjectInfoType } from '@/types/home/type';
 
 interface Props {
   subjectResults: SubjectResultsType[];
+  averageSubjectList: AverageSubjectInfoType[];
 }
 const AccuracyChart = (props: Props) => {
-  const { subjectResults } = props;
+  const { subjectResults, averageSubjectList } = props;
 
   const [subjectData, setSubjectData] = useState<CorrectRateGraphType[]>([]);
 
   useEffect(() => {
     if (subjectResults) {
-      const transformedData: CorrectRateGraphType[] = subjectResults.map((result) => ({
+      const transformedData: CorrectRateGraphType[] = subjectResults.map((result, index) => ({
         subjectTitle: result.subject.subjectName,
         subjectCorrectRate: result.correctRate,
+        averageSubjectRate: averageSubjectList.length !== 0 ? averageSubjectList[index].correctRate : 10,
       }));
       setSubjectData(transformedData);
     }
@@ -27,7 +30,7 @@ const AccuracyChart = (props: Props) => {
       <div className={'w-full'} style={{ height: '280px' }}>
         <ResponsiveRadar
           data={subjectData}
-          keys={['subjectCorrectRate']}
+          keys={['subjectCorrectRate', 'averageSubjectRate']}
           indexBy="subjectTitle"
           valueFormat=" >-.2f"
           margin={{ top: 30, right: 70, bottom: 0, left: 70 }}
@@ -49,6 +52,18 @@ const AccuracyChart = (props: Props) => {
           blendMode="multiply"
           motionConfig="wobbly"
         />
+      </div>
+
+      {/* Custom Legends */}
+      <div className={'flex items-center gap-x-3 justify-center mb-4'}>
+        <div className={'flex items-center gap-x-1'}>
+          <div className={'bg-primary w-[20px] h-[8px] rounded-full'} />
+          <span className={'text-h6'}>회차</span>
+        </div>
+        <div className={'flex items-center gap-x-1'}>
+          <div className={'bg-[#b2cde7] w-[20px] h-[8px] rounded-full'} />
+          <span className={'text-h6'}>평균</span>
+        </div>
       </div>
     </div>
   );

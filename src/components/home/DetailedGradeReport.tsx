@@ -53,7 +53,7 @@ const DetailedGradeReport = (props: Props) => {
           <div className={'font-semibold text-h6'}>점수</div>
         </div>
         {/* 주간 성적 */}
-        <div>
+        <div className={'max-h-[220px] overflow-y-scroll'}>
           {statisticsDetailData?.content.map((detail: DetailGradeReportType, index: number) => {
             return (
               <div key={index} className={'flex justify-around py-4 text-h6'}>

@@ -1,26 +1,23 @@
-import { useEffect } from 'react';
-
 import StickGraph from '@/components/exam/StickGraph';
-import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
-import { SubjectResultsType } from '@/types/exam/type';
 import { AverageSubjectInfoType } from '@/types/home/type';
 
 interface Props {
-  subjectResults: SubjectResultsType[];
-  averageSubjectList: AverageSubjectInfoType[];
-  timeLimit: number;
-  totalTakenTime: () => number;
+  subjectResults: AverageSubjectInfoType[] | undefined;
+  timeLimit: number | undefined;
+  totalTakenTime: () => number | undefined;
 }
-const TakenTimeGraphReport = (props: Props) => {
-  const { subjectResults, averageSubjectList, timeLimit, totalTakenTime } = props;
+
+const AverageTakenTimeGraphReport = (props: Props) => {
+  const { subjectResults, timeLimit, totalTakenTime } = props;
 
   const millisecondsToMinutes = (time: number) => {
     // 1분은 60000 밀리세컨드입니다.
     return Math.floor(time / 60000);
   };
 
-  if (!subjectResults) {
-    return <div>Error</div>;
+  const totalTime = totalTakenTime();
+  if (totalTime === undefined || timeLimit === undefined || subjectResults === undefined) {
+    return <div>로딩중...</div>;
   }
 
   return (
@@ -30,7 +27,7 @@ const TakenTimeGraphReport = (props: Props) => {
         {/*걸린 시간*/}
         <div className={'pl-2'}>
           <div className={'text-h6'}>걸린시간</div>
-          <div className={'text-h3 font-semibold'}>{millisecondsToMinutes(totalTakenTime())}m</div>
+          <div className={'text-h3 font-semibold'}>{millisecondsToMinutes(totalTime)}m</div>
         </div>
         {/*막대 그래프*/}
         <div className="flex items-center space-x-2">
@@ -44,10 +41,6 @@ const TakenTimeGraphReport = (props: Props) => {
                 return (
                   <div key={index} className="w-full flex justify-center space-x-2">
                     <StickGraph height={millisecondsToMinutes(subjectResult.totalTakenTime)} color="second" />
-                    <StickGraph
-                      height={millisecondsToMinutes(averageSubjectList ? averageSubjectList[index].totalTakenTime : 0)}
-                      color="gray2"
-                    />
                   </div>
                 );
               })}
@@ -70,4 +63,4 @@ const TakenTimeGraphReport = (props: Props) => {
     </div>
   );
 };
-export default TakenTimeGraphReport;
+export default AverageTakenTimeGraphReport;

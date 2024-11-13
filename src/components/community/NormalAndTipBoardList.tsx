@@ -1,10 +1,12 @@
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useRecoilValue } from 'recoil';
 
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import Post from '@/components/mypage/Post';
 import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
+import { certificateIdAtom } from '@/recoil/atom';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
 import { filterNormalAndTipContent } from '@/utils/community/FilterContent';
 interface Props {
@@ -13,14 +15,15 @@ interface Props {
 const NormalAndTipBoardList = (props: Props) => {
   const { boardType } = props;
   const [ref, inView] = useInView();
+  const certificateId = useRecoilValue(certificateIdAtom);
   const [sortField, setSortField] = useState<string>('createdAt'); //최신순 인기순
-  const { userPostsList, size, setSize } = useGetTotalSearchResults(boardType, 1, sortField);
+  const { userPostsList, size, setSize } = useGetTotalSearchResults(boardType, certificateId, sortField);
   //필터값
   const [isOpenNormalAndTipFilter, setIsOpenNormalAndTipFilter] = useState<boolean>(false);
   const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<'최신순' | '인기순'>(
     '최신순',
   );
-  const { bestTipPosts } = useBest3TipPosts(1);
+  const { bestTipPosts } = useBest3TipPosts(certificateId);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌

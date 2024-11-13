@@ -11,7 +11,7 @@ const useGetMockExamDetail = (
   date: string | undefined,
 ) => {
   const { data, error } = useSWR<AxiosResponse>(
-    `/certificates/1/mock-exam-results/${dateType}?${year ? `year=${year}` : ''}${month ? `&month=${month}` : ''}${weekOfMonth ? `&weekOfMonth=${weekOfMonth}` : ''}${date ? `&date=${date}` : ''}&page=0&size=4`,
+    `/certificates/1/mock-exam-results/${dateType}?${year ? `year=${year}` : ''}${month ? `&month=${month}` : ''}${weekOfMonth ? `&weekOfMonth=${weekOfMonth}` : ''}${date ? `&date=${date}` : ''}&page=0&size=10`,
     swrGetFetcher,
   );
 

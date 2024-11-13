@@ -103,3 +103,56 @@ export interface CertificateInfoResponseType {
   message: string;
   result: CertificateInfoType;
 }
+
+////////////////////////////////////////////////////
+export interface AverageSubjectInfoResponseType {
+  responseCode: string;
+  result: AverageSubjectInfoType[];
+}
+
+/**
+ * 과목별 정답률 평균 및 머문 시간 평균 조회
+ */
+export interface AverageSubjectInfoType {
+  subject: {
+    subjectId: number;
+    subjectName: string;
+    numberOfQuestions: number;
+    totalScore: number;
+  };
+  correctRate: number;
+  totalTakenTime: number;
+}
+////////////////////////////////////////////////////
+/**
+ * 목표 달성도 조회 데이터 타입
+ */
+export interface GoalAchievementResponseType {
+  responseCode: string;
+  message: string;
+  result: GoalAchievementType;
+}
+
+export interface GoalAchievementType {
+  goalId: number;
+  goalScore: number;
+  maxScore: number;
+  studyTimePerDay: number;
+  todayStudyTime: number;
+  goalStudyTime: number;
+  currentStudyTime: number;
+  mockExamsPerDay: number;
+  todayMockExams: number;
+  goalMockExams: number;
+  currentMockExams: number;
+  goalDay: number;
+}
+//////////////////////////////////////////////////////
+/**
+ * 목표 설정했는지 여부
+ */
+export interface GoalSettingStatusResponseType {
+  responseCode: string;
+  message: string;
+  result: boolean;
+}

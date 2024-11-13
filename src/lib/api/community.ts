@@ -72,7 +72,7 @@ export const getTotalSearchResults = async (certificateId: number, postType: Boa
           'Access-Token': localStorage.getItem('accessToken'),
         },
         method: 'GET',
-        url: `/certificates/${certificateId}/search?postType=${postType}&keyword=${keyword}&page=0&size=10`,
+        url: `/certificates/${certificateId}/search?postType=${postType}&keyword=${keyword}&page=0&size=10&sortFields=subjectResultEntity.mockExamResultEntity.createdAt, questionEntity.questionSeq&sortDirections=DESC, ASC`,
       });
       console.log(response.data);
       // 성공적인 응답 처리

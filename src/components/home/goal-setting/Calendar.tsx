@@ -23,7 +23,7 @@ import { goalSettingState } from '@/recoil/home/atom';
 
 interface Props {
   usage: string;
-  className: string; // 캘린더 위치 변경
+  className?: string; // 캘린더 위치 변경
   // 시작 날짜(or 오늘 날짜) 이전 날짜는 눌리지 않도록 disabled 제어하는 함수
   setDateStatus: (date: Date, usage: string) => boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>; // 캘린더를 키고 끌 수 있게 하는 state 함수
@@ -70,12 +70,9 @@ const Calendar = (props: Props) => {
   }, [startDate, endDate]);
 
   return (
-    <section
-      className={twMerge(
-        'absolute bg-white border-[1px] border-gray2 rounded-[16px] p-2 pt-3 shadow-lg w-[90%]',
-        className,
-      )}>
+    <section className={twMerge('bg-white border-[1px] border-gray2 rounded-[16px] p-2 pt-3', className)}>
       <div className="flex flex-col items-center justify-center gap-y-3">
+        <div>{usage === 'Start' ? 'Start Date' : 'Finish Date'}</div>
         <div className="flex justify-evenly w-full">
           <button onClick={prevMonthHandler}>
             <LeftIcon />
@@ -110,14 +107,15 @@ const Calendar = (props: Props) => {
               key={`date${i}`}
               disabled={setDateStatus(date, usage)}
               onClick={() => {
+                const correctedDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000); // UTC 보정
                 usage == 'Start'
                   ? setGoalData((prevGoalSettingData) => ({
                       ...prevGoalSettingData,
-                      prepareStartDateTime: date.toISOString(),
+                      prepareStartDateTime: correctedDate.toISOString(),
                     }))
                   : setGoalData((prevGoalSettingData) => ({
                       ...prevGoalSettingData,
-                      prepareFinishDateTime: date.toISOString(),
+                      prepareFinishDateTime: correctedDate.toISOString(),
                     }));
                 setIsModalOpen(false);
               }}

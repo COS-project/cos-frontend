@@ -5,13 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/alarm/AlarmItem.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGetAlarm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/home/AverageAccurayChat.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/home/AverageTakenTimeGraphReport.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/home/BestTip.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/home/HorizontalBarChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/home/RecentGrowthChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/home/goal-setting/GoalSettingStatusModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/hooks/UserGoalSettingStatus.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useAverageSubjectInfo.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/hooks/useGoalAchievement.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/alarm/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/alarm/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/alarm/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/alarm/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/exam/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/exam/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/exam/result/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/exam/result/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/home/goal-setting/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/goal-setting/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/home/growth-chart-view/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/growth-chart-view/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/(main)/home/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/home/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/search/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/search/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/alarm/AlarmItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/alarm/AlarmItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/common/FilterModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/FilterModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/SessionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/SessionModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/StickGraph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/StickGraph.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/TakenTimeGraphReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/TakenTimeGraphReport.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/DetailedGradeReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/DetailedGradeReport.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/GrowthChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/GrowthChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/goal-attaining/Carousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-attaining/Carousel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/goal-attaining/GoalRunningGraph.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-attaining/GoalRunningGraph.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/goal-attaining/ScoredDonutChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-attaining/ScoredDonutChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/goal-setting/Calendar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-setting/Calendar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/home/goal-setting/PreparationPeriodSetting.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/goal-setting/PreparationPeriodSetting.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/alarm.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/alarm.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/community.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/community.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/AccuracyChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/AccuracyChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useBest3TipPosts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useBest3TipPosts.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/types/home/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/home/type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,6 +83,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/prettier&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -60,10 +93,17 @@
       <recent name="$PROJECT_DIR$/public" />
     </key>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23726.96" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="" />
+      <changelist id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="" />
       <created>1703923469288</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -127,6 +167,24 @@
       <workItem from="1715261809381" duration="311000" />
       <workItem from="1715154350854" duration="16864000" />
       <workItem from="1715184765387" duration="3394000" />
+      <workItem from="1725362460747" duration="2945000" />
+      <workItem from="1725429117888" duration="5366000" />
+      <workItem from="1725868198509" duration="7405000" />
+      <workItem from="1726733459523" duration="6000" />
+      <workItem from="1726909272319" duration="3513000" />
+      <workItem from="1727055698935" duration="2482000" />
+      <workItem from="1727509758898" duration="980000" />
+      <workItem from="1727511295935" duration="277000" />
+      <workItem from="1730870361438" duration="1844000" />
+      <workItem from="1730894430537" duration="3886000" />
+      <workItem from="1730946380491" duration="34000" />
+      <workItem from="1730946432834" duration="31000" />
+      <workItem from="1730946546478" duration="7740000" />
+      <workItem from="1730958407947" duration="4834000" />
+      <workItem from="1730978077552" duration="1634000" />
+      <workItem from="1731026452192" duration="1426000" />
+      <workItem from="1731116951657" duration="599000" />
+      <workItem from="1731456670508" duration="1275000" />
     </task>
     <servers />
   </component>
