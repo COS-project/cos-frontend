@@ -10,7 +10,7 @@ interface Props {
   timeLimit: number;
 }
 const MockExamResultReport = (props: Props) => {
-  const { subjectResults, score, totalScore, totalTakenTime, timeLimit} = props;
+  const { subjectResults, score, totalScore, totalTakenTime, timeLimit } = props;
   const formatTime = (time: number, usage: usageType) => {
     const totalSeconds = Math.floor(time / 1000);
     const totalMinutes = Math.floor(totalSeconds / 60);

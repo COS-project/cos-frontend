@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
@@ -15,6 +15,7 @@ import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useGetPost from '@/lib/hooks/useGetPost';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
+import { certificateIdAtom } from '@/recoil/atom';
 import { editPostDataState, imagePreviewsState, imageUrlListState, pastImageUrlsState } from '@/recoil/community/atom';
 import { EditPostDataType, TipPostTagType } from '@/types/community/type';
 import { ImageType } from '@/types/global';
@@ -26,6 +27,7 @@ interface Props {
 }
 const EditPost = (props: Props) => {
   const { postId, mockExamId, setIsClickEditPost } = props;
+  const certificateId = useRecoilValue(certificateIdAtom);
   const { postDetailData, mutate } = useGetPost(postId);
   const { questions } = useMockExamQuestions(mockExamId);
   const { examYears } = useGetMockExamYears();
@@ -47,7 +49,7 @@ const EditPost = (props: Props) => {
   const [isTipSubmitEnabled, setIsTipSubmitEnabled] = useState(false);
   // 제목 비어있는지 체크하는 state
   const [isTitleEmpty, setIsTitleEmpty] = useState(false);
-  const { mockExams } = useGetMockExams(1, editPostData.examYear); //해설 회차 필터값
+  const { mockExams } = useGetMockExams(certificateId, editPostData.examYear); //해설 회차 필터값
   const [isQuestionNumberExceedingLimit, setIsQuestionNumberExceedingLimit] = useState(false);
 
   /**

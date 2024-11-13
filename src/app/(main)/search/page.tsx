@@ -4,24 +4,26 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import qs from 'query-string';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import AutoCompleteSearchKeywords from '@/components/community/AutoCompleteSearchKeywords';
 import RecentSearchKeywords from '@/components/community/RecentSearchKeywords';
 import SearchInput from '@/components/community/SearchInput';
 import TrendingSearchKeywords from '@/components/community/TrendingSearchKeywords';
 import useDebounce from '@/hooks/useDebounce';
-import useGetSearchResults from '@/lib/hooks/useGetAutoCompleteSearchKeywords';
+import useGetAutoCompleteSearchKeywords from '@/lib/hooks/useGetAutoCompleteSearchKeywords';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
 import useGetTrendingKeywords from '@/lib/hooks/useGetTrendingKeywords';
+import { certificateIdAtom } from '@/recoil/atom';
 import { autoCompleteSearchKeywordState, boardTypeState } from '@/recoil/community/atom';
 import { BoardType } from '@/types/community/type';
 
 const Search = () => {
+  const certificateId = useRecoilValue(certificateIdAtom);
   const parameter = useSearchParams();
-  const { autoCompleteKeywords } = useGetSearchResults(parameter.get('keyword'));
+  const { autoCompleteKeywords } = useGetAutoCompleteSearchKeywords(parameter.get('keyword'));
   const { recentSearchResults } = useGetRecentSearchResults();
-  const { trendingKeywords, lastFetchedTime } = useGetTrendingKeywords(1);
+  const { trendingKeywords, lastFetchedTime } = useGetTrendingKeywords(certificateId);
   const [isClickedAutoCompleteSearchKeywords, setIsClickedAutoCompleteSearchKeywords] = useState(false);
   const [boardType, setBoardType] = useRecoilState<BoardType>(boardTypeState);
   const [searchValue, setSearchValue] = useRecoilState<string>(autoCompleteSearchKeywordState);
@@ -53,6 +55,10 @@ const Search = () => {
       minute: '2-digit',
     }).format(date);
   };
+
+  useEffect(() => {
+    console.log('recentSearchResults', recentSearchResults)
+  }, [recentSearchResults]);
 
   return (
     <div className={'relative flex flex-col gap-y-5 bg-gray0 min-h-screen'}>

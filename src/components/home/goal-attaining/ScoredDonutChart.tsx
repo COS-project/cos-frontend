@@ -16,11 +16,11 @@ const ScoredDonutChart: React.FC<DonutChartProps> = ({ mainscore, totalscore, un
       <DonutChart data={chartData} />
       {/* 가운데에 위치할 텍스트 */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-        <p className="text-black text-h3 font-bold">
+        <p className="font-semibold text-h3">
           {mainscore}
           {unit}
         </p>
-        <p className="text-black text-h6">
+        <p className="text-h6 text-gray4">
           /{totalscore}
           {unit}
         </p>

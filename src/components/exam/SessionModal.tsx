@@ -45,7 +45,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
               <div className="flex justify-between">
                 {examResults && examResults[examResults?.length - 1]?.totalScore ? (
                   <Link
-                    href={'/exam/report'}
+                    href={'/exam/result'}
                     className="absolute right-5 px-3 py-2 flex gap-x-2 items-center bg-gray0 rounded-full text-h6">
                     <span>성적 리포트</span> <MoveIcon />
                   </Link>
@@ -73,7 +73,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                 {examResults && examResults[examResults?.length - 1]?.subjectResults ? (
                   <div className={'flex flex-col gap-y-2'}>
                     <div className="text-h6 font-semibold">과목별 맞춘 문제 수</div>
-                    <div className={'flex'}>
+                    <div className={'grid grid-cols-3'}>
                       {examResults[examResults?.length - 1]?.subjectResults?.map((subjectResult, index) => {
                         return (
                           <div className={'w-full'} key={index}>

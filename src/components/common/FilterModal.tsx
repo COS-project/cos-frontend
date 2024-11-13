@@ -3,13 +3,12 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { CreatePostDataType, YearsAndRounds } from '@/types/community/type';
-import { Certificate } from '@/types/global';
+import { CreatePostDataType } from '@/types/community/type';
 
 interface Props {
   data: [];
   className?: string;
-  setIdState?: React.Dispatch<React.SetStateAction<number>>
+  setIdState?: React.Dispatch<React.SetStateAction<number>>;
   setDataState: React.Dispatch<React.SetStateAction<CreatePostDataType>> | React.Dispatch<React.SetStateAction<string>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

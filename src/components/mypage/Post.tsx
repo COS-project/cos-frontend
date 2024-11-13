@@ -2,6 +2,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type { SVGProps } from 'react';
 import * as React from 'react';
+import { useRecoilValue } from 'recoil';
+
+import { certificateIdAtom } from '@/recoil/atom';
 
 interface Props {
   title: string;
@@ -16,9 +19,11 @@ interface Props {
 }
 const Post = (props: Props) => {
   const { title, postId, content, imageUrl, likeCount, commentCount, createdAt, bottomElement, topElement } = props;
+  const certificateId = useRecoilValue(certificateIdAtom);
   const router = useRouter();
+
   const onMove = () => {
-    router.push(`/community/1/${postId}`); //TODO:자격증 바꾸기
+    router.push(`/community/${certificateId}/${postId}`);
   };
 
   const formatDate = (dateString: string) => {

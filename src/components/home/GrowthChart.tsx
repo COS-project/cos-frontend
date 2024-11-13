@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import StickGraph from '@/components/exam/StickGraph';
 import WeeklyGoalPeriodFilter from '@/components/home/WeeklyGoalPeriodFilter';
@@ -13,8 +13,10 @@ import {
   selectedReportTypeState,
 } from '@/recoil/home/atom';
 import { ScoreAVGListType, WeeklyGoalPeriodType } from '@/types/home/type';
+import { certificateIdAtom } from '@/recoil/atom';
 
 const GrowthChart = () => {
+  const certificateId = useRecoilValue(certificateIdAtom);
   const [selectedReportType, setSelectedReportType] = useRecoilState<'WEEKLY' | 'MONTHLY' | 'YEARLY'>(
     selectedReportTypeState,
   );
@@ -26,7 +28,7 @@ const GrowthChart = () => {
   );
   const [selectedPrepareTime, setSelectedPrepareTime] = useRecoilState(selectedPrepareTimeState);
   const { statisticsData } = useGetMockExamStatistics(
-    1,
+    certificateId,
     selectedReportType,
     selectedPrepareWeeksBetween.prepareYear,
     selectedPrepareWeeksBetween.prepareMonth,
@@ -129,14 +131,16 @@ const GrowthChart = () => {
    */
   const weeklyGraph = () => {
     const dayOfWeek = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
-
+    if (!statisticsData) {
+      return <div>Loading...</div>; // 로딩 중 메시지 또는 스피너 추가
+    }
     // Week 배열을 기반으로 요일별 StickGraph를 렌더링합니다.
     return dayOfWeek.map((day, dayIndex) => {
       // 해당 요일에 해당하는 데이터가 있는지 확인합니다.
-      const scoreAVG = statisticsData?.scoreAVGList.find((score: ScoreAVGListType) => score.dayOfWeek === day);
+      const scoreAVG = statisticsData.scoreAVGList.find((score: ScoreAVGListType) => score.dayOfWeek === day);
       const height = scoreAVG ? scoreAVG.scoreAverage : 0;
       return (
-        <div key={dayIndex} className="w-full flex justify-center">
+        <div key={day} className="w-full flex justify-center space-x-2">
           <StickGraph height={height} color="blue" />
         </div>
       );
@@ -148,15 +152,16 @@ const GrowthChart = () => {
    */
   const monthlyGraph = () => {
     const weekOfMonth = [1, 2, 3, 4, 5, 6];
-
+    if (!statisticsData) {
+      return <div>Loading...</div>; // 로딩 중 메시지 또는 스피너 추가
+    }
     // Week 배열을 기반으로 요일별 StickGraph를 렌더링합니다.
     return weekOfMonth.map((week, weekIndex) => {
       // 해당 요일에 해당하는 데이터가 있는지 확인합니다.
-      const scoreAVG = statisticsData?.scoreAVGList.find((score: ScoreAVGListType) => score.weekOfMonth === week);
-
+      const scoreAVG = statisticsData.scoreAVGList.find((score: ScoreAVGListType) => score.weekOfMonth === week);
       const height = scoreAVG ? scoreAVG.scoreAverage : 0;
       return (
-        <div key={weekIndex} className="w-full flex justify-center">
+        <div key={week} className="w-full flex justify-center space-x-2">
           <StickGraph height={height} color="blue" />
         </div>
       );
@@ -171,14 +176,13 @@ const GrowthChart = () => {
 
     // Month 배열을 기반으로 월별 StickGraph를 렌더링합니다.
     return (
-      <div className="flex">
+      <div className="flex w-full">
         {monthOfYear.map((month, monthIndex) => {
           // 해당 월에 해당하는 데이터가 있는지 확인합니다.
           const scoreAVG = statisticsData?.scoreAVGList.find((score: ScoreAVGListType) => score.month === month);
           const height = scoreAVG ? scoreAVG.scoreAverage : 0;
-
           return (
-            <div key={monthIndex} className="flex w-[40px] overflow-x-auto justify-center">
+            <div key={month} className="w-full flex justify-center space-x-2">
               <StickGraph height={height} color="blue" />
             </div>
           );
@@ -208,7 +212,7 @@ const GrowthChart = () => {
    */
   const xAxisLabelYear = (item: number) => {
     return (
-      <div key={item} className="flex border-t border-gray1 w-[44px] overflow-x-auto justify-center text-h6">
+      <div key={item} className="flex border-t border-gray1 w-full overflow-x-auto justify-center text-h6">
         {`${item}`}
       </div>
     );
@@ -219,7 +223,7 @@ const GrowthChart = () => {
    */
   const xAxisLabelMonth = () => {
     return (
-      <div className={'w-[288px] flex justify-between border-t border-gray1'}>
+      <div className={'w-full flex justify-between border-t border-gray1'}>
         <div className="w-full flex justify-center text-h6">{'1주'}</div>
         <div className="w-full flex justify-center text-h6">{'2주'}</div>
         <div className="w-full flex justify-center text-h6">{'3주'}</div>
@@ -235,7 +239,7 @@ const GrowthChart = () => {
    */
   const xAxisLabelWeekly = () => {
     return (
-      <div className={'w-[288px] flex justify-between border-t border-gray1'}>
+      <div className={'w-full flex justify-between border-t border-gray1'}>
         <div className="w-full flex justify-center text-h6">{'월'}</div>
         <div className="w-full flex justify-center text-h6">{'화'}</div>
         <div className="w-full flex justify-center text-h6">{'수'}</div>
@@ -253,11 +257,11 @@ const GrowthChart = () => {
    */
   const renderLabelComponent = (selectedReportType: string) => {
     const monthOfYear = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    if (selectedReportType === 'WEEK') {
+    if (selectedReportType === 'WEEKLY') {
       return xAxisLabelWeekly();
-    } else if (selectedReportType === 'MONTH') {
+    } else if (selectedReportType === 'MONTHLY') {
       return xAxisLabelMonth();
-    } else if (selectedReportType === 'YEAR' && statisticsData?.scoreAVGList) {
+    } else if (selectedReportType === 'YEARLY' && statisticsData?.scoreAVGList) {
       return monthOfYear.map((item: number) => {
         return xAxisLabelYear(item);
       });
@@ -369,29 +373,27 @@ const GrowthChart = () => {
 
         {/* 그래프 */}
         <div className={''}>
-          <div>
-            <div className={'relative'}>
-              <div className="flex items-center space-x-1">
-                <div className="w-[86%] border-t border-gray1"></div>
-                <div className="text-gray3 text-h5">100점</div>
-              </div>
+          <div className={'relative'}>
+            <div className="flex items-center space-x-1">
+              <div className="xl:w-[97%] sm:w-[85%] border-t border-gray1 "></div>
+              <div className="xl:w-[3%] sm:w-[15%] text-gray3 text-h5 ">100점</div>
+            </div>
 
-              <div
-                style={{ bottom: `${6 + statisticsData?.totalAverage}%` }}
-                className={'absolute flex items-center space-x-1'}>
-                <div className="w-[258px] border-t border-dashed border-primary"></div>
-                <div className="text-primary text-h5">평균</div>
-              </div>
+            {/*TODO: 총합 바꿔야 함. 어디서 가져올 수 있는지 못찾겠음*/}
+            <div
+              style={{ bottom: statisticsData?.totalAverage >= 100 ? '85%' : `${6 + statisticsData?.totalAverage}%` }}
+              className={'w-full absolute flex items-center space-x-1'}>
+              <div className="w-[86%] border-t border-dashed border-primary"></div>
+              <div className="text-primary text-h5">평균</div>
+            </div>
 
-              <div className="flex items-end overflow-x-scroll" style={{ width: '100%' }}>
-                <div className={'flex flex-col'}>
-                  <div className="w-[264px] justify-between">
-                    <div className="flex h-32">{renderGraphLabelsByReportType()}</div>
-                  </div>
-                  <div className="flex w-[102%] justify-between">
-                    {renderLabelComponent(selectedReportType)}
-                    <div className="w-[15%] text-white text-h5">0분</div>
-                  </div>
+            <div className="w-full flex items-end overflow-x-scroll" style={{ width: '100%' }}>
+              <div className={'w-full flex flex-col'}>
+                <div className="w-full justify-between">
+                  <div className="flex h-32">{renderGraphLabelsByReportType()}</div>
+                </div>
+                <div className="w-full flex mt-10 w-[86%] justify-between">
+                  {renderLabelComponent(selectedReportType)}
                 </div>
               </div>
             </div>
@@ -410,6 +412,7 @@ function DropDownIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
 function DropUpIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg width={21} height={21} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import qs from 'query-string';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
@@ -21,9 +21,11 @@ import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchRes
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
 import { BoardType } from '@/types/community/type';
+import { certificateIdAtom } from '@/recoil/atom';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
+  const certificateId = useRecoilValue(certificateIdAtom);
   //필터값
   const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<string>('최신순');
   const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number | string>(
@@ -35,7 +37,7 @@ export default function CommunityCategoryPage() {
   const [sortField, setSortField] = useState<string>('createdAt'); //최신순 인기순
   //보드 타입
   const [boardType, setBoardType] = useState<BoardType>('REVIEW');
-  const { userPostsList, setSize, mutate } = useGetTotalSearchResults(boardType, 1, sortField);
+  const { userPostsList, setSize, mutate } = useGetTotalSearchResults(boardType, certificateId, sortField);
   const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('COMMENTARY');
   //글쓰기 버튼
   const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
@@ -44,7 +46,7 @@ export default function CommunityCategoryPage() {
   const [searchValue, setSearchValue] = useRecoilState<number>(commentarySearchQuestionSequence);
   const debouncedValue = useDebounce<number>(searchValue, 100);
   const { commentarySearchResults } = useGetCommentarySearchResults(
-    1,
+    certificateId,
     selectedCommentaryYearFilterContent,
     selectedCommentaryRoundFilterContent,
     searchValue,

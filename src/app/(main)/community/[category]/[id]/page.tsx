@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
 import { SVGProps, useEffect } from 'react';
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
@@ -24,12 +24,13 @@ import useGetLikeStatus from '@/lib/hooks/useGetLikeStatus';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 import { PostComments, RecommendTags } from '@/types/global';
+import { certificateIdAtom } from '@/recoil/atom';
 
 const CommunityDetailPage = () => {
   const params = useParams();
+  const certificateId = useRecoilValue(certificateIdAtom);
   //커뮤니티 포스트에 해당하는 데이터를 가져옴
   const { communityPostData, isLoading, isError, communityPostDataMutate } = useGetCommunityPost(params.id);
-
   //댓글의 답글달기 버튼을 클릭했을 때 사용
   const [replyOnOff, setReplyOnOff] = useState<boolean>(false);
   //몇번째 댓글의 답글달기 버튼이 클릭됐는지 확인하기 위해 사용
@@ -51,7 +52,7 @@ const CommunityDetailPage = () => {
   //해설 게시글 문제보기 버튼을 클릭했는지 체크하기 위해 사용
   const [isClickQuestionButton, setIsClickQuestionButton] = useState(false);
   //꿀팁 게시판 Best 태그
-  const { bestTipPosts } = useBest3TipPosts(1);
+  const { bestTipPosts } = useBest3TipPosts(certificateId);
   //수정 modal
   const [isClickEditPost, setIsClickEditPost] = useState(false);
 
