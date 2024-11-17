@@ -21,7 +21,7 @@ import { BoardType } from '@/types/community/type';
 const Search = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
   const parameter = useSearchParams();
-  const { autoCompleteKeywords } = useGetAutoCompleteSearchKeywords(parameter.get('keyword'));
+  const { autoCompleteKeywords } = useGetAutoCompleteSearchKeywords(certificateId, parameter.get('keyword'));
   const { recentSearchResults } = useGetRecentSearchResults();
   const { trendingKeywords, lastFetchedTime } = useGetTrendingKeywords(certificateId);
   const [isClickedAutoCompleteSearchKeywords, setIsClickedAutoCompleteSearchKeywords] = useState(false);

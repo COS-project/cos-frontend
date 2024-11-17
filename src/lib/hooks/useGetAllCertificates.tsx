@@ -1,13 +1,12 @@
-import { AxiosResponse } from 'axios';
 import useSWR from 'swr';
 
 import { swrGetFetcher } from '@/lib/axios';
-import { Certificate } from '@/types/global';
+import { Certificate, CertificatesResponseType } from '@/types/global';
 
 const useGetAllCertificates = () => {
-  const { data, error } = useSWR<AxiosResponse<Certificate[]>>('/certificates', swrGetFetcher);
+  const { data, error } = useSWR<CertificatesResponseType>('/certificates', swrGetFetcher);
 
-  const parseResultList = data?.result.map((item: Certificate) => item).flat();
+  const parseResultList = data?.result.map((item) => item).flat();
 
   return {
     certificationsList: parseResultList,

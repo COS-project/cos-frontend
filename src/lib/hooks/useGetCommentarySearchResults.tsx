@@ -5,7 +5,7 @@ import { ResponsePostType } from '@/types/community/type';
 
 const getKey = (
   pageIndex: number,
-  previousPageData: ResponsePostType,
+  previousPageData: ResponsePostType | null,
   certificateId: number,
   examYear: number | string,
   round: number | string,

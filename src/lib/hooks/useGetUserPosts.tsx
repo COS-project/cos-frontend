@@ -6,7 +6,7 @@ import { MyPageBoardType, MyPostsResponseType } from '@/types/mypage/type';
 
 const getKey = (
   pageIndex: number,
-  previousPageData: MyPostsResponseType,
+  previousPageData: MyPostsResponseType | null,
   postType: BoardType,
   sortDirections: SortDirections,
 ) => {

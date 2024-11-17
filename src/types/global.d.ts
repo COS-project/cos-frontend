@@ -130,7 +130,6 @@ export interface CommonTitleType {
   passingCriteria: ExamInfoCommonType;
 }
 
-
 // 목표 설정 type
 export interface GoalSettingInfo {
   certificate?: Certificate;
@@ -178,8 +177,24 @@ export interface InterestCertificate {
   interestPriority: string;
 }
 
+export interface InterestCertificateResponseType {
+  responseCode: string;
+  message: string;
+  result: InterestCertificate[];
+}
+
+/**
+ * 사용자 정보 responseType
+ */
+
+export interface UserProfileResponseType {
+  responseCode: string;
+  message: string;
+  result: UserProfile;
+}
+
 //userProfile
-export interface userProfile {
+export interface UserProfile {
   userId?: number;
   nickname: string;
   email?: string;
@@ -206,6 +221,13 @@ export interface SubjectResultRequests {
   subjectId: number;
   score: number;
   createUserAnswerRequests: UserAnswerRequests[];
+}
+
+//모의고사 문제들 가져오기
+export interface QuestionsResponseType {
+  responseCode: string;
+  message: string;
+  result: QuestionsResponse[];
 }
 
 //모의고사 시험 문제, 선지 전체
@@ -405,4 +427,16 @@ interface Question {
   questionOptions: QuestionOptions[];
   correctOption: number;
   score: number;
+}
+
+//온보딩 자격증
+export interface CertificatesResponseType {
+  responseCode: string;
+  message: string;
+  result: CertificateType[];
+}
+
+export interface CertificateType {
+  certificateId: number;
+  certificateName: string;
 }

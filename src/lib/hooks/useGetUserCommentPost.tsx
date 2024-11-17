@@ -4,7 +4,7 @@ import { swrGetFetcher } from '@/lib/axios';
 import { SortDirections } from '@/types/community/type';
 import { MyPostsResponseType } from '@/types/mypage/type';
 
-const getKey = (pageIndex: number, previousPageData: MyPostsResponseType, sortDirections: SortDirections) => {
+const getKey = (pageIndex: number, previousPageData: MyPostsResponseType | null, sortDirections: SortDirections) => {
   // 초기 요청
   if (pageIndex === 0) {
     return `/comment-posts/my-comment-posts?page=${pageIndex}&size=10&sortKey=createdAt, id&sortDirections=${sortDirections}`;

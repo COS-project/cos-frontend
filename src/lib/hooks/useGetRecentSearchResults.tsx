@@ -1,16 +1,15 @@
-import { AxiosResponse } from 'axios';
 import useSWR from 'swr';
 
 import { swrGetFetcher } from '@/lib/axios';
-import { Certificate } from '@/types/global';
+import { RecentSearchResponseType } from '@/types/search/type';
 
 const useGetRecentSearchResults = () => {
-  const { data, error, mutate } = useSWR<AxiosResponse>(
+  const { data, error, mutate } = useSWR<RecentSearchResponseType>(
     '/users/search-logs', // URL에 직접 keyword 파라미터를 추가
     swrGetFetcher,
   );
 
-  const parseResultList = data?.result.map((item: Certificate) => item).flat();
+  const parseResultList = data?.result.map((item) => item).flat();
 
   return {
     recentSearchResults: parseResultList,

@@ -2,16 +2,19 @@ import useSWRInfinite from 'swr/infinite';
 
 import { swrGetFetcher } from '@/lib/axios';
 import { MockExamIncorrectQuestionsResultResponseType } from '@/types/exam/type';
-import { ReviewIncorrectAnswers } from '@/types/global';
 
-const getKey = (size: number, previousPageData: ReviewIncorrectAnswers, mockExamResultId: number) => {
+const getKey = (
+  size: number,
+  previousPageData: MockExamIncorrectQuestionsResultResponseType | null,
+  mockExamResultId: number,
+) => {
   if (size === 0) {
     return `/mock-exam-results/${mockExamResultId}/user-answers/wrong-answers?page=${size}&size=10&sortFields=subjectResultEntity.mockExamResultEntity.createdAt, questionEntity.questionSeq&sortDirections=DESC, ASC`;
   }
-  if (previousPageData && !previousPageData.result.last) {
+  if (previousPageData && !previousPageData.result.hasNext) {
     return `/mock-exam-results/${mockExamResultId}/user-answers/wrong-answers?page=${size}&size=10&sortFields=subjectResultEntity.mockExamResultEntity.createdAt, questionEntity.questionSeq&sortDirections=DESC, ASC`;
   }
-  if (previousPageData.result.last) {
+  if (previousPageData?.result.hasNext) {
     return null;
   }
 };

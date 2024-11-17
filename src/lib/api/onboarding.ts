@@ -1,5 +1,5 @@
 import { sendRequest } from '@/lib/axios';
-import { PostInterestCertificate, userProfile } from '@/types/global';
+import { PostInterestCertificate, UserProfile } from '@/types/global';
 
 export const postInterestCertificates = async (interestCertificates: PostInterestCertificate) => {
   try {

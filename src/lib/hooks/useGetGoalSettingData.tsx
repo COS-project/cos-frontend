@@ -2,10 +2,10 @@ import { AxiosResponse } from 'axios';
 import useSWR from 'swr';
 
 import { swrGetFetcher } from '@/lib/axios';
-import { GoalSettingInfo } from '@/types/global';
+import { GoalSettingDataDetailResponseType } from '@/types/home/type';
 
 const useGetGoalSettingData = (goalId: number) => {
-  const { data, error } = useSWR<AxiosResponse>(`/goals/${goalId}`, swrGetFetcher);
+  const { data, error } = useSWR<GoalSettingDataDetailResponseType>(`/goals/${goalId}`, swrGetFetcher);
 
   return {
     goalSettingData: data,

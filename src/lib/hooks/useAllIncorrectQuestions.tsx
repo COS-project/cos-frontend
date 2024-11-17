@@ -21,7 +21,10 @@ const getKey = (pageIndex: number, previousPageData: ReviewIncorrectAnswers) => 
   return null;
 };
 const useAllIncorrectQuestions = () => {
-  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<ReviewIncorrectAnswers>(getKey, swrGetFetcher, {
+  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<ReviewIncorrectAnswers>(
+    getKey,
+    swrGetFetcher,
+    {
       revalidateAll: true,
     },
   );
