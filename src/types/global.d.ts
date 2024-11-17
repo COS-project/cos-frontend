@@ -336,6 +336,7 @@ interface PostComments {
   content: string;
   dateTime: DateTime;
   childPostComments?: PostComments[];
+  isLiked: boolean;
 }
 
 //날짜 타입

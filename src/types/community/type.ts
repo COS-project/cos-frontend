@@ -75,7 +75,7 @@ export interface ResponsePostType {
   responseCode: string;
   message: string;
   result: {
-    content: PostType[];
+    postResponse: PostType;
     postComments: PostComments[];
     hasNext: boolean;
   };
