@@ -40,7 +40,7 @@ const GoalSetting = () => {
     return null; // 또는 적절한 기본값/오류 처리
   };
   // 기존에 설정한 목표를 불러오는 데이터 패칭
-  const { goalSettingData, isLoading, isError } = useGetGoalSettingData(getLastGoalId());
+  const { goalSettingData, isLoading, isError } = useGetGoalSettingData(getLastGoalId() || 0);
   const [goalData, setGoalData] = useRecoilState(goalSettingState);
   const [isResetButtonClick, setIsResetButtonClick] = useState(false);
 
@@ -141,7 +141,7 @@ const GoalSetting = () => {
           ) : (
             <Button
               onClick={() => {
-                putGoalSettingData(goalData, getLastGoalId()).then((r) => {
+                putGoalSettingData(goalData, getLastGoalId() || 0).then((r) => {
                   console.log('수정', r);
                   router.push('/home');
                 });
