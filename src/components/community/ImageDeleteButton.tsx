@@ -1,6 +1,6 @@
 'use client';
 
-import React, { SVGProps, useEffect } from 'react';
+import React, { SVGProps } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { editPostDataState, imagePreviewsState, imageUrlListState, pastImageUrlsState } from '@/recoil/community/atom';

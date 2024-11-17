@@ -16,7 +16,7 @@ interface Props {
 
 const PostingModal = (props: Props) => {
   const { children, editOnOff, afterDelete, postId, setIsClickEditPost } = props;
-  const { communityPostData, isLoading, isError, communityPostDataMutate } = useGetCommunityPost(postId); //뮤테이트를 사용하기 위해 데이터를 가져옴
+  const { communityPostDataMutate } = useGetCommunityPost(postId); //뮤테이트를 사용하기 위해 데이터를 가져옴
 
   const [onCommentModal, setOnCommentModal] = useRecoilState(commentModalState); //댓글 삭제 모달창
   const [onPostModal, setOnPostModal] = useRecoilState(postingModalState); //게시글 수정 및 삭제 모달창

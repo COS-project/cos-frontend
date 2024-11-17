@@ -213,11 +213,6 @@ const WriteTipPost = (props: Props) => {
     }
   };
 
-  useEffect(() => {
-    console.log('postData', postData.title)
-    console.log('isTitleEmpty', isTitleEmpty)
-  }, [isTitleEmpty]);
-
   return (
     <div>
       {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}

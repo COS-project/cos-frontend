@@ -1,9 +1,9 @@
-import React, { SetStateAction } from 'react';
+import React from 'react';
+import { SetterOrUpdater } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
 import { CreatePostDataType, EditPostDataType } from '@/types/community/type';
 import { MockExam } from '@/types/global';
-import { SetterOrUpdater } from 'recoil';
 
 interface Props {
   mockExams: MockExam[] | null | undefined;

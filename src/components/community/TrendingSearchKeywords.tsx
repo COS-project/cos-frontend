@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SVGProps, useEffect } from 'react';
 
-import { TrendingKeyword, TrendingKeywordState } from '@/types/community/type';
+import { TrendingKeywordState } from '@/types/community/type';
 import { TrendingKeywordType } from '@/types/search/type';
 
 interface Props {
