@@ -11,7 +11,7 @@ interface Props {
   isDeleteWarningModalOpen: boolean;
   setIsDeleteWarningModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setDeletePostId: React.Dispatch<React.SetStateAction<number>>;
-  selectedFilterContent: '최신순' | '작성순';
+  selectedFilterContent: '최신순' | '인기순';
   setIsClickEditPost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const MyPageCommentaryBoardList = (props: Props) => {

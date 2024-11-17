@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import qs from 'query-string';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useRecoilValue } from 'recoil';
 
 import RoundFilter from '@/components/community/RoundFilter';
 import YearFilter from '@/components/community/YearFilter';
@@ -9,10 +10,9 @@ import Post from '@/components/mypage/Post';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
-import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
-import { MockExam } from '@/types/global';
-import { useRecoilValue } from 'recoil';
 import { certificateIdAtom } from '@/recoil/atom';
+import { BoardType, ResponsePostType } from '@/types/community/type';
+import { MockExam } from '@/types/global';
 
 interface Props {
   boardType: BoardType;
