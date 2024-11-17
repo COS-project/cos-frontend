@@ -2,12 +2,14 @@
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useRouter } from 'next/navigation';
 import React, { SVGProps, useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import AlarmItem from '@/components/alarm/AlarmItem';
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import { getAlarms, postReadAlarmList } from '@/lib/api/alarm';
 import useAlarm from '@/lib/hooks/useAlarm';
+import { certificateIdAtom } from '@/recoil/atom';
 
 export default function Alarm() {
   const router = useRouter();
@@ -77,14 +79,14 @@ export default function Alarm() {
     }
   }, [alarms, readAlarmList]); // alarms나 readAlarmList가 변경될 때 실행
 
+  const onBack = () => {
+    postReadAlarmList(readAlarmList);
+    router.back();
+  };
+
   return (
     <>
-      <Header
-        headerType={'dynamic'}
-        title={'알림'}
-        rightElement={<EmptyIcon />}
-        onBack={postReadAlarmList(readAlarmList)}
-      />
+      <Header headerType={'dynamic'} title={'알림'} rightElement={<EmptyIcon />} onBack={onBack} />
       <div className={'bg-gray0 min-h-screen'}>
         <div className={'flex flex-col gap-y-4 px-5'}>
           {alarms
