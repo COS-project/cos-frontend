@@ -4,7 +4,7 @@ import { AverageSubjectInfoType } from '@/types/home/type';
 interface Props {
   subjectResults: AverageSubjectInfoType[] | undefined;
   timeLimit: number | undefined;
-  totalTakenTime: () => number | undefined;
+  totalTakenTime: number;
 }
 
 const AverageTakenTimeGraphReport = (props: Props) => {
@@ -15,7 +15,7 @@ const AverageTakenTimeGraphReport = (props: Props) => {
     return Math.floor(time / 60000);
   };
 
-  const totalTime = totalTakenTime();
+  const totalTime = totalTakenTime;
   if (totalTime === undefined || timeLimit === undefined || subjectResults === undefined) {
     return <div>로딩중...</div>;
   }
