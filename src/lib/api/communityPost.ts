@@ -1,4 +1,4 @@
-import { GenerateComment, Post } from '@/types/global';
+import { GenerateComment } from '@/types/global';
 
 import { sendRequest } from '../axios';
 

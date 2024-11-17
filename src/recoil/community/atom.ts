@@ -6,7 +6,6 @@ import {
   CreatePostDataType,
   EditPostDataType,
   ExamReviewPostType,
-  PopularSearchKeyword,
   RecentSearchResult,
 } from '@/types/community/type';
 import { GenerateComment, ImageType } from '@/types/global';
