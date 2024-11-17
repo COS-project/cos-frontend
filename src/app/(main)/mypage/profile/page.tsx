@@ -1,16 +1,16 @@
 'use client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { FormEvent, SVGProps, useCallback, useEffect, useRef, useState } from 'react';
+import React, { SVGProps, useCallback, useEffect, useRef, useState } from 'react';
 
 import Header from '@/components/common/Header';
 import { patchProfileData } from '@/lib/api/onboarding';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 
 const ProfileSettings = () => {
-  const { userProfile, isLoading, isError, userProfileMutate } = useGetUserProfile();
+  const { userProfile, userProfileMutate } = useGetUserProfile();
   const imgRef = useRef<HTMLInputElement>(null);
-  const [uploadImage, setUploadImage] = useState();
+  const [uploadImage, setUploadImage] = useState<string | ArrayBuffer | null>();
   const router = useRouter();
 
   // 모든 자격증 리스트 불러오는 함수
@@ -26,34 +26,37 @@ const ProfileSettings = () => {
   const handleImagePreview = async () => {
     const files = imgRef.current?.files;
     let reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-    reader.onloadend = () => {
-      setUploadImage(reader.result);
-    };
+    if (files) {
+      reader.readAsDataURL(files[0]);
+      reader.onloadend = () => {
+        setUploadImage(reader.result);
+      };
+    }
   };
 
   // 폼 제출 핸들러
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
     const formData = new FormData();
+    if (imgRef.current && imgRef.current.files) {
+      formData.append('file', imgRef.current.files[0]); // 파일을 formData에 추가
 
-    formData.append('file', imgRef.current.files[0]); // 파일을 formData에 추가
+      const json = { nickname: e.target.nickname.value };
+      formData.append(
+        'request',
+        new Blob([JSON.stringify(json)], {
+          type: 'application/json',
+        }),
+      );
 
-    const json = { nickname: e.target.nickname.value };
-    formData.append(
-      'request',
-      new Blob([JSON.stringify(json)], {
-        type: 'application/json',
-      }),
-    );
-
-    try {
-      await patchProfileData(formData).then(async () => {
-        onNext();
-        await userProfileMutate();
-      });
-    } catch (error) {
-      console.error('폼 제출 중 오류 발생:', error);
+      try {
+        await patchProfileData(formData).then(async () => {
+          onNext();
+          await userProfileMutate();
+        });
+      } catch (error) {
+        console.error('폼 제출 중 오류 발생:', error);
+      }
     }
   };
 
@@ -74,14 +77,18 @@ const ProfileSettings = () => {
             <div className="relative w-fit">
               <div className="relative w-[100px] h-[100px] object-cover overflow-hidden rounded-full">
                 <Image
-                  alt={userProfile ? userProfile.userId : 0}
+                  alt={userProfile ? userProfile.userId?.toString() || '' : ''}
                   src={
-                    uploadImage ? uploadImage : userProfile?.profileImage ? userProfile?.profileImage : '/person.png'
+                    typeof uploadImage === 'string'
+                      ? uploadImage
+                      : userProfile?.profileImage
+                      ? userProfile?.profileImage
+                      : '/person.png'
                   }
                   className={'object-cover'}
                   fill></Image>
               </div>
-              <label for="input-file">
+              <label htmlFor="input-file">
                 <ProfileImageIcon className="absolute bottom-0 right-0" />
               </label>
               <input
