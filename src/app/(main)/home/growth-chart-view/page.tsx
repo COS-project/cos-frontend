@@ -1,18 +1,18 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
+import Header from '@/components/common/Header';
 import DetailedGradeReport from '@/components/home/DetailedGradeReport';
 import GrowthChart from '@/components/home/GrowthChart';
 import UserCertGoalPeriods from '@/components/home/UserCertGoalPeriods';
 import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
+import { certificateIdAtom } from '@/recoil/atom';
 import { selectedPrepareWeeksBetweenState, selectedReportTypeState } from '@/recoil/home/atom';
 import { ScoreAVGListType } from '@/types/home/type';
-import Header from '@/components/common/Header';
-import { useRouter } from 'next/navigation';
-import { certificateIdAtom } from '@/recoil/atom';
 
 const GrowthChartView = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
