@@ -4,7 +4,8 @@ const client = axios.create({
   baseURL: 'http://cercat.o-r.kr',
   headers: {
     'Content-type': 'application/json',
-    'Access-Token': localStorage.getItem('accessToken'),
+    'Access-Token':
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0dVRVNUIl0sImVtYWlsIjoidGtkZ2g2NDI3QG5hdmVyLmNvbSIsInN1YiI6InRrZGdoNjQyN0BuYXZlci5jb20iLCJpYXQiOjE3MDk0NjEwNDUsImV4cCI6MTcwOTcyMDI0NX0.u_S6efRZoZUBcCxLcGG2Szio20CUMn2qsVLgNl5TCB8',
   },
   withCredentials: true,
 });
