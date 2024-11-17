@@ -17,9 +17,13 @@ const SelectCertification = () => {
   //FilterModal 을 열고 닫는 state
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // 선택된 자격증
-  const [selectedCertificationName, setSelectedCertificationName] = useRecoilState<string>(goalSettingCertificateName);
+  const [selectedCertificationName, setSelectedCertificationName] = useRecoilState<string | undefined>(
+    goalSettingCertificateName,
+  );
   // 선택된 자격증 Id
-  const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number>(goalSettingCertificateId);
+  const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number | undefined>(
+    goalSettingCertificateId,
+  );
 
   //FilterModal 을 열고 닫는 함수
   const modalHandler = () => {

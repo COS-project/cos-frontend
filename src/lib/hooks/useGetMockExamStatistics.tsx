@@ -6,7 +6,7 @@ import { ExamStaticsDataResponseType } from '@/types/home/type';
 const useGetMockExamStatistics = (
   certificateId: number,
   reportType: string,
-  year: string,
+  year: string | number,
   month: number,
   weekOfMonth: number,
 ) => {

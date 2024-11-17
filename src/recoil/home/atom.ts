@@ -91,13 +91,13 @@ export const selectedPrepareWeeksBetweenState = atom<WeeklyGoalPeriodType>({
   },
 });
 //목표 설정 자격증 name 선택
-export const goalSettingCertificateName = atom<string>({
+export const goalSettingCertificateName = atom<string | undefined>({
   key: 'goalSettingCertificateName',
   default: '정보처리기사',
 });
 
 //목표 설정 자격증 id 선택
-export const goalSettingCertificateId = atom<number>({
+export const goalSettingCertificateId = atom<number | undefined>({
   key: 'goalSettingCertificateId',
   default: 1,
 });

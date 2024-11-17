@@ -271,7 +271,7 @@ const RecentGrowthChart = () => {
 
               {/*TODO: 총합 바꿔야 함. 어디서 가져올 수 있는지 못찾겠음*/}
               <div
-                style={{ bottom: statisticsData?.totalAverage >= 100 ? '85%' : `${6 + statisticsData?.totalAverage}%` }}
+                style={{ bottom: (statisticsData?.totalAverage ?? 0) >= 100 ? '85%' : `${6 + (statisticsData?.totalAverage ?? 0)}%` }}
                 className={'w-full absolute flex items-center space-x-1'}>
                 <div className="w-[86%] border-t border-dashed border-primary"></div>
                 <div className="text-primary text-h5">평균</div>

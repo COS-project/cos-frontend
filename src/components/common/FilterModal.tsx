@@ -8,10 +8,10 @@ import { CreatePostDataType } from '@/types/community/type';
 interface Props {
   data: any[] | undefined;
   className?: string;
-  setIdState?: React.Dispatch<React.SetStateAction<number>>;
+  setIdState?: React.Dispatch<React.SetStateAction<number | undefined>>;
   setDataState?:
-    | React.Dispatch<React.SetStateAction<CreatePostDataType>>
-    | React.Dispatch<React.SetStateAction<string>>;
+    | React.Dispatch<React.SetStateAction<CreatePostDataType | undefined>>
+    | React.Dispatch<React.SetStateAction<string | undefined>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
