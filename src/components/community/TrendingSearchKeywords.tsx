@@ -2,9 +2,10 @@ import * as React from 'react';
 import { SVGProps, useEffect } from 'react';
 
 import { TrendingKeyword, TrendingKeywordState } from '@/types/community/type';
+import { TrendingKeywordType } from '@/types/search/type';
 
 interface Props {
-  keywords: TrendingKeyword[];
+  keywords: TrendingKeywordType[] | undefined;
   lastFetchedTime: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -34,7 +35,7 @@ const TrendingSearchKeywords = (props: Props) => {
         <div className={'text-h4 font-semibold ml-2'}>인기 검색어</div>
         <div className={'flex flex-col gap-y-5 bg-white p-5 rounded-[32px]'}>
           <div className={'grid grid-cols-2 gap-x-6 w-full gap-y-4'}>
-            {keywords?.map((keyword: TrendingKeyword, index: number) => {
+            {keywords?.map((keyword, index: number) => {
               return (
                 <div key={index} className={'flex justify-between text-h6'}>
                   <div className={'w-[80%] flex'}>
