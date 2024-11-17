@@ -2,7 +2,7 @@
 
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useSearchParams } from 'next/navigation';
-import React, { SVGProps, useEffect, useState } from 'react';
+import React, { Suspense, SVGProps, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
@@ -21,8 +21,7 @@ import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
 import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
 import { certificateIdAtom } from '@/recoil/atom';
-
-export default function Home() {
+function HomeComponents() {
   const searchParams = useSearchParams();
   const certificateId = useRecoilValue(certificateIdAtom);
   const [alarmEvent, setAlarmEvent] = useState<undefined | EventSource>();
@@ -149,3 +148,11 @@ const DropDownIcon = (props: SVGProps<SVGSVGElement>) => (
     <path stroke="#0D0E10" strokeLinecap="round" d="M13.5 9 10 12 6.5 9" />
   </svg>
 );
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeComponents />
+    </Suspense>
+  );
+}
