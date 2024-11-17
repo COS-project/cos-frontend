@@ -2,7 +2,7 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 
 import { Session } from '@/types/global';
-import { roundsArrayState, selectedRoundState, selectedSessionState } from '@/utils/recoilState';
+import { selectedRoundState, selectedSessionState } from '@/utils/recoilState';
 
 const RoundFilter: React.FC = () => {
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
