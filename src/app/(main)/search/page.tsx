@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import qs from 'query-string';
+import { Suspense } from 'react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -18,7 +19,7 @@ import { certificateIdAtom } from '@/recoil/atom';
 import { autoCompleteSearchKeywordState, boardTypeState } from '@/recoil/community/atom';
 import { BoardType } from '@/types/community/type';
 
-const Search = () => {
+const SearchComponents = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
   const parameter = useSearchParams();
   const { autoCompleteKeywords } = useGetAutoCompleteSearchKeywords(certificateId, parameter.get('keyword'));
@@ -94,4 +95,11 @@ const Search = () => {
     </div>
   );
 };
-export default Search;
+
+export default function Search() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchComponents />
+    </Suspense>
+  );
+}
