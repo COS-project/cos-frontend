@@ -7,7 +7,7 @@ import LogoutModal from '@/components/mypage/LogoutModal';
 import MyPageHeader from '@/components/mypage/MyPageHeader';
 import MyPageItem from '@/components/mypage/MyPageItem';
 import UnRegisterModal from '@/components/mypage/UnRegisterModal';
-import { alarmContents, boardContents, etcContents, goalContents } from '@/utils/mypage/ItemContents';
+import { boardContents, goalContents } from '@/utils/mypage/ItemContents';
 
 export default function MyPage() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState<boolean>(false);
