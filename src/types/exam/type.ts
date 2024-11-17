@@ -74,7 +74,7 @@ export interface MockExamDetailType {
   currentPage: number;
   pageSize: number;
 }
-export interface MockExamDetailContentType   {
+export interface MockExamDetailContentType {
   mockExamResultId: number;
   round: number;
   mockExam: ReviewIncorrectMockExam;

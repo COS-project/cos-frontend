@@ -179,5 +179,5 @@ export interface GoalSettingDataDetailResponseType {
     studyTimePerDay: number;
     goalStudyTime: number;
     studyRepeatDays: number[];
-}
+  };
 }
