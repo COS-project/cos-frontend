@@ -44,5 +44,5 @@ const BoardTypeMenu = (props: Props) => {
       </button>
     </div>
   );
-}
+};
 export default BoardTypeMenu;

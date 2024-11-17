@@ -56,7 +56,7 @@ const EditPost = (props: Props) => {
    * 해설 게시글 Recoil 상태를 초기화하는 함수
    * @param apiResponse postDetailData.result
    */
-  const initializeCommentaryEditPostData = (apiResponse) => {
+  const initializeCommentaryEditPostData = (apiResponse: any) => {
     return {
       postId: apiResponse.postResponse.postId,
       title: apiResponse.postResponse.postContent.title,
@@ -72,7 +72,7 @@ const EditPost = (props: Props) => {
    * 꿀팁 게시글 Recoil 상태를 초기화하는 함수
    * @param apiResponse postDetailData.result
    */
-  const initializeTipEditPostData = (apiResponse) => {
+  const initializeTipEditPostData = (apiResponse: any) => {
     return {
       postId: apiResponse.postResponse.postId,
       title: apiResponse.postResponse.postContent.title,
@@ -85,7 +85,7 @@ const EditPost = (props: Props) => {
    * 자유 게시글 Recoil 상태를 초기화하는 함수
    * @param apiResponse postDetailData.result
    */
-  const initializeNormalEditPostData = (apiResponse) => {
+  const initializeNormalEditPostData = (apiResponse: any) => {
     return {
       postId: apiResponse.postResponse.postId,
       title: apiResponse.postResponse.postContent.title,
