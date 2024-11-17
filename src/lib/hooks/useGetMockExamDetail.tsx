@@ -11,9 +11,8 @@ const useGetMockExamDetail = (
   date: string | undefined,
 ) => {
   const { data, error } = useSWR<MockExamDetailResponseType>(
-    `/certificates/1/mock-exam-results/${dateType}?${year ? `year=${year}` : ''}${month ? `&month=${month}` : ''}${
-      weekOfMonth ? `&weekOfMonth=${weekOfMonth}` : ''
-    }${date ? `&date=${date}` : ''}&page=0&size=10`,
+    `/api/v2/certificates/1/mock-exam-results/${dateType}?${year ? `year=${year}` : ''}${month ? `&month=${month}` : ''}
+      ${weekOfMonth ? `&weekOfMonth=${weekOfMonth}` : ''}${date ? `&date=${date}` : ''}&page=0&size=10`,
     swrGetFetcher,
   );
 

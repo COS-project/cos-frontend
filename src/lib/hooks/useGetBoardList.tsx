@@ -5,7 +5,7 @@ import { FavoriteBoard } from '@/types/global';
 import { BoardListResponseType } from '@/types/community/type';
 
 const useGetBoardList = () => {
-  const { data, error } = useSWR<BoardListResponseType>('/boards', swrGetFetcher);
+  const { data, error } = useSWR<BoardListResponseType>('/api/v2/boards', swrGetFetcher);
 
   const parseResultList = data?.result.map((item: FavoriteBoard) => item).flat();
 

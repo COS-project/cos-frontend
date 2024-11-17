@@ -9,7 +9,7 @@ export const getAlarms = async () => {
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'GET',
-      url: '/alarms',
+      url: '/api/v2/alarms',
     });
     console.log(response.data);
     // 성공적인 응답 처리
@@ -29,7 +29,7 @@ export const postReadAlarmList = async (readAlarmList: number[]) => {
       },
       method: 'POST',
       data: readAlarmList,
-      url: '/alarms/read',
+      url: '/api/v2/alarms/read',
     });
     console.log(response.data);
     // 성공적인 응답 처리

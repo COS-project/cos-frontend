@@ -5,7 +5,7 @@ import { MockExamsByYearResponseType } from '@/types/community/type';
 
 const useGetMockExams = (certificateId: number, year: number | string | undefined) => {
   const { data, error } = useSWR<MockExamsByYearResponseType>(
-    `/certificates/${certificateId}/mock-exams?${year === '전체' ? '' : `examYear=${year}`}`,
+    `/api/v2/certificates/${certificateId}/mock-exams?${year === '전체' ? '' : `examYear=${year}`}`,
     swrGetFetcher,
   );
 

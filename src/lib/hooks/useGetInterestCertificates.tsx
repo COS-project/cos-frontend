@@ -4,7 +4,7 @@ import { swrGetFetcher } from '@/lib/axios';
 import { InterestCertificateResponseType } from '@/types/global';
 
 const useGetInterestCertificates = () => {
-  const { data, error, mutate } = useSWR<InterestCertificateResponseType>('/interest-certificates', swrGetFetcher);
+  const { data, error, mutate } = useSWR<InterestCertificateResponseType>('/api/v2/interest-certificates', swrGetFetcher);
 
   const parseResultList = data?.result.map((item) => item).flat();
 

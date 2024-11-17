@@ -12,7 +12,7 @@ const getKey = (
   endPreMonths: number | undefined,
 ) => {
   if (pageIndex === 0) {
-    return `/certificates/${certificateId}/exam-reviews?page=${pageIndex}&size=10${
+    return `/api/v2/certificates/${certificateId}/exam-reviews?page=${pageIndex}&size=10${
       startMonths ? `&startMonths=${startMonths}` : ''
     }${endPreMonths ? `&endPreMonths=${endPreMonths}` : ''}${
       examDifficulty ? `&examDifficulty=${examDifficulty}` : ''
@@ -22,7 +22,7 @@ const getKey = (
   if (!previousPageData) return null;
 
   if (previousPageData?.result.hasNext) {
-    return `/certificates/${certificateId}/exam-reviews?page=${pageIndex}&size=10${
+    return `/api/v2/certificates/${certificateId}/exam-reviews?page=${pageIndex}&size=10${
       startMonths ? `&startMonths=${startMonths}` : ''
     }${endPreMonths ? `&endPreMonths=${endPreMonths}` : ''}${
       examDifficulty ? `&examDifficulty=${examDifficulty}` : ''

@@ -10,7 +10,7 @@ export const postInterestCertificates = async (interestCertificates: PostInteres
       },
       method: 'POST',
       data: interestCertificates,
-      url: '/interest-certificates',
+      url: '/api/v2/interest-certificates',
     });
     // 성공적인 응답 처리
     return response.data;
@@ -30,7 +30,7 @@ export const putInterestCertificates = async (interestCertificates: PostInterest
       },
       method: 'PUT',
       data: interestCertificates,
-      url: '/interest-certificates',
+      url: '/api/v2/interest-certificates',
     });
     // 성공적인 응답 처리
     return response.data;
@@ -50,7 +50,7 @@ export const patchProfileData = async (profileData: FormData) => {
       },
       method: 'PATCH',
       data: profileData,
-      url: '/users/me',
+      url: '/api/v2/users/me',
     });
     // 성공적인 응답 처리
     return response.data;

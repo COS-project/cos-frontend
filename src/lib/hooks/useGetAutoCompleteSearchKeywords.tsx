@@ -5,7 +5,7 @@ import { AutoCompleteSearchKeywordsResponseType } from '@/types/search/type';
 
 const useGetAutoCompleteSearchKeywords = (certificateId: number, keyword: string | null) => {
   const { data, error } = useSWR<AutoCompleteSearchKeywordsResponseType>(
-    `/certificates/${certificateId}/auto-complete-keywords?searchText=${keyword}`, // URL에 직접 keyword 파라미터를 추가
+    `/api/v2/certificates/${certificateId}/auto-complete-keywords?searchText=${keyword}`, // URL에 직접 keyword 파라미터를 추가
     swrGetFetcher,
   );
 

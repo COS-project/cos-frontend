@@ -5,7 +5,7 @@ import { RecentMockExamResultResponseType } from '@/types/exam/type';
 
 const useGetExamResultRecent = (mockExamId: number) => {
   const { data, error } = useSWR<RecentMockExamResultResponseType>(
-    `/mock-exams/${mockExamId}/mock-exam-results/recent`,
+    `/api/v2/mock-exams/${mockExamId}/mock-exam-results/recent`,
     swrGetFetcher,
   );
 

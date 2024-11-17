@@ -5,7 +5,7 @@ import { GoalSettingStatusResponseType } from '@/types/home/type';
 
 const useGoalSettingStatus = (certificateId: number) => {
   const { data, error } = useSWR<GoalSettingStatusResponseType>(
-    `certificates/${certificateId}/goal-status`,
+    `/api/v2/certificates/${certificateId}/goal-status`,
     swrGetFetcher,
   );
 

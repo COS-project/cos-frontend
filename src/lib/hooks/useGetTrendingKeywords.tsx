@@ -7,7 +7,7 @@ import { TrendingKeywordsResponseType } from '@/types/search/type';
 const useGetTrendingKeywords = (certificateId: number) => {
   const [lastFetchedTime, setLastFetchedTime] = useState<Date | null>(null);
   const { data, error } = useSWR<TrendingKeywordsResponseType>(
-    `/certificates/${certificateId}/trending-keywords`,
+    `/api/v2/certificates/${certificateId}/trending-keywords`,
     swrGetFetcher,
     {
       refreshInterval: 1_800_000, // 1_800_000 30분을 밀리초로 변환

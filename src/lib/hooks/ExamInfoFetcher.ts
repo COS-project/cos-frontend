@@ -5,7 +5,7 @@ import { ExamInfo, ExamResult } from '@/types/global';
 
 // 모의고사 연도와 회차 정보를 담은 데이터 (연도,회차)
 export const useGetExamInfoData = () => {
-  const { data, error } = useSWR<ExamInfo>('/1/mock-exam-infos', swrGetFetcher);
+  const { data, error } = useSWR<ExamInfo>('/api/v2/1/mock-exam-infos', swrGetFetcher);
 
   return {
     Data: data,

@@ -9,10 +9,10 @@ const getKey = (
   mockExamResultId: number,
 ) => {
   if (size === 0) {
-    return `/mock-exam-results/${mockExamResultId}/user-answers/wrong-answers?page=${size}&size=10&sortFields=subjectResultEntity.mockExamResultEntity.createdAt, questionEntity.questionSeq&sortDirections=DESC, ASC`;
+    return `/api/v2/mock-exam-results/${mockExamResultId}/user-answers/wrong-answers?page=${size}&size=10&sortFields=subjectResultEntity.mockExamResultEntity.createdAt, questionEntity.questionSeq&sortDirections=DESC, ASC`;
   }
   if (previousPageData && !previousPageData.result.hasNext) {
-    return `/mock-exam-results/${mockExamResultId}/user-answers/wrong-answers?page=${size}&size=10&sortFields=subjectResultEntity.mockExamResultEntity.createdAt, questionEntity.questionSeq&sortDirections=DESC, ASC`;
+    return `/api/v2/mock-exam-results/${mockExamResultId}/user-answers/wrong-answers?page=${size}&size=10&sortFields=subjectResultEntity.mockExamResultEntity.createdAt, questionEntity.questionSeq&sortDirections=DESC, ASC`;
   }
   if (previousPageData?.result.hasNext) {
     return null;

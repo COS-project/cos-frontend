@@ -8,7 +8,7 @@ export const deleteUserInfo = async () => {
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'DELETE',
-      url: '/users/me',
+      url: '/api/v2/users/me',
     });
     console.log(response.data);
     return response.data;
@@ -25,7 +25,7 @@ export const patchLogout = async () => {
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'PATCH',
-      url: '/logout',
+      url: '/api/v2/logout',
     });
     console.log(response.data);
     return response.data;

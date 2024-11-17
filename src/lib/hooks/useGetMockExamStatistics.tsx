@@ -11,7 +11,7 @@ const useGetMockExamStatistics = (
   weekOfMonth: number,
 ) => {
   const { data, error } = useSWR<ExamStaticsDataResponseType>(
-    `/certificates/${certificateId}/mock-exam-result/${reportType}/statistics?year=${year}&month=${month}&weekOfMonth=${weekOfMonth}`,
+    `/api/v2/certificates/${certificateId}/mock-exam-result/${reportType}/statistics?year=${year}&month=${month}&weekOfMonth=${weekOfMonth}`,
     swrGetFetcher,
   );
 
