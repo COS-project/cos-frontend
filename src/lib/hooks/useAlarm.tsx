@@ -5,7 +5,7 @@ import { AlarmResponseType } from '@/types/alarm/type';
 
 const useAlarm = () => {
   //66: 자유, 61: 해설, 55: 꿀팁
-  const { data, error } = useSWR<AlarmResponseType>('/alarms', swrGetFetcher);
+  const { data, error } = useSWR<AlarmResponseType>('/api/v2/alarms', swrGetFetcher);
   return {
     alarms: data ? data.result : null,
     isLoading: !error && !data,

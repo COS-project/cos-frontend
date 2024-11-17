@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { swrGetFetcher } from '@/lib/axios';
 
 const useGetAlarm = () => {
-  const { data, error } = useSWR<AxiosResponse>('/alarms/subscribe', swrGetFetcher);
+  const { data, error } = useSWR<AxiosResponse>('/api/v2/alarms/subscribe', swrGetFetcher);
 
   return {
     alarm: data ? data : null,

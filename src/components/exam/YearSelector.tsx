@@ -1,10 +1,9 @@
 'use client';
 
-import { SVGProps, useState } from 'react';
+import { SVGProps } from 'react';
 import * as React from 'react';
 
 import MockExamYearsFilter from '@/components/exam/MockExamYearsFilter';
-import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 
 interface Props {
   examYears: number[] | undefined;

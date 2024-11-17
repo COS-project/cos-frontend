@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import useGetMockExamDetail from '@/lib/hooks/useGetMockExamDetail';

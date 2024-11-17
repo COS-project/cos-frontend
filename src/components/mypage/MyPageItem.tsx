@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { SVGProps, useState } from 'react';
+import { SVGProps } from 'react';
 import * as React from 'react';
 
 import { ItemType } from '@/types/mypage/type';

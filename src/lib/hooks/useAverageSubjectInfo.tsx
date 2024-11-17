@@ -5,7 +5,7 @@ import { AverageSubjectInfoResponseType, AverageSubjectInfoType } from '@/types/
 
 const useAverageSubjectInfo = (certificateId: number) => {
   const { data, error } = useSWR<AverageSubjectInfoResponseType>(
-    `/certificates/${certificateId}/mock-exam-results/average`,
+    `/api/v2/certificates/${certificateId}/mock-exam-results/average`,
     swrGetFetcher,
   );
 

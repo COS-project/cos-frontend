@@ -4,7 +4,6 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 interface Props {
   isWriter: boolean; //(댓글 or 글)쓴 사람인지 아닌지

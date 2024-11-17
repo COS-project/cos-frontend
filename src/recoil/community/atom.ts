@@ -6,7 +6,6 @@ import {
   CreatePostDataType,
   EditPostDataType,
   ExamReviewPostType,
-  PopularSearchKeyword,
   RecentSearchResult,
 } from '@/types/community/type';
 import { GenerateComment, ImageType } from '@/types/global';
@@ -83,6 +82,7 @@ export const editPostDataState = atom<EditPostDataType>({
     postId: 0,
     title: '제목',
     content: '내용',
+    removeImageIds: [],
   },
 });
 

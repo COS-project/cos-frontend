@@ -1,8 +1,5 @@
-import type { SVGProps } from 'react';
 import { ReactNode } from 'react';
 import * as React from 'react';
-
-import button from '@/components/common/Button';
 
 interface Props {
   content: string;
@@ -18,4 +15,3 @@ const UserActionReminder = (props: Props) => {
   );
 };
 export default UserActionReminder;
-

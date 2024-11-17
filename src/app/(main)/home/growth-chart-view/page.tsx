@@ -1,18 +1,18 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
+import Header from '@/components/common/Header';
 import DetailedGradeReport from '@/components/home/DetailedGradeReport';
 import GrowthChart from '@/components/home/GrowthChart';
 import UserCertGoalPeriods from '@/components/home/UserCertGoalPeriods';
 import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
+import { certificateIdAtom } from '@/recoil/atom';
 import { selectedPrepareWeeksBetweenState, selectedReportTypeState } from '@/recoil/home/atom';
 import { ScoreAVGListType } from '@/types/home/type';
-import Header from '@/components/common/Header';
-import { useRouter } from 'next/navigation';
-import { certificateIdAtom } from '@/recoil/atom';
 
 const GrowthChartView = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
@@ -113,7 +113,7 @@ const GrowthChartView = () => {
 
   return (
     <div className={'bg-gray0 min-h-screen'}>
-      <Header title={'성장그래프 자세히보기'} headerType={'dynamic'} onBack={onBack}/>
+      <Header title={'성장그래프 자세히보기'} headerType={'dynamic'} onBack={onBack} />
       <div className={'relative m-5 flex flex-col gap-y-[24px]'}>
         {/*유저별 목표 기간 전체 필터*/}
         <div
@@ -136,7 +136,8 @@ const GrowthChartView = () => {
         {/*주간 성적 자세히 보기*/}
         <div className={'flex flex-col gap-y-[8px]'}>
           <div className={'text-h3 font-bold ml-2'}>
-            {selectedReportType === 'WEEKLY' ? '주간' : selectedReportType === 'MONTHLY' ? '월간' : '년간'} 성적 자세히 보기
+            {selectedReportType === 'WEEKLY' ? '주간' : selectedReportType === 'MONTHLY' ? '월간' : '년간'} 성적 자세히
+            보기
           </div>
           <div className={'flex flex-col gap-y-[12px]'}>
             {statisticsData?.scoreAVGList.map((scoreAVG: ScoreAVGListType, index: number) => {

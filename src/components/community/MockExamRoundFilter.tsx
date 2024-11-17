@@ -1,9 +1,9 @@
-import React, { SetStateAction } from 'react';
+import React from 'react';
+import { SetterOrUpdater } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
 import { CreatePostDataType, EditPostDataType } from '@/types/community/type';
 import { MockExam } from '@/types/global';
-import { SetterOrUpdater } from 'recoil';
 
 interface Props {
   mockExams: MockExam[] | null | undefined;
@@ -16,7 +16,7 @@ const MockExamRoundFilter = (props: Props) => {
   const { mockExams, className, setIdState, setDataState, setIsOpen } = props;
 
   const changePostDataRound = (round: number) => {
-    setDataState((prevState) => ({
+    setDataState((prevState: any) => ({
       ...prevState,
       round: round,
     }));

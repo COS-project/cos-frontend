@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import StickGraph from '@/components/exam/StickGraph';
 import WeeklyGoalPeriodFilter from '@/components/home/WeeklyGoalPeriodFilter';
 import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
+import { certificateIdAtom } from '@/recoil/atom';
 import {
   selectedDateTypeState,
   selectedPrepareTimeState,
@@ -13,7 +14,6 @@ import {
   selectedReportTypeState,
 } from '@/recoil/home/atom';
 import { ScoreAVGListType, WeeklyGoalPeriodType } from '@/types/home/type';
-import { certificateIdAtom } from '@/recoil/atom';
 
 const GrowthChart = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
@@ -381,7 +381,10 @@ const GrowthChart = () => {
 
             {/*TODO: 총합 바꿔야 함. 어디서 가져올 수 있는지 못찾겠음*/}
             <div
-              style={{ bottom: statisticsData?.totalAverage >= 100 ? '85%' : `${6 + statisticsData?.totalAverage}%` }}
+              style={{
+                bottom:
+                  (statisticsData?.totalAverage ?? 0) >= 100 ? '85%' : `${6 + (statisticsData?.totalAverage ?? 0)}%`,
+              }}
               className={'w-full absolute flex items-center space-x-1'}>
               <div className="w-[86%] border-t border-dashed border-primary"></div>
               <div className="text-primary text-h5">평균</div>

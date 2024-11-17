@@ -5,7 +5,7 @@ import { ResponsePostType } from '@/types/community/type';
 
 const getKey = (
   pageIndex: number,
-  previousPageData: ResponsePostType,
+  previousPageData: ResponsePostType | null,
   certificateId: number,
   examYear: number | string,
   round: number | string,
@@ -13,7 +13,7 @@ const getKey = (
 ) => {
   // 초기 요청
   if (pageIndex === 0) {
-    return `/certificates/${certificateId}/posts?${examYear == '전체' ? ' ' : `examYear=${examYear}`}${
+    return `/api/v2/certificates/${certificateId}/posts?${examYear == '전체' ? ' ' : `examYear=${examYear}`}${
       round == '전체' ? '' : `&round=${round}`
     }${
       questionSequence === undefined || questionSequence === 0 ? ' ' : `&questionSequence=${questionSequence}`
@@ -25,7 +25,7 @@ const getKey = (
 
   // 이전 페이지에 더 많은 데이터가 있으면 다음 페이지 요청
   if (previousPageData.result.hasNext) {
-    return `/certificates/${certificateId}/posts?${examYear == '전체' ? ' ' : `examYear=${examYear}`}${
+    return `/api/v2/certificates/${certificateId}/posts?${examYear == '전체' ? ' ' : `examYear=${examYear}`}${
       round == '전체' ? ' ' : `&round=${round}`
     }${
       questionSequence === undefined || questionSequence === 0 ? ' ' : `&questionSequence=${questionSequence}`

@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { SVGProps, useEffect, useState } from 'react';
 import React from 'react';
 
-import useGetExamResultRecent from '@/lib/hooks/useGetExamResultRecent';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 
 import SubjectGradeCard from './SubjectGradeCard';

@@ -156,3 +156,28 @@ export interface GoalSettingStatusResponseType {
   message: string;
   result: boolean;
 }
+
+/**
+ * 목표 상세 조회 Type
+ */
+export interface GoalSettingDataDetailResponseType {
+  responseCode: string;
+  message: string;
+  result: {
+    goalId: number;
+    certificate: {
+      certificateId: number;
+      certificateName: string;
+    };
+    goalScore: number;
+    prepareStartDateTime: string;
+    prepareFinishDateTime: string;
+    goalPrepareDays: number;
+    mockExamsPerDay: number;
+    goalMockExams: number;
+    mockExamRepeatDays: number[];
+    studyTimePerDay: number;
+    goalStudyTime: number;
+    studyRepeatDays: number[];
+  };
+}

@@ -135,8 +135,7 @@ const TestSubmitOrCancle = (props: Props) => {
    */
   useEffect(() => {
     if (userAnswerList.some((answer) => answer.isCorrect !== undefined)) {
-      prepareAndScoreSubjectResults().then(() => {
-      });
+      prepareAndScoreSubjectResults().then(() => {});
     }
   }, [userAnswerList]);
 

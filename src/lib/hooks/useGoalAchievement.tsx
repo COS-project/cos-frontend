@@ -5,7 +5,7 @@ import { GoalAchievementResponseType } from '@/types/home/type';
 
 const useGoalAchievement = (certificateId: number) => {
   const { data, error } = useSWR<GoalAchievementResponseType>(
-    `certificates/${certificateId}/goals/achievement`,
+    `/api/v2certificates/${certificateId}/goals/achievement`,
     swrGetFetcher,
   );
 

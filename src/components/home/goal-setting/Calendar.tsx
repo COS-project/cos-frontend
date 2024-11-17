@@ -8,8 +8,6 @@ import {
   endOfWeek,
   format,
   getMonth,
-  isSaturday,
-  isSunday,
   startOfMonth,
   startOfWeek,
   subMonths,
@@ -25,7 +23,7 @@ interface Props {
   usage: string;
   className?: string; // 캘린더 위치 변경
   // 시작 날짜(or 오늘 날짜) 이전 날짜는 눌리지 않도록 disabled 제어하는 함수
-  setDateStatus: (date: Date, usage: string) => boolean;
+  setDateStatus: (date: Date, usage: string) => boolean | undefined;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>; // 캘린더를 키고 끌 수 있게 하는 state 함수
 }
 

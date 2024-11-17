@@ -217,4 +217,3 @@ const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
     <path stroke="#000" strokeLinecap="round" d="m8 8 16 16M24 8 8 24" />
   </svg>
 );
-

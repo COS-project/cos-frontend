@@ -13,9 +13,9 @@ import TakenTimeGraphReport from '@/components/exam/TakenTimeGraphReport';
 import UserExamAttemptsFilterContent from '@/components/exam/UserExamAttemptsFilterContent';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
+import { certificateIdAtom } from '@/recoil/atom';
 import { mockExamIdState, submittedMockExamResultIdState } from '@/recoil/exam/atom';
 import { MockExamResultType } from '@/types/exam/type';
-import { certificateIdAtom } from '@/recoil/atom';
 
 const Result = () => {
   const certificateId = useRecoilValue(certificateIdAtom);

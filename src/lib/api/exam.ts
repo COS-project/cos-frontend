@@ -13,7 +13,7 @@ export const postSubjectResultRequestsList = async (
       },
       method: 'POST',
       data: { createSubjectResultRequests: subjectResultRequestsList },
-      url: `mock-exams/${mockExamId}/mock-exam-results`,
+      url: `/api/v2mock-exams/${mockExamId}/mock-exam-results`,
     });
     // 성공적인 응답 처리
     return response.data;
@@ -31,7 +31,7 @@ export const deleteIncorrectQuestion = async (userAnswerId: number) => {
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'PATCH',
-      url: `user-answers/${userAnswerId}/review`,
+      url: `/api/v2user-answers/${userAnswerId}/review`,
     });
     // 성공적인 응답 처리
     return response.data;

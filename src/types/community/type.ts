@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MockExam, PostComments, QuestionsResponse } from '@/types/global';
+import { FavoriteBoard, MockExam, PostComments, QuestionsResponse } from '@/types/global';
 import { UserInfo } from '@/types/mypage/type';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
@@ -77,6 +77,7 @@ export interface ResponsePostType {
   result: {
     postResponse: PostType;
     postComments: PostComments[];
+    hasNext: boolean;
   };
 }
 
@@ -144,4 +145,13 @@ export interface TrendingKeyword {
 export interface PreparePeriodType {
   startMonth: number | undefined;
   endMonth: number | undefined;
+}
+
+/**
+ * 게시판 목록 보기
+ */
+export interface BoardListResponseType {
+  responseCode: string;
+  message: string;
+  result: FavoriteBoard[];
 }

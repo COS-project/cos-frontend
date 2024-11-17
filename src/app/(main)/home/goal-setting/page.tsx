@@ -40,7 +40,7 @@ const GoalSetting = () => {
     return null; // 또는 적절한 기본값/오류 처리
   };
   // 기존에 설정한 목표를 불러오는 데이터 패칭
-  const { goalSettingData, isLoading, isError } = useGetGoalSettingData(getLastGoalId());
+  const { goalSettingData, isLoading, isError } = useGetGoalSettingData(getLastGoalId() || 0);
   const [goalData, setGoalData] = useRecoilState(goalSettingState);
   const [isResetButtonClick, setIsResetButtonClick] = useState(false);
 
@@ -52,7 +52,7 @@ const GoalSetting = () => {
    * Recoil 상태를 초기화하는 함수
    * @param apiResponse goalSettingData.result
    */
-  const initializeGoalSettingState = (apiResponse: GoalSettingInfo) => {
+  const initializeGoalSettingState = (apiResponse: any) => {
     return {
       goalScore: apiResponse.goalScore,
       prepareStartDateTime: apiResponse.prepareStartDateTime,
@@ -92,7 +92,7 @@ const GoalSetting = () => {
     try {
       const response = goalSettingData;
       if (response) {
-        const initialState: GoalSettingInfo = initializeGoalSettingState(response.result);
+        const initialState = initializeGoalSettingState(response.result);
         setGoalData(initialState);
       } else {
         // 에러 처리를 수행할 수 있습니다.
@@ -141,7 +141,7 @@ const GoalSetting = () => {
           ) : (
             <Button
               onClick={() => {
-                putGoalSettingData(goalData, getLastGoalId()).then((r) => {
+                putGoalSettingData(goalData, getLastGoalId() || 0).then((r) => {
                   console.log('수정', r);
                   router.push('/home');
                 });

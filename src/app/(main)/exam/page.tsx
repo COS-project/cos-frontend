@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import Banner from '@/components/common/Banner';
 import Header from '@/components/common/Header';
@@ -20,7 +20,6 @@ const Exam = () => {
 
 const SolveExamBox = () => {
   const { examYears } = useGetMockExamYears();
-  const [initializeYear, setInitializeYear] = useState(false);
   const [isClickedYearSelector, setIsClickedYearSelector] = useState<boolean>(false);
   const [selectedYear, setSelectedYear] = useState<number>(examYears ? examYears[0] : 2017);
   return (

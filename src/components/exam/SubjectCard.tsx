@@ -58,7 +58,7 @@ const SubjectCard: React.FC<SubjectCard> = ({ timeLimit, round, mockExamId, tota
           <div className="text-black text-center text-h7">최근 점수</div>
           {examResultRecent ? (
             <ul className="flex items-end justify-center">
-              <li className="font-bold text-h2">{`${examResultRecent.totalScore}점`}</li>
+              <li className="font-bold text-h2">{`${examResultRecent?.totalScore}점`}</li>
               <div className="mb-[3px] text-gray3 text-h6">{`/${total}점`}</div>
             </ul>
           ) : (

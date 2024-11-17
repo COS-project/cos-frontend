@@ -21,7 +21,7 @@ import { BoardType } from '@/types/community/type';
 const Search = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
   const parameter = useSearchParams();
-  const { autoCompleteKeywords } = useGetAutoCompleteSearchKeywords(parameter.get('keyword'));
+  const { autoCompleteKeywords } = useGetAutoCompleteSearchKeywords(certificateId, parameter.get('keyword'));
   const { recentSearchResults } = useGetRecentSearchResults();
   const { trendingKeywords, lastFetchedTime } = useGetTrendingKeywords(certificateId);
   const [isClickedAutoCompleteSearchKeywords, setIsClickedAutoCompleteSearchKeywords] = useState(false);
@@ -47,17 +47,17 @@ const Search = () => {
    * 인기 검색어 업데이트 날짜를 포멧하는 함수
    * @param date 인기 검색어 업데이트 날짜
    */
-  const formattedDate = (date: Date): string => {
+  const formattedDate = (date: Date | null): string => {
     return new Intl.DateTimeFormat('ko', {
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
-    }).format(date);
+    }).format(date ?? new Date());
   };
 
   useEffect(() => {
-    console.log('recentSearchResults', recentSearchResults)
+    console.log('recentSearchResults', recentSearchResults);
   }, [recentSearchResults]);
 
   return (

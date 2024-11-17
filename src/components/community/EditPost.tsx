@@ -56,7 +56,7 @@ const EditPost = (props: Props) => {
    * 해설 게시글 Recoil 상태를 초기화하는 함수
    * @param apiResponse postDetailData.result
    */
-  const initializeCommentaryEditPostData = (apiResponse) => {
+  const initializeCommentaryEditPostData = (apiResponse: any) => {
     return {
       postId: apiResponse.postResponse.postId,
       title: apiResponse.postResponse.postContent.title,
@@ -72,7 +72,7 @@ const EditPost = (props: Props) => {
    * 꿀팁 게시글 Recoil 상태를 초기화하는 함수
    * @param apiResponse postDetailData.result
    */
-  const initializeTipEditPostData = (apiResponse) => {
+  const initializeTipEditPostData = (apiResponse: any) => {
     return {
       postId: apiResponse.postResponse.postId,
       title: apiResponse.postResponse.postContent.title,
@@ -85,7 +85,7 @@ const EditPost = (props: Props) => {
    * 자유 게시글 Recoil 상태를 초기화하는 함수
    * @param apiResponse postDetailData.result
    */
-  const initializeNormalEditPostData = (apiResponse) => {
+  const initializeNormalEditPostData = (apiResponse: any) => {
     return {
       postId: apiResponse.postResponse.postId,
       title: apiResponse.postResponse.postContent.title,
@@ -316,7 +316,7 @@ const EditPost = (props: Props) => {
   useEffect(() => {
     if (postDetailData?.postResponse.postStatus.postType === 'TIP' && isTipSubmitEnabled) {
       // removeImageUrls에서 id만 추출하여 배열로 변환
-      const idsToRemove = editPostData.removeImageIds.map((item) => item.id);
+      const idsToRemove = (editPostData.removeImageIds || []).map((item: any) => item.id);
 
       // editPostData를 복제하고 removeImageUrls를 id 배열로 대체
       const updatedEditPostData = {
@@ -361,7 +361,7 @@ const EditPost = (props: Props) => {
   const handleNormalAndCommentarySubmit = async (e: FormEvent) => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
     // removeImageUrls 에서 id만 추출하여 배열로 변환
-    const idsToRemove = editPostData.removeImageIds.map((item) => item.id);
+    const idsToRemove = (editPostData.removeImageIds || []).map((item: any) => item.id);
 
     // editPostData 를 복제하고 removeImageUrls 를 id 배열로 대체
     const updatedEditPostData = {
@@ -431,7 +431,7 @@ const EditPost = (props: Props) => {
     let isValid = true;
 
     // 입력한 번호가 모의고사 전체 문제 개수를 초과하지 않도록 alert
-    if (questionSequence > questions?.length) {
+    if (questionSequence > (questions?.length || 0)) {
       setIsQuestionNumberExceedingLimit(true);
       isValid = false;
     } else {
@@ -542,7 +542,7 @@ const EditPost = (props: Props) => {
                       if (
                         /^\d+$/.test(e.target.value) &&
                         e.target.value.length !== 0 &&
-                        parseInt(e.target.value) < questions?.length
+                        parseInt(e.target.value) < (questions?.length || 0)
                       ) {
                         changePostDataQuestionSequence(e.target.value);
                       }
@@ -553,7 +553,7 @@ const EditPost = (props: Props) => {
                   {!isQuestionSequenceNumeric && !isEmpty ? (
                     <div className={'text-point ml-1'}>숫자만 입력해주세요.</div>
                   ) : null}
-                  {questionSequence > questions?.length && !isEmpty && isQuestionSequenceNumeric ? (
+                  {questionSequence > (questions?.length || 0) && !isEmpty && isQuestionSequenceNumeric ? (
                     <div className={'text-point ml-1'}>
                       전체 문제 수({questions?.length}) 이하의 숫자를 입력해주세요.
                     </div>

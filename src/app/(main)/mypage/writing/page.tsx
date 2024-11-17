@@ -40,7 +40,7 @@ export default function MyWriting() {
         <EditPost
           postId={selectedPostId}
           setIsClickEditPost={setIsClickEditPost}
-          mockExamId={userPostsList[0].result.content[0].question?.mockExam.MockExamId}
+          mockExamId={userPostsList[0].result.content[0].question?.mockExam.mockExamId}
         />
       ) : (
         <>

@@ -114,7 +114,7 @@ const WriteReviewModal = (props: Props) => {
               <textarea
                 onChange={(e) => {
                   if (e.target.value.length <= 80) {
-                    setExamReviewPost((prevState) => ({ ...prevState, content: e.target.value}))
+                    setExamReviewPost((prevState) => ({ ...prevState, content: e.target.value }));
                   } else {
                     e.target.value = e.target.value.substr(0, 80);
                   }

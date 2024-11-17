@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 
-import { BoardType } from '@/types/community/type';
 import { MyPageBoardType } from '@/types/mypage/type';
 
 interface Props {

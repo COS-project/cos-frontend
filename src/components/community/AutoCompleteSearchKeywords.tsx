@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import { autoCompleteSearchKeywordState } from '@/recoil/community/atom';
 
 interface Props {
-  keywords: string[];
+  keywords: string[] | undefined;
   setIsClickedAutoCompleteSearchKeywords: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const AutoCompleteSearchKeywords = (props: Props) => {

@@ -113,24 +113,28 @@ const NormalAndTipBoardList = (props: Props) => {
         ) : null}
       </div>
       <div className={'flex flex-col gap-y-4'}>
-        {userPostsList.map((userPosts: ResponsePostType, index) => {
-          return userPosts?.result.content.map((userPost: PostType, postIndex: number) => {
-            const isLastElement =
-              index === userPostsList.length - 1 && postIndex === userPosts?.result.content.length - 1;
-            return (
-              <div ref={isLastElement ? ref : null} key={userPost.postId}>
-                <Post
-                  postId={userPost.postId}
-                  content={userPost.postContent.content}
-                  title={userPost.postContent.title}
-                  commentCount={userPost.postStatus.commentCount}
-                  createdAt={formatDate(userPost.dateTime.createdAt)}
-                  imageUrl={userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null}
-                  likeCount={userPost.postStatus.likeCount}
-                  topElement={userPost.recommendTags ? tipTopElement(userPost.postId) : undefined}></Post>
-              </div>
-            );
-          });
+        {userPostsList.map((userPosts, index) => {
+          return (
+            <div ref={ref} key={userPosts.result.postResponse.postId}>
+              <Post
+                postId={userPosts.result.postResponse.postId}
+                content={userPosts.result.postResponse.postContent.content}
+                title={userPosts.result.postResponse.postContent.title}
+                commentCount={userPosts.result.postResponse.postStatus.commentCount}
+                createdAt={formatDate(userPosts.result.postResponse.dateTime.createdAt)}
+                imageUrl={
+                  userPosts.result.postResponse.postContent.images.length !== 0
+                    ? userPosts.result.postResponse.postContent.images[0].imageUrl
+                    : null
+                }
+                likeCount={userPosts.result.postResponse.postStatus.likeCount}
+                topElement={
+                  userPosts.result.postResponse.recommendTags
+                    ? tipTopElement(userPosts.result.postResponse.postId)
+                    : undefined
+                }></Post>
+            </div>
+          );
         })}
       </div>
     </div>

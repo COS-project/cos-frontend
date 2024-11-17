@@ -19,6 +19,7 @@ const DonutChart: React.FC<DonutChartProps> = ({ data }) => {
 
     // 차트 객체 생성
     if (ctx) {
+      // @ts-ignore
       chartInstance.current = new Chart(ctx, {
         type: 'doughnut',
         data: {

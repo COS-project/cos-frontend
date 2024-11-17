@@ -28,6 +28,7 @@ const AverageAccurayChat = (props: Props) => {
       <div className={'font-semibold px-5 mt-5 text-h3'}>과목별 정답률</div>
       <div className={'w-full'} style={{ height: '280px' }}>
         <ResponsiveRadar
+          // @ts-ignore
           data={subjectData}
           keys={['subjectCorrectRate']}
           indexBy="subjectTitle"
