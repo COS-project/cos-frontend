@@ -70,7 +70,7 @@ const CommunityDetailPage = () => {
    */
   const handlePostLikeClick = async (likeTargetType: 'POST' | 'COMMENT', id: number) => {
     // 상태 업데이트를 기다리는 Promise 사용
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
       setLikeTargetType(likeTargetType);
       resolve();
     });
