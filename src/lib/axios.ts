@@ -1,11 +1,11 @@
 import axios, { AxiosError } from 'axios';
 
 const client = axios.create({
-  baseURL: 'http://cercat.o-r.kr/api/v2',
+  baseURL: 'http://cercat.o-r.kr',
   headers: {
     'Content-type': 'application/json',
     'Access-Token':
-      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0dVRVNUIl0sImVtYWlsIjoidGtkZ2g2NDI3QG5hdmVyLmNvbSIsInN1YiI6InRrZGdoNjQyN0BuYXZlci5jb20iLCJpYXQiOjE3MDk0NjEwNDUsImV4cCI6MTcwOTcyMDI0NX0.u_S6efRZoZUBcCxLcGG2Szio20CUMn2qsVLgNl5TCB8',
+      'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzMxODM1NTM3LCJleHAiOjE3MzIwOTQ3Mzd9.hws4XHbAtwTKd-tUMmLt_1FYTDfAsx-YmYz8NleUYTU',
   },
   withCredentials: true,
 });
@@ -46,9 +46,11 @@ const getTokensFromLocalStorage = () => {
 const sendRequest = async (config: any) => {
   try {
     console.log('In send Request' + localStorage.getItem('accessToken'));
+    console.log('최종', client.defaults.baseURL + config.url);
     return await client(config);
   } catch (error) {
     const axiosError = error as AxiosError; // AxiosError로 캐스팅
+    console.log('axiosError', axiosError);
     if (axiosError.response && axiosError.response.status === 401) {
       // 만료된 액세스 ㅇ토큰일 경우 리프레시 토큰으로 갱신
       const { refreshToken } = getTokensFromLocalStorage();
@@ -100,7 +102,7 @@ const sendRequest = async (config: any) => {
   }
 };
 
-export const swrGetFetcher = async () => {
+export const swrGetFetcher = async (url: any) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
 
@@ -109,6 +111,7 @@ export const swrGetFetcher = async () => {
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'GET',
+      url: url,
     });
     return response.data;
   } catch (error) {
