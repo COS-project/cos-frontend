@@ -13,14 +13,14 @@ const MockExamYearsFilter = (props: Props) => {
   const { years, setDataState, setIsOpen } = props;
 
   const changePostDataExamYear = (year: number) => {
-    setDataState((prevState) => ({
+    setDataState((prevState: any) => ({
       ...prevState,
       examYear: year,
     }));
   };
 
   const resetRoundOnYearChange = () => {
-    setDataState((prevState) => ({
+    setDataState((prevState: any) => ({
       ...prevState,
       round: 1,
     }));
