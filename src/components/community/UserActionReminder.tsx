@@ -18,4 +18,3 @@ const UserActionReminder = (props: Props) => {
   );
 };
 export default UserActionReminder;
-
