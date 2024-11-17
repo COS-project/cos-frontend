@@ -52,7 +52,7 @@ const GoalSetting = () => {
    * Recoil 상태를 초기화하는 함수
    * @param apiResponse goalSettingData.result
    */
-  const initializeGoalSettingState = (apiResponse: GoalSettingInfo) => {
+  const initializeGoalSettingState = (apiResponse: any) => {
     return {
       goalScore: apiResponse.goalScore,
       prepareStartDateTime: apiResponse.prepareStartDateTime,
@@ -92,7 +92,7 @@ const GoalSetting = () => {
     try {
       const response = goalSettingData;
       if (response) {
-        const initialState: GoalSettingInfo = initializeGoalSettingState(response.result);
+        const initialState = initializeGoalSettingState(response.result);
         setGoalData(initialState);
       } else {
         // 에러 처리를 수행할 수 있습니다.
