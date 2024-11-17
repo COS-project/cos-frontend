@@ -1,8 +1,8 @@
 import useSWR from 'swr';
 
 import { swrGetFetcher } from '@/lib/axios';
-import { FavoriteBoard } from '@/types/global';
 import { BoardListResponseType } from '@/types/community/type';
+import { FavoriteBoard } from '@/types/global';
 
 const useGetBoardList = () => {
   const { data, error } = useSWR<BoardListResponseType>('/api/v2/boards', swrGetFetcher);

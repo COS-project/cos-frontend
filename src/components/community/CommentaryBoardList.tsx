@@ -217,31 +217,31 @@ const CommentaryBoardList = (props: Props) => {
       </div>
       <div className={'flex flex-col gap-y-4'}>
         {commentarySearchResults.map((userPosts: ResponsePostType, index: number) => {
-          return userPosts?.result.content.map((userPost: PostType, postIndex: number) => {
-            const isLastElement =
-              index === commentarySearchResults.length - 1 && postIndex === userPosts?.result.content.length - 1;
-            return (
-              <div key={userPost.postId} ref={isLastElement ? ref : null}>
-                <Post
-                  postId={userPost.postId}
-                  content={userPost.postContent.content}
-                  title={userPost.postContent.title}
-                  commentCount={userPost.postStatus.commentCount}
-                  createdAt={formatDate(userPost.dateTime.createdAt)}
-                  imageUrl={userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null}
-                  likeCount={userPost.postStatus.likeCount}
-                  topElement={
-                    userPost.question
-                      ? commentaryTopElement(
-                          userPost.question.mockExam.examYear,
-                          userPost.question.mockExam.round,
-                          userPost.question.questionSeq,
-                        )
-                      : undefined
-                  }></Post>
-              </div>
-            );
-          });
+          return (
+            <div key={userPosts.result.postResponse.postId} ref={ref}>
+              <Post
+                postId={userPosts.result.postResponse.postId}
+                content={userPosts.result.postResponse.postContent.content}
+                title={userPosts.result.postResponse.postContent.title}
+                commentCount={userPosts.result.postResponse.postStatus.commentCount}
+                createdAt={formatDate(userPosts.result.postResponse.dateTime.createdAt)}
+                imageUrl={
+                  userPosts.result.postResponse.postContent.images.length !== 0
+                    ? userPosts.result.postResponse.postContent.images[0].imageUrl
+                    : null
+                }
+                likeCount={userPosts.result.postResponse.postStatus.likeCount}
+                topElement={
+                  userPosts.result.postResponse.question
+                    ? commentaryTopElement(
+                        userPosts.result.postResponse.question.mockExam.examYear,
+                        userPosts.result.postResponse.question.mockExam.round,
+                        userPosts.result.postResponse.question.questionSeq,
+                      )
+                    : undefined
+                }></Post>
+            </div>
+          );
         })}
       </div>
     </div>

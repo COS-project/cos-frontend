@@ -56,7 +56,9 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({
   // post 요청
   useEffect(() => {
     if (!interestCertificates.interestTargetList[0].certificateName && isClickedDoneButton) {
-      postInterestCertificates(interestCertificates).then((r) => {console.log('r', r)});
+      postInterestCertificates(interestCertificates).then((r) => {
+        console.log('r', r);
+      });
     }
   }, [isClickedDoneButton]);
 

@@ -23,7 +23,9 @@ import { GoalSettingInfo } from '@/types/global';
 const GoalSetting = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
   // 선택된 자격증 Id
-  const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number>(goalSettingCertificateId);
+  const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number | undefined>(
+    goalSettingCertificateId,
+  );
   const [isSettingNewGoalModalOpen, setIsSettingNewGoalModalOpen] = useState(true);
   // 사용자의 목표 설정 Id를 불러오는 데이터 패칭
   const { userGoals } = useGetUserGoals(certificateId);
