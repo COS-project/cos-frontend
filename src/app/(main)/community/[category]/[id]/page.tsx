@@ -1,7 +1,7 @@
 'use client';
 import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
-import { SVGProps, useEffect } from 'react';
+import { SVGProps } from 'react';
 import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -22,9 +22,9 @@ import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import useGetLikeStatus from '@/lib/hooks/useGetLikeStatus';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
+import { certificateIdAtom } from '@/recoil/atom';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 import { PostComments, RecommendTags } from '@/types/global';
-import { certificateIdAtom } from '@/recoil/atom';
 
 const CommunityDetailPage = () => {
   const params = useParams();
