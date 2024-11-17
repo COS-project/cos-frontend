@@ -24,7 +24,7 @@ const Question = () => {
   const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
   const [allQuestionModalIsOpen, setAllQuestionModalIsOpen] = useState(false);
   const [userAnswer, setUserAnswer] = useRecoilState<UserAnswerRequests>(userAnswerRequests);
-  const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
+  const [userAnswerList, setUserAnswerList] = useRecoilState(userAnswerRequestsList);
   // 각 문제당 걸린 시간
   const [time, setTime] = useRecoilState<number>(stopwatchTime);
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);
@@ -92,15 +92,17 @@ const Question = () => {
    * 처음 랜더링 될 때, userAnswerList 을 기본값으로 채워주는 기능
    */
   useEffect(() => {
-    if (questions?.length > 0 && userAnswerList.length === 0) {
+    if ((questions?.length || 0) > 0 && userAnswerList.length === 0) {
       // userAnswerList가 초기화되지 않았을 때만 실행
-      const initialUserAnswers: UserAnswerRequests[] = questions.map((question: QuestionsResponse, index: number) => ({
+      const initialUserAnswers = questions?.map((question: QuestionsResponse, index: number) => ({
         questionId: index + 1,
         selectOptionSeq: 0,
         takenTime: 0,
       }));
 
-      setUserAnswerList(initialUserAnswers);
+      if (initialUserAnswers) {
+        setUserAnswerList(initialUserAnswers);
+      }
     }
   }, [questions, userAnswerList.length]);
 
@@ -108,10 +110,10 @@ const Question = () => {
    * 문제당 걸린 시간을 측정하는 스톱워치
    */
   useEffect(() => {
-    let interval: NodeJS.Timer | undefined;
+    let interval: number | undefined;
 
     if (isRunning && !isPaused) {
-      interval = setInterval(() => {
+      interval = window.setInterval(() => {
         setTime((prevTime) => prevTime + 1000);
       }, 1000);
     } else {
@@ -142,8 +144,8 @@ const Question = () => {
    */
   useEffect(() => {
     // questions.length가 변경될 때만 progressBarLength 업데이트
-    if (questions?.length > 0) {
-      setProgressBarLength(questions?.length);
+    if ((questions?.length || 0) > 0) {
+      setProgressBarLength(questions?.length || 0);
     }
   }, [questions?.length]);
 

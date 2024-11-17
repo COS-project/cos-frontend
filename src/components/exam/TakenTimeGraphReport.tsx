@@ -1,7 +1,4 @@
-import { useEffect } from 'react';
-
 import StickGraph from '@/components/exam/StickGraph';
-import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import { SubjectResultsType } from '@/types/exam/type';
 import { AverageSubjectInfoType } from '@/types/home/type';
 

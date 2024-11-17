@@ -10,7 +10,7 @@ const useGetExamResultRecent = (mockExamId: number) => {
   );
 
   return {
-    examResultRecent: data ? data.result : false,
+    examResultRecent: data ? data.result : undefined,
     isLoading: !error && !data,
     isError: error,
   };

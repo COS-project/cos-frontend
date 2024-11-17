@@ -18,7 +18,7 @@ const MyPageFilter = (props: Props) => {
       {!data || data.length === 0 ? (
         <div>error</div>
       ) : (
-        data?.map((datum: '최신순' | '작성순', index: number) => {
+        data?.map((datum: '최신순' | '인기순', index: number) => {
           return (
             <div
               key={index}

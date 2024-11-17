@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Props {
-  yearList: number[];
+  yearList: number[] | undefined;
   setIsClickedYearSelector: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedYear: React.Dispatch<React.SetStateAction<number>>;
 }

@@ -31,8 +31,8 @@ const MyPageHeader = () => {
           className={'flex gap-x-4 items-center'}>
           <div className={'relative h-[72px] w-[72px]'}>
             <Image
-              src={userProfile?.profileImage}
-              alt={userProfile?.profileImage}
+              src={userProfile?.profileImage || '/person.png'}
+              alt={userProfile?.profileImage || '/person.png'}
               fill
               className={'object-cover rounded-full'}></Image>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 interface Props {
   isClicked: '시험결과' | '틀린문제';
   setIsClicked: React.Dispatch<React.SetStateAction<'시험결과' | '틀린문제'>>;
