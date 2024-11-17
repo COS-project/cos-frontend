@@ -1,6 +1,5 @@
 'use client';
 
-import { AxiosResponse } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useRecoilState } from 'recoil';
@@ -9,12 +8,12 @@ import { KeyedMutator } from 'swr';
 import Header from '@/components/common/Header';
 import { postInterestCertificates } from '@/lib/api/onboarding';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
-import { InterestCertificateOnboarding } from '@/types/global';
+import { InterestCertificateOnboarding, InterestCertificateResponseType } from '@/types/global';
 
 export interface CertificationPriorityProps {
   onNext: () => void;
   onBefore: () => void;
-  interestCertificateDataMutate?: KeyedMutator<AxiosResponse<any, any>>;
+  interestCertificateDataMutate?: KeyedMutator<InterestCertificateResponseType>;
 }
 
 const CertificationPriority: React.FC<CertificationPriorityProps> = ({
