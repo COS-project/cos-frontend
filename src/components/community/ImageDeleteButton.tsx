@@ -41,12 +41,15 @@ const ImageDeleteButton = (props: Props) => {
    * 수정글에서(usage==edit) 진짜 삭제할 수 있도록 deleteImageUrls 리스트에 삭제할 url 을 추가하는 함수
    */
   const deleteImageData = () => {
-    const copy = [...editPostData.removeImageIds];
-    const copyPastImageUrls = [...pastImageUrls];
+    let copy: number[] = [];
+    if (editPostData.removeImageIds) {
+      copy = [...editPostData.removeImageIds];
+      const copyPastImageUrls = [...pastImageUrls];
 
-    if (type === '과거 이미지 URL' && !copy.includes(copyPastImageUrls[i])) {
-      copy.push(copyPastImageUrls[i]);
-      setEditPostData((prevState) => ({ ...prevState, removeImageIds: copy }));
+      if (type === '과거 이미지 URL' && !copy.includes(copyPastImageUrls[i].id)) {
+        copy.push(copyPastImageUrls[i].id); //TODO: 눈여겨 보기 삭제하는거
+        setEditPostData((prevState) => ({ ...prevState, removeImageIds: copy }));
+      }
     }
   };
 

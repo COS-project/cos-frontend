@@ -17,7 +17,7 @@ const TrendingSearchKeywords = (props: Props) => {
     console.log(lastFetchedTime);
   }, [lastFetchedTime]);
 
-  const getIconForStatus = (status: TrendingKeywordState) => {
+  const getIconForStatus = (status: TrendingKeywordState | string) => {
     if (status === 'NEW') {
       return <NewIcon />;
     } else if (status === 'UNCHANGED') {
@@ -35,7 +35,7 @@ const TrendingSearchKeywords = (props: Props) => {
         <div className={'text-h4 font-semibold ml-2'}>인기 검색어</div>
         <div className={'flex flex-col gap-y-5 bg-white p-5 rounded-[32px]'}>
           <div className={'grid grid-cols-2 gap-x-6 w-full gap-y-4'}>
-            {keywords?.map((keyword, index: number) => {
+            {keywords?.map((keyword: TrendingKeywordType, index: number) => {
               return (
                 <div key={index} className={'flex justify-between text-h6'}>
                   <div className={'w-[80%] flex'}>

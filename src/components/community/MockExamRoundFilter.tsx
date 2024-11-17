@@ -16,7 +16,7 @@ const MockExamRoundFilter = (props: Props) => {
   const { mockExams, className, setIdState, setDataState, setIsOpen } = props;
 
   const changePostDataRound = (round: number) => {
-    setDataState((prevState) => ({
+    setDataState((prevState: any) => ({
       ...prevState,
       round: round,
     }));

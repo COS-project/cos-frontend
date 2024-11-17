@@ -153,7 +153,7 @@ const WriteExplanationPost = (props: Props) => {
 
     let isValid = true;
 
-    if (questionSequence > questions?.length) {
+    if (questionSequence > (questions?.length || 0)) {
       setIsQuestionNumberExceedingLimit(true);
       isValid = false;
     } else {
@@ -241,7 +241,7 @@ const WriteExplanationPost = (props: Props) => {
                   if (
                     /^\d+$/.test(e.target.value) &&
                     e.target.value.length !== 0 &&
-                    parseInt(e.target.value) < questions.length
+                    parseInt(e.target.value) < (questions?.length || 0)
                   ) {
                     changePostDataQuestionSequence(e.target.value);
                   }
@@ -252,7 +252,7 @@ const WriteExplanationPost = (props: Props) => {
               {!isQuestionSequenceNumeric && !isEmpty ? (
                 <div className={'text-point ml-1'}>숫자만 입력해주세요.</div>
               ) : null}
-              {questionSequence > questions?.length && !isEmpty && isQuestionSequenceNumeric ? (
+              {questionSequence > (questions?.length || 0) && !isEmpty && isQuestionSequenceNumeric ? (
                 <div className={'text-point ml-1'}>전체 문제 수({questions?.length}) 이하의 숫자를 입력해주세요.</div>
               ) : null}
             </div>

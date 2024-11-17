@@ -127,7 +127,7 @@ const WriteTipPost = (props: Props) => {
     workbookInputs.filter((book) => book !== '');
 
     const updatedTags = [
-      ...postData.tags,
+      ...(postData.tags || []),
       ...onlineCourseInputs
         .filter((lecture) => lecture !== '')
         .map((lecture) => ({ tagType: 'LECTURE', tagName: lecture })),

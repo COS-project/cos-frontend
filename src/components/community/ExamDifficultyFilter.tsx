@@ -28,7 +28,7 @@ const ExamDifficultyFilter = (props: Props) => {
   };
 
   const handleDifficultyChange = (difficulty: string) => {
-    let difficultyEnum;
+    let difficultyEnum: ExamDifficulty | undefined;
     switch (difficulty) {
       case '어려워요':
         difficultyEnum = 'TOO_DIFFICULT';

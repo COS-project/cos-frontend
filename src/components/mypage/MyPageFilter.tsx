@@ -2,8 +2,8 @@ import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
-  data: ('최신순' | '작성순')[]; //최신순, 작성순
-  setSelectedFilterContent: React.Dispatch<React.SetStateAction<'최신순' | '작성순'>>;
+  data: ('최신순' | '인기순')[]; //최신순, 작성순
+  setSelectedFilterContent: React.Dispatch<React.SetStateAction<'최신순' | '인기순'>>;
   setIsFilterOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isFilterOpen: boolean;
   className?: string;
