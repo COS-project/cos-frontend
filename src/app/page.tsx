@@ -11,10 +11,12 @@ export default function Page() {
   const refreshToken = parameter.get('refreshToken');
 
   useEffect(() => {
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    console.log('액세스 토큰', localStorage.getItem('accessToken'));
-    console.log('리프레시 토큰', localStorage.getItem('refreshToken'));
+    if (accessToken && refreshToken) {
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      console.log('액세스 토큰', localStorage.getItem('accessToken'));
+      console.log('리프레시 토큰', localStorage.getItem('refreshToken'));
+    }
   }, [accessToken, refreshToken]);
 
   return (
