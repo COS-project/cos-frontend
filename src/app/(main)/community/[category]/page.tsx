@@ -19,9 +19,9 @@ import WriteTipPost from '@/components/community/WriteTipPost';
 import useDebounce from '@/hooks/useDebounce';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
+import { certificateIdAtom } from '@/recoil/atom';
 import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
 import { BoardType } from '@/types/community/type';
-import { certificateIdAtom } from '@/recoil/atom';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
