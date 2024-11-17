@@ -129,13 +129,7 @@ const UnCheckIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 const CheckIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={16}
-    height={16}
-    fill="none"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} fill="none" {...props}>
     <rect width={15} height={15} x={0.5} y={0.5} fill="#3B3DFF" rx={7.5} />
     <rect width={15} height={15} x={0.5} y={0.5} stroke="#fff" rx={7.5} />
     <path stroke="#fff" d="M4 7.167 7.2 10.5l4.8-5" />

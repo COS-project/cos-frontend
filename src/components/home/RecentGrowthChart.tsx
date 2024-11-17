@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import { SVGProps, useEffect } from 'react';
+import { SVGProps } from 'react';
 import { useRecoilState } from 'recoil';
 
 import StickGraph from '@/components/exam/StickGraph';

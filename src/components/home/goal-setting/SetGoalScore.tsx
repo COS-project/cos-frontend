@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
 import SetGoalsItem from '@/components/home/goal-setting/SetGoalsItem';

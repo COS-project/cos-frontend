@@ -123,7 +123,6 @@ const SelectRepeatDayItem = (props: Props) => {
     resetIsClickedState();
   }, [goalData.studyRepeatDays, goalData.mockExamRepeatDays]);
 
-
   return (
     <div className="goal-setting-content">
       <div className="flex flex-col gap-y-2">

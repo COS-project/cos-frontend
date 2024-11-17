@@ -1,12 +1,12 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-import * as React from 'react';
-import type { SVGProps } from 'react';
-import { useState } from 'react';
-import { Carousel } from 'react-responsive-carousel';
-import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import Image from 'next/image';
+import type { SVGProps } from 'react';
+import * as React from 'react';
+import { Carousel } from 'react-responsive-carousel';
 import { useRecoilValue } from 'recoil';
+
+import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import { certificateIdAtom } from '@/recoil/atom';
 
 const CarouselCardView = () => {

@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import StickGraph from '@/components/exam/StickGraph';
 import WeeklyGoalPeriodFilter from '@/components/home/WeeklyGoalPeriodFilter';
 import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
+import { certificateIdAtom } from '@/recoil/atom';
 import {
   selectedDateTypeState,
   selectedPrepareTimeState,
@@ -13,7 +14,6 @@ import {
   selectedReportTypeState,
 } from '@/recoil/home/atom';
 import { ScoreAVGListType, WeeklyGoalPeriodType } from '@/types/home/type';
-import { certificateIdAtom } from '@/recoil/atom';
 
 const GrowthChart = () => {
   const certificateId = useRecoilValue(certificateIdAtom);

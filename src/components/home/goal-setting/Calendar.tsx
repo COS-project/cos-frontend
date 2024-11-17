@@ -8,8 +8,6 @@ import {
   endOfWeek,
   format,
   getMonth,
-  isSaturday,
-  isSunday,
   startOfMonth,
   startOfWeek,
   subMonths,

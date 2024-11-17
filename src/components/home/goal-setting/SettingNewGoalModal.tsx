@@ -1,4 +1,4 @@
-import { type SVGProps, useState } from 'react';
+import { type SVGProps } from 'react';
 import * as React from 'react';
 
 interface Props {
