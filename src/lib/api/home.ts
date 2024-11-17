@@ -4,7 +4,7 @@ import { GoalSettingInfo } from '@/types/global';
 
 import { sendRequest } from '../axios';
 
-export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo, certificateId: number) => {
+export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo, certificateId: number | undefined) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({

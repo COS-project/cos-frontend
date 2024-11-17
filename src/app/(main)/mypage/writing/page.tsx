@@ -18,7 +18,7 @@ export default function MyWriting() {
   // REVIEW, COMMENTARY, TIP, NORMAL
   const [boardType, setBoardType] = useState<MyPageBoardType>('COMMENTARY');
   // 최신순:createdAt, 작성순:popular
-  const [selectedFilterContent, setSelectedFilterContent] = useState<'최신순' | '작성순'>('최신순');
+  const [selectedFilterContent, setSelectedFilterContent] = useState<'최신순' | '인기순'>('최신순');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDeleteWarningModalOpen, setIsDeleteWarningModalOpen] = useState<boolean>(false);
   const [selectedPostId, setSelectedPostId] = useState<number>(0);

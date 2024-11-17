@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import qs from 'query-string';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useRecoilValue } from 'recoil';
 
 import RoundFilter from '@/components/community/RoundFilter';
 import YearFilter from '@/components/community/YearFilter';
@@ -9,10 +10,9 @@ import Post from '@/components/mypage/Post';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
+import { certificateIdAtom } from '@/recoil/atom';
 import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
 import { MockExam } from '@/types/global';
-import { useRecoilValue } from 'recoil';
-import { certificateIdAtom } from '@/recoil/atom';
 
 interface Props {
   boardType: BoardType;
@@ -217,31 +217,31 @@ const CommentaryBoardList = (props: Props) => {
       </div>
       <div className={'flex flex-col gap-y-4'}>
         {commentarySearchResults.map((userPosts: ResponsePostType, index: number) => {
-          return userPosts?.result.content.map((userPost: PostType, postIndex: number) => {
-            const isLastElement =
-              index === commentarySearchResults.length - 1 && postIndex === userPosts?.result.content.length - 1;
-            return (
-              <div key={userPost.postId} ref={isLastElement ? ref : null}>
-                <Post
-                  postId={userPost.postId}
-                  content={userPost.postContent.content}
-                  title={userPost.postContent.title}
-                  commentCount={userPost.postStatus.commentCount}
-                  createdAt={formatDate(userPost.dateTime.createdAt)}
-                  imageUrl={userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null}
-                  likeCount={userPost.postStatus.likeCount}
-                  topElement={
-                    userPost.question
-                      ? commentaryTopElement(
-                          userPost.question.mockExam.examYear,
-                          userPost.question.mockExam.round,
-                          userPost.question.questionSeq,
-                        )
-                      : undefined
-                  }></Post>
-              </div>
-            );
-          });
+          return (
+            <div key={userPosts.result.postResponse.postId} ref={ref}>
+              <Post
+                postId={userPosts.result.postResponse.postId}
+                content={userPosts.result.postResponse.postContent.content}
+                title={userPosts.result.postResponse.postContent.title}
+                commentCount={userPosts.result.postResponse.postStatus.commentCount}
+                createdAt={formatDate(userPosts.result.postResponse.dateTime.createdAt)}
+                imageUrl={
+                  userPosts.result.postResponse.postContent.images.length !== 0
+                    ? userPosts.result.postResponse.postContent.images[0].imageUrl
+                    : null
+                }
+                likeCount={userPosts.result.postResponse.postStatus.likeCount}
+                topElement={
+                  userPosts.result.postResponse.question
+                    ? commentaryTopElement(
+                        userPosts.result.postResponse.question.mockExam.examYear,
+                        userPosts.result.postResponse.question.mockExam.round,
+                        userPosts.result.postResponse.question.questionSeq,
+                      )
+                    : undefined
+                }></Post>
+            </div>
+          );
         })}
       </div>
     </div>

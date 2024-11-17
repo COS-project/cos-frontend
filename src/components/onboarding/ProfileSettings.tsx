@@ -13,32 +13,35 @@ const ProfileSettings = (props: Props) => {
   const { onNext, onBefore } = props;
   const { userProfile } = useGetUserProfile();
   const imgRef = useRef<HTMLInputElement>(null);
-  const [uploadImage, setUploadImage] = useState();
+  const [uploadImage, setUploadImage] = useState<string | ArrayBuffer | null>();
 
   // 이미지 미리보기 설정
   const handleImagePreview = async () => {
     const files = imgRef.current?.files;
     let reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-    reader.onloadend = () => {
-      setUploadImage(reader.result);
-    };
+    if (files) {
+      reader.readAsDataURL(files[0]);
+      reader.onloadend = () => {
+        setUploadImage(reader.result);
+      };
+    }
   };
 
   // 폼 제출 핸들러
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
     const formData = new FormData();
+    if (imgRef.current && imgRef.current.files) {
+      formData.append('file', imgRef.current.files[0]); // 파일을 formData에 추가
 
-    formData.append('file', imgRef.current.files[0]); // 파일을 formData에 추가
-
-    const json = { nickname: e.target.nickname.value };
-    formData.append(
-      'request',
-      new Blob([JSON.stringify(json)], {
-        type: 'application/json',
-      }),
-    );
+      const json = { nickname: e.target.nickname.value };
+      formData.append(
+        'request',
+        new Blob([JSON.stringify(json)], {
+          type: 'application/json',
+        }),
+      );
+    }
 
     try {
       await patchProfileData(formData); // API 호출
@@ -58,14 +61,12 @@ const ProfileSettings = (props: Props) => {
             <div className="relative w-fit">
               <div className="relative w-[100px] h-[100px] object-cover overflow-hidden rounded-full">
                 <Image
-                  alt={userProfile ? userProfile.userId : 0}
-                  src={
-                    uploadImage ? uploadImage : userProfile?.profileImage ? userProfile?.profileImage : '/person.png'
-                  }
+                  alt={userProfile?.userId?.toString() || ''}
+                  src={(uploadImage as string) || userProfile?.profileImage || '/person.png'}
                   className={'object-cover'}
                   fill></Image>
               </div>
-              <label for="input-file">
+              <label htmlFor="input-file">
                 <ProfileImageIcon className="absolute bottom-0 right-0" />
               </label>
               <input

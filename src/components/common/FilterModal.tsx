@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { SetterOrUpdater } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
 import { CreatePostDataType } from '@/types/community/type';
@@ -8,8 +9,9 @@ import { CreatePostDataType } from '@/types/community/type';
 interface Props {
   data: any[] | undefined;
   className?: string;
-  setIdState?: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setIdState?: React.Dispatch<React.SetStateAction<number | undefined>> | SetterOrUpdater<number>;
   setDataState?:
+    | SetterOrUpdater<string>
     | React.Dispatch<React.SetStateAction<CreatePostDataType | undefined>>
     | React.Dispatch<React.SetStateAction<string | undefined>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;

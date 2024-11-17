@@ -6,7 +6,7 @@ import { MyPageBoardType } from '@/types/mypage/type';
 interface Props {
   boardType: MyPageBoardType;
   setBoardType: React.Dispatch<React.SetStateAction<MyPageBoardType>>;
-  setSelectedFilterContent: React.Dispatch<React.SetStateAction<'최신순' | '작성순'>>;
+  setSelectedFilterContent: React.Dispatch<React.SetStateAction<'최신순' | '인기순'>>;
 }
 
 const MyWritingMenu = (props: Props) => {

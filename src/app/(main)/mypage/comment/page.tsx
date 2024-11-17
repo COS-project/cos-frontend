@@ -14,7 +14,7 @@ import { filterContent } from '@/utils/mypage/FilterContent';
 
 export default function MyComment() {
   const [ref, inView] = useInView();
-  const [selectedFilterContent, setSelectedFilterContent] = useState<'최신순' | '작성순'>('최신순');
+  const [selectedFilterContent, setSelectedFilterContent] = useState<'최신순' | '인기순'>('최신순');
   const [isOpenFilter, setIsOpenFilter] = useState(false);
   const { userCommentPostsList, setSize } = useGetUserCommentPost(selectedFilterContent === '최신순' ? 'DESC' : 'ASC');
 

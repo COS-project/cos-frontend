@@ -20,7 +20,7 @@ export interface Props {
   children?: React.ReactNode;
   isMoveButton?: boolean;
   path?: number;
-  isErrorModalOpen?: boolean,
+  isErrorModalOpen?: boolean;
   setIsErrorModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

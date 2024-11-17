@@ -35,8 +35,8 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
    * Recoil 상태를 초기화하는 함수
    * @param apiResponse Certification id와 name
    */
-  const initializeGoalSettingState = (apiResponse: Certificate[]) => {
-    return apiResponse.map((res) => ({
+  const initializeGoalSettingState = (apiResponse: any) => {
+    return apiResponse.map((res: any) => ({
       certificateId: res.certificateId,
       certificateName: res.certificateName,
       isClick: false,
@@ -50,7 +50,7 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
     try {
       const response = certificationsList;
       if (response) {
-        const initialState: Certificate[] = initializeGoalSettingState(response);
+        const initialState = initializeGoalSettingState(response);
         setAllCertifications(initialState); // 여기에서 변환된 배열을 Recoil 상태에 설정
       } else {
         console.error('Failed to fetch goal setting data');
