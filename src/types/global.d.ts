@@ -1,5 +1,4 @@
 import React from 'react';
-import { PostType } from '@/types/community/type';
 
 export type HeaderType = 'static' | 'dynamic' | 'second';
 
@@ -70,11 +69,6 @@ export interface MockExam {
   isTake: boolean;
 }
 
-// 진행 바 만들 때 사용합니다.
-export interface ProgressBar {
-  width: number;
-}
-
 export interface ProblemInfo {
   questionNum: number;
   choiceAnswer: multipleChoice;
@@ -84,22 +78,6 @@ export interface multipleChoice {
   problem: string;
   example: string[];
 }
-
-// api를 통해 받아온 year들을 추출해서 담아둘 구조
-export interface examYearList {
-  years: number[];
-}
-
-// 온보딩 관심 자격증 리스트
-export const LicenseInfo: Array<License> = [];
-
-// 온보딩 관심 자격증 리스트의 객체 형태 자격증 번호
-interface License {
-  // TODO: 백엔드 API 나오는것 보고 변경될 예정
-  id: string;
-  title: string;
-}
-
 // 자격증 정보 공통 분류
 export interface ExamInfoCommonCategory {
   intro: ExamInfoCommonType;
@@ -249,12 +227,6 @@ export interface QuestionsResponse {
   questionOptions: QuestionOptions[];
   correctOption: number;
   score: number;
-}
-
-export interface Param {
-  page: number;
-  size: number;
-  sort?: [];
 }
 
 export interface ReviewIncorrectAnswers {
