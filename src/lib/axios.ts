@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 const client = axios.create({
   baseURL: 'http://cercat.o-r.kr/api/v2',
@@ -43,13 +43,14 @@ const getTokensFromLocalStorage = () => {
  * API 요청을 보내는 함수
  * @param config 는 axios 요청
  */
-const sendRequest = async (config) => {
+const sendRequest = async (config: any) => {
   try {
     console.log('In send Request' + localStorage.getItem('accessToken'));
     return await client(config);
   } catch (error) {
-    if (error.response && error.response.status === 401) {
-      // 만료된 액세스 토큰일 경우 리프레시 토큰으로 갱신
+    const axiosError = error as AxiosError; // AxiosError로 캐스팅
+    if (axiosError.response && axiosError.response.status === 401) {
+      // 만료된 액세스 ㅇ토큰일 경우 리프레시 토큰으로 갱신
       const { refreshToken } = getTokensFromLocalStorage();
       if (refreshToken) {
         try {
@@ -62,26 +63,30 @@ const sendRequest = async (config) => {
               },
             },
           );
-          const newAccessToken = response.headers.get('access-token');
-          const newRefreshToken = response.headers.get('refresh-token');
 
-          localStorage.removeItem('refreshToken');
-          localStorage.removeItem('accessToken');
-          // 갱신된 액세스 토큰을 헤더에 설정
-          setAuthHeader(newAccessToken);
+          // headers는 객체로 직접 접근
+          const newAccessToken = response.headers['access-token'];
+          const newRefreshToken = response.headers['refresh-token'];
 
-          // 갱신된 토큰을 로컬 스토리지에 저장
-          saveTokensToLocalStorage(newAccessToken, newRefreshToken);
+          if (newAccessToken && newRefreshToken) {
+            // 갱신된 토큰을 처리
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('accessToken');
+            setAuthHeader(newAccessToken);
+            saveTokensToLocalStorage(newAccessToken, newRefreshToken);
 
-          // 이전 요청 재시도
-          return await client({
-            headers: {
-              'Access-Token': newAccessToken,
-            },
-            method: config.method,
-            data: config.data,
-            url: config.url,
-          });
+            // 이전 요청 재시도
+            return await client({
+              headers: {
+                'Access-Token': newAccessToken,
+              },
+              method: config.method,
+              data: config.data,
+              url: config.url,
+            });
+          } else {
+            console.error('새로운 토큰이 없습니다.');
+          }
         } catch (refreshError) {
           // 리프레시 토큰으로의 갱신에 실패하면 로그인 페이지로 리다이렉트 또는 다른 처리 수행
           console.error('토큰 갱신에 실패했습니다..', refreshError);
