@@ -100,7 +100,7 @@ const sendRequest = async (config: any) => {
   }
 };
 
-export const swrGetFetcher = async (url) => {
+export const swrGetFetcher = async () => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
 
@@ -109,7 +109,6 @@ export const swrGetFetcher = async (url) => {
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'GET',
-      url: url,
     });
     return response.data;
   } catch (error) {
