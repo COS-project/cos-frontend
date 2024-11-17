@@ -1,24 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import type { SVGProps } from 'react';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default function Page() {
-  const parameter = useSearchParams();
-  const accessToken = parameter.get('accessToken');
-  const refreshToken = parameter.get('refreshToken');
-
-  useEffect(() => {
-    if (accessToken && refreshToken) {
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      console.log('액세스 토큰', localStorage.getItem('accessToken'));
-      console.log('리프레시 토큰', localStorage.getItem('refreshToken'));
-    }
-  }, [accessToken, refreshToken]);
-
   return (
     <div className={'flex flex-col justify-center items-center bg-primary min-h-screen'}>
       <WhiteLogoIcon />

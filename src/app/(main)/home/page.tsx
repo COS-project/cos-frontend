@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
 import { SVGProps, useEffect } from 'react';
 import { useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
@@ -42,17 +42,19 @@ export default function Home() {
   const { goalSettingStatus } = useGoalSettingStatus(certificateId);
 
   useEffect(() => {
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
-    console.log('액세스 토큰', localStorage.getItem('accessToken'));
-    console.log('리프레시 토큰', localStorage.getItem('refreshToken'));
+    if (accessToken !== null && refreshToken !== null) {
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      console.log('액세스 토큰', localStorage.getItem('accessToken'));
+      console.log('리프레시 토큰', localStorage.getItem('refreshToken'));
+    }
   }, [accessToken, refreshToken]);
 
   useEffect(() => {
-    if (localStorage.getItem('accessToken')) {
+    if (localStorage.getItem('accessToken') !== null) {
       const eventSource = new EventSource('http://cercat.o-r.kr/api/v2/alarms/subscribe', {
         headers: {
-          'Access-Token': localStorage.getItem('accessToken'),
+          'Access-Token': localStorage.getItem('accessToken') || '',
         },
       });
       eventSource.addEventListener('connect', (event: any) => {
