@@ -13,7 +13,7 @@ export const postSubjectResultRequestsList = async (
       },
       method: 'POST',
       data: { createSubjectResultRequests: subjectResultRequestsList },
-      url: `/api/v2mock-exams/${mockExamId}/mock-exam-results`,
+      url: `/api/v2/mock-exams/${mockExamId}/mock-exam-results`,
     });
     // 성공적인 응답 처리
     return response.data;
