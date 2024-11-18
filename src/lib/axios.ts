@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 
 const client = axios.create({
-  baseURL: 'http://cercat.o-r.kr',
+  baseURL: 'https://cercat.o-r.kr',
   headers: {
     'Content-type': 'application/json',
     'Access-Token':

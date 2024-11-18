@@ -5,28 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/types/search/type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/search/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/search/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/api/onboarding.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/onboarding.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetAutoCompleteSearchKeywords.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetAutoCompleteSearchKeywords.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetBoardList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetBoardList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetCommentarySearchResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetCommentarySearchResults.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetGoalSettingData.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetGoalSettingData.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetIncorrectQuestionsResult.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetIncorrectQuestionsResult.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetInterestCertificates.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamStatistics.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetMockExamStatistics.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetRecentSearchResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetRecentSearchResults.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetTrendingKeywords.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetTrendingKeywords.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetUserCommentPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetUserCommentPost.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetUserGoals.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetUserGoals.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetUserPosts.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetUserPosts.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetUserProfile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetUserProfile.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useMockExamQuestions.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useMockExamQuestions.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/community/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/community/type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/exam/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/exam/type.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/global.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/home/type.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/home/type.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,22 +34,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "fix/type-error",
-    "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/prettier",
-    "ts.external.directory.path": "/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/prettier&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/public" />
@@ -169,6 +148,7 @@
       <workItem from="1731116951657" duration="599000" />
       <workItem from="1731456670508" duration="1275000" />
       <workItem from="1731459575203" duration="9760000" />
+      <workItem from="1731910040527" duration="3627000" />
     </task>
     <servers />
   </component>
