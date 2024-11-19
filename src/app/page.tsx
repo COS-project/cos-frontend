@@ -1,13 +1,64 @@
 'use client';
 
 import Link from 'next/link';
-import type { SVGProps } from 'react';
-import React from 'react';
+import { SVGProps, useEffect, useState } from 'react';
+
+// `beforeinstallprompt` 타입 선언
+declare global {
+  interface WindowEventMap {
+    beforeinstallprompt: BeforeInstallPromptEvent;
+  }
+}
+
+interface BeforeInstallPromptEvent extends Event {
+  platforms: string[];
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+  prompt: () => Promise<void>;
+}
 
 export default function Page() {
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+
+  useEffect(() => {
+    // `beforeinstallprompt` 이벤트 리스너 등록
+    const handleBeforeInstallPrompt = (event: BeforeInstallPromptEvent) => {
+      event.preventDefault(); // 기본 동작 방지
+      setDeferredPrompt(event); // 이벤트 저장
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      // 이벤트 리스너 제거
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+
+    // 설치 프로세스 실행
+    await deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === 'accepted') {
+      console.log('PWA 설치 완료');
+    } else {
+      console.log('PWA 설치 취소');
+    }
+
+    setDeferredPrompt(null); // 프로세스 완료 후 초기화
+  };
+
   return (
     <div className={'flex flex-col justify-center items-center bg-primary min-h-screen'}>
-      <link rel="manifest" href="/manifest.json" />
+      {deferredPrompt && (
+        <button
+          onClick={handleInstallClick}
+          className="fixed bottom-5 right-5 bg-blue-500 text-white px-4 py-2 rounded-md shadow-lg">
+          PWA 설치
+        </button>
+      )}
       <WhiteLogoIcon />
       <Link
         href="http://cercat.o-r.kr/oauth2/authorization/kakao"

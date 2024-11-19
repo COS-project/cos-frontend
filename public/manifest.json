@@ -12,7 +12,8 @@
       "src": "/person.png",
       "sizes": "101x100",
       "type": "image/png",
-      "form_factor": "mobile"
+      "form_factor": "mobile",
+      "purpose": "any maskable"
     },
     {
       "src": "/person.png",
