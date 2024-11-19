@@ -7,6 +7,7 @@ import React from 'react';
 export default function Page() {
   return (
     <div className={'flex flex-col justify-center items-center bg-primary min-h-screen'}>
+      <link rel="manifest" href="/manifest.json" />
       <WhiteLogoIcon />
       <Link
         href="http://cercat.o-r.kr/oauth2/authorization/kakao"
