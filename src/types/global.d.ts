@@ -1,5 +1,4 @@
 import React from 'react';
-import { PostType } from '@/types/community/type';
 
 export type HeaderType = 'static' | 'dynamic' | 'second';
 
@@ -70,11 +69,6 @@ export interface MockExam {
   isTake: boolean;
 }
 
-// 진행 바 만들 때 사용합니다.
-export interface ProgressBar {
-  width: number;
-}
-
 export interface ProblemInfo {
   questionNum: number;
   choiceAnswer: multipleChoice;
@@ -84,22 +78,6 @@ export interface multipleChoice {
   problem: string;
   example: string[];
 }
-
-// api를 통해 받아온 year들을 추출해서 담아둘 구조
-export interface examYearList {
-  years: number[];
-}
-
-// 온보딩 관심 자격증 리스트
-export const LicenseInfo: Array<License> = [];
-
-// 온보딩 관심 자격증 리스트의 객체 형태 자격증 번호
-interface License {
-  // TODO: 백엔드 API 나오는것 보고 변경될 예정
-  id: string;
-  title: string;
-}
-
 // 자격증 정보 공통 분류
 export interface ExamInfoCommonCategory {
   intro: ExamInfoCommonType;
@@ -129,7 +107,6 @@ export interface CommonTitleType {
   examTimeLimit: ExamInfoCommonType;
   passingCriteria: ExamInfoCommonType;
 }
-
 
 // 목표 설정 type
 export interface GoalSettingInfo {
@@ -178,8 +155,24 @@ export interface InterestCertificate {
   interestPriority: string;
 }
 
+export interface InterestCertificateResponseType {
+  responseCode: string;
+  message: string;
+  result: InterestCertificate[];
+}
+
+/**
+ * 사용자 정보 responseType
+ */
+
+export interface UserProfileResponseType {
+  responseCode: string;
+  message: string;
+  result: UserProfile;
+}
+
 //userProfile
-export interface userProfile {
+export interface UserProfile {
   userId?: number;
   nickname: string;
   email?: string;
@@ -208,6 +201,13 @@ export interface SubjectResultRequests {
   createUserAnswerRequests: UserAnswerRequests[];
 }
 
+//모의고사 문제들 가져오기
+export interface QuestionsResponseType {
+  responseCode: string;
+  message: string;
+  result: QuestionsResponse[];
+}
+
 //모의고사 시험 문제, 선지 전체
 export interface QuestionsResponse {
   questionId: number;
@@ -229,40 +229,11 @@ export interface QuestionsResponse {
   score: number;
 }
 
-export interface Param {
-  page: number;
-  size: number;
-  sort?: [];
-}
-
 export interface ReviewIncorrectAnswers {
   responseCode: string;
-  message: string;
   result: {
-    pageable: {
-      pageNumber: number;
-      unpaged: boolean;
-      pageSize: number;
-      paged: boolean;
-      offset: number;
-      sort: {
-        unsorted: boolean;
-        sorted: boolean;
-        empty: boolean;
-      };
-    };
-    numberOfElements: number;
-    size: number;
     content: ReviewIncorrectAnswersContent[];
-    number: number;
-    sort: {
-      unsorted: boolean;
-      sorted: boolean;
-      empty: boolean;
-    };
-    first: boolean;
-    last: boolean;
-    empty: boolean;
+    hasNext: boolean;
   };
 }
 
@@ -275,7 +246,7 @@ export interface ReviewIncorrectAnswersContent {
 }
 
 export interface ReviewIncorrectMockExam {
-  MockExamId: number;
+  mockExamId: number;
   examYear: number;
   round: number;
   timeLimit: number;
@@ -362,10 +333,10 @@ interface PostComments {
   user: User;
   parentCommentId?: number;
   likeCount: number;
-  isLiked: boolean;
   content: string;
   dateTime: DateTime;
   childPostComments?: PostComments[];
+  isLiked: boolean;
 }
 
 //날짜 타입
@@ -429,4 +400,16 @@ interface Question {
   questionOptions: QuestionOptions[];
   correctOption: number;
   score: number;
+}
+
+//온보딩 자격증
+export interface CertificatesResponseType {
+  responseCode: string;
+  message: string;
+  result: CertificateType[];
+}
+
+export interface CertificateType {
+  certificateId: number;
+  certificateName: string;
 }

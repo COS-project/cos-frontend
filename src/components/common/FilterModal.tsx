@@ -1,16 +1,19 @@
 'use client';
 
 import React from 'react';
+import { SetterOrUpdater } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
-import { CreatePostDataType, YearsAndRounds } from '@/types/community/type';
-import { Certificate } from '@/types/global';
+import { CreatePostDataType } from '@/types/community/type';
 
 interface Props {
-  data: [];
+  data: any[] | undefined;
   className?: string;
-  setIdState?: React.Dispatch<React.SetStateAction<number>>
-  setDataState: React.Dispatch<React.SetStateAction<CreatePostDataType>> | React.Dispatch<React.SetStateAction<string>>;
+  setIdState?: React.Dispatch<React.SetStateAction<number | undefined>> | SetterOrUpdater<number>;
+  setDataState?:
+    | SetterOrUpdater<string>
+    | React.Dispatch<React.SetStateAction<CreatePostDataType | undefined>>
+    | React.Dispatch<React.SetStateAction<string | undefined>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -20,11 +23,13 @@ interface Props {
 const FilterModal = (props: Props) => {
   const { data, className, setIdState, setDataState, setIsOpen } = props;
 
-  const changePostDataRound = (datum) => {
-    setDataState((prevState) => ({
-      ...prevState,
-      round: parseInt(datum),
-    }));
+  const changePostDataRound = (datum: any) => {
+    if (setDataState) {
+      setDataState((prevState: any) => ({
+        ...prevState,
+        round: parseInt(datum),
+      }));
+    }
   };
 
   return (
@@ -32,7 +37,7 @@ const FilterModal = (props: Props) => {
       {!data || data.length === 0 ? (
         <div>error</div>
       ) : (
-        data.map((datum, index) => {
+        data.map((datum: any, index) => {
           return (
             <div
               key={index}

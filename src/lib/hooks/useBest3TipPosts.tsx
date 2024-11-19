@@ -5,7 +5,7 @@ import { PostType, ResponseBest3PostType } from '@/types/community/type';
 
 const useBest3TipPosts = (certificateId: number) => {
   const { data, error } = useSWR<ResponseBest3PostType>(
-    `/certificates/${certificateId}/tip-posts/best`,
+    `/api/v2/certificates/${certificateId}/tip-posts/best`,
     swrGetFetcher,
   );
 

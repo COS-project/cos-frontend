@@ -1,12 +1,14 @@
 import { ResponsiveRadar } from '@nivo/radar';
 import { useEffect, useState } from 'react';
 
-import { CorrectRateGraphType, SubjectResultsType } from '@/types/exam/type';
+import { CorrectRateGraphType } from '@/types/exam/type';
+import { AverageSubjectInfoType } from '@/types/home/type';
 
 interface Props {
-  subjectResults: SubjectResultsType[];
+  subjectResults: AverageSubjectInfoType[];
 }
-const AccuracyChart = (props: Props) => {
+
+const AverageAccurayChat = (props: Props) => {
   const { subjectResults } = props;
 
   const [subjectData, setSubjectData] = useState<CorrectRateGraphType[]>([]);
@@ -26,6 +28,7 @@ const AccuracyChart = (props: Props) => {
       <div className={'font-semibold px-5 mt-5 text-h3'}>과목별 정답률</div>
       <div className={'w-full'} style={{ height: '280px' }}>
         <ResponsiveRadar
+          // @ts-ignore
           data={subjectData}
           keys={['subjectCorrectRate']}
           indexBy="subjectTitle"
@@ -53,4 +56,4 @@ const AccuracyChart = (props: Props) => {
     </div>
   );
 };
-export default AccuracyChart;
+export default AverageAccurayChat;

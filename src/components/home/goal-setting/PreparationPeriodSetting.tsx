@@ -1,6 +1,6 @@
 'use client';
 
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import dayjs from 'dayjs';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -37,7 +37,7 @@ const PreparationPeriodSetting = () => {
           <div className="flex items-center gap-x-2">
             <div className="font-bold">
               {/* 시작일 == 종료일 1, 시작일 != 종료일 +2 (시작일과 종료일을 포함해주기 위해서)*/}
-              {finishDate.diff(startDate, 'd') == 0 ? 1 : finishDate.diff(startDate, 'd') + 2}일
+              {finishDate.diff(startDate, 'd') == 0 ? 1 : finishDate.diff(startDate, 'd') + 1}일
             </div>
             <div className="text-h6">동안 자격증 준비</div>
           </div>
@@ -54,7 +54,7 @@ const PreparationPeriodSetting = () => {
     if (!startDate.isAfter(finishDate)) {
       setGoalData((prevGoalSettingData) => ({
         ...prevGoalSettingData,
-        goalPrepareDays: finishDate.diff(startDate, 'd') == 0 ? 1 : finishDate.diff(startDate, 'd') + 2,
+        goalPrepareDays: finishDate.diff(startDate, 'd') == 0 ? 1 : finishDate.diff(startDate, 'd') + 1,
       }));
     }
   }, [goalData.prepareStartDateTime, goalData.prepareFinishDateTime]);
@@ -124,21 +124,11 @@ const PreparationPeriodSetting = () => {
 
       {/*시작설정 캘린더*/}
       {isStartCalendarOpen ? (
-        <Calendar
-          usage="Start"
-          className={'top-[46%]'}
-          setDateStatus={setDateStatus}
-          setIsModalOpen={setIsStartCalendarOpen}
-        />
+        <Calendar usage="Start" setDateStatus={setDateStatus} setIsModalOpen={setIsStartCalendarOpen} />
       ) : null}
       {/*종료설정 캘린더*/}
       {isFinishCalendarOpen ? (
-        <Calendar
-          usage="Finish"
-          className={'top-[46%]'}
-          setDateStatus={setDateStatus}
-          setIsModalOpen={setIsFinishCalendarOpen}
-        />
+        <Calendar usage="Finish" setDateStatus={setDateStatus} setIsModalOpen={setIsFinishCalendarOpen} />
       ) : null}
       <div className="goal-setting-content">{calculatePreparingPeriod()}</div>
     </div>

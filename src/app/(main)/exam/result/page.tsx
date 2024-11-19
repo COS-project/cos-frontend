@@ -1,21 +1,24 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import AccuracyChart from '@/components/exam/AccuracyChart';
 import IncorrectQuestions from '@/components/exam/IncorrectQuestions';
 import MockExamReportHeader from '@/components/exam/MockExamReportHeader';
 import MockExamResultReport from '@/components/exam/MockExamResultReport';
 import TakenTimeGraphReport from '@/components/exam/TakenTimeGraphReport';
 import UserExamAttemptsFilterContent from '@/components/exam/UserExamAttemptsFilterContent';
-import AccuracyChart from '@/lib/hooks/AccuracyChart';
+import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
+import { certificateIdAtom } from '@/recoil/atom';
 import { mockExamIdState, submittedMockExamResultIdState } from '@/recoil/exam/atom';
 import { MockExamResultType } from '@/types/exam/type';
 
 const Result = () => {
+  const certificateId = useRecoilValue(certificateIdAtom);
   const [submittedMockExamResultId, setSubmittedMockExamResultId] = useRecoilState(submittedMockExamResultIdState);
   const [isClicked, setIsClicked] = useState<'시험결과' | '틀린문제'>('시험결과');
   const [mockExamId, setMockExamId] = useRecoilState(mockExamIdState);
@@ -24,6 +27,7 @@ const Result = () => {
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
   let totalTakenTime = 0;
   const router = useRouter();
+  const { averageSubjectList } = useAverageSubjectInfo(certificateId);
 
   const onBack = () => {
     router.push('/exam');
@@ -67,9 +71,13 @@ const Result = () => {
               <TakenTimeGraphReport
                 totalTakenTime={sumTotalTakenTime}
                 subjectResults={examResults ? examResults[examResults.length - 1]?.subjectResults : []}
+                averageSubjectList={averageSubjectList ? averageSubjectList : []}
                 timeLimit={examResults ? examResults[examResults.length - 1]?.mockExam.timeLimit : 0}
               />
-              <AccuracyChart subjectResults={examResults ? examResults[examResults.length - 1]?.subjectResults : []} />
+              <AccuracyChart
+                subjectResults={examResults ? examResults[examResults.length - 1]?.subjectResults : []}
+                averageSubjectList={averageSubjectList ? averageSubjectList : []}
+              />
             </div>
           ) : (
             <div>
@@ -100,9 +108,13 @@ const Result = () => {
               <TakenTimeGraphReport
                 totalTakenTime={sumTotalTakenTime}
                 subjectResults={examResults ? examResults[userExamAttempt - 1]?.subjectResults : []}
+                averageSubjectList={averageSubjectList ? averageSubjectList : []}
                 timeLimit={examResults ? examResults[userExamAttempt - 1]?.mockExam.timeLimit : 0}
               />
-              <AccuracyChart subjectResults={examResults ? examResults[userExamAttempt - 1]?.subjectResults : []} />
+              <AccuracyChart
+                subjectResults={examResults ? examResults[userExamAttempt - 1]?.subjectResults : []}
+                averageSubjectList={averageSubjectList ? averageSubjectList : []}
+              />
             </div>
           ) : (
             <div>
@@ -125,6 +137,7 @@ const Result = () => {
       <Header headerType={'dynamic'} title={'성적리포트'} onBack={onBack}></Header>
       <MockExamReportHeader isClicked={isClicked} setIsClicked={setIsClicked} />
       <div className={'bg-gray0 min-h-screen p-5'}>{displayComponentBasedOnExamResults(examResults)}</div>
+      <div className={'h-[60px]'} />
       <NavBar />
     </>
   );

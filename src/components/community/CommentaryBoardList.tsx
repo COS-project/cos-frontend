@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation';
 import qs from 'query-string';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useRecoilValue } from 'recoil';
 
 import RoundFilter from '@/components/community/RoundFilter';
 import YearFilter from '@/components/community/YearFilter';
@@ -9,7 +10,8 @@ import Post from '@/components/mypage/Post';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
-import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
+import { certificateIdAtom } from '@/recoil/atom';
+import { BoardType, ResponsePostType } from '@/types/community/type';
 import { MockExam } from '@/types/global';
 
 interface Props {
@@ -20,6 +22,7 @@ interface Props {
 }
 const CommentaryBoardList = (props: Props) => {
   const { boardType, debouncedValue, searchValue, setSearchValue } = props;
+  const certificateId = useRecoilValue(certificateIdAtom);
   const [isOpenCommentaryRoundFilter, setIsOpenCommentaryRoundFilter] = useState<boolean>(false);
   const [isOpenCommentaryYearFilter, setIsOpenCommentaryYearFilter] = useState<boolean>(false);
   const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number | string>(
@@ -30,13 +33,13 @@ const CommentaryBoardList = (props: Props) => {
   );
   const { examYears } = useGetMockExamYears(); //해설 년도 필터값 데이터
   const [yearsWithAllOption, setYearsWithAllOption] = useState<Array<number | string>>([]); //해설 년도 필터값 데이터 Copy Array
-  const { mockExams } = useGetMockExams(1, selectedCommentaryYearFilterContent); //해설 회차 필터값
+  const { mockExams } = useGetMockExams(certificateId, selectedCommentaryYearFilterContent); //해설 회차 필터값
   const [roundsWithAllOption, setRoundsWithAllOption] = useState<Array<string | MockExam>>([]); //해설 회차 필터값 데이터 Copy Array
   const [ref, inView] = useInView();
   const router = useRouter();
   //해설 게시글 검색 결과
   const { commentarySearchResults, setSize } = useGetCommentarySearchResults(
-    1,
+    certificateId,
     selectedCommentaryYearFilterContent,
     selectedCommentaryRoundFilterContent,
     searchValue,
@@ -111,7 +114,7 @@ const CommentaryBoardList = (props: Props) => {
       };
 
       const url = qs.stringifyUrl({
-        url: '/community/1',
+        url: `/community/${certificateId}`,
         query: query,
       });
 
@@ -214,31 +217,31 @@ const CommentaryBoardList = (props: Props) => {
       </div>
       <div className={'flex flex-col gap-y-4'}>
         {commentarySearchResults.map((userPosts: ResponsePostType, index: number) => {
-          return userPosts?.result.content.map((userPost: PostType, postIndex: number) => {
-            const isLastElement =
-              index === commentarySearchResults.length - 1 && postIndex === userPosts?.result.content.length - 1;
-            return (
-              <div key={userPost.postId} ref={isLastElement ? ref : null}>
-                <Post
-                  postId={userPost.postId}
-                  content={userPost.postContent.content}
-                  title={userPost.postContent.title}
-                  commentCount={userPost.postStatus.commentCount}
-                  createdAt={formatDate(userPost.dateTime.createdAt)}
-                  imageUrl={userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null}
-                  likeCount={userPost.postStatus.likeCount}
-                  topElement={
-                    userPost.question
-                      ? commentaryTopElement(
-                          userPost.question.mockExam.examYear,
-                          userPost.question.mockExam.round,
-                          userPost.question.questionSeq,
-                        )
-                      : undefined
-                  }></Post>
-              </div>
-            );
-          });
+          return (
+            <div key={userPosts.result.postResponse.postId} ref={ref}>
+              <Post
+                postId={userPosts.result.postResponse.postId}
+                content={userPosts.result.postResponse.postContent.content}
+                title={userPosts.result.postResponse.postContent.title}
+                commentCount={userPosts.result.postResponse.postStatus.commentCount}
+                createdAt={formatDate(userPosts.result.postResponse.dateTime.createdAt)}
+                imageUrl={
+                  userPosts.result.postResponse.postContent.images.length !== 0
+                    ? userPosts.result.postResponse.postContent.images[0].imageUrl
+                    : null
+                }
+                likeCount={userPosts.result.postResponse.postStatus.likeCount}
+                topElement={
+                  userPosts.result.postResponse.question
+                    ? commentaryTopElement(
+                        userPosts.result.postResponse.question.mockExam.examYear,
+                        userPosts.result.postResponse.question.mockExam.round,
+                        userPosts.result.postResponse.question.questionSeq,
+                      )
+                    : undefined
+                }></Post>
+            </div>
+          );
         })}
       </div>
     </div>

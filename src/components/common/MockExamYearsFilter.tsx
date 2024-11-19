@@ -1,24 +1,26 @@
 import React from 'react';
 
-import { CreatePostDataType } from '@/types/community/type';
+import { CreatePostDataType, EditPostDataType } from '@/types/community/type';
 
 interface Props {
   years: number[] | undefined;
-  setDataState: React.Dispatch<React.SetStateAction<CreatePostDataType>>;
+  setDataState:
+    | React.Dispatch<React.SetStateAction<CreatePostDataType>>
+    | React.Dispatch<React.SetStateAction<EditPostDataType>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const MockExamYearsFilter = (props: Props) => {
   const { years, setDataState, setIsOpen } = props;
 
   const changePostDataExamYear = (year: number) => {
-    setDataState((prevState) => ({
+    setDataState((prevState: any) => ({
       ...prevState,
       examYear: year,
     }));
   };
 
   const resetRoundOnYearChange = () => {
-    setDataState((prevState) => ({
+    setDataState((prevState: any) => ({
       ...prevState,
       round: 1,
     }));

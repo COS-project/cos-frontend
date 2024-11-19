@@ -10,7 +10,7 @@ export const postFavoriteBoards = async (certificateId: number) => {
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'POST',
-      url: `/favorite-boards/${certificateId}`,
+      url: `/api/v2/favorite-boards/${certificateId}`,
     });
     // 성공적인 응답 처리
     return response.data;
@@ -30,7 +30,7 @@ export const postCommentary = async (certificateId: number, postType: string, fo
       },
       method: 'POST',
       data: formData,
-      url: `/certificates/${certificateId}/${postType}/posts`,
+      url: `/api/v2/certificates/${certificateId}/${postType}/posts`,
     });
     console.log(response.data);
     // 성공적인 응답 처리
@@ -51,7 +51,7 @@ export const putPostDetail = async (certificateId: number, postType: string, for
       },
       method: 'PUT',
       data: formData,
-      url: `/certificates/${certificateId}/${postType}/posts`,
+      url: `/api/v2/certificates/${certificateId}/${postType}/posts`,
     });
     console.log(response.data);
     // 성공적인 응답 처리
@@ -72,7 +72,7 @@ export const getTotalSearchResults = async (certificateId: number, postType: Boa
           'Access-Token': localStorage.getItem('accessToken'),
         },
         method: 'GET',
-        url: `/certificates/${certificateId}/search?postType=${postType}&keyword=${keyword}&page=0&size=10`,
+        url: `/api/v2/certificates/${certificateId}/search?postType=${postType}&keyword=${keyword}&page=0&size=10&sortFields=subjectResultEntity.mockExamResultEntity.createdAt, questionEntity.questionSeq&sortDirections=DESC, ASC`,
       });
       console.log(response.data);
       // 성공적인 응답 처리
@@ -97,7 +97,7 @@ export const getCommentarySearchResults = async (
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'GET',
-      url: `/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=0&size=10&sortKey=id`,
+      url: `/api/v2/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=0&size=10&sortKey=id`,
     });
     console.log(response.data);
     // 성공적인 응답 처리
@@ -117,7 +117,7 @@ export const deleteAllSearchResults = async () => {
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'DELETE',
-      url: '/search-logs/all',
+      url: '/api/v2/search-logs/all',
     });
     console.log(response.data);
     // 성공적인 응답 처리
@@ -137,7 +137,7 @@ export const deleteEachSearchResult = async (keyword: string, createdAt: string)
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'DELETE',
-      url: `/search-logs?keyword=${keyword}&createdAt=${createdAt}`,
+      url: `/api/v2/search-logs?keyword=${keyword}&createdAt=${createdAt}`,
     });
     console.log(response.data);
     // 성공적인 응답 처리
@@ -158,7 +158,7 @@ export const postExamReview = async (certificateId: number, postData: ExamReview
       },
       method: 'POST',
       data: postData,
-      url: `/certificates/${certificateId}/exam-reviews`,
+      url: `/api/v2/certificates/${certificateId}/exam-reviews`,
     });
     console.log(response.data);
     // 성공적인 응답 처리

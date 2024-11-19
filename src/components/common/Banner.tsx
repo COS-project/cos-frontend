@@ -14,7 +14,7 @@ export default function Banner(props: Props) {
   return (
     <div className="py-[16px] px-[16px] rounded-[32px] bg-second">
       <div className="flex flex-col gap-y-3">
-        <div className="text-white font-semibold text-left text-h3 my-1">{title}</div>
+        <div className="text-white text-left text-h3 my-1">{title}</div>
         <Link href={href}>
           <div className="flex px-[12px] py-1 rounded-full items-center w-fit bg-white text-blue text-h6">
             {buttonText}

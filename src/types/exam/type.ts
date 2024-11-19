@@ -30,6 +30,7 @@ export interface MockExamResultType {
 export interface SubjectResultsType {
   subject: Subject;
   score: number;
+  numberOfQuestions: number;
   numberOfCorrect: number;
   totalTakenTime: number;
   correctRate: number;
@@ -40,6 +41,7 @@ export interface SubjectResultsType {
  */
 export interface MockExamIncorrectQuestionsResultResponseType {
   responseCode: string;
+  message: string;
   result: {
     content: MockExamIncorrectQuestionsResult[];
     hasNext: boolean;
@@ -57,4 +59,25 @@ export interface MockExamIncorrectQuestionsResult {
 export interface CorrectRateGraphType {
   subjectTitle: string;
   subjectCorrectRate: number;
+}
+
+/**
+ * 날짜, 주차, 월로 성장 리포트 조회
+ */
+export interface MockExamDetailResponseType {
+  responseCode: string;
+  message: string;
+  result: MockExamDetailType;
+}
+export interface MockExamDetailType {
+  content: MockExamDetailContentType[];
+  currentPage: number;
+  pageSize: number;
+}
+export interface MockExamDetailContentType {
+  mockExamResultId: number;
+  round: number;
+  mockExam: ReviewIncorrectMockExam;
+  totalScore: number;
+  createdAt: string;
 }

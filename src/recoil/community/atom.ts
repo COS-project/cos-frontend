@@ -6,10 +6,9 @@ import {
   CreatePostDataType,
   EditPostDataType,
   ExamReviewPostType,
-  PopularSearchKeyword,
   RecentSearchResult,
 } from '@/types/community/type';
-import { GenerateComment } from '@/types/global';
+import { GenerateComment, ImageType } from '@/types/global';
 
 //게시판 종류
 export const boardTypeState = atom<BoardType>({
@@ -60,7 +59,7 @@ export const imageUrlListState = atom<File[]>({
   default: [],
 });
 
-export const pastImageUrlsState = atom<string[]>({
+export const pastImageUrlsState = atom<ImageType[]>({
   key: 'pastImageUrlsState',
   default: [],
 });
@@ -83,6 +82,7 @@ export const editPostDataState = atom<EditPostDataType>({
     postId: 0,
     title: '제목',
     content: '내용',
+    removeImageIds: [],
   },
 });
 

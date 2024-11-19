@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { SVGProps, useEffect, useState } from 'react';
 import React from 'react';
 
-import useGetExamResultRecent from '@/lib/hooks/useGetExamResultRecent';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 
 import SubjectGradeCard from './SubjectGradeCard';
@@ -25,6 +24,10 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
     }
   }, [round]);
 
+  useEffect(() => {
+    console.log('examResults', examResults);
+  }, [examResults]);
+
   return (
     <div>
       <div className="fixed z-20 inset-0 flex items-center justify-center bg-black bg-opacity-30">
@@ -34,21 +37,24 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
           </button>
           <div className="relative bg-white rounded-[32px]">
             <div className="flex flex-col gap-y-4 p-5">
-              <div className=" flex justify-center text-h4 font-bold">
+              <div className=" flex justify-center">
                 <div>{`${round}회차`}</div>
               </div>
               <div className="border-t border-gray1"></div>
               <div className="flex justify-between">
                 {examResults && examResults[examResults?.length - 1]?.totalScore ? (
                   <Link
-                    href={'/exam/report'}
+                    href={'/exam/result'}
                     className="absolute right-5 px-3 py-2 flex gap-x-2 items-center bg-gray0 rounded-full text-h6">
                     <span>성적 리포트</span> <MoveIcon />
                   </Link>
                 ) : null}
                 <div>
+                  {/* 점수 */}
                   <div className="font-semibold text-h6">최근 점수</div>
-                  {examResults && examResults[examResults?.length - 1]?.totalScore ? (
+                  {examResults &&
+                  examResults.length > 0 &&
+                  examResults[examResults.length - 1].totalScore !== undefined ? (
                     <div className={''}>
                       <div className="flex items-end">
                         <div className="font-bold text-h1">{examResults[examResults?.length - 1].totalScore}점</div>
@@ -60,18 +66,20 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                   )}
                 </div>
               </div>
+
+              {/* 과목별 맞춘 문제 갯수 표 */}
               <div>
                 {examResults && examResults[examResults?.length - 1]?.subjectResults ? (
                   <div className={'flex flex-col gap-y-2'}>
                     <div className="text-h6 font-semibold">과목별 맞춘 문제 수</div>
-                    <div className={'flex'}>
+                    <div className={'grid grid-cols-3'}>
                       {examResults[examResults?.length - 1]?.subjectResults?.map((subjectResult, index) => {
                         return (
                           <div className={'w-full'} key={index}>
                             <SubjectGradeCard
                               name={subjectResult.subject.subjectName}
                               correctAnswer={subjectResult.numberOfCorrect}
-                              totalCorrect={20}
+                              totalCorrect={subjectResult.subject.numberOfQuestions}
                             />
                           </div>
                         );

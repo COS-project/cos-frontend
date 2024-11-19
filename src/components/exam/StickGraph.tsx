@@ -17,14 +17,18 @@ const StickGraph: React.FC<StickGraphProps> = ({ height, color }) => {
   };
 
   const hoverColor = 'primary';
-  const defaultColor = color;
 
   return (
     <div
-      style={{ height: height != null ? `${height}%` : 'auto' }}
+      style={{
+        height:
+          height !== null
+            ? `${Math.min(height, 132)}%` // 최대 132%로 제한
+            : 'auto',
+      }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative w-[20%] mt-auto bg-${isHovered ? hoverColor : defaultColor} rounded-t-full`}>
+      className={`relative w-[20%] mt-auto bg-${isHovered ? hoverColor : color} rounded-t-full`}>
       {height != null && isHovered && (
         <div>
           <div

@@ -8,7 +8,7 @@ import { autoCompleteSearchKeywordState, recentSearchResultState } from '@/recoi
 import { RecentSearchResult } from '@/types/community/type';
 
 interface Props {
-  keywords: RecentSearchResult[];
+  keywords: RecentSearchResult[] | undefined;
 }
 
 const RecentSearchKeywords = (props: Props) => {

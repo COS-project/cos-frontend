@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React, { FormEvent, SVGProps, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
 import MockExamYearsFilter from '@/components/common/MockExamYearsFilter';
@@ -12,6 +12,7 @@ import { postCommentary } from '@/lib/api/community';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import useMockExamQuestions from '@/lib/hooks/useMockExamQuestions';
+import { certificateIdAtom } from '@/recoil/atom';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 
 interface Props {
@@ -19,9 +20,11 @@ interface Props {
 }
 
 const WriteExplanationPost = (props: Props) => {
+  const certificateId = useRecoilValue(certificateIdAtom);
+
   const { setIsClickedWriteButton } = props;
   const { examYears } = useGetMockExamYears();
-  const { questions } = useMockExamQuestions(2); //TODO: 나중에 모의고사 번호로 변경해야 함.
+  const { questions } = useMockExamQuestions(1); //TODO: 나중에 모의고사 번호로 변경해야 함.
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
 
@@ -33,7 +36,7 @@ const WriteExplanationPost = (props: Props) => {
   const [isEmpty, setIsEmpty] = useState(true);
   const [isQuestionSequenceNumeric, setIsQuestionSequenceNumeric] = useState(true);
   const [questionSequence, setQuestionSequence] = useState(0);
-  const { mockExams } = useGetMockExams(1, postData.examYear); //해설 회차 필터값
+  const { mockExams } = useGetMockExams(certificateId, postData.examYear); //해설 회차 필터값
   const [isQuestionNumberExceedingLimit, setIsQuestionNumberExceedingLimit] = useState(false);
   const [isTitleEmpty, setIsTitleEmpty] = useState(false);
 
@@ -150,7 +153,7 @@ const WriteExplanationPost = (props: Props) => {
 
     let isValid = true;
 
-    if (questionSequence > questions?.length) {
+    if (questionSequence > (questions?.length || 0)) {
       setIsQuestionNumberExceedingLimit(true);
       isValid = false;
     } else {
@@ -238,7 +241,7 @@ const WriteExplanationPost = (props: Props) => {
                   if (
                     /^\d+$/.test(e.target.value) &&
                     e.target.value.length !== 0 &&
-                    parseInt(e.target.value) < questions.length
+                    parseInt(e.target.value) < (questions?.length || 0)
                   ) {
                     changePostDataQuestionSequence(e.target.value);
                   }
@@ -249,7 +252,7 @@ const WriteExplanationPost = (props: Props) => {
               {!isQuestionSequenceNumeric && !isEmpty ? (
                 <div className={'text-point ml-1'}>숫자만 입력해주세요.</div>
               ) : null}
-              {questionSequence > questions?.length && !isEmpty && isQuestionSequenceNumeric ? (
+              {questionSequence > (questions?.length || 0) && !isEmpty && isQuestionSequenceNumeric ? (
                 <div className={'text-point ml-1'}>전체 문제 수({questions?.length}) 이하의 숫자를 입력해주세요.</div>
               ) : null}
             </div>

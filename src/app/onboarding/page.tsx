@@ -1,13 +1,13 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import CertificationPriority from '@/components/onboarding/CertificationPriority';
 import ChooseCertification from '@/components/onboarding/ChooseCertification';
 import ProfileSettings from '@/components/onboarding/ProfileSettings';
 
-const OnBoarding = () => {
+const OnBoardingComponents = () => {
   const parameter = useSearchParams();
   const accessToken: string | null = parameter.get('accessToken');
   const refreshToken: string | null = parameter.get('refreshToken');
@@ -51,4 +51,10 @@ const OnBoarding = () => {
     </main>
   );
 };
-export default OnBoarding;
+export default function OnBoarding() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <OnBoardingComponents />
+    </Suspense>
+  );
+}

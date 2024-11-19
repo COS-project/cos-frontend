@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import React, { SVGProps, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { mockExamIdState } from '@/recoil/exam/atom';
+import { mockExamIdState, timerIsPaused } from '@/recoil/exam/atom';
 
 interface SessionModalProps {
   mockExamId: number;
@@ -21,6 +21,8 @@ const TimerModal: React.FC<SessionModalProps> = ({
   closeSessionModal,
 }) => {
   const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
+  // 모달창을 띄우면 타이머를 잠시 멈추게 하는 state
+  const [isPausedTimer, setIsPausedTimer] = useRecoilState(timerIsPaused);
   const router = useRouter();
   // 타이머 모달이 나타나면 기존 세션 모달을 종료 위한 동작
   useEffect(() => {
@@ -42,11 +44,11 @@ const TimerModal: React.FC<SessionModalProps> = ({
               <div className="flex justify-center font-semibold">시험 시간 설정</div>
               <div className="flex gap-x-8 justify-center rounded-[24px] bg-gray0 p-4">
                 <div className={'flex items-end gap-x-[2px]'}>
-                  <span className={'text-h2 font-semibold text-gray3'}>{Math.floor(timeLimit / 3600000)}</span>
+                  <span className={'text-h2 mb-[1px] text-gray3'}>{Math.floor(timeLimit / 3600000)}</span>
                   <span className={'text-h4 font-normal text-black pb-[3px]'}>시간</span>
                 </div>
                 <div className={'flex items-end gap-x-[2px]'}>
-                  <span className={'text-h2 font-semibold text-gray3'}>{Math.floor(timeLimit / 60000)}</span>
+                  <span className={'text-h2 mb-[1px] text-gray3'}>{Math.floor(timeLimit / 60000)}</span>
                   <span className={'text-h4 font-normal text-black pb-[3px]'}>분</span>
                 </div>
               </div>
@@ -54,6 +56,7 @@ const TimerModal: React.FC<SessionModalProps> = ({
           </div>
           <button
             onClick={() => {
+              setIsPausedTimer(false);
               setSelectedMockExamId(mockExamId);
               router.push('/exam/test');
             }}
@@ -90,4 +93,3 @@ const CancleIcon = (props: SVGProps<SVGSVGElement>) => (
     </g>
   </svg>
 );
-

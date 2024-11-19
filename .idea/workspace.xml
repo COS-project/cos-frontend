@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="">
+    <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/[category]/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(main)/community/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/community/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/community/PostingModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/community/PostingModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/exam.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/exam.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,17 +39,14 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-<<<<<<< HEAD
-    &quot;git-widget-placeholder&quot;: &quot;fix-post__creation__bug&quot;,
-=======
-    &quot;git-widget-placeholder&quot;: &quot;fix__community-detail&quot;,
->>>>>>> ad0e0c14ada6bb7793097b096274e4f117f86d7b
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/prettier&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -61,10 +56,17 @@
       <recent name="$PROJECT_DIR$/public" />
     </key>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23726.96" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2c18383c-164c-43c4-9dcb-da365e719471" name="Changes" comment="" />
+      <changelist id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="" />
       <created>1703923469288</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -123,38 +125,31 @@
       <workItem from="1714611962110" duration="1329000" />
       <workItem from="1714820712763" duration="6383000" />
       <workItem from="1715048202330" duration="4341000" />
-      <workItem from="1715154350854" duration="14451000" />
-      <workItem from="1715266065321" duration="1775000" />
-      <workItem from="1715505273635" duration="1262000" />
-      <workItem from="1715506546722" duration="28839000" />
-      <workItem from="1715652288664" duration="122000" />
-      <workItem from="1716123590906" duration="891000" />
-      <workItem from="1716256789152" duration="35566000" />
-      <workItem from="1716426429072" duration="10065000" />
-      <workItem from="1716450504992" duration="9437000" />
-      <workItem from="1716709779130" duration="16244000" />
-      <workItem from="1716944541926" duration="1887000" />
-      <workItem from="1717056904644" duration="26000" />
-      <workItem from="1717059901567" duration="1893000" />
-      <workItem from="1717727489225" duration="47000" />
-      <workItem from="1717762067864" duration="1133000" />
-      <workItem from="1717765355916" duration="1247000" />
-      <workItem from="1717805694331" duration="4693000" />
-      <workItem from="1717849799219" duration="432000" />
-      <workItem from="1718797268771" duration="6338000" />
-      <workItem from="1718819692560" duration="15000" />
-      <workItem from="1718820263711" duration="3311000" />
-      <workItem from="1718832852583" duration="5021000" />
-      <workItem from="1718915454181" duration="613000" />
-      <workItem from="1718962843109" duration="45199000" />
-<<<<<<< HEAD
-      <workItem from="1720427179588" duration="5735000" />
-      <workItem from="1720504902269" duration="1613000" />
-=======
-      <workItem from="1719657224658" duration="82000" />
-      <workItem from="1719660231680" duration="5255000" />
-      <workItem from="1719924995934" duration="7434000" />
->>>>>>> ad0e0c14ada6bb7793097b096274e4f117f86d7b
+      <workItem from="1715154350854" duration="16864000" />
+      <workItem from="1715184765387" duration="3394000" />
+      <workItem from="1715261809381" duration="311000" />
+      <workItem from="1715154350854" duration="16864000" />
+      <workItem from="1715184765387" duration="3394000" />
+      <workItem from="1725362460747" duration="2945000" />
+      <workItem from="1725429117888" duration="5366000" />
+      <workItem from="1725868198509" duration="7405000" />
+      <workItem from="1726733459523" duration="6000" />
+      <workItem from="1726909272319" duration="3513000" />
+      <workItem from="1727055698935" duration="2482000" />
+      <workItem from="1727509758898" duration="980000" />
+      <workItem from="1727511295935" duration="277000" />
+      <workItem from="1730870361438" duration="1844000" />
+      <workItem from="1730894430537" duration="3886000" />
+      <workItem from="1730946380491" duration="34000" />
+      <workItem from="1730946432834" duration="31000" />
+      <workItem from="1730946546478" duration="7740000" />
+      <workItem from="1730958407947" duration="4834000" />
+      <workItem from="1730978077552" duration="1634000" />
+      <workItem from="1731026452192" duration="1426000" />
+      <workItem from="1731116951657" duration="599000" />
+      <workItem from="1731456670508" duration="1275000" />
+      <workItem from="1731459575203" duration="9760000" />
+      <workItem from="1731910040527" duration="4662000" />
     </task>
     <servers />
   </component>

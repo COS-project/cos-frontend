@@ -10,7 +10,8 @@ export interface Props {
   selectedExamDifficulty: string;
 }
 const ExamDifficultyFilter = (props: Props) => {
-  const { setExamDifficulty, selectedExamDifficulty, setSelectedExamDifficultyContent, setIsExamDifficultyOpen } = props;
+  const { setExamDifficulty, selectedExamDifficulty, setSelectedExamDifficultyContent, setIsExamDifficultyOpen } =
+    props;
 
   const colorCircle = (difficulty: string) => {
     if (difficulty === '어려워요') {
@@ -27,7 +28,7 @@ const ExamDifficultyFilter = (props: Props) => {
   };
 
   const handleDifficultyChange = (difficulty: string) => {
-    let difficultyEnum;
+    let difficultyEnum: ExamDifficulty | undefined;
     switch (difficulty) {
       case '어려워요':
         difficultyEnum = 'TOO_DIFFICULT';

@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
-import { useSWRConfig } from 'swr';
 
 import { postCommentDelete, postingDelete } from '@/lib/api/communityPost';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
@@ -17,7 +16,7 @@ interface Props {
 
 const PostingModal = (props: Props) => {
   const { children, editOnOff, afterDelete, postId, setIsClickEditPost } = props;
-  const { communityPostData, isLoading, isError, communityPostDataMutate } = useGetCommunityPost(postId); //뮤테이트를 사용하기 위해 데이터를 가져옴
+  const { communityPostDataMutate } = useGetCommunityPost(postId); //뮤테이트를 사용하기 위해 데이터를 가져옴
 
   const [onCommentModal, setOnCommentModal] = useRecoilState(commentModalState); //댓글 삭제 모달창
   const [onPostModal, setOnPostModal] = useRecoilState(postingModalState); //게시글 수정 및 삭제 모달창
@@ -39,6 +38,7 @@ const PostingModal = (props: Props) => {
               <div
                 onClick={() => {
                   if (setIsClickEditPost) setIsClickEditPost(true);
+                  setOnPostModal(false);
                 }}
                 className="self-stretch h-14 p-2 bg-neutral-100 justify-center items-center gap-2 inline-flex hover:bg-[#F5F5F5]">
                 <div className="text-center text-black text-h3 font-normal font-['Pretendard Variable']">수정하기</div>

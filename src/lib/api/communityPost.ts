@@ -1,4 +1,4 @@
-import { GenerateComment, Post } from '@/types/global';
+import { GenerateComment } from '@/types/global';
 
 import { sendRequest } from '../axios';
 
@@ -11,7 +11,7 @@ export const postToggleLikeData = async (targetId: number, likeTargetType: strin
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'POST',
-      url: `/likes?likeTargetType=${likeTargetType}&targetId=${targetId}`,
+      url: `/api/v2/likes?likeTargetType=${likeTargetType}&targetId=${targetId}`,
     });
     // 성공적인 응답 처리
 
@@ -32,7 +32,7 @@ export const postCommentData = async (postId: number, commentData: GenerateComme
       },
       method: 'POST',
       data: commentData,
-      url: `/posts/${postId}/post-comments`,
+      url: `/api/v2/posts/${postId}/post-comments`,
     });
     // 성공적인 응답 처리
     return response.data;
@@ -51,7 +51,7 @@ export const postCommentDelete = async (commentId: number) => {
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'DELETE',
-      url: `/post-comments/${commentId}`,
+      url: `/api/v2/post-comments/${commentId}`,
     });
     // 성공적인 응답 처리
     return response.data;
@@ -70,7 +70,7 @@ export const postingDelete = async (postId: number) => {
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'DELETE',
-      url: `/posts/${postId}`,
+      url: `/api/v2/posts/${postId}`,
     });
     // 성공적인 응답 처리
     return response.data;

@@ -1,18 +1,24 @@
 import StickGraph from '@/components/exam/StickGraph';
 import { SubjectResultsType } from '@/types/exam/type';
+import { AverageSubjectInfoType } from '@/types/home/type';
 
 interface Props {
   subjectResults: SubjectResultsType[];
+  averageSubjectList: AverageSubjectInfoType[];
   timeLimit: number;
   totalTakenTime: () => number;
 }
 const TakenTimeGraphReport = (props: Props) => {
-  const { subjectResults, timeLimit, totalTakenTime } = props;
+  const { subjectResults, averageSubjectList, timeLimit, totalTakenTime } = props;
 
   const millisecondsToMinutes = (time: number) => {
     // 1분은 60000 밀리세컨드입니다.
     return Math.floor(time / 60000);
   };
+
+  if (!subjectResults) {
+    return <div>Error</div>;
+  }
 
   return (
     <div className={'flex flex-col gap-y-3 p-4 rounded-[32px] bg-white'}>
@@ -35,6 +41,10 @@ const TakenTimeGraphReport = (props: Props) => {
                 return (
                   <div key={index} className="w-full flex justify-center space-x-2">
                     <StickGraph height={millisecondsToMinutes(subjectResult.totalTakenTime)} color="second" />
+                    <StickGraph
+                      height={millisecondsToMinutes(averageSubjectList ? averageSubjectList[index].totalTakenTime : 0)}
+                      color="gray2"
+                    />
                   </div>
                 );
               })}

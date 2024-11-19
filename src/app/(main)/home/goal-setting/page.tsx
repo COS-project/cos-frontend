@@ -1,11 +1,13 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useSWRConfig } from 'swr';
 
 import Button from '@/components/common/Button';
+import Header from '@/components/common/Header';
 import PreparationPeriodSetting from '@/components/home/goal-setting/PreparationPeriodSetting';
 import SelectCertification from '@/components/home/goal-setting/SelectCertification';
 import SetDailyGoals from '@/components/home/goal-setting/SetDailyGoals';
@@ -14,35 +16,45 @@ import SettingNewGoalModal from '@/components/home/goal-setting/SettingNewGoalMo
 import { postGoalSettingData, putGoalSettingData } from '@/lib/api/home';
 import useGetGoalSettingData from '@/lib/hooks/useGetGoalSettingData';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
+import { certificateIdAtom } from '@/recoil/atom';
 import { goalSettingCertificateId, goalSettingState } from '@/recoil/home/atom';
 import { GoalSettingInfo } from '@/types/global';
 
 const GoalSetting = () => {
+  const certificateId = useRecoilValue(certificateIdAtom);
   // 선택된 자격증 Id
-  const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number>(goalSettingCertificateId);
+  const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number | undefined>(
+    goalSettingCertificateId,
+  );
   const [isSettingNewGoalModalOpen, setIsSettingNewGoalModalOpen] = useState(true);
   // 사용자의 목표 설정 Id를 불러오는 데이터 패칭
-  const { userGoals } = useGetUserGoals(1);
+  const { userGoals } = useGetUserGoals(certificateId);
   const { mutate } = useSWRConfig();
+  const router = useRouter();
   /**
    * 최근 목표ID를 불러오는 함수
    */
   const getLastGoalId = () => {
     if (userGoals && userGoals.length > 0) {
+      console.log('goalId', userGoals[userGoals.length - 1].goalId);
       return userGoals[userGoals.length - 1].goalId;
     }
     return null; // 또는 적절한 기본값/오류 처리
   };
   // 기존에 설정한 목표를 불러오는 데이터 패칭
-  const { goalSettingData, isLoading, isError } = useGetGoalSettingData(getLastGoalId());
+  const { goalSettingData, isLoading, isError } = useGetGoalSettingData(getLastGoalId() || 0);
   const [goalData, setGoalData] = useRecoilState(goalSettingState);
   const [isResetButtonClick, setIsResetButtonClick] = useState(false);
+
+  useEffect(() => {
+    console.log('goalData', goalData);
+  }, [goalData]);
 
   /**
    * Recoil 상태를 초기화하는 함수
    * @param apiResponse goalSettingData.result
    */
-  const initializeGoalSettingState = (apiResponse: GoalSettingInfo) => {
+  const initializeGoalSettingState = (apiResponse: any) => {
     return {
       goalScore: apiResponse.goalScore,
       prepareStartDateTime: apiResponse.prepareStartDateTime,
@@ -82,7 +94,7 @@ const GoalSetting = () => {
     try {
       const response = goalSettingData;
       if (response) {
-        const initialState: GoalSettingInfo = initializeGoalSettingState(response.result);
+        const initialState = initializeGoalSettingState(response.result);
         setGoalData(initialState);
       } else {
         // 에러 처리를 수행할 수 있습니다.
@@ -103,7 +115,7 @@ const GoalSetting = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray0 flex flex-col gap-y-8 mx-5">
+    <div className={'min-h-screen'}>
       {isSettingNewGoalModalOpen ? (
         <SettingNewGoalModal
           fetchDataAndUpdateState={fetchDataAndUpdateState}
@@ -113,35 +125,44 @@ const GoalSetting = () => {
           setIsSettingNewModal={setIsSettingNewGoalModalOpen}
         />
       ) : null}
-      {isResetButtonClick ? (
-        //수정버튼
-        <Button
-          onClick={async () => {
-            await postGoalSettingData(goalData, selectedCertificationId);
-            await mutate('/certificates/1/goals').then((r) => console.log('r', r));
-            setIsResetButtonClick(false);
-          }}
-          className={'absolute right-0 w-fit'}>
-          저장
-        </Button>
-      ) : (
-        //처음 생성 버튼
-        <Button
-          onClick={() => {
-            putGoalSettingData(goalData, getLastGoalId());
-          }}
-          className={'absolute right-0 w-fit'}>
-          수정
-        </Button>
-      )}
-      {/*자격증 선택*/}
-      {isResetButtonClick ? <SelectCertification /> : null}
-      {/*목표 점수 설정*/}
-      <SetGoalScore />
-      {/*자격증 준비기간 설정*/}
-      <PreparationPeriodSetting />
-      {/*매일 목표 설정*/}
-      <SetDailyGoals />
+      <Header
+        headerType={'dynamic'}
+        title={'목표설정'}
+        rightElement={
+          isResetButtonClick ? (
+            <Button
+              onClick={async () => {
+                await postGoalSettingData(goalData, selectedCertificationId);
+                await mutate('/certificates/1/goals').then((r) => console.log('r', r));
+                setIsResetButtonClick(false);
+                router.push('/home');
+              }}
+              className={' w-fit'}>
+              저장
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                putGoalSettingData(goalData, getLastGoalId() || 0).then((r) => {
+                  console.log('수정', r);
+                  router.push('/home');
+                });
+              }}
+              className={'w-fit'}>
+              수정
+            </Button>
+          )
+        }></Header>
+      <div className="flex flex-col gap-y-8 mx-5">
+        {/*자격증 선택*/}
+        {isResetButtonClick ? <SelectCertification /> : null}
+        {/*목표 점수 설정*/}
+        <SetGoalScore />
+        {/*자격증 준비기간 설정*/}
+        <PreparationPeriodSetting />
+        {/*매일 목표 설정*/}
+        <SetDailyGoals />
+      </div>
     </div>
   );
 };

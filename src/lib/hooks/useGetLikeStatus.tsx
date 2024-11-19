@@ -5,7 +5,7 @@ import { LikeStatusResponseType } from '@/types/community/type';
 
 const useGetLikeStatus = (likeTargetType: string, targetId: string[] | string) => {
   const { data, error, mutate } = useSWR<LikeStatusResponseType>(
-    `/likes/status?likeTargetType=${likeTargetType}&targetId=${targetId}`,
+    `/api/v2/likes/status?likeTargetType=${likeTargetType}&targetId=${targetId}`,
     swrGetFetcher,
   );
 

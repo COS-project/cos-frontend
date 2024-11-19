@@ -4,7 +4,7 @@ import { GoalSettingInfo } from '@/types/global';
 
 import { sendRequest } from '../axios';
 
-export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo, certificateId: number) => {
+export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo, certificateId: number | undefined) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
@@ -13,7 +13,7 @@ export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo, cert
       },
       method: 'POST',
       data: goalSettingInfo,
-      url: `/certificates/${certificateId}/goals`,
+      url: `/api/v2/certificates/${certificateId}/goals`,
     });
     // 성공적인 응답 처리
     return response.data;
@@ -32,7 +32,7 @@ export const putGoalSettingData = async (goalSettingInfo: GoalSettingInfo, goalI
       },
       method: 'PUT',
       data: goalSettingInfo,
-      url: `/goals/${goalId}`,
+      url: `/api/v2/goals/${goalId}`,
     });
     return response.data;
   } catch (error) {

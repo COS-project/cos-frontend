@@ -31,8 +31,8 @@ const MyPageHeader = () => {
           className={'flex gap-x-4 items-center'}>
           <div className={'relative h-[72px] w-[72px]'}>
             <Image
-              src={userProfile?.profileImage}
-              alt={userProfile?.profileImage}
+              src={userProfile?.profileImage || '/person.png'}
+              alt={userProfile?.profileImage || '/person.png'}
               fill
               className={'object-cover rounded-full'}></Image>
           </div>
@@ -43,12 +43,12 @@ const MyPageHeader = () => {
         </div>
 
         {/*나의 관심 종목*/}
-        <div
-          onClick={() => {
-            onMoveEditInterestCertification();
-          }}
-          className={'flex flex-col gap-y-3'}>
-          <div className={'flex justify-between'}>
+        <div className={'flex flex-col gap-y-3'}>
+          <div
+            onClick={() => {
+              onMoveEditInterestCertification();
+            }}
+            className={'flex justify-between'}>
             <div className={'text-h4 font-semibold'}>나의 관심 종목</div>
             <div className={'flex'}>
               <div className={'text-h4 text-gray3'}>변경</div>

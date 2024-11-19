@@ -15,7 +15,7 @@ const YearFilter = (props: Props) => {
       {!data || data.length === 0 ? (
         <div>error</div>
       ) : (
-        data.map((datum: number, index: number) => {
+        data.map((datum, index: number) => {
           return (
             <div
               key={index}

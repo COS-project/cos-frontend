@@ -1,6 +1,5 @@
 'use client';
 
-import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import StopwatchFloating from '@/components/common/StopwatchFloating';
 import { hStopwatchTimeState, mStopwatchTimeState, sStopwatchTimeState } from '@/recoil/stopwatch/atom';

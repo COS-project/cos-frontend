@@ -2,12 +2,13 @@
 
 import Image from 'next/image';
 import React, { FormEvent, SVGProps, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
 import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
+import { certificateIdAtom } from '@/recoil/atom';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 
 const WriteNormalPost = (props: Props) => {
   const { setIsClickedWriteButton } = props;
+  const certificateId = useRecoilValue(certificateIdAtom);
   const [postData, setPostData] = useRecoilState(createPostDataState);
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState);
   const [imageUrlList, setImageUrlList] = useRecoilState<File[]>(imageUrlListState);
@@ -83,7 +85,7 @@ const WriteNormalPost = (props: Props) => {
     );
 
     try {
-      await postCommentary(1, 'NORMAL', formData).then(() => {
+      await postCommentary(certificateId, 'NORMAL', formData).then(() => {
         //글쓰기 초기화
         setPostData(() => ({ title: '', content: '' }));
         setIsTitleEmpty(true);
@@ -215,4 +217,3 @@ const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
     <path stroke="#000" strokeLinecap="round" d="m8 8 16 16M24 8 8 24" />
   </svg>
 );
-

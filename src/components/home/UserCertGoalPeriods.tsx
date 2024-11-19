@@ -8,7 +8,7 @@ import { selectedPrepareTimeState } from '@/recoil/home/atom';
 import { UserCertGoalPeriodType } from '@/types/home/type';
 
 interface Props {
-  data: UserCertGoalPeriodType[];
+  data: UserCertGoalPeriodType[] | null;
   className?: string;
   setDataState: React.Dispatch<React.SetStateAction<string>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -63,9 +63,17 @@ const UserCertGoalPeriods = (props: Props) => {
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
     if (days < 31) {
-      return `${getYear(new Date(datum.prepareStartDateTime))}년 ${getMonth(new Date(datum.prepareStartDateTime))}월 ${getDate(new Date(datum.prepareStartDateTime))}일 ~ ${getYear(new Date(datum.prepareFinishDateTime))}년 ${getMonth(new Date(datum.prepareFinishDateTime))}월 ${getDate(new Date(datum.prepareFinishDateTime))}일`;
+      return `${getYear(new Date(datum.prepareStartDateTime))}년 ${getMonth(
+        new Date(datum.prepareStartDateTime),
+      )}월 ${getDate(new Date(datum.prepareStartDateTime))}일 ~ ${getYear(
+        new Date(datum.prepareFinishDateTime),
+      )}년 ${getMonth(new Date(datum.prepareFinishDateTime))}월 ${getDate(new Date(datum.prepareFinishDateTime))}일`;
     } else {
-      return `${getYear(new Date(datum.prepareStartDateTime))}년 ${getMonth(new Date(datum.prepareStartDateTime))}월 ${getWeek(new Date(datum.prepareStartDateTime))}주차 ~ ${getYear(new Date(datum.prepareFinishDateTime))}년 ${getMonth(new Date(datum.prepareFinishDateTime))}월 ${getWeek(new Date(datum.prepareFinishDateTime))}주차`;
+      return `${getYear(new Date(datum.prepareStartDateTime))}년 ${getMonth(
+        new Date(datum.prepareStartDateTime),
+      )}월 ${getWeek(new Date(datum.prepareStartDateTime))}주차 ~ ${getYear(
+        new Date(datum.prepareFinishDateTime),
+      )}년 ${getMonth(new Date(datum.prepareFinishDateTime))}월 ${getWeek(new Date(datum.prepareFinishDateTime))}주차`;
     }
   };
 

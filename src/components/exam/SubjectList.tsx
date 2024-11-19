@@ -1,11 +1,11 @@
 'use client';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useRecoilValue } from 'recoil';
 
 import SubjectCard from '@/components/exam/SubjectCard';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
+import { certificateIdAtom } from '@/recoil/atom';
 import { ReviewIncorrectMockExam } from '@/types/global';
-import { useRecoilState } from 'recoil';
-import { timeLimitState } from '@/recoil/exam/atom';
 
 interface Props {
   selectedYear: number;
@@ -13,7 +13,8 @@ interface Props {
 // 해당하는 연도의 회차별 데이터를 모두 출력
 const SubjectSessionCard = (props: Props) => {
   const { selectedYear } = props;
-  const { mockExams } = useGetMockExams(1, selectedYear);
+  const certificateId = useRecoilValue(certificateIdAtom);
+  const { mockExams } = useGetMockExams(certificateId, selectedYear);
 
   return (
     <div className={'mt-[16px] grid grid-cols-2 gap-x-4 gap-y-4'}>
@@ -24,7 +25,7 @@ const SubjectSessionCard = (props: Props) => {
               timeLimit={mockExam.timeLimit}
               total={300}
               round={mockExam.round}
-              mockExamId={mockExam.MockExamId}></SubjectCard>
+              mockExamId={mockExam.mockExamId}></SubjectCard>
           </div>
         );
       })}

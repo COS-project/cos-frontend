@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MockExam, QuestionsResponse } from '@/types/global';
+import { FavoriteBoard, MockExam, PostComments, QuestionsResponse } from '@/types/global';
 import { UserInfo } from '@/types/mypage/type';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
@@ -44,11 +44,11 @@ export interface EditPostDataType {
   postId: number;
   title: string;
   content: string;
-  newTags?: TipPostTagType[];
+  tags?: TipPostTagType[];
   examYear?: number;
   round?: number;
   questionSequence?: number;
-  removeImageUrls?: string[];
+  removeImageIds?: number[];
 }
 
 export interface RecentSearchResult {
@@ -73,8 +73,10 @@ export interface ResponseBest3PostType {
 
 export interface ResponsePostType {
   responseCode: string;
+  message: string;
   result: {
-    content: PostType[];
+    postResponse: PostType;
+    postComments: PostComments[];
     hasNext: boolean;
   };
 }
@@ -131,7 +133,7 @@ export interface RecommendTags {
 
 export interface DateTime {
   createdAt: string;
-  modifiedAt: string;
+  modifiedAt?: string;
 }
 
 export type TrendingKeywordState = 'UNCHANGED' | 'NEW' | 'RANK_UP' | 'RANK_DOWN';
@@ -143,4 +145,13 @@ export interface TrendingKeyword {
 export interface PreparePeriodType {
   startMonth: number | undefined;
   endMonth: number | undefined;
+}
+
+/**
+ * 게시판 목록 보기
+ */
+export interface BoardListResponseType {
+  responseCode: string;
+  message: string;
+  result: FavoriteBoard[];
 }

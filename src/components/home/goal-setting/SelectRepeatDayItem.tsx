@@ -63,61 +63,39 @@ const SelectRepeatDayItem = (props: Props) => {
 
   //처음 랜더링 때, 기존의 저장된 요일 버튼 색상 반영되도록 하기
   const isClickedState = () => {
-    if (usage == 'MockExam') {
-      if (goalData.mockExamRepeatDays.length !== 0) {
-        goalData.mockExamRepeatDays.map((dayOfWeek)=> {
-          if (dayOfWeek == 0) {
+    const repeatDays = usage === 'MockExam' ? goalData.mockExamRepeatDays : goalData.studyRepeatDays;
+
+    if (repeatDays.length !== 0) {
+      repeatDays.forEach((dayOfWeek) => {
+        switch (dayOfWeek) {
+          case 0:
             setIsSunClick(true);
-          }
-          if (dayOfWeek == 1) {
+            break;
+          case 1:
             setIsMonthClick(true);
-          }
-          if (dayOfWeek == 2) {
+            break;
+          case 2:
             setIsTuesClick(true);
-          }
-          if (dayOfWeek == 3) {
+            break;
+          case 3:
             setIsWednesClick(true);
-          }
-          if (dayOfWeek == 4) {
+            break;
+          case 4:
             setIsThursClick(true);
-          }
-          if (dayOfWeek == 5) {
+            break;
+          case 5:
             setIsFriClick(true);
-          }
-          if (dayOfWeek == 6) {
+            break;
+          case 6:
             setIsSaturClick(true);
-          }
-        });
-      }
-    }
-    if (usage == 'StudyTime') {
-      if (goalData.studyRepeatDays.length !== 0) {
-        goalData.studyRepeatDays.map((dayOfWeek)=> {
-          if (dayOfWeek == 0) {
-            setIsSunClick(true);
-          }
-          if (dayOfWeek == 1) {
-            setIsMonthClick(true);
-          }
-          if (dayOfWeek == 2) {
-            setIsTuesClick(true);
-          }
-          if (dayOfWeek == 3) {
-            setIsWednesClick(true);
-          }
-          if (dayOfWeek == 4) {
-            setIsThursClick(true);
-          }
-          if (dayOfWeek == 5) {
-            setIsFriClick(true);
-          }
-          if (dayOfWeek == 6) {
-            setIsSaturClick(true);
-          }
-        });
-      }
+            break;
+          default:
+            break;
+        }
+      });
     }
   };
+
   //처음 랜더링 때, 기존의 저장된 요일 버튼 색상 반영되도록 하기
   const resetIsClickedState = () => {
     if (goalData.mockExamRepeatDays.length === 0 && usage == 'MockExam') {
@@ -144,7 +122,6 @@ const SelectRepeatDayItem = (props: Props) => {
     isClickedState();
     resetIsClickedState();
   }, [goalData.studyRepeatDays, goalData.mockExamRepeatDays]);
-
 
   return (
     <div className="goal-setting-content">
