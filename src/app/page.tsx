@@ -55,6 +55,7 @@ export default function Page() {
   };
 
   const isiOS = () => {
+    if (typeof window === 'undefined') return false; // 서버 사이드에서는 항상 false 반환
     return /iPad|iPhone|iPod/.test(navigator.userAgent);
   };
 
