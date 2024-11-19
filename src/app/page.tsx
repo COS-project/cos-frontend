@@ -34,6 +34,10 @@ export default function Page() {
     };
   }, []);
 
+  useEffect(() => {
+    console.log('deferredPrompt', deferredPrompt);
+  }, [deferredPrompt]);
+
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
 
@@ -50,8 +54,18 @@ export default function Page() {
     setDeferredPrompt(null); // 프로세스 완료 후 초기화
   };
 
+  const isiOS = () => {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent);
+  };
+
   return (
     <div className={'flex flex-col justify-center items-center bg-primary min-h-screen'}>
+      {isiOS() && <div className="ios-install-hint">Safari에서 공유 버튼을 누르고 홈 화면에 추가를 선택하세요.</div>}
+      {/* iOS PWA 설정 */}
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+      <meta name="apple-mobile-web-app-title" content="My PWA App" />
+      <link rel="apple-touch-icon" href="/person.png" />
       {deferredPrompt && (
         <button
           onClick={handleInstallClick}
