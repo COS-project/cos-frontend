@@ -1,10 +1,12 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import useCalculateScore from '@/hooks/useCalculateScore';
 import { postSubjectResultRequestsList } from '@/lib/api/exam';
+import useGetTestResults from '@/lib/hooks/useGetTestResults';
 import {
   mockExamIdState,
   questionIndex,
@@ -39,6 +41,7 @@ const TestSubmitOrCancle = (props: Props) => {
     isAutoSubmitTimeUpModalOpen,
     setIsAutoSubmitTimeUpModalOpen,
   } = props;
+  const router = useRouter();
   const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
   //시험 제한 시간
   const [timeLimit, setTimeLimit] = useRecoilState(timeLimitState);
@@ -66,6 +69,16 @@ const TestSubmitOrCancle = (props: Props) => {
   const seconds = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, '0');
   const { calculateScore, prepareAndScoreSubjectResults } = useCalculateScore(selectedMockExamId);
   const [submittedMockExamResultId, setSubmittedMockExamResultId] = useRecoilState(submittedMockExamResultIdState);
+
+  //모의고사 결과 바로 불러오기
+  const { examResultMutate } = useGetTestResults(selectedMockExamId);
+
+  /**
+   * 제출 버튼을 눌렀을 때, 결과 페이지로 이동하는 함수
+   */
+  const onMove = async () => {
+    router.push('/exam/result');
+  };
 
   /**
    * 시험 시간 타이머 기능
@@ -145,12 +158,14 @@ const TestSubmitOrCancle = (props: Props) => {
    */
   useEffect(() => {
     if (subjectResultList.length !== 0) {
-      postSubjectResultRequestsList(subjectResultList, selectedMockExamId).then((r) => {
-        console.log(r);
+      const postResults = async () => {
+        const r = await postSubjectResultRequestsList(subjectResultList, selectedMockExamId);
+        console.log('제출', r);
+        await examResultMutate(); // 제출하자마자 모의고사 결과 불러오기
         setSubmittedMockExamResultId(r.result.mockExamResultId);
-        //체점 결과 초기화
-        setUserAnswerList([]); //다시 제출 방지
-        setSubjectResultList([]); //다시 제출 방지
+        // 상태 초기화
+        setUserAnswerList([]);
+        setSubjectResultList([]);
         setQuestionIdx(0);
         setUserAnswer((prevState) => ({
           ...prevState,
@@ -158,6 +173,10 @@ const TestSubmitOrCancle = (props: Props) => {
           takenTime: 0,
           questionId: 0,
         }));
+      };
+
+      postResults().then(async (r) => {
+        await onMove();
       });
     }
   }, [subjectResultList]);

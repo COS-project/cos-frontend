@@ -1,15 +1,7 @@
-import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { useRecoilState } from 'recoil';
 
-import {
-  stopwatchIsPaused,
-  stopwatchIsRunning,
-  subjectResultRequestsList,
-  timerIsPaused,
-  userAnswerRequestsList,
-} from '@/recoil/exam/atom';
-import { UserAnswerRequests } from '@/types/global';
+import { stopwatchIsPaused, stopwatchIsRunning, timerIsPaused } from '@/recoil/exam/atom';
 
 interface Props {
   isSubmitConfirmationModalOpen: boolean;
@@ -23,16 +15,6 @@ const SubmitConfirmationModal = (props: Props) => {
   // 문제당 머문시간을 잠시 멈추는
   const [isPausedStopWatch, setIsPausedStopWatch] = useRecoilState(stopwatchIsPaused);
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);
-  const router = useRouter();
-  const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
-  const [subjectResultList, setSubjectResultList] = useRecoilState(subjectResultRequestsList);
-
-  /**
-   * 제출 버튼을 눌렀을 때, 결과 페이지로 이동하는 함수
-   */
-  const onMove = async () => {
-    router.push('/exam/result');
-  };
 
   return (
     <>
@@ -63,7 +45,6 @@ const SubmitConfirmationModal = (props: Props) => {
                 setIsRunning(false); //제출 트릭
                 // 체점 결과 초기화
                 setIsSubmitConfirmationModalOpen(!isSubmitConfirmationModalOpen);
-                await onMove();
               }}
               className={'bg-black rounded-full text-white py-[7px] px-3'}>
               제출하기
