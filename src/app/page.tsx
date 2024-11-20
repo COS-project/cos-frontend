@@ -65,8 +65,8 @@ export default function Page() {
       {/* iOS PWA 설정 */}
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-      <meta name="apple-mobile-web-app-title" content="My PWA App" />
-      <link rel="apple-touch-icon" href="/person.png" />
+      <meta name="apple-mobile-web-app-title" content="cercat" />
+      <link rel="apple-touch-icon" href="/logo.svg" />
       {deferredPrompt && (
         <button
           onClick={handleInstallClick}
