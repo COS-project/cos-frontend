@@ -24,7 +24,7 @@ const SettingNewGoalModal = (props: Props) => {
           }}
           className={'flex justify-end items-center'}>
           <div className={'text-white text-h6'}>닫기</div>
-          <CancleIcon />
+          <CancelIcon />
         </div>
         <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
           <div className={'flex flex-col gap-y-1'}>
@@ -60,7 +60,7 @@ const SettingNewGoalModal = (props: Props) => {
 };
 export default SettingNewGoalModal;
 
-const CancleIcon = (props: SVGProps<SVGSVGElement>) => (
+const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={25} height={24} fill="none" {...props}>
     <mask
       id="a"
