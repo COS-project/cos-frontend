@@ -66,7 +66,7 @@ export default function Page() {
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       <meta name="apple-mobile-web-app-title" content="cercat" />
-      <link rel="apple-touch-icon" href="/logo.svg" />
+      <link rel="apple-touch-icon" href="/logo.png" />
       {deferredPrompt && (
         <button
           onClick={handleInstallClick}

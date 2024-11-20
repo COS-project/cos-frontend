@@ -9,17 +9,18 @@
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "/logo.svg",
-      "sizes": "1024x1024",
+      "src": "/logo.png",
+      "sizes": "1025x1024",
       "type": "image/png",
       "form_factor": "mobile",
       "purpose": "any maskable"
     },
     {
-      "src": "/logo.svg",
-      "sizes": "1024x1024",
+      "src": "/logo.png",
+      "sizes": "1025x1024",
       "type": "image/png",
-      "form_factor": "wide"
+      "form_factor": "wide",
+      "purpose": "any maskable"
     }
   ]
 }
