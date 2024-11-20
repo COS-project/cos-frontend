@@ -24,10 +24,6 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
     }
   }, [round]);
 
-  useEffect(() => {
-    console.log('examResults', examResults);
-  }, [examResults]);
-
   return (
     <div>
       <div className="fixed z-20 inset-0 flex items-center justify-center bg-black bg-opacity-30">

@@ -13,7 +13,7 @@ const UserExamAttemptsFilter = (props: Props) => {
   return (
     <div
       className={
-        'absolute top-[26%] w-[90%] overflow-y-scroll h-[200px] border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10'
+        'absolute top-[27%] w-[90%] overflow-y-scroll max-h-[200px] border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10'
       }>
       {!userExamAttempts || userExamAttempts.length === 0 ? (
         <div>error</div>

@@ -1,10 +1,12 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import useCalculateScore from '@/hooks/useCalculateScore';
 import { postSubjectResultRequestsList } from '@/lib/api/exam';
+import useGetTestResults from '@/lib/hooks/useGetTestResults';
 import {
   mockExamIdState,
   questionIndex,
@@ -39,6 +41,7 @@ const TestSubmitOrCancle = (props: Props) => {
     isAutoSubmitTimeUpModalOpen,
     setIsAutoSubmitTimeUpModalOpen,
   } = props;
+  const router = useRouter();
   const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
   //시험 제한 시간
   const [timeLimit, setTimeLimit] = useRecoilState(timeLimitState);
@@ -47,7 +50,7 @@ const TestSubmitOrCancle = (props: Props) => {
   // 각 문제당 걸린 시간
   const [time, setTime] = useRecoilState<number>(stopwatchTime);
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);
-  // 모달창을 띄우면 타이머를 잠시 멈추게 하는 state
+  // 모달창을 띄우면 타이머를 잠시 멈추게 하는 state, 잠시 멈췄냐?
   const [isPausedTimer, setIsPausedTimer] = useRecoilState(timerIsPaused);
   // 문제당 머문시간을 잠시 멈추는
   const [isPausedStopWatch, setIsPausedStopWatch] = useRecoilState(stopwatchIsPaused);
@@ -66,6 +69,16 @@ const TestSubmitOrCancle = (props: Props) => {
   const seconds = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, '0');
   const { calculateScore, prepareAndScoreSubjectResults } = useCalculateScore(selectedMockExamId);
   const [submittedMockExamResultId, setSubmittedMockExamResultId] = useRecoilState(submittedMockExamResultIdState);
+
+  //모의고사 결과 바로 불러오기
+  const { examResultMutate } = useGetTestResults(selectedMockExamId);
+
+  /**
+   * 제출 버튼을 눌렀을 때, 결과 페이지로 이동하는 함수
+   */
+  const onMove = async () => {
+    router.push('/exam/result');
+  };
 
   /**
    * 시험 시간 타이머 기능
@@ -119,6 +132,7 @@ const TestSubmitOrCancle = (props: Props) => {
     if (!isRunning) {
       recordSessionTime();
       setSessionRecorded(true); //바로 다음 useEffect 실행시키기 위한 트릭
+      setIsRunning(true); //시작할 때 제출되는 것을 막기위함.
     }
   }, [isRunning]);
 
@@ -145,12 +159,14 @@ const TestSubmitOrCancle = (props: Props) => {
    */
   useEffect(() => {
     if (subjectResultList.length !== 0) {
-      postSubjectResultRequestsList(subjectResultList, selectedMockExamId).then((r) => {
-        console.log(r);
+      const postResults = async () => {
+        const r = await postSubjectResultRequestsList(subjectResultList, selectedMockExamId);
+        console.log('제출', r);
+        await examResultMutate(); // 제출하자마자 모의고사 결과 불러오기
         setSubmittedMockExamResultId(r.result.mockExamResultId);
-        //체점 결과 초기화
-        setUserAnswerList([]); //다시 제출 방지
-        setSubjectResultList([]); //다시 제출 방지
+        // 상태 초기화
+        setUserAnswerList([]);
+        setSubjectResultList([]);
         setQuestionIdx(0);
         setUserAnswer((prevState) => ({
           ...prevState,
@@ -158,6 +174,10 @@ const TestSubmitOrCancle = (props: Props) => {
           takenTime: 0,
           questionId: 0,
         }));
+      };
+
+      postResults().then(async (r) => {
+        await onMove();
       });
     }
   }, [subjectResultList]);

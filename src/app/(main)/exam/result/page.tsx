@@ -14,18 +14,16 @@ import UserExamAttemptsFilterContent from '@/components/exam/UserExamAttemptsFil
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 import { certificateIdAtom } from '@/recoil/atom';
-import { mockExamIdState, submittedMockExamResultIdState } from '@/recoil/exam/atom';
+import { mockExamIdState } from '@/recoil/exam/atom';
 import { MockExamResultType } from '@/types/exam/type';
 
 const Result = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
-  const [submittedMockExamResultId, setSubmittedMockExamResultId] = useRecoilState(submittedMockExamResultIdState);
   const [isClicked, setIsClicked] = useState<'시험결과' | '틀린문제'>('시험결과');
   const [mockExamId, setMockExamId] = useRecoilState(mockExamIdState);
   const { examResults } = useGetTestResults(mockExamId);
   const [userExamAttempt, setUserExamAttempt] = useState<number>(1);
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
-  let totalTakenTime = 0;
   const router = useRouter();
   const { averageSubjectList } = useAverageSubjectInfo(certificateId);
 
@@ -41,14 +39,11 @@ const Result = () => {
   }, [examResults, isInitialLoad]);
 
   const sumTotalTakenTime = () => {
-    if (examResults) {
-      examResults[examResults.length - 1]?.subjectResults.map((subjectResult) => {
-        totalTakenTime += subjectResult.totalTakenTime;
-      });
-      return totalTakenTime;
-    } else {
-      return 0;
+    if (examResults && examResults.length > 0) {
+      const subjectResults = examResults[examResults.length - 1]?.subjectResults;
+      return subjectResults?.reduce((acc, curr) => acc + (curr.totalTakenTime || 0), 0) || 0;
     }
+    return 0;
   };
 
   /**
@@ -56,39 +51,46 @@ const Result = () => {
    * @param examResults 시험 결과
    */
   const displayComponentBasedOnExamResults = (examResults: MockExamResultType[] | null | undefined) => {
-    if (examResults && examResults.length === 1) {
+    if (isInitialLoad || !examResults || examResults.length === 0) {
+      // 데이터 로드 중일 때 로딩 상태 표시
+      return <div>Loading...</div>;
+    }
+
+    if (!isInitialLoad && examResults && examResults.length === 1) {
       return (
         <>
           {isClicked === '시험결과' ? (
             <div className={'flex flex-col gap-y-5'}>
               <MockExamResultReport
-                timeLimit={examResults ? examResults[examResults.length - 1]?.mockExam.timeLimit : 0}
-                totalTakenTime={sumTotalTakenTime}
-                totalScore={100}
-                score={examResults ? examResults[examResults.length - 1]?.totalScore : 0}
-                subjectResults={examResults ? examResults[examResults.length - 1]?.subjectResults : []}
+                timeLimit={examResults[examResults.length - 1]?.mockExam.timeLimit || 0}
+                totalTakenTime={sumTotalTakenTime()}
+                totalScore={300} //TODO: TotalScore 변경하기
+                score={examResults[examResults.length - 1]?.totalScore || 0}
+                subjectResults={examResults[examResults.length - 1]?.subjectResults || []}
               />
               <TakenTimeGraphReport
-                totalTakenTime={sumTotalTakenTime}
-                subjectResults={examResults ? examResults[examResults.length - 1]?.subjectResults : []}
-                averageSubjectList={averageSubjectList ? averageSubjectList : []}
-                timeLimit={examResults ? examResults[examResults.length - 1]?.mockExam.timeLimit : 0}
+                totalTakenTime={sumTotalTakenTime()}
+                subjectResults={examResults?.[examResults.length - 1]?.subjectResults || []}
+                averageSubjectList={averageSubjectList || []}
+                timeLimit={examResults?.[examResults.length - 1]?.mockExam?.timeLimit || 0}
               />
               <AccuracyChart
-                subjectResults={examResults ? examResults[examResults.length - 1]?.subjectResults : []}
-                averageSubjectList={averageSubjectList ? averageSubjectList : []}
+                subjectResults={examResults?.[examResults.length - 1]?.subjectResults || []}
+                averageSubjectList={averageSubjectList || []}
               />
             </div>
           ) : (
             <div>
               <div>
-                <IncorrectQuestions submittedMockExamResultId={submittedMockExamResultId} />
+                <IncorrectQuestions
+                  submittedMockExamResultId={examResults[userExamAttempt - 1]?.mockExamResultId || 0}
+                />
               </div>
             </div>
           )}
         </>
       );
-    } else if (examResults && examResults.length >= 2) {
+    } else if (!isInitialLoad && examResults && examResults.length >= 2) {
       return (
         <>
           <UserExamAttemptsFilterContent
@@ -99,28 +101,28 @@ const Result = () => {
           {isClicked === '시험결과' ? (
             <div className={'flex flex-col gap-y-5'}>
               <MockExamResultReport
-                timeLimit={examResults ? examResults[userExamAttempt - 1]?.mockExam.timeLimit : 0}
-                totalTakenTime={sumTotalTakenTime}
-                totalScore={100}
-                score={examResults ? examResults[userExamAttempt - 1]?.totalScore : 0}
-                subjectResults={examResults ? examResults[userExamAttempt - 1]?.subjectResults : []}
+                timeLimit={examResults[userExamAttempt - 1]?.mockExam.timeLimit || 0}
+                totalTakenTime={sumTotalTakenTime()}
+                totalScore={300} //TODO: TotalScore 변경하기
+                score={examResults[userExamAttempt - 1]?.totalScore || 0}
+                subjectResults={examResults[userExamAttempt - 1]?.subjectResults || []}
               />
               <TakenTimeGraphReport
-                totalTakenTime={sumTotalTakenTime}
-                subjectResults={examResults ? examResults[userExamAttempt - 1]?.subjectResults : []}
-                averageSubjectList={averageSubjectList ? averageSubjectList : []}
-                timeLimit={examResults ? examResults[userExamAttempt - 1]?.mockExam.timeLimit : 0}
+                totalTakenTime={sumTotalTakenTime()}
+                subjectResults={examResults[userExamAttempt - 1]?.subjectResults || []}
+                averageSubjectList={averageSubjectList || []}
+                timeLimit={examResults[userExamAttempt - 1]?.mockExam.timeLimit || 0}
               />
               <AccuracyChart
-                subjectResults={examResults ? examResults[userExamAttempt - 1]?.subjectResults : []}
-                averageSubjectList={averageSubjectList ? averageSubjectList : []}
+                subjectResults={examResults[userExamAttempt - 1]?.subjectResults || []}
+                averageSubjectList={averageSubjectList || []}
               />
             </div>
           ) : (
             <div>
               <div>
                 <IncorrectQuestions
-                  submittedMockExamResultId={examResults ? examResults[userExamAttempt - 1]?.mockExamResultId : 0}
+                  submittedMockExamResultId={examResults[userExamAttempt - 1]?.mockExamResultId || 0}
                 />
               </div>
             </div>

@@ -18,7 +18,7 @@ const AccuracyChart = (props: Props) => {
       const transformedData: CorrectRateGraphType[] = subjectResults.map((result, index) => ({
         subjectTitle: result.subject.subjectName,
         subjectCorrectRate: result.correctRate,
-        averageSubjectRate: averageSubjectList.length !== 0 ? averageSubjectList[index].correctRate : 10,
+        averageSubjectRate: averageSubjectList.length !== 0 ? averageSubjectList[index].correctRate : 0,
       }));
       setSubjectData(transformedData);
     }

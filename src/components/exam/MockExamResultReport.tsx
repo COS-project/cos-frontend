@@ -6,7 +6,7 @@ interface Props {
   subjectResults: SubjectResultsType[];
   score: number;
   totalScore: number;
-  totalTakenTime: () => number;
+  totalTakenTime: number;
   timeLimit: number;
 }
 const MockExamResultReport = (props: Props) => {
@@ -65,7 +65,7 @@ const MockExamResultReport = (props: Props) => {
         <div className={'px-4 py-3 rounded-[16px] bg-white w-full'}>
           <div className={'text-h6 font-semibold'}>걸린 시간</div>
           <div className={'text-h1 font-semibold text-black'}>
-            {formatTime(totalTakenTime(), 'takenTime')}
+            {formatTime(totalTakenTime, 'takenTime')}
             <span className={'text-gray3 text-h6 font-normal'}>/{formatTime(timeLimit, 'timeLimit')}</span>
           </div>
         </div>
