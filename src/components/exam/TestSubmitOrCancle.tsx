@@ -50,7 +50,7 @@ const TestSubmitOrCancle = (props: Props) => {
   // 각 문제당 걸린 시간
   const [time, setTime] = useRecoilState<number>(stopwatchTime);
   const [isRunning, setIsRunning] = useRecoilState<boolean>(stopwatchIsRunning);
-  // 모달창을 띄우면 타이머를 잠시 멈추게 하는 state
+  // 모달창을 띄우면 타이머를 잠시 멈추게 하는 state, 잠시 멈췄냐?
   const [isPausedTimer, setIsPausedTimer] = useRecoilState(timerIsPaused);
   // 문제당 머문시간을 잠시 멈추는
   const [isPausedStopWatch, setIsPausedStopWatch] = useRecoilState(stopwatchIsPaused);
@@ -132,6 +132,7 @@ const TestSubmitOrCancle = (props: Props) => {
     if (!isRunning) {
       recordSessionTime();
       setSessionRecorded(true); //바로 다음 useEffect 실행시키기 위한 트릭
+      setIsRunning(true); //시작할 때 제출되는 것을 막기위함.
     }
   }, [isRunning]);
 

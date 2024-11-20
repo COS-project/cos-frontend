@@ -24,6 +24,7 @@ const TimerModal: React.FC<SessionModalProps> = ({
   // 모달창을 띄우면 타이머를 잠시 멈추게 하는 state
   const [isPausedTimer, setIsPausedTimer] = useRecoilState(timerIsPaused);
   const router = useRouter();
+
   // 타이머 모달이 나타나면 기존 세션 모달을 종료 위한 동작
   useEffect(() => {
     // 타이머 모달이 나타난 후에 실행되는 부분
