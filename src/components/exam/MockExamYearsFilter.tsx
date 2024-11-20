@@ -3,7 +3,7 @@ import React from 'react';
 interface Props {
   yearList: number[] | undefined;
   setIsClickedYearSelector: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedYear: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedYear: React.Dispatch<React.SetStateAction<number | null>>;
 }
 const MockExamYearsFilter = (props: Props) => {
   const { yearList, setIsClickedYearSelector, setSelectedYear } = props;

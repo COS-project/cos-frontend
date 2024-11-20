@@ -9,8 +9,8 @@ interface Props {
   examYears: number[] | undefined;
   isClickedYearSelector: boolean;
   setIsClickedYearSelector: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedYear: number;
-  setSelectedYear: React.Dispatch<React.SetStateAction<number>>;
+  selectedYear: number | null;
+  setSelectedYear: React.Dispatch<React.SetStateAction<number | null>>;
 }
 // 과목의 Year를 선택하는 모듈
 const YearSelector = (props: Props) => {
@@ -23,7 +23,7 @@ const YearSelector = (props: Props) => {
           setIsClickedYearSelector(!isClickedYearSelector);
         }}
         className={'mt-2 flex justify-between items-center bg-gray0 rounded-[16px] py-3 px-4'}>
-        <span>{selectedYear}년도 기출 모의고사</span>
+        {selectedYear ? <span>{selectedYear}년도 기출 모의고사</span> : <span>기출 모의고사</span>}
         {isClickedYearSelector ? <ActiveIcon /> : <DisableIcon />}
       </div>
       {isClickedYearSelector ? (

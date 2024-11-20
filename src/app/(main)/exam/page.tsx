@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Banner from '@/components/common/Banner';
 import Header from '@/components/common/Header';
@@ -22,8 +22,17 @@ const Exam = () => {
 const SolveExamBox = () => {
   const { examYears } = useGetMockExamYears();
   const [isClickedYearSelector, setIsClickedYearSelector] = useState<boolean>(false);
-  const [selectedYear, setSelectedYear] = useState<number>(examYears ? examYears[0] : 2017);
+  const [selectedYear, setSelectedYear] = useState<number | null>(examYears ? examYears[0] : null);
   const [isRandomMockExamModalOpen, setIsRandomMockExamModalOpen] = useState(false);
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
+  useEffect(() => {
+    if (examYears && isFirstRender) {
+      setSelectedYear(examYears[0]);
+      setIsFirstRender(false);
+    }
+  }, [examYears]);
+
   return (
     <>
       {isRandomMockExamModalOpen ? (

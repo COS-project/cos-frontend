@@ -8,7 +8,7 @@ import { certificateIdAtom } from '@/recoil/atom';
 import { ReviewIncorrectMockExam } from '@/types/global';
 
 interface Props {
-  selectedYear: number;
+  selectedYear: number | null;
 }
 // 해당하는 연도의 회차별 데이터를 모두 출력
 const SubjectSessionCard = (props: Props) => {
