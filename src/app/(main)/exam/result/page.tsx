@@ -51,7 +51,12 @@ const Result = () => {
    * @param examResults 시험 결과
    */
   const displayComponentBasedOnExamResults = (examResults: MockExamResultType[] | null | undefined) => {
-    if (examResults && examResults.length === 1) {
+    if (isInitialLoad || !examResults || examResults.length === 0) {
+      // 데이터 로드 중일 때 로딩 상태 표시
+      return <div>Loading...</div>;
+    }
+
+    if (!isInitialLoad && examResults && examResults.length === 1) {
       return (
         <>
           {isClicked === '시험결과' ? (
