@@ -5,11 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/public/logo.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/sw.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/sw.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/workbox-4754cb34.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/sw.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/public/sw.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/exam/result/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/exam/result/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/AccuracyChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/AccuracyChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/MockExamResultReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/MockExamResultReport.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/SubjectList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/SubjectList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/SubmitConfirmationModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/SubmitConfirmationModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/TakenTimeGraphReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/TakenTimeGraphReport.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/TestSubmitOrCancle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/TestSubmitOrCancle.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/TimerModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/TimerModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/UserExamAttemptsFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/UserExamAttemptsFilter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetTestResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetTestResults.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +52,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "dev",
+    "git-widget-placeholder": "fix/error-on-mockExam-page",
     "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
