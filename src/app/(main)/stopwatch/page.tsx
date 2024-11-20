@@ -1,94 +1,43 @@
 'use client';
 
-import { hStopwatchTimeState, mStopwatchTimeState, sStopwatchTimeState } from '@/recoil/stopwatch/atom';
-import React, { useEffect, useMemo } from 'react';
-import { useState, useRef } from 'react';
+import Header from '@/components/common/Header';
+import {
+  hStopwatchTimeState,
+  isResetState,
+  isStartState,
+  isStopState,
+  mStopwatchTimeState,
+  nowTimeState,
+  sStopwatchTimeState,
+  startTimeState,
+  stringLocationState,
+  timeBoolState,
+} from '@/recoil/stopwatch/atom';
+import React, { useMemo } from 'react';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 export default function StopWatch() {
-  const [integralTime, setIntegralTime] = useState<number>(0);
-  const [startTime, setStartTime] = useState<number | null>(null);
-  const [now, setNow] = useState<number | null>(null);
-  const intervalRef = useRef<number | null>(null);
-  const [timebool, setTimebool] = useState<boolean>(true);
-  const [onModal, setOnModal] = useState<boolean>(false);
-  const [onAccumulatedModal, setOnAccumulatedModal] = useState<boolean>(false);
-  const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState);
-  const [mStopwachTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState);
-  const [sSopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState);
+  const [startTime, setStartTime] = useRecoilState(startTimeState); //시작 시간
+  const [now, setNow] = useRecoilState(nowTimeState); //현재 시간
 
-  function handleStart() {
-    setStartTime(Date.now());
-    setNow(Date.now());
-
-    if (intervalRef.current !== null) {
-      clearInterval(intervalRef.current);
-    }
-
-    intervalRef.current = setInterval(() => {
-      setNow(Date.now());
-    }, 100);
-  }
-
-  function handleStop() {
-    if (intervalRef.current !== null) {
-      clearInterval(intervalRef.current);
-    }
-    if (startTime != null && now != null) {
-      setIntegralTime((prevIntegralTime) => prevIntegralTime + (now - startTime) / 1000);
-    }
-    setStartTime(Date.now());
-    setNow(Date.now());
-  }
-
-  function handleSetZero() {
-    setStartTime(Date.now());
-    setNow(Date.now());
-    setIntegralTime(0);
-  }
-
-  let secondsPassed = 0;
-  if (startTime != null && now != null) {
-    secondsPassed = (now - startTime) / 1000 + integralTime;
-  }
-
-  let location;
-  let stringLocation = '';
-  location = Math.floor((secondsPassed * 6) % 360);
-
-  stringLocation = location.toString();
-  let hour = Math.floor(Math.floor(secondsPassed) / 3600);
-  let min = Math.floor(Math.floor(secondsPassed) / 60);
-
-  let sec = Math.floor(secondsPassed) % 60;
-
-  let h = hour.toString();
-  let m = min.toString();
-  let s = sec.toString();
-
-  let th = h.padStart(2, '0');
-
-  let tm = m.padStart(2, '0');
-
-  let ts = s.padStart(2, '0');
+  const [timebool, setTimebool] = useRecoilState(timeBoolState); // true: 시작 버튼/ false: 일시정지 버튼
+  const [onModal, setOnModal] = useState<boolean>(false); //기록하기 알림창 onoff조절
+  const [onAccumulatedModal, setOnAccumulatedModal] = useState<boolean>(false); //기록완료 알림창 onoff조절
+  const [isStart, setIsStart] = useRecoilState(isStartState); //시작 여부
+  const [isStop, setIsStop] = useRecoilState(isStopState); //멈춤 여부
+  const [isReset, setIsReset] = useRecoilState(isResetState); //리셋 여부
+  const [stringLocation, setStringLocation] = useRecoilState(stringLocationState); //스톱워치 돌아가는 원의 위치
+  const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState); //시 기록
+  const [mStopwatchTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState); //분 기록
+  const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초 기록
 
   const ratateStyle = useMemo(() => {
-    return { transform: `rotate(${stringLocation}deg)` };
+    return { transform: `rotate(${stringLocation}deg)` }; //원의 위치가 변경될 수 있도록 함
   }, [stringLocation]);
 
-  useEffect(() => {
-    setHStopwatchTime(hour);
-  }, [th]);
-
-  useEffect(() => {
-    setMStopwatchTime(tm);
-  }, [tm]);
-
-  useEffect(() => {
-    setSStopwatchTime(ts);
-  }, [ts]);
-
   function StopwatchAlert() {
+    //기록하기 알림창
     return (
       <>
         <div className="">
@@ -123,7 +72,7 @@ export default function StopWatch() {
                     누적 시간
                   </div>
                   <div className="self-stretch text-primary text-h2 font-bold font-['Pretendard Variable'] leading-[30px]">
-                    {th}시간 {tm}분 {ts}초
+                    {hStopwatchTime}시간 {mStopwatchTime}분 {sStopwatchTime}초
                   </div>
                   <div className="self-stretch text-neutral-950 text-h6 font-normal font-['Pretendard Variable'] leading-[21px]">
                     기록하시겠습니까?
@@ -135,8 +84,9 @@ export default function StopWatch() {
                     onClick={() => {
                       setStartTime(Date.now());
                       setNow(Date.now());
-                      setOnModal(false);
-                      handleSetZero();
+                      setOnModal(false); //현재창 닫기
+                      setIsReset(true); //테스트
+                      setIsReset(false); //테스트
                     }}>
                     <div className="text-gray4 text-h6 font-medium font-['Pretendard Variable'] leading-[21px]">
                       아니요, 괜찮아요
@@ -146,11 +96,12 @@ export default function StopWatch() {
                     <div
                       className="text-white text-h6 font-medium font-['Pretendard Variable'] leading-[21px]"
                       onClick={() => {
-                        setOnAccumulatedModal(true);
-                        setOnModal(false);
+                        setOnAccumulatedModal(true); //모달창 열기
+                        setOnModal(false); //현재창 닫기
                         setStartTime(Date.now());
                         setNow(Date.now());
-                        handleSetZero();
+                        setIsReset(true); //테스트
+                        setIsReset(false); //테스트
                       }}>
                       네, 기록할게요
                     </div>
@@ -165,6 +116,7 @@ export default function StopWatch() {
   }
 
   function AccumulatedTime() {
+    //기록 완료 알림창
     return (
       <>
         <div className="">
@@ -174,7 +126,7 @@ export default function StopWatch() {
               <div
                 className="flex cursor-pointer"
                 onClick={() => {
-                  setOnAccumulatedModal(false);
+                  setOnAccumulatedModal(false); //현재창 닫기
                 }}>
                 <div className="text-center text-white text-base font-medium font-['Pretendard Variable'] leading-normal">
                   닫기
@@ -199,14 +151,14 @@ export default function StopWatch() {
                     전체 누적 시간
                   </div>
                   <div className="self-stretch text-primary text-h1 font-bold font-['Pretendard Variable'] leading-[30px]">
-                    {th}시간 {tm}분 {ts}초
+                    {hStopwatchTime}시간 {mStopwatchTime}분 {sStopwatchTime}초
                   </div>
                   <div className="self-stretch text-neutral-900 text-h4 font-bold font-['Pretendard Variable'] leading-[30px]">
                     <br />
                     목표 기간 동안의 누적 시간
                   </div>
                   <div className="self-stretch text-primary text-h1 font-bold font-['Pretendard Variable'] leading-[30px]">
-                    {th}시간 {tm}분 {ts}초
+                    {hStopwatchTime}시간 {mStopwatchTime}분 {sStopwatchTime}초{' '}
                   </div>
                 </div>
               </div>
@@ -219,13 +171,14 @@ export default function StopWatch() {
 
   return (
     <>
-      {onModal ? ( //글 삭제 및 수정 모달창
+      {onModal ? ( //기록하기 알림창 열림OnOff
         <StopwatchAlert></StopwatchAlert>
       ) : null}
-      {onAccumulatedModal ? ( //글 삭제 및 수정 모달창
+      {onAccumulatedModal ? ( //기록완료 알림창OnOff
         <AccumulatedTime></AccumulatedTime>
       ) : null}
-      <div className="relative flex justify-center items-center">
+      <Header headerType={'second'}></Header>
+      <div className="relative flex justify-center items-center mt-[100px]">
         <div className="w-80 h-[449px] flex-col justify-start items-center gap-6 flex">
           {/* <div className={twMerge('h-[320px] w-[320px] border border-gray2 rounded-full', className)}> */}
           <div style={ratateStyle} className="h-[320px] w-[320px] border border-gray2 rounded-full">
@@ -233,8 +186,10 @@ export default function StopWatch() {
           </div>
           <div className="absolute justify-center items-center gap-2 inline-flex w-full h-[290px]">
             <h1 className=" text-[48px] font-['Pretendard Variable']">
+              {/* 스톱워치 시간 */}
               {/* <div class="text-neutral-950 text-5xl font-medium font-['Pretendard Variable'] leading-[48px]">01 : 20 : 35</div> */}
-              {th} : {tm} : {ts}
+              {hStopwatchTime.toString().padStart(2, '0')} : {mStopwatchTime.toString().padStart(2, '0')} :{' '}
+              {sStopwatchTime.toString().padStart(2, '0')}
             </h1>
           </div>
 
@@ -242,9 +197,9 @@ export default function StopWatch() {
             <div className="flex-col justify-start items-center gap-1 inline-flex">
               <button
                 onClick={() => {
-                  setOnModal(true);
-                  handleStop();
-                  setTimebool(true);
+                  setOnModal(true); //모달창 열기
+                  setIsStop(true); //멈춤 설정
+                  setTimebool(true); // true: 시작 버튼
                 }}
                 className="w-20 h-20 p-2 bg-gray0 rounded-[999px] justify-center items-center gap-2 inline-flex">
                 <div className="w-[18px] h-[18px] bg-gray4 rounded-sm"></div>
@@ -255,12 +210,13 @@ export default function StopWatch() {
             </div>
             <div className="flex-col justify-start items-center gap-1 inline-flex">
               {timebool ? (
+                // true: 시작 버튼/ false: 일시정지 버튼
                 <div className="flex-col justify-start items-center gap-1 inline-flex">
                   <button
                     onClick={() => {
-                      handleStart();
-
-                      setTimebool(false);
+                      setIsStart(true); //시작 여부 true
+                      setTimebool(false); // false: 일시정지 버튼
+                      setIsStop(false);
                     }}
                     className="w-20 h-20 p-2 bg-second rounded-[999px] justify-center items-center gap-2 inline-flex">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="22" fill="none" viewBox="0 0 16 22">
@@ -278,8 +234,9 @@ export default function StopWatch() {
                 <div className="flex-col justify-start items-center gap-1 inline-flex">
                   <button
                     onClick={() => {
-                      handleStop();
-                      setTimebool(true);
+                      setIsStart(false);
+                      setIsStop(true); //멈춤
+                      setTimebool(true); //true: 시작 버튼
                     }}
                     className="w-20 h-20 p-2 bg-point rounded-[999px] justify-center items-center gap-2 inline-flex">
                     <div className="justify-center items-center gap-1.5 flex">

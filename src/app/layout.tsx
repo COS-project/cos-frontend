@@ -1,5 +1,6 @@
 'use client';
 
+import Timer from '@/components/common/Timer';
 import './globals.css';
 
 import { RecoilRoot } from 'recoil';
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html className="">
       <RecoilRoot>
         <body>{children}</body>
+        <Timer></Timer>
       </RecoilRoot>
     </html>
   );

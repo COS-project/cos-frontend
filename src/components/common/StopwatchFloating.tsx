@@ -2,23 +2,24 @@ import { hStopwatchTimeState, mStopwatchTimeState, sStopwatchTimeState } from '@
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
+//스톱워치 플로팅 버튼 구현
 export default function StopwatchFloating() {
-  const [isStopwatch, setIsStopwatch] = useState(false);
-  const [isOpen, setIsOpen] = useState(true);
-  const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState);
-  const [mStopwatchTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState);
-  const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState);
-
+  const [isStopwatch, setIsStopwatch] = useState(false); //true: 플로팅 버튼의 종료, 일시정지를 보이게 함
+  const [isOpen, setIsOpen] = useState(true); //false: 플로팅 버튼 자체가 안보이게 설정할 수 있음
+  const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState); //시
+  const [mStopwatchTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState); //분
+  const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초
   return (
     <>
-      {isOpen ? (
+    {/* 시분초가 하나라도 0이상이면 플로팅 버튼이 보임 */}
+      {hStopwatchTime > 0 || mStopwatchTime > 0 || sStopwatchTime > 0 ? (
         <div className="fixed flex-col inline-flex justify-center items-center bottom-[110px] right-10 gap-2 text-white">
           {isStopwatch ? (
             <div className="flex-col inline-flex gap-2">
               <div
                 className="flex-col inline-flex justify-center items-center gap-1 w-[72px] h-[72px] bg-[#D9D9D9] rounded-[999px] text-black"
                 onClick={() => {
-                  setIsOpen(!isOpen);
+                  setIsOpen(!isOpen); 
                 }}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" fill="none" viewBox="0 0 18 19">
                   <path fill="#000" d="M0 .557h18v18H0z" />
@@ -52,13 +53,13 @@ export default function StopwatchFloating() {
                 />
               </g>
             </svg>
-            {hStopwatchTime < 1 ? (
+            {hStopwatchTime < 1 ? ( //1시간 이하일 때는 분, 초가 보이도록 설정 / 1시간 이상일 때는 시, 분이 보이도록 설정
               <div>
-                {mStopwatchTime} : {sStopwatchTime}
+                {mStopwatchTime.toString().padStart(2, '0')} : {sStopwatchTime.toString().padStart(2, '0')}
               </div>
             ) : (
               <div>
-                {hStopwatchTime.toString().padStart(2, '0')} : {mStopwatchTime}
+                {hStopwatchTime.toString().padStart(2, '0')} : {mStopwatchTime.toString().padStart(2, '0')}
               </div>
             )}
           </div>
