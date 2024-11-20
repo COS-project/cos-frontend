@@ -14,18 +14,16 @@ import UserExamAttemptsFilterContent from '@/components/exam/UserExamAttemptsFil
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 import { certificateIdAtom } from '@/recoil/atom';
-import { mockExamIdState, submittedMockExamResultIdState } from '@/recoil/exam/atom';
+import { mockExamIdState } from '@/recoil/exam/atom';
 import { MockExamResultType } from '@/types/exam/type';
 
 const Result = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
-  const [submittedMockExamResultId, setSubmittedMockExamResultId] = useRecoilState(submittedMockExamResultIdState);
   const [isClicked, setIsClicked] = useState<'시험결과' | '틀린문제'>('시험결과');
   const [mockExamId, setMockExamId] = useRecoilState(mockExamIdState);
   const { examResults } = useGetTestResults(mockExamId);
   const [userExamAttempt, setUserExamAttempt] = useState<number>(1);
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
-  let totalTakenTime = 0;
   const router = useRouter();
   const { averageSubjectList } = useAverageSubjectInfo(certificateId);
 
@@ -41,14 +39,11 @@ const Result = () => {
   }, [examResults, isInitialLoad]);
 
   const sumTotalTakenTime = () => {
-    if (examResults) {
-      examResults[examResults.length - 1]?.subjectResults.map((subjectResult) => {
-        totalTakenTime += subjectResult.totalTakenTime;
-      });
-      return totalTakenTime;
-    } else {
-      return 0;
+    if (examResults && examResults.length > 0) {
+      const subjectResults = examResults[examResults.length - 1]?.subjectResults;
+      return subjectResults?.reduce((acc, curr) => acc + (curr.totalTakenTime || 0), 0) || 0;
     }
+    return 0;
   };
 
   /**
