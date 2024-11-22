@@ -3,12 +3,12 @@ import React from 'react';
 interface Props {
   yearList: number[] | undefined;
   setIsClickedYearSelector: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedYear: React.Dispatch<React.SetStateAction<number>>;
+  setSelectedYear: React.Dispatch<React.SetStateAction<number | null>>;
 }
 const MockExamYearsFilter = (props: Props) => {
   const { yearList, setIsClickedYearSelector, setSelectedYear } = props;
   return (
-    <div className={'absolute top-[39%] w-[90%] border-[1px] border-gray2 bg-white rounded-[16px] py-2'}>
+    <div className={'absolute top-[45%] w-[90%] border-[1px] border-gray2 bg-white rounded-[16px] py-2'}>
       {!yearList || yearList.length === 0 ? (
         <div>error</div>
       ) : (

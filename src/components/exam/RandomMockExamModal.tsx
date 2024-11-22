@@ -1,26 +1,20 @@
-import { type SVGProps } from 'react';
+import type { SVGProps } from 'react';
 import * as React from 'react';
 
 interface Props {
-  setIsSettingNewModal: React.Dispatch<React.SetStateAction<boolean>>;
-  isSettingNewGoalModal: boolean;
-  resetData: () => void;
-  fetchDataAndUpdateState: () => void;
-  setIsResetButtonClick: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsRandomMockExamModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-const SettingNewGoalModal = (props: Props) => {
-  const { setIsSettingNewModal, isSettingNewGoalModal, resetData, setIsResetButtonClick, fetchDataAndUpdateState } =
-    props;
+const RandomMockExamModal = (props: Props) => {
+  const { setIsRandomMockExamModalOpen } = props;
   return (
     <>
       <div
         className={
-          'absolute left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
+          'fixed left-0 right-0 top-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
         }>
         <div
           onClick={() => {
-            setIsSettingNewModal(!isSettingNewGoalModal);
+            setIsRandomMockExamModalOpen(false);
           }}
           className={'flex justify-end items-center'}>
           <div className={'text-white text-h6'}>닫기</div>
@@ -28,29 +22,19 @@ const SettingNewGoalModal = (props: Props) => {
         </div>
         <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
           <div className={'flex flex-col gap-y-1'}>
-            <div className={'text-h2 font-semibold text-black'}>이전 목표를 불러올까요?</div>
+            <div className={'text-h2 font-semibold text-black'}>랜덤 모의고사는 준비중이에요</div>
             <div>
-              <div className={'flex items-center text-h6'}>정보를 불러오면 이전에 설정한 목표를</div>
-              <div className={'text-h6'}>토대로 작성할 수 있어요.</div>
+              <div className={'flex items-center text-h6'}>서비스 준비가 완료될 때까지</div>
+              <div className={'text-h6'}>기다려주시겠어요?</div>
             </div>
           </div>
           <div className={'flex justify-end gap-x-2'}>
             <button
               onClick={() => {
-                resetData();
-                setIsResetButtonClick(true);
-                setIsSettingNewModal(!isSettingNewGoalModal);
+                setIsRandomMockExamModalOpen(false);
               }}
-              className={'bg-gray1 rounded-full text-gray4 py-[7px] px-4'}>
-              새 목표
-            </button>
-            <button
-              onClick={() => {
-                fetchDataAndUpdateState();
-                setIsSettingNewModal(!isSettingNewGoalModal);
-              }}
-              className={'bg-black rounded-full text-white py-[7px] px-3'}>
-              불러오기
+              className={'bg-black rounded-full text-white py-[7px] px-4'}>
+              확인
             </button>
           </div>
         </div>
@@ -58,7 +42,7 @@ const SettingNewGoalModal = (props: Props) => {
     </>
   );
 };
-export default SettingNewGoalModal;
+export default RandomMockExamModal;
 
 const CancelIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={25} height={24} fill="none" {...props}>
