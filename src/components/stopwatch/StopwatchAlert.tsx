@@ -1,6 +1,8 @@
 import React, { type SVGProps } from 'react';
 import { useRecoilState } from 'recoil';
 
+import { postStudyTimes } from '@/lib/api/stopwatch';
+import { selectedPrepareTimeState } from '@/recoil/home/atom';
 import {
   hStopwatchTimeState,
   isResetState,
@@ -9,8 +11,6 @@ import {
   sStopwatchTimeState,
   startTimeState,
 } from '@/recoil/stopwatch/atom';
-import { postStudyTimes } from '@/lib/api/stopwatch';
-import { selectedPrepareTimeState } from '@/recoil/home/atom';
 
 interface Props {
   setOnModal: React.Dispatch<React.SetStateAction<boolean>>;

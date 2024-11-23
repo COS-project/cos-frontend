@@ -37,7 +37,6 @@ export default function StopWatch() {
 
   return (
     <>
-
       {onModal ? ( //기록하기 알림창 열림OnOff
         <StopwatchAlert setOnAccumulatedModal={setOnAccumulatedModal} setOnModal={setOnModal} />
       ) : null}
