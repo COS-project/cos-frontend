@@ -9,6 +9,8 @@ import {
   sStopwatchTimeState,
   startTimeState,
 } from '@/recoil/stopwatch/atom';
+import { postStudyTimes } from '@/lib/api/stopwatch';
+import { selectedPrepareTimeState } from '@/recoil/home/atom';
 
 interface Props {
   setOnModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,12 +25,21 @@ function StopwatchAlert(props: Props) {
   const [mStopwatchTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState); //분 기록
   const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초 기록
   const [isReset, setIsReset] = useRecoilState(isResetState); //리셋 여부
+  const [selectedPrepareTime, setSelectedPrepareTime] = useRecoilState(selectedPrepareTimeState);
+
+  const convertToMilliseconds = (hours: number, minutes: number, seconds: number): number => {
+    const hoursInMs = hours * 60 * 60 * 1000; // 시를 밀리초로 변환
+    const minutesInMs = minutes * 60 * 1000; // 분을 밀리초로 변환
+    const secondsInMs = seconds * 1000; // 초를 밀리초로 변환
+
+    return hoursInMs + minutesInMs + secondsInMs; // 모두 더해서 반환
+  };
 
   //기록하기 알림창
   return (
     <>
       <div className="">
-        <div className="absolute z-40 w-full h-full px-10 py-8 bg-black bg-opacity-60 flex-col justify-center items-center gap-2 inline-flex ">
+        <div className="absolute z-40 w-full h-full px-[36px] py-8 bg-black bg-opacity-60 flex-col justify-center items-center gap-2 inline-flex ">
           {/* 닫기 버튼 */}
           <div className="relative self-stretch px-2 items-center inline-flex justify-end mr-2">
             <div
@@ -74,12 +85,17 @@ function StopwatchAlert(props: Props) {
                   <div
                     className="text-white text-h6 font-['Pretendard Variable'] leading-[21px]"
                     onClick={() => {
-                      setOnAccumulatedModal(true); //모달창 열기
-                      setOnModal(false); //현재창 닫기
-                      setStartTime(Date.now());
-                      setNow(Date.now());
-                      setIsReset(true); //테스트
-                      setIsReset(false); //테스트
+                      postStudyTimes(
+                        selectedPrepareTime.goalId,
+                        convertToMilliseconds(hStopwatchTime, mStopwatchTime, sStopwatchTime),
+                      ).then(() => {
+                        setOnAccumulatedModal(true); //모달창 열기
+                        setOnModal(false); //현재창 닫기
+                        setStartTime(Date.now());
+                        setNow(Date.now());
+                        setIsReset(true); //테스트
+                        setIsReset(false); //테스트
+                      });
                     }}>
                     기록하기
                   </div>
