@@ -1,5 +1,9 @@
 'use client';
 
+import React, { useMemo } from 'react';
+import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+
 import Header from '@/components/common/Header';
 import {
   hStopwatchTimeState,
@@ -13,9 +17,6 @@ import {
   stringLocationState,
   timeBoolState,
 } from '@/recoil/stopwatch/atom';
-import React, { useMemo } from 'react';
-import { useState } from 'react';
-import { useRecoilState } from 'recoil';
 
 export default function StopWatch() {
   const [startTime, setStartTime] = useRecoilState(startTimeState); //시작 시간
