@@ -195,32 +195,23 @@ const Question = () => {
             </div>
           </div>
         </div>
+        <div className={'h-[86px]'} />
       </div>
 
       {/*이동 버튼*/}
-      <div className={'absolute bottom-[8px] right-[20px] left-[20px]'}>
-        {questionIdx + 1 === 1 ? (
-          <button
-            onClick={() => {
-              recordSessionTime();
-              setQuestionIdx((prev) => prev + 1);
-            }}
-            className={'relative w-full rounded-[16px] bg-blue text-white p-4'}>
-            다음
-            <NextIcon className={'absolute right-5 bottom-[18px]'}></NextIcon>
-          </button>
-        ) : questionIdx + 1 === questions?.length ? (
-          <button
-            className={'relative w-full rounded-[16px] text-blue p-4 border-blue border-[1px]'}
-            onClick={() => {
-              setQuestionIdx((prev) => prev - 1);
-              recordSessionTime();
-            }}>
-            <BeforeIcon className={'absolute left-5 bottom-[18px]'}></BeforeIcon>
-            이전
-          </button>
-        ) : (
-          <div className={'flex gap-x-3'}>
+      <div className={'fixed bottom-0 bg-white h-[86px] w-full '}>
+        <div className={'absolute bottom-[8px] right-[20px] left-[20px] '}>
+          {questionIdx + 1 === 1 ? (
+            <button
+              onClick={() => {
+                recordSessionTime();
+                setQuestionIdx((prev) => prev + 1);
+              }}
+              className={'relative w-full rounded-[16px] bg-blue text-white p-4'}>
+              다음
+              <NextIcon className={'absolute right-5 bottom-[18px]'}></NextIcon>
+            </button>
+          ) : questionIdx + 1 === questions?.length ? (
             <button
               className={'relative w-full rounded-[16px] text-blue p-4 border-blue border-[1px]'}
               onClick={() => {
@@ -230,22 +221,29 @@ const Question = () => {
               <BeforeIcon className={'absolute left-5 bottom-[18px]'}></BeforeIcon>
               이전
             </button>
-            <button
-              className={'relative w-full rounded-[16px] bg-blue text-white p-4'}
-              onClick={() => {
-                recordSessionTime();
-                setQuestionIdx((prev) => prev + 1);
-              }}>
-              다음
-              <NextIcon className={'absolute right-5 bottom-[18px]'}></NextIcon>
-            </button>
-          </div>
-        )}
-
-        {/* 문제 전체 모아보기 session */}
-        {allQuestionModalIsOpen ? (
-          <AllQuestionModal toggleQuestionModal={toggleQuestionModal} recordSessionTime={recordSessionTime} />
-        ) : null}
+          ) : (
+            <div className={'flex gap-x-3'}>
+              <button
+                className={'relative w-full rounded-[16px] text-blue p-4 border-blue border-[1px]'}
+                onClick={() => {
+                  setQuestionIdx((prev) => prev - 1);
+                  recordSessionTime();
+                }}>
+                <BeforeIcon className={'absolute left-5 bottom-[18px]'}></BeforeIcon>
+                이전
+              </button>
+              <button
+                className={'relative w-full rounded-[16px] bg-blue text-white p-4'}
+                onClick={() => {
+                  recordSessionTime();
+                  setQuestionIdx((prev) => prev + 1);
+                }}>
+                다음
+                <NextIcon className={'absolute right-5 bottom-[18px]'}></NextIcon>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
