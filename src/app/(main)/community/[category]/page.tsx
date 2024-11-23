@@ -130,7 +130,6 @@ export default function CommunityCategoryPage() {
     <WriteNormalPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : (
     <>
-      {/*위치 이동 예정*/}
       {isModalOpen ? <WriteReviewModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} /> : null}
       <Header
         headerType={'dynamic'}

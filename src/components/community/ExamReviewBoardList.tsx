@@ -20,7 +20,6 @@ const ExamReviewBoardList = (props: Props) => {
   const { setIsModalOpen } = props;
   const [ref, inView] = useInView();
   const certificateId = useRecoilValue(certificateIdAtom);
-  const router = useRouter();
   const [selectedExamDifficultyContent, setSelectedExamDifficultyContent] = useState<string>('난이도 전체');
   const [isExamDifficultyOpen, setIsExamDifficultyOpen] = useState<boolean>(false);
   const [examDifficulty, setExamDifficulty] = useState<ExamDifficulty | undefined>();
@@ -98,31 +97,31 @@ const ExamReviewBoardList = (props: Props) => {
               {selectedPreparePeriodContent === '전체' ? '준비기간 전체' : selectedPreparePeriodContent}
             </div>
             {isPreparePeriodOpen ? <ActivationIcon /> : <DisableIcon />}
+            {isPreparePeriodOpen ? (
+              <PreparePeriodFilter
+                setEndPreMonths={setEndPreMonths}
+                setStartMonths={setStartMonths}
+                setSelectedPreparePeriodContent={setSelectedPreparePeriodContent}
+                setIsPreparePeriodOpen={setIsPreparePeriodOpen}
+              />
+            ) : null}
           </div>
-          {isPreparePeriodOpen ? (
-            <PreparePeriodFilter
-              setEndPreMonths={setEndPreMonths}
-              setStartMonths={setStartMonths}
-              setSelectedPreparePeriodContent={setSelectedPreparePeriodContent}
-              setIsPreparePeriodOpen={setIsPreparePeriodOpen}
-            />
-          ) : null}
           <div
             onClick={() => setIsExamDifficultyOpen(!isExamDifficultyOpen)}
-            className={'flex items-center rounded-full bg-white py-[6px] px-[12px]'}>
+            className={'relative flex items-center rounded-full bg-white py-[6px] px-[12px]'}>
             <div className={'text-h6'}>
               {selectedExamDifficultyContent === '전체' ? '난이도 전체' : selectedExamDifficultyContent}
             </div>
             {isExamDifficultyOpen ? <ActivationIcon /> : <DisableIcon />}
+            {isExamDifficultyOpen ? (
+              <ExamDifficultyFilter
+                selectedExamDifficulty={selectedExamDifficultyContent}
+                setIsExamDifficultyOpen={setIsExamDifficultyOpen}
+                setExamDifficulty={setExamDifficulty}
+                setSelectedExamDifficultyContent={setSelectedExamDifficultyContent}
+              />
+            ) : null}
           </div>
-          {isExamDifficultyOpen ? (
-            <ExamDifficultyFilter
-              selectedExamDifficulty={selectedExamDifficultyContent}
-              setIsExamDifficultyOpen={setIsExamDifficultyOpen}
-              setExamDifficulty={setExamDifficulty}
-              setSelectedExamDifficultyContent={setSelectedExamDifficultyContent}
-            />
-          ) : null}
         </div>
         <div className={'flex flex-col gap-y-4'}>
           {examReviews
