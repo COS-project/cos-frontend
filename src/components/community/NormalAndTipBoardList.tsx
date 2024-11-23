@@ -114,25 +114,29 @@ const NormalAndTipBoardList = (props: Props) => {
       </div>
       <div className={'flex flex-col gap-y-4'}>
         {userPostsList.map((userPosts, index) => {
+          const postResponse = userPosts?.result?.postResponse; // 안전한 접근
+          if (!postResponse) return null; // 데이터가 없는 경우 렌더링하지 않음
+
           return (
-            <div ref={ref} key={userPosts.result.postResponse.postId}>
+            <div ref={ref} key={postResponse.postId}>
               <Post
-                postId={userPosts.result.postResponse.postId}
-                content={userPosts.result.postResponse.postContent.content}
-                title={userPosts.result.postResponse.postContent.title}
-                commentCount={userPosts.result.postResponse.postStatus.commentCount}
-                createdAt={formatDate(userPosts.result.postResponse.dateTime.createdAt)}
+                postId={postResponse.postId}
+                content={postResponse.postContent?.content || ''}
+                title={postResponse.postContent?.title || ''}
+                commentCount={postResponse.postStatus?.commentCount || 0}
+                createdAt={formatDate(postResponse.dateTime?.createdAt || '')}
                 imageUrl={
-                  userPosts.result.postResponse.postContent.images.length !== 0
-                    ? userPosts.result.postResponse.postContent.images[0].imageUrl
+                  postResponse.postContent?.images?.length
+                    ? postResponse.postContent.images[0].imageUrl
                     : null
                 }
-                likeCount={userPosts.result.postResponse.postStatus.likeCount}
+                likeCount={postResponse.postStatus?.likeCount || 0}
                 topElement={
-                  userPosts.result.postResponse.recommendTags
-                    ? tipTopElement(userPosts.result.postResponse.postId)
+                  postResponse.recommendTags
+                    ? tipTopElement(postResponse.postId)
                     : undefined
-                }></Post>
+                }
+              />
             </div>
           );
         })}
