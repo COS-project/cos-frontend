@@ -125,17 +125,9 @@ const NormalAndTipBoardList = (props: Props) => {
                 title={postResponse.postContent?.title || ''}
                 commentCount={postResponse.postStatus?.commentCount || 0}
                 createdAt={formatDate(postResponse.dateTime?.createdAt || '')}
-                imageUrl={
-                  postResponse.postContent?.images?.length
-                    ? postResponse.postContent.images[0].imageUrl
-                    : null
-                }
+                imageUrl={postResponse.postContent?.images?.length ? postResponse.postContent.images[0].imageUrl : null}
                 likeCount={postResponse.postStatus?.likeCount || 0}
-                topElement={
-                  postResponse.recommendTags
-                    ? tipTopElement(postResponse.postId)
-                    : undefined
-                }
+                topElement={postResponse.recommendTags ? tipTopElement(postResponse.postId) : undefined}
               />
             </div>
           );
