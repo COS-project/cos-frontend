@@ -15,6 +15,7 @@ import NormalAndTipBoardList from '@/components/community/NormalAndTipBoardList'
 import WriteButton from '@/components/community/WriteButton';
 import WriteExplanationPost from '@/components/community/WriteExplanationPost';
 import WriteNormalPost from '@/components/community/WriteNormalPost';
+import WriteReviewModal from '@/components/community/WriteReviewModal';
 import WriteTipPost from '@/components/community/WriteTipPost';
 import useDebounce from '@/hooks/useDebounce';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
@@ -51,6 +52,7 @@ export default function CommunityCategoryPage() {
     selectedCommentaryRoundFilterContent,
     searchValue,
   );
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -128,6 +130,7 @@ export default function CommunityCategoryPage() {
     <WriteNormalPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : (
     <>
+      {isModalOpen ? <WriteReviewModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} /> : null}
       <Header
         headerType={'dynamic'}
         onBack={onMoveCommunityMenuPage}
@@ -145,7 +148,7 @@ export default function CommunityCategoryPage() {
         <BoardTypeMenu boardType={boardType} setBoardType={setBoardType} />
         {/*post*/}
         {boardType === 'REVIEW' ? (
-          <ExamReviewBoardList />
+          <ExamReviewBoardList setIsModalOpen={setIsModalOpen} />
         ) : boardType === 'COMMENTARY' ? (
           <CommentaryBoardList
             boardType={boardType}

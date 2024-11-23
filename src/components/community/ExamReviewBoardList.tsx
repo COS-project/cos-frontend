@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import React, { type SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useRecoilValue } from 'recoil';
@@ -12,10 +11,14 @@ import useGetExamReview from '@/lib/hooks/useGetExamReview';
 import { certificateIdAtom } from '@/recoil/atom';
 import { ExamDifficulty, ReviewPost } from '@/types/community/type';
 
-const ExamReviewBoardList = () => {
+interface Props {
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ExamReviewBoardList = (props: Props) => {
+  const { setIsModalOpen } = props;
   const [ref, inView] = useInView();
   const certificateId = useRecoilValue(certificateIdAtom);
-  const router = useRouter();
   const [selectedExamDifficultyContent, setSelectedExamDifficultyContent] = useState<string>('난이도 전체');
   const [isExamDifficultyOpen, setIsExamDifficultyOpen] = useState<boolean>(false);
   const [examDifficulty, setExamDifficulty] = useState<ExamDifficulty | undefined>();
@@ -71,7 +74,9 @@ const ExamReviewBoardList = () => {
     return (
       <button
         className={'px-3 py-1 rounded-full bg-white w-fit flex items-center'}
-        onClick={() => router.push('/home/goal-setting')}>
+        onClick={() => {
+          setIsModalOpen(true);
+        }}>
         <div className={'text-second text-h6'}>따끈 후기 작성</div>
         <MoveIcon />
       </button>
@@ -79,75 +84,79 @@ const ExamReviewBoardList = () => {
   };
 
   return (
-    <div className={'relative px-5 flex flex-col gap-y-4 '}>
-      <UserActionReminder content={'크루들에게 따끈후기를 공유해주세요!'} button={userActionReminderMove()} />
-      {/*filter*/}
-      <div className={'flex gap-x-2'}>
-        <div
-          onClick={() => setIsPreparePeriodOpen(!isPreparePeriodOpen)}
-          className={'relative flex items-center rounded-full bg-white py-[6px] px-[12px]'}>
-          <div className={'text-h6'}>
-            {selectedPreparePeriodContent === '전체' ? '준비기간 전체' : selectedPreparePeriodContent}
+    <>
+      <div className={'relative px-5 flex flex-col gap-y-4 '}>
+        <UserActionReminder content={'크루들에게 따끈후기를 공유해주세요!'} button={userActionReminderMove()} />
+        {/*filter*/}
+        <div className={'flex gap-x-2'}>
+          <div
+            onClick={() => setIsPreparePeriodOpen(!isPreparePeriodOpen)}
+            className={'relative flex items-center rounded-full bg-white py-[6px] px-[12px]'}>
+            <div className={'text-h6'}>
+              {selectedPreparePeriodContent === '전체' ? '준비기간 전체' : selectedPreparePeriodContent}
+            </div>
+            {isPreparePeriodOpen ? <ActivationIcon /> : <DisableIcon />}
+            {isPreparePeriodOpen ? (
+              <PreparePeriodFilter
+                setEndPreMonths={setEndPreMonths}
+                setStartMonths={setStartMonths}
+                setSelectedPreparePeriodContent={setSelectedPreparePeriodContent}
+                setIsPreparePeriodOpen={setIsPreparePeriodOpen}
+              />
+            ) : null}
           </div>
-          {isPreparePeriodOpen ? <ActivationIcon /> : <DisableIcon />}
-        </div>
-        {isPreparePeriodOpen ? (
-          <PreparePeriodFilter
-            setEndPreMonths={setEndPreMonths}
-            setStartMonths={setStartMonths}
-            setSelectedPreparePeriodContent={setSelectedPreparePeriodContent}
-            setIsPreparePeriodOpen={setIsPreparePeriodOpen}
-          />
-        ) : null}
-        <div
-          onClick={() => setIsExamDifficultyOpen(!isExamDifficultyOpen)}
-          className={'flex items-center rounded-full bg-white py-[6px] px-[12px]'}>
-          <div className={'text-h6'}>
-            {selectedExamDifficultyContent === '전체' ? '난이도 전체' : selectedExamDifficultyContent}
+          <div
+            onClick={() => setIsExamDifficultyOpen(!isExamDifficultyOpen)}
+            className={'relative flex items-center rounded-full bg-white py-[6px] px-[12px]'}>
+            <div className={'text-h6'}>
+              {selectedExamDifficultyContent === '전체' ? '난이도 전체' : selectedExamDifficultyContent}
+            </div>
+            {isExamDifficultyOpen ? <ActivationIcon /> : <DisableIcon />}
+            {isExamDifficultyOpen ? (
+              <ExamDifficultyFilter
+                selectedExamDifficulty={selectedExamDifficultyContent}
+                setIsExamDifficultyOpen={setIsExamDifficultyOpen}
+                setExamDifficulty={setExamDifficulty}
+                setSelectedExamDifficultyContent={setSelectedExamDifficultyContent}
+              />
+            ) : null}
           </div>
-          {isExamDifficultyOpen ? <ActivationIcon /> : <DisableIcon />}
         </div>
-        {isExamDifficultyOpen ? (
-          <ExamDifficultyFilter
-            selectedExamDifficulty={selectedExamDifficultyContent}
-            setIsExamDifficultyOpen={setIsExamDifficultyOpen}
-            setExamDifficulty={setExamDifficulty}
-            setSelectedExamDifficultyContent={setSelectedExamDifficultyContent}
-          />
-        ) : null}
-      </div>
-      <div className={'flex flex-col gap-y-4'}>
-        {examReviews
-          ? examReviews.map((examReview, index) => {
-              return examReview?.result.content.map((review: ReviewPost, postIndex: number) => {
-                const isLastElement =
-                  index === examReviews.length - 1 && postIndex === examReview?.result.content.length - 1;
-                return (
-                  <div
-                    key={review.createdAt}
-                    ref={isLastElement ? ref : null}
-                    className={'flex flex-col gap-y-1 py-4 px-5 rounded-[32px] bg-white'}>
-                    <div className={'flex flex-col gap-y-3'}>
-                      <div className={'w-full flex items-center gap-x-[6px]'}>
-                        <div className={'flex items-center gap-x-[9px]'}>
-                          <div className={'truncate text-gray4 text-h6'}>{review.user.nickname}</div>
-                          <div
-                            className={'rounded-full border-[1px] border-gray2 py-[2px] px-[10px] text-gray4 text-h6'}>
-                            {`준비기간 ${review.prepareMonths}개월`}
+        <div className={'flex flex-col gap-y-4'}>
+          {examReviews
+            ? examReviews.map((examReview, index) => {
+                return examReview?.result.content.map((review: ReviewPost, postIndex: number) => {
+                  const isLastElement =
+                    index === examReviews.length - 1 && postIndex === examReview?.result.content.length - 1;
+                  return (
+                    <div
+                      key={review.createdAt}
+                      ref={isLastElement ? ref : null}
+                      className={'flex flex-col gap-y-1 py-4 px-5 rounded-[32px] bg-white'}>
+                      <div className={'flex flex-col gap-y-3'}>
+                        <div className={'w-full flex items-center gap-x-[6px]'}>
+                          <div className={'flex items-center gap-x-[9px]'}>
+                            <div className={'truncate text-gray4 text-h6'}>{review.user.nickname}</div>
+                            <div
+                              className={
+                                'rounded-full border-[1px] border-gray2 py-[2px] px-[10px] text-gray4 text-h6'
+                              }>
+                              {`준비기간 ${review.prepareMonths}개월`}
+                            </div>
                           </div>
+                          {changeTagForExamDifficulty(review.examDifficulty)}
                         </div>
-                        {changeTagForExamDifficulty(review.examDifficulty)}
+                        <div className={''}>{review.content}</div>
                       </div>
-                      <div className={''}>{review.content}</div>
+                      <div className={'text-gray3 text-h6'}>작성일 {formatDate(new Date(review.createdAt))}</div>
                     </div>
-                    <div className={'text-gray3 text-h6'}>작성일 {formatDate(new Date(review.createdAt))}</div>
-                  </div>
-                );
-              });
-            })
-          : null}
+                  );
+                });
+              })
+            : null}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 export default ExamReviewBoardList;

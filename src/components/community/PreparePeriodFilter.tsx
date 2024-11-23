@@ -28,7 +28,7 @@ const PreparePeriodFilter = (props: Props) => {
   return (
     <div
       className={
-        'absolute top-[27%] border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 h-[250px] overflow-y-scroll'
+        'absolute top-[120%] left-0 border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 h-[250px] overflow-y-scroll'
       }>
       {preparePeriod.map((period, index) => {
         return (

@@ -119,7 +119,6 @@ const CommunityDetailPage = () => {
       ) : (
         <div className="mb-[100px]">
           {/* <ImgModal></ImgModa> */}
-          {/* 나중에 이 부분에 이미지 모달창을 넣을 예정 */}
           <Header
             headerType={'dynamic'}
             title={
