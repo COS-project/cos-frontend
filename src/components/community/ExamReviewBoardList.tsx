@@ -138,7 +138,9 @@ const ExamReviewBoardList = (props: Props) => {
                           <div className={'flex items-center gap-x-[9px]'}>
                             <div className={'truncate text-gray4 text-h6'}>{review.user.nickname}</div>
                             <div
-                              className={'rounded-full border-[1px] border-gray2 py-[2px] px-[10px] text-gray4 text-h6'}>
+                              className={
+                                'rounded-full border-[1px] border-gray2 py-[2px] px-[10px] text-gray4 text-h6'
+                              }>
                               {`준비기간 ${review.prepareMonths}개월`}
                             </div>
                           </div>
