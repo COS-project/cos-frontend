@@ -151,11 +151,16 @@ const Question = () => {
 
   return (
     <>
+      {/* 문제 전체 모아보기 session */}
+      {allQuestionModalIsOpen ? (
+        <AllQuestionModal toggleQuestionModal={toggleQuestionModal} recordSessionTime={recordSessionTime} />
+      ) : null}
+      <div className={'h-[70px]'} />
       <div className="relative flex flex-col">
         {/* progressBar */}
-        <div className={' h-[4px] bg-gray1'} />
+        <div className="fixed top-[70px] left-0 h-[4px] w-full bg-gray1" />
         <div
-          className="absolute top-0 z-20 h-1 bg-black"
+          className="fixed top-[70px] left-0 z-10 h-[4px] bg-black rounded-r"
           style={{ width: `${((questionIdx + 1) / (progressBarLength || 1)) * 100}%` }}
         />
 
