@@ -1,10 +1,8 @@
 'use client';
-import React, { useState } from 'react';
-
 import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
-import { SVGProps } from 'react';
 import React, { useState } from 'react';
+import { SVGProps } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';

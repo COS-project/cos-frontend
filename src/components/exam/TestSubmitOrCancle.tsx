@@ -184,7 +184,7 @@ const TestSubmitOrCancle = (props: Props) => {
 
   return (
     <>
-      <div className="flex justify-between items-center w-full py-4 px-5">
+      <div className="fixed bg-white z-10 flex justify-between items-center w-full py-4 px-5">
         <button
           className={'border-primary-button'}
           onClick={() => {

@@ -1,6 +1,7 @@
-import { hStopwatchTimeState, mStopwatchTimeState, sStopwatchTimeState } from '@/recoil/stopwatch/atom';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
+
+import { hStopwatchTimeState, mStopwatchTimeState, sStopwatchTimeState } from '@/recoil/stopwatch/atom';
 
 //스톱워치 플로팅 버튼 구현
 export default function StopwatchFloating() {
@@ -11,7 +12,7 @@ export default function StopwatchFloating() {
   const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초
   return (
     <>
-    {/* 시분초가 하나라도 0이상이면 플로팅 버튼이 보임 */}
+      {/* 시분초가 하나라도 0이상이면 플로팅 버튼이 보임 */}
       {hStopwatchTime > 0 || mStopwatchTime > 0 || sStopwatchTime > 0 ? (
         <div className="fixed flex-col inline-flex justify-center items-center bottom-[110px] right-10 gap-2 text-white">
           {isStopwatch ? (
@@ -19,7 +20,7 @@ export default function StopwatchFloating() {
               <div
                 className="flex-col inline-flex justify-center items-center gap-1 w-[72px] h-[72px] bg-[#D9D9D9] rounded-[999px] text-black"
                 onClick={() => {
-                  setIsOpen(!isOpen); 
+                  setIsOpen(!isOpen);
                 }}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" fill="none" viewBox="0 0 18 19">
                   <path fill="#000" d="M0 .557h18v18H0z" />
