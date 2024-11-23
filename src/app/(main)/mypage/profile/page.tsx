@@ -77,6 +77,7 @@ const ProfileSettings = () => {
             <div className="relative w-fit">
               <div className="relative w-[100px] h-[100px] object-cover overflow-hidden rounded-full">
                 <Image
+                  unoptimized
                   alt={userProfile ? userProfile.userId?.toString() || '' : ''}
                   src={
                     typeof uploadImage === 'string'
