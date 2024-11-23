@@ -34,6 +34,7 @@ const MyPageHeader = () => {
               src={userProfile?.profileImage || '/person.png'}
               alt={userProfile?.profileImage || '/person.png'}
               fill
+              unoptimized
               className={'object-cover rounded-full'}></Image>
           </div>
           <div className={'flex items-center'}>
