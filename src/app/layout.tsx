@@ -1,9 +1,10 @@
 'use client';
 
-import Timer from '@/components/common/Timer';
 import './globals.css';
 
 import { RecoilRoot } from 'recoil';
+
+import Timer from '@/components/common/Timer';
 
 // export const metadata: Metadata = {
 //   title: 'COS project',
