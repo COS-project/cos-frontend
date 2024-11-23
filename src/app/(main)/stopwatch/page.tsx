@@ -31,7 +31,7 @@ export default function StopWatch() {
   const [mStopwatchTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState); //분 기록
   const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초 기록
 
-  const ratateStyle = useMemo(() => {
+  const rotateStyle = useMemo(() => {
     return { transform: `rotate(${stringLocation}deg)` }; //원의 위치가 변경될 수 있도록 함
   }, [stringLocation]);
 
@@ -48,7 +48,7 @@ export default function StopWatch() {
       <div className="relative flex justify-center items-center mt-[100px]">
         <div className="w-80 h-[449px] flex-col justify-start items-center gap-6 flex">
           {/* <div className={twMerge('h-[320px] w-[320px] border border-gray2 rounded-full', className)}> */}
-          <div style={ratateStyle} className="h-[320px] w-[320px] border border-gray2 rounded-full">
+          <div style={rotateStyle} className="h-[320px] w-[320px] border border-gray2 rounded-full">
             <div className="absolute z-10 left-1/2 -top-2 h-4 w-4 bg-second rounded-full"></div>
           </div>
           <div className="absolute justify-center items-center gap-2 inline-flex w-full h-[290px]">
