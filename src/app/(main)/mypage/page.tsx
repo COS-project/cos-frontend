@@ -59,8 +59,8 @@ export default function MyPage() {
           {/* 기타 */}
           {/*<MyPageItem contents={etcContents} category={'기타'}></MyPageItem>*/}
         </div>
+        <div className={'h-[100px] bg-gray0'} />
       </div>
-      <div className={'h-[60px] bg-gray0'} />
       <NavBar />
     </>
   );
