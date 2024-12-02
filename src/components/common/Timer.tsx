@@ -1,9 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRef } from 'react';
-import { useRecoilState } from 'recoil';
-
 import {
   hStopwatchTimeState,
   integralTimeState,
@@ -16,6 +12,9 @@ import {
   startTimeState,
   stringLocationState,
 } from '@/recoil/stopwatch/atom';
+import React, { useEffect, useMemo } from 'react';
+import { useRef } from 'react';
+import { useRecoilState } from 'recoil';
 
 export default function Timer() {
   const [integralTime, setIntegralTime] = useRecoilState(integralTimeState); //누적 시간(초단위)
@@ -43,7 +42,7 @@ export default function Timer() {
       }
 
       //새로운 interval을 시작하여 100ms마다 현재 시간 업데이트
-      intervalRef.current = window.setInterval(() => {
+      intervalRef.current = setInterval(() => {
         setNow(Date.now());
       }, 100);
     }
