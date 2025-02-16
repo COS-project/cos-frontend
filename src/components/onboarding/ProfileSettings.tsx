@@ -64,7 +64,7 @@ const ProfileSettings = (props: Props) => {
           <div className="flex flex-col justify-center items-center">
             <div className="relative w-fit">
               <div className="relative w-[100px] h-[100px] object-cover overflow-hidden rounded-full">
-                <Image
+                <img
                   alt={(userProfile?.userId || 0).toString()}
                   src={
                     typeof uploadImage === 'string'
@@ -73,8 +73,7 @@ const ProfileSettings = (props: Props) => {
                       ? userProfile.profileImage
                       : '/person.png'
                   }
-                  className={'object-cover'}
-                  fill></Image>
+                  className={'object-cover'}></img>
               </div>
               <label htmlFor="input-file">
                 <ProfileImageIcon className="absolute bottom-0 right-0" />
