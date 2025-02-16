@@ -108,10 +108,15 @@ const GoalSetting = () => {
     setGoalData(resetState);
   };
 
+  // useEffect(() => {
+  //   console.log('goalData', goalData);
+  // }, [goalData]);
+
   return (
     <div className={'min-h-screen'}>
-      {isSettingNewGoalModalOpen ? (
+      {isSettingNewGoalModalOpen && userGoals ? (
         <SettingNewGoalModal
+          isFirstGoalSetting={userGoals.length === 0} //새로 생성된 목표가 없을 경우
           fetchDataAndUpdateState={fetchDataAndUpdateState}
           setIsResetButtonClick={setIsResetButtonClick}
           resetData={resetData}
