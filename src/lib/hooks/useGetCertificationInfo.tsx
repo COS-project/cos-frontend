@@ -4,7 +4,10 @@ import { swrGetFetcher } from '@/lib/axios';
 import { CertificateInfoResponseType } from '@/types/home/type';
 
 const useGetCertificationInfo = () => {
-  const { data, error } = useSWR<CertificateInfoResponseType>('/api/v2certificates/1/certificate-exams', swrGetFetcher);
+  const { data, error } = useSWR<CertificateInfoResponseType>(
+    '/api/v2/certificates/1/certificate-exams',
+    swrGetFetcher,
+  );
 
   return {
     certificationInfo: data,
