@@ -19,7 +19,7 @@ export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo, cert
     return response.data;
   } catch (error) {
     // 에러 처리
-    console.error('에러 발생:', error);
+    console.error('목표 생성 에러 발생:', error);
   }
 };
 

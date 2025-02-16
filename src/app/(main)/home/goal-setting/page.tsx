@@ -18,7 +18,6 @@ import useGetGoalSettingData from '@/lib/hooks/useGetGoalSettingData';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import { certificateIdAtom } from '@/recoil/atom';
 import { goalSettingCertificateId, goalSettingState } from '@/recoil/home/atom';
-import { GoalSettingInfo } from '@/types/global';
 
 const GoalSetting = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
@@ -36,7 +35,6 @@ const GoalSetting = () => {
    */
   const getLastGoalId = () => {
     if (userGoals && userGoals.length > 0) {
-      console.log('goalId', userGoals[userGoals.length - 1].goalId);
       return userGoals[userGoals.length - 1].goalId;
     }
     return null; // 또는 적절한 기본값/오류 처리
@@ -45,10 +43,6 @@ const GoalSetting = () => {
   const { goalSettingData, isLoading, isError } = useGetGoalSettingData(getLastGoalId() || 0);
   const [goalData, setGoalData] = useRecoilState(goalSettingState);
   const [isResetButtonClick, setIsResetButtonClick] = useState(false);
-
-  useEffect(() => {
-    console.log('goalData', goalData);
-  }, [goalData]);
 
   /**
    * Recoil 상태를 초기화하는 함수
@@ -133,7 +127,7 @@ const GoalSetting = () => {
             <Button
               onClick={async () => {
                 await postGoalSettingData(goalData, selectedCertificationId);
-                await mutate('/certificates/1/goals').then((r) => console.log('r', r));
+                await mutate(`/certificates/${certificateId}/goals`);
                 setIsResetButtonClick(false);
                 router.push('/home');
               }}
@@ -144,7 +138,6 @@ const GoalSetting = () => {
             <Button
               onClick={() => {
                 putGoalSettingData(goalData, getLastGoalId() || 0).then((r) => {
-                  console.log('수정', r);
                   router.push('/home');
                 });
               }}
