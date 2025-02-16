@@ -30,6 +30,7 @@ const SettingNewGoalModal = (props: Props) => {
         <div
           onClick={() => {
             setIsSettingNewModal(!isSettingNewGoalModal);
+            router.push('/home');
           }}
           className={'flex justify-end items-center'}>
           <div className={'text-white text-h6'}>닫기</div>
