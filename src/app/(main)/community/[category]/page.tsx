@@ -23,6 +23,7 @@ import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { certificateIdAtom } from '@/recoil/atom';
 import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
 import { BoardType, SortFieldKorType, SortFieldType } from '@/types/community/type';
+import useCheckReviewWriteAccess from '@/lib/hooks/useCheckReviewWriteAccess';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
@@ -54,6 +55,7 @@ export default function CommunityCategoryPage() {
     searchValue,
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+  const { reviewWriteAccess } = useCheckReviewWriteAccess(certificateId);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -131,7 +133,9 @@ export default function CommunityCategoryPage() {
     <WriteNormalPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : (
     <>
-      {isModalOpen ? <WriteReviewModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} /> : null}
+      {reviewWriteAccess && reviewWriteAccess.result ? (
+        <WriteReviewModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
+      ) : null}
       <Header
         headerType={'dynamic'}
         onBack={onMoveCommunityMenuPage}
