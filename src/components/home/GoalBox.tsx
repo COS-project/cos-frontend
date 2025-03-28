@@ -3,8 +3,24 @@ import { SVGProps } from 'react';
 import * as React from 'react';
 
 import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
-const GoalBox = () => {
+
+interface Props {
+  maxScore: number | undefined; //현재 최대 점수
+  currentStudyTime: number | undefined; // 현재 공부 시간
+  currentMockExams: number | undefined; // 현재 모의고사 푼 갯수
+  goalScore: number | undefined; //목표 점수
+  goalStudyTime: number | undefined; //목표 공부 시간
+  goalMockExams: number | undefined; //목표 모의고사
+}
+
+const GoalBox = (props: Props) => {
   const router = useRouter();
+  const { maxScore, currentStudyTime, currentMockExams, goalScore, goalStudyTime, goalMockExams } = props;
+
+  function convertMsToM(ms: number) {
+    return Math.floor(ms / 60000); // 1분 = 60000ms
+  }
+
   return (
     <div className={'flex flex-col gap-y-4 p-4 bg-white rounded-[32px]'}>
       <div className={'flex justify-between'}>
@@ -24,7 +40,7 @@ const GoalBox = () => {
             <div className={'font-normal text-h6 px-[20px] py-[2px] rounded-full bg-gray0'}>목표점수</div>
           </div>
           <div className="relative mt-[10px]">
-            <ScoredDonutChart mainscore={65} totalscore={100} unit="점" />
+            <ScoredDonutChart mainscore={maxScore} totalscore={goalScore} unit="점" />
           </div>
         </div>
         <div className="w-[33%]">
@@ -32,7 +48,7 @@ const GoalBox = () => {
             <div className={'font-normal text-h6 px-[20px] py-[2px] rounded-full bg-gray0'}>공부시간</div>
           </div>
           <div className="relative mt-[10px]">
-            <ScoredDonutChart mainscore={500} totalscore={1000} unit="분" />
+            <ScoredDonutChart mainscore={convertMsToM(currentStudyTime)} totalscore={goalStudyTime} unit="분" />
           </div>
         </div>
         <div className="w-[33%]">
@@ -40,7 +56,7 @@ const GoalBox = () => {
             <div className={'font-normal text-h6 px-[20px] py-[2px] rounded-full bg-gray0'}>모의고사</div>
           </div>
           <div className="relative mt-[10px]">
-            <ScoredDonutChart mainscore={10} totalscore={30} unit="회" />
+            <ScoredDonutChart mainscore={currentMockExams} totalscore={goalMockExams} unit="회" />
           </div>
         </div>
       </div>

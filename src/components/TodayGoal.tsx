@@ -4,8 +4,21 @@ import * as React from 'react';
 
 import GoalRunningGraph from '@/components/home/goal-attaining/GoalRunningGraph';
 
-const TodayGoal = () => {
+interface Props {
+  todayStudyTime: number | undefined;
+  todayMockExams: number | undefined;
+  goalStudyTime: number | undefined; //목표 공부 시간
+  goalMockExams: number | undefined; //목표 모의고사
+}
+
+const TodayGoal = (props: Props) => {
+  const { todayStudyTime, todayMockExams, goalStudyTime, goalMockExams } = props;
   const router = useRouter();
+
+  function convertMsToM(ms: number) {
+    return Math.floor(ms / 60000); // 1분 = 60000ms
+  }
+
 
   return (
     <div className={'p-4 rounded-[32px] bg-white'}>
@@ -28,16 +41,16 @@ const TodayGoal = () => {
         goalRunningGraphType={'time'}
         maintitle=" 공부하기"
         subtitle="오늘 공부한 시간"
-        goaltime={60}
-        presenttime={50}
+        goaltime={goalStudyTime}
+        presenttime={convertMsToM(todayStudyTime)}
         unit="분"
       />
       <GoalRunningGraph
         goalRunningGraphType={'exam'}
         maintitle=" 모의고사 풀기"
         subtitle="오늘 푼 모의고사"
-        goaltime={3}
-        presenttime={3}
+        goaltime={goalMockExams}
+        presenttime={todayMockExams}
         unit="회분"
       />
     </div>

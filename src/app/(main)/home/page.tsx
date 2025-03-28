@@ -48,32 +48,32 @@ function HomeComponents() {
       console.log('리프레시 토큰 저장:', refreshToken);
     }
   }, [accessToken, refreshToken]);
-
-  // EventSource 연결
-  useEffect(() => {
-    if (typeof window !== 'undefined' && localStorage.getItem('accessToken')) {
-      const eventSource = new EventSourcePolyfill('http://cercat.o-r.kr/api/v2/alarms/subscribe', {
-        headers: {
-          'Access-Token': localStorage.getItem('accessToken') || '',
-        },
-      });
-
-      eventSource.addEventListener('connect', (event: any) => {
-        const { data: receivedConnectData } = event;
-        if (receivedConnectData === 'SSE 연결이 완료되었습니다.') {
-          console.log('SSE CONNECTED');
-        } else {
-          console.log('Event:', event);
-        }
-      });
-
-      setAlarmEvent(eventSource);
-
-      return () => {
-        eventSource.close();
-      };
-    }
-  }, [accessToken]);
+  //
+  // // EventSource 연결
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined' && localStorage.getItem('accessToken')) {
+  //     const eventSource = new EventSourcePolyfill('http://cercat.o-r.kr/api/v2/alarms/subscribe', {
+  //       headers: {
+  //         'Access-Token': localStorage.getItem('accessToken') || '',
+  //       },
+  //     });
+  //
+  //     eventSource.addEventListener('connect', (event: any) => {
+  //       const { data: receivedConnectData } = event;
+  //       if (receivedConnectData === 'SSE 연결이 완료되었습니다.') {
+  //         console.log('SSE CONNECTED');
+  //       } else {
+  //         console.log('Event:', event);
+  //       }
+  //     });
+  //
+  //     setAlarmEvent(eventSource);
+  //
+  //     return () => {
+  //       eventSource.close();
+  //     };
+  //   }
+  // }, [accessToken]);
 
   const sumTotalTakenTime = () => {
     return averageSubjectList ? averageSubjectList.reduce((sum, subject) => sum + subject.totalTakenTime, 0) : 0;
@@ -81,7 +81,8 @@ function HomeComponents() {
 
   useEffect(() => {
     console.log('goalAchievementData:', goalAchievementData);
-  }, [goalAchievementData]);
+    console.log('averageSubjectList', averageSubjectList);
+  }, [goalAchievementData, averageSubjectList]);
 
   useEffect(() => {
     if (goalSettingStatus) {
@@ -102,7 +103,7 @@ function HomeComponents() {
         <Header headerType={'second'}></Header>
         <div className={'mt-4 px-5 flex flex-col gap-y-5'}>
           {!isGoalSettingStatusModalOpen && (
-            <div>
+            <div className={'relative'}>
               <button
                 onClick={() => setIsGoalPeriodFilterOpen(!isGoalPeriodFilterOpen)}
                 className={'flex py-[6px] px-3 rounded-full bg-white w-fit items-center'}>
@@ -119,8 +120,20 @@ function HomeComponents() {
               )}
             </div>
           )}
-          <GoalBox />
-          <TodayGoal />
+          <GoalBox
+            maxScore={goalAchievementData?.result.maxScore}
+            currentMockExams={goalAchievementData?.result.currentMockExams}
+            currentStudyTime={goalAchievementData?.result.currentStudyTime}
+            goalScore={goalAchievementData?.result.goalScore}
+            goalMockExams={goalAchievementData?.result.goalMockExams}
+            goalStudyTime={goalAchievementData?.result.goalStudyTime}
+          />
+          <TodayGoal
+            goalStudyTime={goalAchievementData?.result.goalStudyTime}
+            goalMockExams={goalAchievementData?.result.goalMockExams}
+            todayMockExams={goalAchievementData?.result.todayMockExams}
+            todayStudyTime={goalAchievementData?.result.todayStudyTime}
+          />
           <RecentGrowthChart />
           <AverageAccurayChat subjectResults={averageSubjectList || []} />
           <AverageTakenTimeGraphReport
