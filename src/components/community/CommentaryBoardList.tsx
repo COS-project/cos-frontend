@@ -156,10 +156,6 @@ const CommentaryBoardList = (props: Props) => {
     return `${year}.${month}.${day}`;
   };
 
-  useEffect(() => {
-    console.log('commentarySearchResults', commentarySearchResults);
-  }, [commentarySearchResults]);
-
   return (
     <main className={'relative px-5 flex flex-col gap-y-4 '}>
       {/*필터*/}
