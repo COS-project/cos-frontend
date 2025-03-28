@@ -71,6 +71,7 @@ export const selectedDateTypeState = atom<'DATE' | 'WEEK_OF_MONTH' | 'MONTH'>({
   key: 'selectedDateTypeState',
   default: 'DATE',
 });
+
 export const selectedPrepareTimeState = atom<UserCertGoalPeriodType>({
   key: 'selectedPrepareTime',
   default: {
