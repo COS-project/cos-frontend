@@ -229,10 +229,11 @@ const CommentaryBoardList = (props: Props) => {
                     postId={postResponse.postId}
                     content={postResponse.postContent?.content || ''}
                     title={postResponse.postContent?.title || ''}
-                    commentCount={postResponse.postStatus?.commentCount || 0}
+                    commentCount={postResponse?.commentCount || 0}
+                    likeCount={postResponse?.likeCount || 0}
+                    likeStatus={postResponse?.likeStatus || false}
                     createdAt={formatDate(postResponse.dateTime?.createdAt || '')}
                     imageUrl={postResponse.postImages.length ? postResponse.postImages[0] : null}
-                    likeCount={postResponse.postStatus?.likeCount || 0}
                     topElement={
                       postResponse.question
                         ? commentaryTopElement(

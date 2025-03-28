@@ -170,7 +170,7 @@ export default function CommunityCategoryPage() {
           setBoardTypeForPost={setBoardTypeForPost}
         />
       )}
-      <div className={'h-[60px] bg-gray0'} />
+      <div className={'h-[120px] bg-gray0'} />
       <NavBar />
     </>
   );

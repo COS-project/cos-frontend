@@ -122,11 +122,12 @@ const NormalAndTipBoardList = (props: Props) => {
               <div ref={ref} key={postResponse.postId}>
                 <Post
                   postId={postResponse.postId}
-                  content={postResponse.postContent?.content || ''}
-                  title={postResponse.postContent?.title || ''}
-                  commentCount={postResponse?.commentCount || 0}
-                  likeCount={postResponse?.likeCount || 0}
-                  createdAt={formatDate(postResponse.dateTime?.createdAt || '')}
+                  content={postResponse.postContent.content || ''}
+                  title={postResponse.postContent.title || ''}
+                  commentCount={postResponse.commentCount || 0}
+                  likeCount={postResponse.likeCount || 0}
+                  likeStatus={postResponse.likeStatus || false}
+                  createdAt={formatDate(postResponse.dateTime.createdAt || '')}
                   imageUrl={postResponse.postImages.length ? postResponse.postImages[0] : null}
                   topElement={postResponse.recommendTags ? tipTopElement(postResponse.postId) : undefined}
                 />

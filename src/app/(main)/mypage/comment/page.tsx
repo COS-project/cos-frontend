@@ -76,7 +76,7 @@ export default function MyComment() {
                           postId={userCommentPost.postId}
                           content={userCommentPost.postContent.content}
                           title={userCommentPost.postContent.title}
-                          commentCount={userCommentPost.postStatus.commentCount}
+                          commentCount={userCommentPost.commentCount}
                           createdAt={
                             userCommentPost.dateTime.modifiedAt
                               ? userCommentPost.dateTime.modifiedAt
@@ -91,7 +91,8 @@ export default function MyComment() {
                                 )
                               : null
                           }
-                          likeCount={userCommentPost.postStatus.likeCount}
+                          likeCount={userCommentPost.likeCount}
+                          likeStatus={userCommentPost.likeStatus}
                           imageUrl={
                             userCommentPost.postContent.images.length !== 0
                               ? userCommentPost.postContent.images[0].imageUrl

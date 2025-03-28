@@ -82,7 +82,6 @@ export interface PostType {
   postContent: PostContent;
   postImages: string[];
   user: UserInfo;
-  postStatus: PostStatus;
   question?: QuestionsResponse; //해설
   recommendTags?: RecommendTags[]; //꿀팁
   dateTime: DateTime;
