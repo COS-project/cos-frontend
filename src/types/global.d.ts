@@ -1,4 +1,5 @@
 import React from 'react';
+import { BoardType } from '@/types/community/type';
 
 export type HeaderType = 'static' | 'dynamic' | 'second';
 
@@ -291,35 +292,24 @@ interface QuestionOptions {
   optionImage: string;
 }
 
-export interface ResponsePostDetailType {
-  responseCode: string;
-  result: {
-    postResponse: Post;
-    postComments: PostComments[];
-  };
-}
-
 //커뮤니티 포스트
 export interface Post {
   postId: number;
+  postType: BoardType;
   postContent: PostContent;
-  postStatus: PostStatus;
   user: User;
   question?: Question;
-  recommendTags: RecommendTags[];
+  recommendTags?: RecommendTags[];
+  postImages: string[];
   dateTime: DateTime;
-}
-
-export interface PostStatus {
-  postType: string;
-  likeCount: number;
   commentCount: number;
+  likeCount: number;
+  likeStatus: boolean;
 }
 
 export interface PostContent {
   title: string;
   content: string;
-  images: ImageType[];
 }
 
 export interface ImageType {
@@ -333,10 +323,10 @@ interface PostComments {
   user: User;
   parentCommentId?: number;
   likeCount: number;
+  likeStatus: boolean;
   content: string;
   dateTime: DateTime;
   childPostComments?: PostComments[];
-  isLiked: boolean;
 }
 
 //날짜 타입

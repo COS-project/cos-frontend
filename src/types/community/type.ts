@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FavoriteBoard, MockExam, PostComments, QuestionsResponse } from '@/types/global';
+import { FavoriteBoard, MockExam, Post, PostComments, QuestionsResponse } from '@/types/global';
 import { UserInfo } from '@/types/mypage/type';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
@@ -149,3 +149,9 @@ export interface BoardListResponseType {
 // 정렬 Type
 export type SortFieldType = 'createdAt' | 'count';
 export type SortFieldKorType = '최신순' | '인기순';
+
+// 게시글 상세
+export interface ResponsePostDetailType {
+  postResponse: Post;
+  postComments: PostComments[];
+}

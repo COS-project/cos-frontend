@@ -122,9 +122,9 @@ const CommunityDetailPage = () => {
           <Header
             headerType={'dynamic'}
             title={
-              communityPostData && communityPostData.postResponse?.postStatus.postType === 'COMMENTARY'
+              communityPostData && communityPostData.postResponse?.postType === 'COMMENTARY'
                 ? '해설 게시글'
-                : communityPostData?.postResponse?.postStatus.postType === 'TIP'
+                : communityPostData?.postResponse?.postType === 'TIP'
                 ? '꿀팁 게시글'
                 : '자유 게시글'
             }></Header>
@@ -176,7 +176,7 @@ const CommunityDetailPage = () => {
                 <CommunityPost
                   subject={communityPostData.postResponse?.postContent.title}
                   content={communityPostData.postResponse?.postContent.content}
-                  images={communityPostData.postResponse?.postContent.images}></CommunityPost>
+                  images={communityPostData.postResponse?.postImages}></CommunityPost>
                 {/* 꿀팁 태그 */}
                 <div className={'flex gap-x-2'}>
                   {communityPostData.postResponse.recommendTags
@@ -186,8 +186,8 @@ const CommunityDetailPage = () => {
                     : null}
                 </div>
                 <CommentBar
-                  empathy={communityPostData.postResponse?.postStatus.likeCount} //공감수
-                  comment={communityPostData.postResponse?.postStatus.commentCount} //댓글수
+                  empathy={communityPostData.postResponse?.likeCount} //공감수
+                  comment={communityPostData.postResponse?.commentCount} //댓글수
                   isLike={likeStatus} //사용자 좋아요 클릭 여부
                   onClick={async () => {
                     //추천버튼 클릭 시 동작
