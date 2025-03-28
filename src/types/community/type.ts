@@ -101,12 +101,6 @@ export interface Image {
   imageUrl: string;
 }
 
-export interface PostStatus {
-  postType: string;
-  likeCount: number;
-  commentCount: number;
-}
-
 export interface ReviewPost {
   examDifficulty: ExamDifficulty;
   prepareMonths: number;
@@ -118,11 +112,8 @@ export interface ReviewPost {
 export type ExamDifficulty = 'TOO_EASY' | 'EASY' | 'NORMAL' | 'TOO_DIFFICULT' | 'LITTLE_DIFFICULT';
 
 export interface ResponseReviewPost {
-  responseCode: string;
-  result: {
-    content: ReviewPost[];
-    hasNext: boolean;
-  };
+  content: ReviewPost[];
+  hasNext: boolean;
 }
 
 export interface RecommendTags {

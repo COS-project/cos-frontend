@@ -7,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 import ExamDifficultyFilter from '@/components/community/ExamDifficultyFilter';
 import PreparePeriodFilter from '@/components/community/PreparePeriodFilter';
 import UserActionReminder from '@/components/community/UserActionReminder';
+import useCheckReviewWriteAccess from '@/lib/hooks/useCheckReviewWriteAccess';
 import useGetExamReview from '@/lib/hooks/useGetExamReview';
 import { certificateIdAtom } from '@/recoil/atom';
 import { ExamDifficulty, ReviewPost } from '@/types/community/type';
@@ -27,6 +28,8 @@ const ExamReviewBoardList = (props: Props) => {
   const [startMonths, setStartMonths] = useState<number | undefined>();
   const [endPreMonths, setEndPreMonths] = useState<number | undefined>();
   const { examReviews, setSize } = useGetExamReview(certificateId, examDifficulty, startMonths, endPreMonths);
+  // 따끈후기를 입력할 수 있는 자격이 있는지 검증
+  const { reviewWriteAccess } = useCheckReviewWriteAccess(certificateId);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -86,7 +89,7 @@ const ExamReviewBoardList = (props: Props) => {
   return (
     <>
       <div className={'relative px-5 flex flex-col gap-y-4 '}>
-        <UserActionReminder content={'크루들에게 따끈후기를 공유해주세요!'} button={userActionReminderMove()} />
+        {reviewWriteAccess && reviewWriteAccess.result && (<UserActionReminder content={'크루들에게 따끈후기를 공유해주세요!'} button={userActionReminderMove()} />)}
         {/*filter*/}
         <div className={'flex gap-x-2'}>
           <div
