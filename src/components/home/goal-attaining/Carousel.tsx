@@ -1,6 +1,7 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import type { SVGProps } from 'react';
 import * as React from 'react';
 import { Carousel } from 'react-responsive-carousel';
@@ -12,6 +13,7 @@ import { certificateIdAtom } from '@/recoil/atom';
 const CarouselCardView = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
   const { bestTipPosts } = useBest3TipPosts(certificateId);
+  const router = useRouter();
 
   function formatDate(isoString: string) {
     const date = new Date(isoString);
@@ -44,19 +46,27 @@ const CarouselCardView = () => {
         }}>
         {bestTipPosts?.map((bestTipPost) => {
           return (
-            <div key={bestTipPost.postId} className={'mx-[21.5px] mt-[12px] p-5 bg-gray0 rounded-[24px] mb-10'}>
+            <section
+              onClick={() => {
+                router.push(`/community/${certificateId}/${bestTipPost.postId}`);
+              }}
+              key={bestTipPost.postId}
+              className={'flex flex-col mx-[21.5px] mt-[12px] p-5 bg-gray0 rounded-[24px] mb-10'}>
               <div className={'relative w-full h-[100px]'}>
                 <Image
-                  src={bestTipPost.postContent.images[0].imageUrl}
-                  alt={bestTipPost.postContent.images[0].imageUrl}
+                  src={bestTipPost.postImages[0]}
+                  alt={bestTipPost.postImages[0]}
                   fill
                   className={'object-cover rounded-[16px]'}
                 />
               </div>
-              <div className={'text-h3 mt-[12px]'}>{bestTipPost.postContent.title}</div>
-              <div className={'mt-[8px] text-gray4 line-clamp-4'}>{bestTipPost.postContent.content}</div>
+              <div className={'flex flex-col justify-start items-start w-full'}>
+                <div className={'text-h3 mt-[12px] text-left'}>{bestTipPost.postContent.title}</div>
+                <div className={'mt-[8px] text-gray4 line-clamp-4 text-left'}>{bestTipPost.postContent.content}</div>
+              </div>
+
               <div className={'mt-[24px] flex justify-between'}>
-                <div className={'flex flex-col justify-start items-start'}>
+                <div className={'flex flex-col items-start'}>
                   <div className={'text-h6 text-gray3'}>
                     {formatDate(
                       bestTipPost.dateTime.modifiedAt
@@ -68,10 +78,10 @@ const CarouselCardView = () => {
                 </div>
                 <div>
                   <LikeCountIcon />
-                  <div className={'text-blue text-[13px]'}>{bestTipPost.postStatus.likeCount}</div>
+                  <div className={'text-blue text-[13px]'}>{bestTipPost.likeCount}</div>
                 </div>
               </div>
-            </div>
+            </section>
           );
         })}
       </Carousel>

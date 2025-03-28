@@ -66,11 +66,6 @@ export interface PopularSearchKeyword {
  ************ post Detail *************
  */
 
-export interface ResponseBest3PostType {
-  responseCode: string;
-  result: PostType[];
-}
-
 export interface ResponsePostType {
   content: PostType[];
   postComments: PostComments[];

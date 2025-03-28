@@ -130,7 +130,7 @@ function HomeComponents() {
           />
           <BestTip />
         </div>
-        <div className={'h-[80px]'}></div>
+        <div className={'h-[120px]'}></div>
         <NavBar />
       </div>
     </main>
