@@ -72,23 +72,23 @@ export interface ResponseBest3PostType {
 }
 
 export interface ResponsePostType {
-  responseCode: string;
-  message: string;
-  result: {
-    postResponse: PostType;
-    postComments: PostComments[];
-    hasNext: boolean;
-  };
+  content: PostType[];
+  postComments: PostComments[];
+  hasNext: boolean;
 }
 
 export interface PostType {
   postId: number;
   postContent: PostContent;
-  postStatus: PostStatus;
+  postImages: string[];
   user: UserInfo;
-  recommendTags?: RecommendTags[]; //꿀팁
+  postStatus: PostStatus;
   question?: QuestionsResponse; //해설
+  recommendTags?: RecommendTags[]; //꿀팁
   dateTime: DateTime;
+  likeStatus: boolean;
+  likeCount: number;
+  commentCount: number;
 }
 
 export interface PostContent {
@@ -155,3 +155,7 @@ export interface BoardListResponseType {
   message: string;
   result: FavoriteBoard[];
 }
+
+// 정렬 Type
+export type SortFieldType = 'createdAt' | 'count';
+export type SortFieldKorType = '최신순' | '인기순';

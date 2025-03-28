@@ -7,7 +7,7 @@ import Post from '@/components/mypage/Post';
 import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { certificateIdAtom } from '@/recoil/atom';
-import { BoardType, PostType, ResponsePostType } from '@/types/community/type';
+import { BoardType, PostType, SortFieldType } from '@/types/community/type';
 import { filterNormalAndTipContent } from '@/utils/community/FilterContent';
 interface Props {
   boardType: BoardType;
@@ -16,8 +16,8 @@ const NormalAndTipBoardList = (props: Props) => {
   const { boardType } = props;
   const [ref, inView] = useInView();
   const certificateId = useRecoilValue(certificateIdAtom);
-  const [sortField, setSortField] = useState<string>('createdAt'); //최신순 인기순
-  const { userPostsList, size, setSize } = useGetTotalSearchResults(boardType, certificateId, sortField);
+  const [sortField, setSortField] = useState<SortFieldType>('createdAt'); //최신순 인기순
+  const { userPosts, size, setSize } = useGetTotalSearchResults(boardType, certificateId, sortField);
   //필터값
   const [isOpenNormalAndTipFilter, setIsOpenNormalAndTipFilter] = useState<boolean>(false);
   const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<'최신순' | '인기순'>(
@@ -29,7 +29,7 @@ const NormalAndTipBoardList = (props: Props) => {
    * 무한 스크롤 뷰 감지하고 size+1 해줌
    */
   const getMoreItem = useCallback(async () => {
-    if (userPostsList) {
+    if (userPosts) {
       await setSize((prev: number) => prev + 1);
     }
     return;
@@ -48,7 +48,7 @@ const NormalAndTipBoardList = (props: Props) => {
     if (selectedNormalAndTipFilterContent == '최신순') {
       setSortField('createdAt');
     } else if (selectedNormalAndTipFilterContent == '인기순') {
-      setSortField('likeCount');
+      setSortField('count');
     }
   }, [selectedNormalAndTipFilterContent]);
 
@@ -113,24 +113,26 @@ const NormalAndTipBoardList = (props: Props) => {
         </div>
       </div>
       <div className={'flex flex-col gap-y-4'}>
-        {userPostsList.map((userPosts, index) => {
-          const postResponse = userPosts?.result?.postResponse; // 안전한 접근
-          if (!postResponse) return null; // 데이터가 없는 경우 렌더링하지 않음
+        {userPosts.map((userPosts) => {
+          const posts = userPosts?.result?.content; // 안전한 접근
+          if (!posts) return null; // 데이터가 없는 경우 렌더링하지 않음
 
-          return (
-            <div ref={ref} key={postResponse.postId}>
-              <Post
-                postId={postResponse.postId}
-                content={postResponse.postContent?.content || ''}
-                title={postResponse.postContent?.title || ''}
-                commentCount={postResponse.postStatus?.commentCount || 0}
-                createdAt={formatDate(postResponse.dateTime?.createdAt || '')}
-                imageUrl={postResponse.postContent?.images?.length ? postResponse.postContent.images[0].imageUrl : null}
-                likeCount={postResponse.postStatus?.likeCount || 0}
-                topElement={postResponse.recommendTags ? tipTopElement(postResponse.postId) : undefined}
-              />
-            </div>
-          );
+          return posts.map((postResponse) => {
+            return (
+              <div ref={ref} key={postResponse.postId}>
+                <Post
+                  postId={postResponse.postId}
+                  content={postResponse.postContent?.content || ''}
+                  title={postResponse.postContent?.title || ''}
+                  commentCount={postResponse?.commentCount || 0}
+                  likeCount={postResponse?.likeCount || 0}
+                  createdAt={formatDate(postResponse.dateTime?.createdAt || '')}
+                  imageUrl={postResponse.postImages.length ? postResponse.postImages[0] : null}
+                  topElement={postResponse.recommendTags ? tipTopElement(postResponse.postId) : undefined}
+                />
+              </div>
+            );
+          });
         })}
       </div>
     </div>

@@ -17,7 +17,7 @@ import { filterContent } from '@/utils/mypage/FilterContent';
 export default function MyWriting() {
   // REVIEW, COMMENTARY, TIP, NORMAL
   const [boardType, setBoardType] = useState<MyPageBoardType>('COMMENTARY');
-  // 최신순:createdAt, 작성순:popular
+  // 최신순:createdAt, 인기순:count
   const [selectedFilterContent, setSelectedFilterContent] = useState<'최신순' | '인기순'>('최신순');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDeleteWarningModalOpen, setIsDeleteWarningModalOpen] = useState<boolean>(false);

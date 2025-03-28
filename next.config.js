@@ -24,4 +24,8 @@ const withPWA = require('next-pwa')({
 
 module.exports = withPWA({
   reactStrictMode: true,
+  swcMinify: true,
+  images: {
+    domains: ['github.com', 'k.kakaocdn.net', 'storage.googleapis.com', 't1.kakaocdn.net', 'img1.kakaocdn.net'],
+  },
 });

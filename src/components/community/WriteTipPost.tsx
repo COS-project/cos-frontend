@@ -10,11 +10,12 @@ import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
 import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
+import { ResponseType } from '@/types/common/type';
 import { ResponsePostType } from '@/types/community/type';
 
 interface Props {
   setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
-  mutate: KeyedMutator<ResponsePostType[]>;
+  mutate: KeyedMutator<ResponseType<ResponsePostType>[]>;
 }
 
 const WriteTipPost = (props: Props) => {

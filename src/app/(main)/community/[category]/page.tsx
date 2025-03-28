@@ -22,23 +22,24 @@ import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchRes
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { certificateIdAtom } from '@/recoil/atom';
 import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
-import { BoardType } from '@/types/community/type';
+import { BoardType, SortFieldKorType, SortFieldType } from '@/types/community/type';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
   const certificateId = useRecoilValue(certificateIdAtom);
   //필터값
-  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<string>('최신순');
+  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] =
+    useState<SortFieldKorType>('최신순');
   const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number | string>(
     '전체',
   );
   const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number | string>(
     '전체',
   );
-  const [sortField, setSortField] = useState<string>('createdAt'); //최신순 인기순
+  const [sortField, setSortField] = useState<SortFieldType>('createdAt'); //최신순 인기순
   //보드 타입
   const [boardType, setBoardType] = useState<BoardType>('REVIEW');
-  const { userPostsList, setSize, mutate } = useGetTotalSearchResults(boardType, certificateId, sortField);
+  const { userPosts, setSize, mutate } = useGetTotalSearchResults(boardType, certificateId, sortField);
   const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('COMMENTARY');
   //글쓰기 버튼
   const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
@@ -58,7 +59,7 @@ export default function CommunityCategoryPage() {
    * 무한 스크롤 뷰 감지하고 size+1 해줌
    */
   const getMoreItem = useCallback(async () => {
-    if (userPostsList) {
+    if (userPosts) {
       setSize((prev: number) => prev + 1);
     }
     return;
@@ -86,7 +87,7 @@ export default function CommunityCategoryPage() {
     if (selectedNormalAndTipFilterContent == '최신순') {
       setSortField('createdAt');
     } else if (selectedNormalAndTipFilterContent == '인기순') {
-      setSortField('likeCount');
+      setSortField('count');
     }
   }, [selectedNormalAndTipFilterContent]);
 
