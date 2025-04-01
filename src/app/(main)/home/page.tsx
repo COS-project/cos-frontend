@@ -176,9 +176,17 @@ function HomeComponents() {
               goalStudyTime={goalAchievementData.result.goalStudyTime}
               currentStudyTime={goalAchievementData.result.currentStudyTime}
               maxScore={goalAchievementData.result.maxScore}
-              goalScore={goalAchievementData.result.goalScore} />
+              goalScore={goalAchievementData.result.goalScore}
+            />
           )}
-          <TodayGoal />
+          {goalAchievementData && (
+            <TodayGoal
+              todayMockExams={goalAchievementData.result.todayMockExams}
+              mockExamsPerDay={goalAchievementData.result.mockExamsPerDay}
+              todayStudyTime={goalAchievementData.result.todayStudyTime}
+              studyTimePerDay={goalAchievementData.result.studyTimePerDay}
+            />
+          )}
           <RecentGrowthChart />
           <AverageAccurayChat subjectResults={averageSubjectList || []} />
           <AverageTakenTimeGraphReport
