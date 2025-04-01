@@ -169,7 +169,15 @@ function HomeComponents() {
         <Header />
         <Header headerType={'second'}></Header>
         <div className={'mt-4 px-5 flex flex-col gap-y-5'}>
-          <GoalBox />
+          {goalAchievementData && (
+            <GoalBox
+              goalMockExams={goalAchievementData.result.goalMockExams}
+              currentMockExams={goalAchievementData.result.currentMockExams}
+              goalStudyTime={goalAchievementData.result.goalStudyTime}
+              currentStudyTime={goalAchievementData.result.currentStudyTime}
+              maxScore={goalAchievementData.result.maxScore}
+              goalScore={goalAchievementData.result.goalScore} />
+          )}
           <TodayGoal />
           <RecentGrowthChart />
           <AverageAccurayChat subjectResults={averageSubjectList || []} />
