@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
@@ -11,6 +11,7 @@ import MockExamReportHeader from '@/components/exam/MockExamReportHeader';
 import MockExamResultReport from '@/components/exam/MockExamResultReport';
 import TakenTimeGraphReport from '@/components/exam/TakenTimeGraphReport';
 import UserExamAttemptsFilterContent from '@/components/exam/UserExamAttemptsFilterContent';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 import { certificateIdAtom } from '@/recoil/atom';
@@ -140,6 +141,7 @@ const Result = () => {
       <MockExamReportHeader isClicked={isClicked} setIsClicked={setIsClicked} />
       <div className={'bg-gray0 min-h-screen p-5'}>{displayComponentBasedOnExamResults(examResults)}</div>
       <div className={'h-[100px]'} />
+      <StopWatchActiveButton />
       <NavBar />
     </>
   );

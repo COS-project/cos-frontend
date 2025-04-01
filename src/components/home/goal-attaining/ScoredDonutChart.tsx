@@ -1,7 +1,7 @@
 import DonutChart from './donutchart';
 
 interface DonutChartProps {
-  mainscore: number;
+  mainscore: number | undefined;
   totalscore: number;
 
   unit: string;
@@ -9,8 +9,11 @@ interface DonutChartProps {
 
 const ScoredDonutChart: React.FC<DonutChartProps> = ({ mainscore, totalscore, unit }) => {
   const chartData = []; // 예시 데이터
-  chartData[0] = totalscore - mainscore;
-  chartData[1] = mainscore;
+  if (mainscore) {
+    chartData[0] = totalscore - mainscore;
+    chartData[1] = mainscore;
+  }
+
   return (
     <div>
       <DonutChart data={chartData} />

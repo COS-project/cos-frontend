@@ -7,6 +7,7 @@ import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import Post from '@/components/mypage/Post';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useGetUserCommentPost from '@/lib/hooks/useGetUserCommentPost';
 import { PostType } from '@/types/community/type';
 import { MyPostsResponseType } from '@/types/mypage/type';
@@ -106,7 +107,8 @@ export default function MyComment() {
           </div>
         </div>
       </div>
-      <div className={'h-[60px]'} />
+      <div className={'h-[100px]'} />
+      <StopWatchActiveButton />
       <NavBar />
     </>
   );

@@ -1,23 +1,21 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import qs from 'query-string';
 import { Suspense } from 'react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import AutoCompleteSearchKeywords from '@/components/community/AutoCompleteSearchKeywords';
 import RecentSearchKeywords from '@/components/community/RecentSearchKeywords';
 import SearchInput from '@/components/community/SearchInput';
 import TrendingSearchKeywords from '@/components/community/TrendingSearchKeywords';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useDebounce from '@/hooks/useDebounce';
-import useGetAutoCompleteSearchKeywords from '@/lib/hooks/useGetAutoCompleteSearchKeywords';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
 import useGetTrendingKeywords from '@/lib/hooks/useGetTrendingKeywords';
 import { certificateIdAtom } from '@/recoil/atom';
-import { autoCompleteSearchKeywordState, boardTypeState } from '@/recoil/community/atom';
-import { BoardType } from '@/types/community/type';
+import { autoCompleteSearchKeywordState } from '@/recoil/community/atom';
 
 const SearchComponents = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
@@ -77,6 +75,7 @@ const SearchComponents = () => {
           />
         </div>
       </div>
+      <StopWatchActiveButton className={'bottom-5'} />
     </div>
   );
 };

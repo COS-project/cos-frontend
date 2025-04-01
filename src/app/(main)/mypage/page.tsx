@@ -7,6 +7,7 @@ import LogoutModal from '@/components/mypage/LogoutModal';
 import MyPageHeader from '@/components/mypage/MyPageHeader';
 import MyPageItem from '@/components/mypage/MyPageItem';
 import UnRegisterModal from '@/components/mypage/UnRegisterModal';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import { boardContents, goalContents } from '@/utils/mypage/ItemContents';
 
 export default function MyPage() {
@@ -60,7 +61,8 @@ export default function MyPage() {
           {/*<MyPageItem contents={etcContents} category={'기타'}></MyPageItem>*/}
         </div>
       </div>
-      <div className={'h-[60px] bg-gray0'} />
+      <div className={'h-[100px] bg-gray0'} />
+      <StopWatchActiveButton />
       <NavBar />
     </>
   );

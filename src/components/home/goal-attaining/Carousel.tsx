@@ -51,15 +51,19 @@ const CarouselCardView = () => {
                 router.push(`/community/${certificateId}/${bestTipPost.postId}`);
               }}
               key={bestTipPost.postId}
-              className={'flex flex-col mx-[21.5px] mt-[12px] p-5 bg-gray0 rounded-[24px] mb-10'}>
-              <div className={'relative w-full h-[100px]'}>
-                <Image
-                  src={bestTipPost.postImages[0]}
-                  alt={bestTipPost.postImages[0]}
-                  fill
-                  className={'object-cover rounded-[16px]'}
-                />
-              </div>
+              className={
+                'flex flex-col justify-between mx-[21.5px] mt-[12px] p-5 bg-gray0 rounded-[24px] mb-10 h-[300px]'
+              }>
+              {bestTipPost.postImages[0] && (
+                <div className={'relative w-full h-[100px]'}>
+                  <Image
+                    src={bestTipPost.postImages[0]}
+                    alt={bestTipPost.postImages[0]}
+                    fill
+                    className={'object-cover rounded-[16px]'}
+                  />
+                </div>
+              )}
               <div className={'flex flex-col justify-start items-start w-full'}>
                 <div className={'text-h3 mt-[12px] text-left'}>{bestTipPost.postContent.title}</div>
                 <div className={'mt-[8px] text-gray4 line-clamp-4 text-left'}>{bestTipPost.postContent.content}</div>

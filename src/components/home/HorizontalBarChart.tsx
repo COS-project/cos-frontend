@@ -59,7 +59,7 @@ const HorizontalBarChart = (props: Props) => {
         {/* Blue bar */}
         <div
           className="absolute top-0 left-0 bg-second h-2 rounded-l-full rounded-r-full"
-          style={{ width: `${percentage}%` }}></div>
+          style={{ width: percentage > 100 ? '100%' : `${percentage}%` }}></div>
 
         {/* Score and Total labels */}
         <div className="flex justify-end mt-2">

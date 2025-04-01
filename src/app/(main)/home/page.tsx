@@ -23,6 +23,7 @@ import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
 import { certificateIdAtom } from '@/recoil/atom';
 import { AverageSubjectInfoType, UserCertGoalPeriodType } from '@/types/home/type';
 import { selectedPrepareTimeState } from '@/recoil/home/atom';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 function HomeComponents() {
   const searchParams = useSearchParams();
   const certificateId = useRecoilValue(certificateIdAtom);
@@ -197,23 +198,12 @@ function HomeComponents() {
           <BestTip />
         </div>
         <div className={'h-[120px]'}></div>
+        <StopWatchActiveButton />
         <NavBar />
       </div>
     </main>
   );
 }
-
-const DropUpIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none" {...props}>
-    <path stroke="#0D0E10" strokeLinecap="round" d="M6.5 12 10 9l3.5 3" />
-  </svg>
-);
-
-const DropDownIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none" {...props}>
-    <path stroke="#0D0E10" strokeLinecap="round" d="M13.5 9 10 12 6.5 9" />
-  </svg>
-);
 
 export default function Home() {
   return (

@@ -15,6 +15,13 @@ import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart'
 const GoalBox = (props: Props) => {
   const { maxScore, currentStudyTime, currentMockExams, goalScore, goalStudyTime, goalMockExams } = props;
 
+  const millisecondsToMinutes = (time: number | null) => {
+    // 1분은 60000 밀리세컨드입니다.
+    if (time !== null) {
+      return Math.floor(time / 60000);
+    }
+  };
+
   const router = useRouter();
   return (
     <div className={'flex flex-col gap-y-4 p-4 bg-white rounded-[32px]'}>
@@ -43,7 +50,11 @@ const GoalBox = (props: Props) => {
             <div className={'font-normal text-h6 px-[20px] py-[2px] rounded-full bg-gray0'}>공부시간</div>
           </div>
           <div className="relative mt-[10px]">
-            <ScoredDonutChart mainscore={currentStudyTime} totalscore={goalStudyTime} unit="분" />
+            <ScoredDonutChart
+              mainscore={millisecondsToMinutes(currentStudyTime)}
+              totalscore={goalStudyTime}
+              unit="분"
+            />
           </div>
         </div>
         <div className="w-[33%]">

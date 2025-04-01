@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import AutoSubmitTimeUpModal from '@/components/exam/AutoSubmitTimeUpModal';
 import Question from '@/components/exam/Question';
 import SubmitConfirmationModal from '@/components/exam/SubmitConfirmationModal';
 import TestSubmitOrCancel from '@/components/exam/TestSubmitOrCancle';
 import UnsavedChangesWarningModal from '@/components/exam/UnsavedChangesWarningModal';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 
 const Test = () => {
   const [isUnsavedChangesWarningModalOpen, setIsUnsavedChangesWarningModalOpen] = useState(false);
@@ -50,6 +51,7 @@ const Test = () => {
           setIsAutoSubmitTimeUpModalOpen={setIsAutoSubmitTimeUpModalOpen}
         />
         <Question />
+        <StopWatchActiveButton className={'bottom-20'} />
       </div>
     </>
   );

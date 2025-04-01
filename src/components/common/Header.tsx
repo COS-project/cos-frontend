@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation';
-import React, { ReactNode, SVGProps, useState } from 'react';
+import React, { ReactNode, SVGProps, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import FilterModal from '@/components/common/FilterModal';
@@ -24,6 +24,15 @@ export default function Header(props: Props) {
   const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number>(certificateIdAtom);
   const { interestCertificates } = useGetInterestCertificates();
   const router = useRouter();
+  const [initialTrigger, setInitialTrigger] = useState(true);
+
+  useEffect(() => {
+    if (interestCertificates && initialTrigger) {
+      setSelectedCertificationName(interestCertificates[0]?.certificate.certificateName);
+      setSelectedCertificationId(interestCertificates[0]?.certificate.certificateId);
+      setInitialTrigger(false);
+    }
+  }, [interestCertificates]);
 
   const renderHeader = (headerType: HeaderType) => {
     switch (headerType) {

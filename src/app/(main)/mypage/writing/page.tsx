@@ -10,6 +10,7 @@ import MyPageCommentaryBoardList from '@/components/mypage/MyPageCommentaryBoard
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import MyPageNormalAndTipBoardList from '@/components/mypage/MyPageNormalAndTipBoardList';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
 import { MyPageBoardType } from '@/types/mypage/type';
 import { filterContent } from '@/utils/mypage/FilterContent';
@@ -101,7 +102,8 @@ export default function MyWriting() {
               ) : null}
             </div>
           </div>
-          <div className={'h-[60px]'} />
+          <div className={'h-[100px]'} />
+          <StopWatchActiveButton />
           <NavBar />
         </>
       )}

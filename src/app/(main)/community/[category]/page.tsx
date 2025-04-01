@@ -17,13 +17,14 @@ import WriteExplanationPost from '@/components/community/WriteExplanationPost';
 import WriteNormalPost from '@/components/community/WriteNormalPost';
 import WriteReviewModal from '@/components/community/WriteReviewModal';
 import WriteTipPost from '@/components/community/WriteTipPost';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useDebounce from '@/hooks/useDebounce';
+import useCheckReviewWriteAccess from '@/lib/hooks/useCheckReviewWriteAccess';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { certificateIdAtom } from '@/recoil/atom';
 import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
 import { BoardType, SortFieldKorType, SortFieldType } from '@/types/community/type';
-import useCheckReviewWriteAccess from '@/lib/hooks/useCheckReviewWriteAccess';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
@@ -175,6 +176,7 @@ export default function CommunityCategoryPage() {
         />
       )}
       <div className={'h-[120px] bg-gray0'} />
+      <StopWatchActiveButton />
       <NavBar />
     </>
   );

@@ -17,6 +17,7 @@ import CommunityTag from '@/components/community/CommunityTag';
 import EditPost from '@/components/community/EditPost';
 import PostingModal from '@/components/community/PostingModal';
 import Question from '@/components/community/Question';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import { postToggleLikeData } from '@/lib/api/communityPost';
 import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
@@ -260,6 +261,7 @@ const CommunityDetailPage = () => {
               </div>
             </div>
           ) : null}
+          <StopWatchActiveButton />
           {isClickEditPost ? null : <NavBar />}
         </div>
       )}
