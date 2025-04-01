@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import StickGraph from '@/components/exam/StickGraph';
 import { SubjectResultsType } from '@/types/exam/type';
 import { AverageSubjectInfoType } from '@/types/home/type';
@@ -11,9 +13,19 @@ interface Props {
 const TakenTimeGraphReport = (props: Props) => {
   const { subjectResults, averageSubjectList, timeLimit, totalTakenTime } = props;
 
-  const millisecondsToMinutes = (time: number) => {
+  const millisecondsToMinutes = (time: number | null) => {
     // 1분은 60000 밀리세컨드입니다.
-    return Math.floor(time / 60000);
+    if (time !== null) {
+      return Math.floor(time / 60000);
+    }
+  };
+
+  const findLongestTakenTime = (data: AverageSubjectInfoType[] | SubjectResultsType[]) => {
+    if (!Array.isArray(data) || data.length === 0) return null;
+
+    return data.reduce((maxTime, currentItem) => {
+      return currentItem.totalTakenTime > maxTime ? currentItem.totalTakenTime : maxTime;
+    }, 0);
   };
 
   if (!subjectResults) {
@@ -29,21 +41,24 @@ const TakenTimeGraphReport = (props: Props) => {
           <div className={'text-h6'}>걸린시간</div>
           <div className={'text-h3 font-semibold'}>{millisecondsToMinutes(totalTakenTime)}m</div>
         </div>
-        {/*막대 그래프*/}
-        <div className="flex items-center space-x-2">
-          <div className="w-[85%] border-t border-gray1"></div>
-          <div className="w-[15%] text-gray3 text-h5">{millisecondsToMinutes(timeLimit)}분</div>
-        </div>
+
         <div className="flex items-end space-x-2">
-          <div className="w-[85%]">
+          <div className="w-full">
             <div className="flex h-32">
               {subjectResults?.map((subjectResult, index) => {
                 return (
-                  <div key={index} className="w-full flex justify-center space-x-2">
-                    <StickGraph height={(subjectResult.totalTakenTime / timeLimit) * 100} color="second" />
+                  <div key={index} className="w-full flex justify-center space-x-1">
                     <StickGraph
-                      height={(averageSubjectList[index]?.totalTakenTime || 0 / timeLimit) * 100}
+                      width={25}
+                      height={millisecondsToMinutes(subjectResult.totalTakenTime)}
+                      color="second"
+                      maxNumber={millisecondsToMinutes(findLongestTakenTime(subjectResults))}
+                    />
+                    <StickGraph
+                      width={25}
+                      height={millisecondsToMinutes(averageSubjectList[index]?.totalTakenTime)}
                       color="gray2"
+                      maxNumber={millisecondsToMinutes(findLongestTakenTime(averageSubjectList))}
                     />
                   </div>
                 );
@@ -51,17 +66,21 @@ const TakenTimeGraphReport = (props: Props) => {
             </div>
             <div className="border-t border-gray1"></div>
           </div>
-          <div className="w-[15%] text-gray3 text-h5">0분</div>
         </div>
         <div className="flex space-x-2">
-          <div className="w-[85%] flex justify-between mt-[2%]">
+          <div className="w-full flex justify-between mt-[2%]">
             {subjectResults?.map((subjectResult, index) => (
-              <div key={index} className="w-full flex justify-center text-h7">
+              <div
+                key={index}
+                className={
+                  subjectResults.length > 3
+                    ? 'w-full flex justify-center text-[10px]'
+                    : 'w-full flex justify-center text-h7'
+                }>
                 {subjectResult.subject.subjectName}
               </div>
             ))}
           </div>
-          <div className="w-[15%] text-white text-h5">0분</div>
         </div>
       </div>
     </div>

@@ -41,7 +41,7 @@ const MockExamResultReport = (props: Props) => {
     <>
       <div className={'flex flex-col gap-y-2'}>
         <div className={'text-h3 font-semibold'}>과목별 맞춘 문제 수</div>
-        <div className={'flex'}>
+        <div className={subjectResults.length > 3 ? 'grid grid-cols-3' : 'flex'}>
           {subjectResults?.map((subjectResult, index) => {
             return (
               <div className={'w-full'} key={index}>
@@ -58,13 +58,13 @@ const MockExamResultReport = (props: Props) => {
       <div className={'flex gap-x-2'}>
         <div className={'px-4 py-3 rounded-[16px] bg-white w-full'}>
           <div className={'text-h6 font-semibold'}>최근 점수</div>
-          <div className={'text-h1 font-semibold text-black'}>
+          <div className={'text-h2 font-semibold text-black'}>
             {score}점<span className={'text-gray3 text-h6 font-normal'}>/{totalScore}점</span>
           </div>
         </div>
         <div className={'px-4 py-3 rounded-[16px] bg-white w-full'}>
           <div className={'text-h6 font-semibold'}>걸린 시간</div>
-          <div className={'text-h1 font-semibold text-black'}>
+          <div className={'text-h2 font-semibold text-black'}>
             {formatTime(totalTakenTime, 'takenTime')}
             <span className={'text-gray3 text-h6 font-normal'}>/{formatTime(timeLimit, 'timeLimit')}</span>
           </div>

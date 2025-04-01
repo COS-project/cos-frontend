@@ -6,16 +6,49 @@ import { TrendingKeywordType } from '@/types/search/type';
 
 interface Props {
   keywords: TrendingKeywordType[] | undefined;
-  lastFetchedTime: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  requestTime: string;
 }
 
 const TrendingSearchKeywords = (props: Props) => {
-  const { keywords, lastFetchedTime, setSearchValue } = props;
+  const { keywords, setSearchValue, requestTime } = props;
 
-  useEffect(() => {
-    console.log(lastFetchedTime);
-  }, [lastFetchedTime]);
+  /**
+   * 트렌딩 키워드 목록이 10개가 되지 않으면 나머지를 기본값으로 채우는 함수
+   * @param keywords - 원본 키워드 목록
+   * @returns 10개로 채워진 키워드 목록
+   */
+  function fillTrendingKeywords(keywords: TrendingKeywordType[] | undefined): TrendingKeywordType[] {
+    if (!keywords) return [];
+    // 복사본 생성
+    const filledKeywords = [...keywords];
+
+    // 현재 목록의 길이 확인
+    const currentLength = filledKeywords.length;
+
+    // 10개가 넘으면 앞에서 10개만 자르기
+    if (currentLength > 10) {
+      return filledKeywords.slice(0, 10);
+    }
+
+    // 10개가 안되면 나머지 채우기
+    if (currentLength < 10) {
+      // 마지막 rank 찾기
+      let lastRank = currentLength > 0 ? filledKeywords[currentLength - 1].rank : 0;
+
+      // 10개가 될 때까지 추가
+      for (let i = currentLength; i < 10; i++) {
+        filledKeywords.push({
+          rank: lastRank + 1,
+          keyword: '-',
+          status: 'UNCHANGED',
+        });
+        lastRank++;
+      }
+    }
+
+    return filledKeywords;
+  }
 
   const getIconForStatus = (status: TrendingKeywordState | string) => {
     if (status === 'NEW') {
@@ -35,24 +68,49 @@ const TrendingSearchKeywords = (props: Props) => {
         <div className={'text-h4 font-semibold ml-2'}>인기 검색어</div>
         <div className={'flex flex-col gap-y-5 bg-white p-5 rounded-[32px]'}>
           <div className={'grid grid-cols-2 gap-x-6 w-full gap-y-4'}>
-            {keywords?.map((keyword: TrendingKeywordType, index: number) => {
-              return (
-                <div key={index} className={'flex justify-between text-h6'}>
-                  <div className={'w-[80%] flex'}>
-                    <div className={'w-[16px] font-bold mr-[6px]'}>{index + 1}</div>
-                    <div
-                      onClick={() => {
-                        setSearchValue(keyword.keyword);
-                      }}>
-                      {keyword.keyword}
+            {(() => {
+              const filledKeywords = fillTrendingKeywords(keywords);
+              const leftColumn = filledKeywords.slice(0, 5);
+              const rightColumn = filledKeywords.slice(5, 10);
+
+              return leftColumn.map((keyword, index) => {
+                const rightKeyword = rightColumn[index];
+
+                return (
+                  <React.Fragment key={index}>
+                    {/* 왼쪽 열 (1~5) */}
+                    <div className={'flex justify-between text-h6'}>
+                      <div className={'w-[80%] flex'}>
+                        <div className={'w-[16px] font-bold mr-[6px]'}>{keyword.rank}</div>
+                        <div
+                          onClick={() => {
+                            setSearchValue(keyword.keyword);
+                          }}>
+                          {keyword.keyword === '-' ? '-' : keyword.keyword}
+                        </div>
+                      </div>
+                      {keyword.keyword === '-' ? <div /> : getIconForStatus(keyword.status)}
                     </div>
-                  </div>
-                  {getIconForStatus(keyword.status)}
-                </div>
-              );
-            })}
+
+                    {/* 오른쪽 열 (6~10) */}
+                    <div className={'flex justify-between text-h6'}>
+                      <div className={'w-[80%] flex'}>
+                        <div className={'w-[16px] font-bold mr-[6px]'}>{rightKeyword.rank}</div>
+                        <div
+                          onClick={() => {
+                            setSearchValue(rightKeyword.keyword);
+                          }}>
+                          {rightKeyword.keyword === '-' ? '-' : rightKeyword.keyword}
+                        </div>
+                      </div>
+                      {rightKeyword.keyword === '-' ? <div /> : getIconForStatus(rightKeyword.status)}
+                    </div>
+                  </React.Fragment>
+                );
+              });
+            })()}
           </div>
-          <div className={'flex justify-end text-[12px] text-gray2'}>업데이트 {lastFetchedTime}</div>
+          <div className={'flex justify-end text-[12px] text-gray2'}>{requestTime} 업데이트</div>
         </div>
       </div>
     </>

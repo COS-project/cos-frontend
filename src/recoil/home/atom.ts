@@ -71,6 +71,7 @@ export const selectedDateTypeState = atom<'DATE' | 'WEEK_OF_MONTH' | 'MONTH'>({
   key: 'selectedDateTypeState',
   default: 'DATE',
 });
+
 export const selectedPrepareTimeState = atom<UserCertGoalPeriodType>({
   key: 'selectedPrepareTime',
   default: {
@@ -100,4 +101,10 @@ export const goalSettingCertificateName = atom<string | undefined>({
 export const goalSettingCertificateId = atom<number | undefined>({
   key: 'goalSettingCertificateId',
   default: 1,
+});
+
+//전체 점수
+export const CertificateMaxScoreAtom = atom<number | undefined>({
+  key: 'CertificateMaxScoreAtom',
+  default: 100,
 });

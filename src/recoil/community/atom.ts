@@ -6,7 +6,6 @@ import {
   CreatePostDataType,
   EditPostDataType,
   ExamReviewPostType,
-  RecentSearchResult,
 } from '@/types/community/type';
 import { GenerateComment, ImageType } from '@/types/global';
 
@@ -93,12 +92,9 @@ export const autoCompleteSearchKeywordState = atom<string>({
 });
 
 //최근 검색 기록
-export const recentSearchResultState = atom<RecentSearchResult>({
+export const recentSearchResultState = atom<string>({
   key: 'recentSearchResultState',
-  default: {
-    keyword: '',
-    createdAt: '',
-  },
+  default: '',
 });
 
 //해설 게시글 번호 검색

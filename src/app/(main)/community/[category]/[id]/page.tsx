@@ -46,7 +46,6 @@ const CommunityDetailPage = () => {
   //삭제하는 글의 아이디를 넘기기 위해 사용
   const [postDelete, setPostDelete] = useRecoilState(postDeleteState);
   const [likeTargetType, setLikeTargetType] = useState<'POST' | 'COMMENT'>('POST');
-  const { likeStatus, likeStatusMutate } = useGetLikeStatus(likeTargetType, params.id);
   //현재 사용자 정보 가져오기, (글, 댓글) 작성자인지 아닌지 체크하기 위함.
   const { userProfile } = useGetUserProfile();
   //해설 게시글 문제보기 버튼을 클릭했는지 체크하기 위해 사용
@@ -77,7 +76,6 @@ const CommunityDetailPage = () => {
 
     // 상태 업데이트가 완료된 후에 나머지 로직을 실행
     await postToggleLikeData(id, likeTargetType);
-    await likeStatusMutate();
     await communityPostDataMutate();
   };
 
@@ -188,12 +186,13 @@ const CommunityDetailPage = () => {
                 <CommentBar
                   empathy={communityPostData.postResponse?.likeCount} //공감수
                   comment={communityPostData.postResponse?.commentCount} //댓글수
-                  isLike={likeStatus} //사용자 좋아요 클릭 여부
+                  isLike={communityPostData.postResponse.likeStatus} //사용자 좋아요 클릭 여부
                   onClick={async () => {
                     //추천버튼 클릭 시 동작
                     handlePostLikeClick('POST', communityPostData.postResponse.postId);
                     //mutete를 사용하여 반영이 바로 되도록 구현
-                  }}></CommentBar>
+                  }}
+                />
                 <CommentWriting
                   postId={communityPostData.postResponse.postId}
                   communityPostDataMutate={communityPostDataMutate}></CommentWriting>

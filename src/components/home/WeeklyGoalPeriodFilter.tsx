@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import { WeeklyGoalPeriodType } from '@/types/home/type';
@@ -30,6 +30,7 @@ const WeeklyGoalPeriodFilter = (props: Props) => {
         return '에러';
     }
   };
+
 
   return (
     <div

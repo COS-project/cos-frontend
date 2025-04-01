@@ -2,8 +2,14 @@ import { useRouter } from 'next/navigation';
 import { SVGProps } from 'react';
 import * as React from 'react';
 
+interface Props {
+
+}
+
 import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
-const GoalBox = () => {
+const GoalBox = (props: Props) => {
+  const {} = props;
+  
   const router = useRouter();
   return (
     <div className={'flex flex-col gap-y-4 p-4 bg-white rounded-[32px]'}>

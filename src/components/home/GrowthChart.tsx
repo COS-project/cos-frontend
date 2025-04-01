@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useCallback, useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import StickGraph from '@/components/exam/StickGraph';
 import WeeklyGoalPeriodFilter from '@/components/home/WeeklyGoalPeriodFilter';
 import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
 import { certificateIdAtom } from '@/recoil/atom';
 import {
+  CertificateMaxScoreAtom,
   selectedDateTypeState,
   selectedPrepareTimeState,
   selectedPrepareWeeksBetweenState,
@@ -17,6 +18,7 @@ import { ScoreAVGListType, WeeklyGoalPeriodType } from '@/types/home/type';
 
 const GrowthChart = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
+  const [certificateMaxScore, setCertificateMaxScore] = useRecoilState(CertificateMaxScoreAtom);
   const [selectedReportType, setSelectedReportType] = useRecoilState<'WEEKLY' | 'MONTHLY' | 'YEARLY'>(
     selectedReportTypeState,
   );
@@ -27,14 +29,24 @@ const GrowthChart = () => {
     selectedPrepareWeeksBetweenState,
   );
   const [selectedPrepareTime, setSelectedPrepareTime] = useRecoilState(selectedPrepareTimeState);
-  const { statisticsData } = useGetMockExamStatistics(
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  // 컴포넌트 상태 관리를 위한 키
+  const [componentKey, setComponentKey] = useState(Date.now());
+
+  // 통계 데이터를 가져옵니다
+  const { statisticsData, mutate: refreshStatistics } = useGetMockExamStatistics(
     certificateId,
     selectedReportType,
     selectedPrepareWeeksBetween.prepareYear,
     selectedPrepareWeeksBetween.prepareMonth,
     selectedPrepareWeeksBetween.prepareWeekly,
   );
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  useEffect(() => {
+    if (statisticsData) {
+      setCertificateMaxScore(statisticsData.maxScore);
+    }
+  }, [statisticsData]);
 
   /**
    * 목표 기간의 주차를 계산해주는 함수
@@ -92,6 +104,54 @@ const GrowthChart = () => {
     });
   };
 
+  // 리포트 타입이 변경될 때 컴포넌트 키를 업데이트하여 강제 리렌더링
+  useEffect(() => {
+    setComponentKey(Date.now());
+    // 데이터 갱신 요청
+    refreshStatistics();
+
+    console.log('리포트 타입 변경:', selectedReportType);
+    console.log('날짜 타입 변경:', selectedDateType);
+  }, [selectedReportType, selectedDateType, refreshStatistics]);
+
+  // 선택된 주차/월/년도가 변경될 때 데이터 갱신
+  useEffect(() => {
+    // 컴포넌트 강제 리렌더링
+    setComponentKey(Date.now());
+    // 데이터 갱신 요청
+    refreshStatistics();
+
+    console.log('선택된 기간 변경:', {
+      year: selectedPrepareWeeksBetween.prepareYear,
+      month: selectedPrepareWeeksBetween.prepareMonth,
+      weekly: selectedPrepareWeeksBetween.prepareWeekly,
+      formatted: selectedPrepareWeeksBetween.formattedWeeklyPrepTime,
+    });
+  }, [
+    selectedPrepareWeeksBetween.prepareYear,
+    selectedPrepareWeeksBetween.prepareMonth,
+    selectedPrepareWeeksBetween.prepareWeekly,
+    selectedPrepareWeeksBetween.prepareDate,
+    refreshStatistics,
+  ]);
+
+  useEffect(() => {
+    const data = getWeeksBetween(
+      new Date(selectedPrepareTime.prepareStartDateTime),
+      new Date(selectedPrepareTime.prepareFinishDateTime),
+    );
+    if (data && data.length > 0) {
+      setSelectedPrepareWeeksBetweenState((prevState: WeeklyGoalPeriodType) => ({
+        ...prevState,
+        prepareDate: data[0].prepareDate,
+        prepareYear: data[0].prepareYear,
+        prepareMonth: data[0].prepareMonth,
+        prepareWeekly: data[0].prepareWeekly,
+        formattedWeeklyPrepTime: data[0].formattedWeeklyPrepTime,
+      }));
+    }
+  }, [selectedPrepareTime, setSelectedPrepareWeeksBetweenState]);
+
   /**
    * 월간 중복을 제거하는 함수
    * @param preparationData 목표 기간 동안 주차 계산된 값
@@ -126,6 +186,23 @@ const GrowthChart = () => {
     return filteredData;
   }
 
+  // 리포트 타입 변경 핸들러
+  const handleReportTypeChange = useCallback(
+    (type: 'WEEKLY' | 'MONTHLY' | 'YEARLY') => {
+      if (type === 'WEEKLY') {
+        setSelectedReportType('WEEKLY');
+        setSelectedDateType('DATE');
+      } else if (type === 'MONTHLY') {
+        setSelectedReportType('MONTHLY');
+        setSelectedDateType('WEEK_OF_MONTH');
+      } else if (type === 'YEARLY') {
+        setSelectedReportType('YEARLY');
+        setSelectedDateType('MONTH');
+      }
+    },
+    [setSelectedReportType, setSelectedDateType],
+  );
+
   /**
    * 주차별 성장 막대그래프 (x축 월, 화, 수, 목, 금, 토, 일)
    */
@@ -134,14 +211,17 @@ const GrowthChart = () => {
     if (!statisticsData) {
       return <div>Loading...</div>; // 로딩 중 메시지 또는 스피너 추가
     }
+
+    console.log('주간 그래프 데이터:', statisticsData.scoreAVGList);
+
     // Week 배열을 기반으로 요일별 StickGraph를 렌더링합니다.
     return dayOfWeek.map((day, dayIndex) => {
       // 해당 요일에 해당하는 데이터가 있는지 확인합니다.
       const scoreAVG = statisticsData.scoreAVGList.find((score: ScoreAVGListType) => score.dayOfWeek === day);
       const height = scoreAVG ? scoreAVG.scoreAverage : 0;
       return (
-        <div key={day} className="w-full flex justify-center space-x-2">
-          <StickGraph height={height} color="blue" />
+        <div key={`${day}-${componentKey}`} className="w-full flex justify-center space-x-2">
+          <StickGraph height={height} color="blue" maxNumber={certificateMaxScore} />
         </div>
       );
     });
@@ -155,14 +235,17 @@ const GrowthChart = () => {
     if (!statisticsData) {
       return <div>Loading...</div>; // 로딩 중 메시지 또는 스피너 추가
     }
+
+    console.log('월간 그래프 데이터:', statisticsData.scoreAVGList);
+
     // Week 배열을 기반으로 요일별 StickGraph를 렌더링합니다.
     return weekOfMonth.map((week, weekIndex) => {
       // 해당 요일에 해당하는 데이터가 있는지 확인합니다.
       const scoreAVG = statisticsData.scoreAVGList.find((score: ScoreAVGListType) => score.weekOfMonth === week);
       const height = scoreAVG ? scoreAVG.scoreAverage : 0;
       return (
-        <div key={week} className="w-full flex justify-center space-x-2">
-          <StickGraph height={height} color="blue" />
+        <div key={`week-${week}-${componentKey}`} className="w-full flex justify-center space-x-2">
+          <StickGraph height={height} color="blue" maxNumber={certificateMaxScore} />
         </div>
       );
     });
@@ -174,6 +257,12 @@ const GrowthChart = () => {
   const yearGraph = () => {
     const monthOfYear = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
+    if (!statisticsData) {
+      return <div>Loading...</div>;
+    }
+
+    console.log('연간 그래프 데이터:', statisticsData.scoreAVGList);
+
     // Month 배열을 기반으로 월별 StickGraph를 렌더링합니다.
     return (
       <div className="flex w-full">
@@ -182,8 +271,8 @@ const GrowthChart = () => {
           const scoreAVG = statisticsData?.scoreAVGList.find((score: ScoreAVGListType) => score.month === month);
           const height = scoreAVG ? scoreAVG.scoreAverage : 0;
           return (
-            <div key={month} className="w-full flex justify-center space-x-2">
-              <StickGraph height={height} color="blue" />
+            <div key={`month-${month}-${componentKey}`} className="w-full flex justify-center space-x-2">
+              <StickGraph height={height} color="blue" maxNumber={certificateMaxScore} />
             </div>
           );
         })}
@@ -212,7 +301,9 @@ const GrowthChart = () => {
    */
   const xAxisLabelYear = (item: number) => {
     return (
-      <div key={item} className="flex border-t border-gray1 w-full overflow-x-auto justify-center text-h6">
+      <div
+        key={`year-label-${item}-${componentKey}`}
+        className="flex border-t border-gray1 w-full overflow-x-auto justify-center text-h6">
         {`${item}`}
       </div>
     );
@@ -271,17 +362,14 @@ const GrowthChart = () => {
   };
 
   return (
-    <div>
+    <div key={componentKey}>
       <div className="flex flex-col gap-y-3 bg-white rounded-[32px] p-4 border-[1px] border-gray2">
         <div className="font-bold text-h3">성장그래프</div>
 
         {/*주간, 월간, 연간 필터 session*/}
         <div className={'flex w-[100%] justify-evenly rounded-[12px] border-[1px] border-gray1'}>
           <div
-            onClick={() => {
-              setSelectedReportType('WEEKLY');
-              setSelectedDateType('DATE');
-            }}
+            onClick={() => handleReportTypeChange('WEEKLY')}
             className={
               selectedReportType === 'WEEKLY'
                 ? 'flex px-8 py-1 w-full border-[1px] border-gray1 justify-center items-center rounded-[12px] bg-gray0'
@@ -290,10 +378,7 @@ const GrowthChart = () => {
             주간
           </div>
           <div
-            onClick={() => {
-              setSelectedReportType('MONTHLY');
-              setSelectedDateType('WEEK_OF_MONTH');
-            }}
+            onClick={() => handleReportTypeChange('MONTHLY')}
             className={
               selectedReportType === 'MONTHLY'
                 ? 'flex px-8 py-1 w-full border-[1px] border-gray1 justify-center items-center rounded-[12px] bg-gray0'
@@ -302,10 +387,7 @@ const GrowthChart = () => {
             월간
           </div>
           <div
-            onClick={() => {
-              setSelectedReportType('YEARLY');
-              setSelectedDateType('MONTH');
-            }}
+            onClick={() => handleReportTypeChange('YEARLY')}
             className={
               selectedReportType === 'YEARLY'
                 ? 'flex px-8 py-1 w-full border-[1px] border-gray1 justify-center items-center rounded-[12px] bg-gray0'
@@ -374,30 +456,32 @@ const GrowthChart = () => {
         {/* 그래프 */}
         <div className={''}>
           <div className={'relative'}>
-            <div className="flex items-center space-x-1">
-              <div className="xl:w-[97%] sm:w-[85%] border-t border-gray1 "></div>
-              <div className="xl:w-[3%] sm:w-[15%] text-gray3 text-h5 ">100점</div>
-            </div>
+            {statisticsData && statisticsData.maxScore > 0 && (
+              <div className="flex items-center space-x-1">
+                <div className="xl:w-[97%] sm:w-[85%] border-t border-gray1"></div>
+                <div className="xl:w-[3%] sm:w-[15%] text-gray3 text-h5 ">{certificateMaxScore}점</div>
+              </div>
+            )}
 
-            {/*TODO: 총합 바꿔야 함. 어디서 가져올 수 있는지 못찾겠음*/}
-            <div
-              style={{
-                bottom:
-                  (statisticsData?.totalAverage ?? 0) >= 100 ? '85%' : `${6 + (statisticsData?.totalAverage ?? 0)}%`,
-              }}
-              className={'w-full absolute flex items-center space-x-1'}>
-              <div className="w-[86%] border-t border-dashed border-primary"></div>
-              <div className="text-primary text-h5">평균</div>
-            </div>
+            {statisticsData?.totalAverage !== 0 && certificateMaxScore && (
+              <div
+                style={{
+                  bottom: `${3 + ((statisticsData?.totalAverage ?? 0) / certificateMaxScore) * 100}%`,
+                }}
+                className={'absolute w-full flex items-center space-x-1'}>
+                <div className="w-[86%] border-t border-dashed border-primary"></div>
+                <div className="text-primary text-h5">평균</div>
+              </div>
+            )}
 
             <div className="w-full flex items-end overflow-x-scroll" style={{ width: '100%' }}>
-              <div className={'w-full flex flex-col'}>
-                <div className="w-full justify-between">
-                  <div className="flex h-32">{renderGraphLabelsByReportType()}</div>
+              <div className={'w-full'}>
+                <div className="w-full ">
+                  <div className="flex h-32">
+                    {statisticsData && statisticsData.scoreAVGList.length > 0 && renderGraphLabelsByReportType()}
+                  </div>
                 </div>
-                <div className="w-full flex mt-10 w-[86%] justify-between">
-                  {renderLabelComponent(selectedReportType)}
-                </div>
+                <div className="w-full flex">{renderLabelComponent(selectedReportType)}</div>
               </div>
             </div>
           </div>

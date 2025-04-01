@@ -51,11 +51,6 @@ export interface EditPostDataType {
   removeImageIds?: number[];
 }
 
-export interface RecentSearchResult {
-  keyword: string;
-  createdAt: string;
-}
-
 export interface PopularSearchKeyword {
   sequence: number;
   keyword: string;

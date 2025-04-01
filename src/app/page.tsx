@@ -34,10 +34,6 @@ export default function Page() {
     };
   }, []);
 
-  useEffect(() => {
-    console.log('deferredPrompt', deferredPrompt);
-  }, [deferredPrompt]);
-
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
 

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { BoardType } from '@/types/community/type';
 
 export type HeaderType = 'static' | 'dynamic' | 'second';
@@ -251,6 +252,7 @@ export interface ReviewIncorrectMockExam {
   examYear: number;
   round: number;
   timeLimit: number;
+  maxScore: number;
   certificate: Certificate;
 }
 
@@ -270,10 +272,11 @@ interface RecommendTags {
 
 //모의고사
 interface MockExam {
-  MockExamId: number;
+  mockExamId: number;
   examYear: number;
   round: number;
   timeLimit: number;
+  maxScore: number;
   certificate: Certificate;
 }
 
