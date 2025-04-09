@@ -1,9 +1,8 @@
 'use client';
 
-import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useSearchParams } from 'next/navigation';
-import React, { Suspense, SVGProps, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import React, { Suspense, useEffect, useState } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
@@ -13,25 +12,20 @@ import BestTip from '@/components/home/BestTip';
 import GoalSettingStatusModal from '@/components/home/goal-setting/GoalSettingStatusModal';
 import GoalBox from '@/components/home/GoalBox';
 import RecentGrowthChart from '@/components/home/RecentGrowthChart';
-import UserCertGoalPeriods from '@/components/home/UserCertGoalPeriods';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import TodayGoal from '@/components/TodayGoal';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
-import useGetCertificationInfo from '@/lib/hooks/useGetCertificationInfo';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
 import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
 import { certificateIdAtom } from '@/recoil/atom';
 import { selectedPrepareTimeState } from '@/recoil/home/atom';
-import { AverageSubjectInfoType, UserCertGoalPeriodType } from '@/types/home/type';
+import { UserCertGoalPeriodType } from '@/types/home/type';
 function HomeComponents() {
   const searchParams = useSearchParams();
   const certificateId = useRecoilValue(certificateIdAtom);
-  const [alarmEvent, setAlarmEvent] = useState<undefined | EventSource>();
-  const [isGoalPeriodFilterOpen, setIsGoalPeriodFilterOpen] = useState(false);
   const [goalPeriodContent, setGoalPeriodContent] = useState<string>('목표 기간 선택');
   const [isGoalSettingStatusModalOpen, setIsGoalSettingStatusModalOpen] = useState(false);
-  const EventSource = EventSourcePolyfill;
 
   const setSelectedPrepareTime = useSetRecoilState(selectedPrepareTimeState);
 
