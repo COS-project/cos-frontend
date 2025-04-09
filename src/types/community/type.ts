@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FavoriteBoard, MockExam, Post, PostComments, QuestionsResponse } from '@/types/global';
+import { FavoriteBoard, ImageType, MockExam, Post, PostComments, QuestionsResponse } from '@/types/global';
 import { UserInfo } from '@/types/mypage/type';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
@@ -70,7 +70,7 @@ export interface ResponsePostType {
 export interface PostType {
   postId: number;
   postContent: PostContent;
-  postImages: string[];
+  postImages: ImageType[];
   user: UserInfo;
   question?: QuestionsResponse; //해설
   recommendTags?: RecommendTags[]; //꿀팁

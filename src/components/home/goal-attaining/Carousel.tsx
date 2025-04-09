@@ -57,8 +57,8 @@ const CarouselCardView = () => {
               {bestTipPost.postImages[0] && (
                 <div className={'relative w-full h-[100px]'}>
                   <Image
-                    src={bestTipPost.postImages[0]}
-                    alt={bestTipPost.postImages[0]}
+                    src={bestTipPost.postImages[0].imageUrl}
+                    alt={bestTipPost.postImages[0].imageUrl}
                     fill
                     className={'object-cover rounded-[16px]'}
                   />

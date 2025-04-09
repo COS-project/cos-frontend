@@ -233,7 +233,7 @@ const CommentaryBoardList = (props: Props) => {
                     likeCount={postResponse?.likeCount || 0}
                     likeStatus={postResponse?.likeStatus || false}
                     createdAt={formatDate(postResponse.dateTime?.createdAt || '')}
-                    imageUrl={postResponse.postImages.length ? postResponse.postImages[0] : null}
+                    imageUrl={postResponse.postImages.length ? postResponse.postImages[0].imageUrl : null}
                     topElement={
                       postResponse.question
                         ? commentaryTopElement(
