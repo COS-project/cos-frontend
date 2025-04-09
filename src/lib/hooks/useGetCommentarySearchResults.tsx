@@ -1,8 +1,8 @@
 import useSWRInfinite from 'swr/infinite';
 
 import { swrGetFetcher } from '@/lib/axios';
-import { ResponsePostType } from '@/types/community/type';
 import { ResponseType } from '@/types/common/type';
+import { ResponsePostType } from '@/types/community/type';
 
 const getKey = (
   pageIndex: number,

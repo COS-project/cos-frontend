@@ -34,10 +34,7 @@ const useGetMockExamDetail = (
 
   const url = `/api/v2/certificates/1/mock-exam-results/${dateType}?${queryParams.toString()}`;
 
-  const { data, error, mutate } = useSWR<MockExamDetailResponseType>(
-    url,
-    swrGetFetcher,
-  );
+  const { data, error, mutate } = useSWR<MockExamDetailResponseType>(url, swrGetFetcher);
 
   return {
     statisticsDetailData: data?.result,

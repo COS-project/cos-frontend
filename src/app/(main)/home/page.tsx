@@ -14,6 +14,7 @@ import GoalSettingStatusModal from '@/components/home/goal-setting/GoalSettingSt
 import GoalBox from '@/components/home/GoalBox';
 import RecentGrowthChart from '@/components/home/RecentGrowthChart';
 import UserCertGoalPeriods from '@/components/home/UserCertGoalPeriods';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import TodayGoal from '@/components/TodayGoal';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import useGetCertificationInfo from '@/lib/hooks/useGetCertificationInfo';
@@ -21,9 +22,8 @@ import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
 import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
 import { certificateIdAtom } from '@/recoil/atom';
-import { AverageSubjectInfoType, UserCertGoalPeriodType } from '@/types/home/type';
 import { selectedPrepareTimeState } from '@/recoil/home/atom';
-import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
+import { AverageSubjectInfoType, UserCertGoalPeriodType } from '@/types/home/type';
 function HomeComponents() {
   const searchParams = useSearchParams();
   const certificateId = useRecoilValue(certificateIdAtom);
@@ -147,10 +147,6 @@ function HomeComponents() {
   const sumTotalTakenTime = () => {
     return averageSubjectList ? averageSubjectList.reduce((sum, subject) => sum + subject.totalTakenTime, 0) : 0;
   };
-
-  useEffect(() => {
-    console.log('goalAchievementData:', goalAchievementData);
-  }, [goalAchievementData]);
 
   useEffect(() => {
     if (goalSettingStatus) {

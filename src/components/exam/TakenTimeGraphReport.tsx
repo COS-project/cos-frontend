@@ -49,13 +49,13 @@ const TakenTimeGraphReport = (props: Props) => {
                 return (
                   <div key={index} className="w-full flex justify-center space-x-1">
                     <StickGraph
-                      width={25}
+                      width={20}
                       height={millisecondsToMinutes(subjectResult.totalTakenTime)}
                       color="second"
                       maxNumber={millisecondsToMinutes(findLongestTakenTime(subjectResults))}
                     />
                     <StickGraph
-                      width={25}
+                      width={20}
                       height={millisecondsToMinutes(averageSubjectList[index]?.totalTakenTime)}
                       color="gray2"
                       maxNumber={millisecondsToMinutes(findLongestTakenTime(averageSubjectList))}

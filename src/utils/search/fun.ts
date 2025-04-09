@@ -28,9 +28,9 @@ function getConsonant(char: string): string {
   const code: number = char.charCodeAt(0);
 
   // 한글 유니코드 범위 내에 있는지 확인
-  if (code >= 0xAC00 && code <= 0xD7A3) {
+  if (code >= 0xac00 && code <= 0xd7a3) {
     // 초성 인덱스 계산
-    const choIndex: number = Math.floor((code - 0xAC00) / 28 / 21);
+    const choIndex: number = Math.floor((code - 0xac00) / 28 / 21);
     return consonants[choIndex];
   }
 
@@ -50,7 +50,7 @@ function getConsonant(char: string): string {
  */
 function isConsonant(char: string): boolean {
   const code: number = char.charCodeAt(0);
-  return code >= 0x3131 && code <= 0x314E;
+  return code >= 0x3131 && code <= 0x314e;
 }
 
 /**

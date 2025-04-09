@@ -1,7 +1,7 @@
 'use client';
 import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SVGProps } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -55,6 +55,8 @@ const CommunityDetailPage = () => {
   const { bestTipPosts } = useBest3TipPosts(certificateId);
   //수정 modal
   const [isClickEditPost, setIsClickEditPost] = useState(false);
+  //좋아요 버튼을 눌렀는지 확인하는 state
+  const [isPOSTLikeButtonClick, setIsPOSTLikeButtonClick] = useState(false);
 
   //답글달기 버튼 클릭시에 사용
   const commentReplyControll = (index: number, id: number) => {
@@ -74,6 +76,10 @@ const CommunityDetailPage = () => {
       setLikeTargetType(likeTargetType);
       resolve();
     });
+
+    if (likeTargetType === 'POST') {
+      setIsPOSTLikeButtonClick(true);
+    }
 
     // 상태 업데이트가 완료된 후에 나머지 로직을 실행
     await postToggleLikeData(id, likeTargetType);
@@ -261,7 +267,7 @@ const CommunityDetailPage = () => {
               </div>
             </div>
           ) : null}
-          <StopWatchActiveButton />
+          {/*<StopWatchActiveButton />*/}
           {isClickEditPost ? null : <NavBar />}
         </div>
       )}

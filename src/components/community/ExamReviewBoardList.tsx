@@ -27,9 +27,13 @@ const ExamReviewBoardList = (props: Props) => {
   const [isPreparePeriodOpen, setIsPreparePeriodOpen] = useState<boolean>(false);
   const [startMonths, setStartMonths] = useState<number | undefined>();
   const [endPreMonths, setEndPreMonths] = useState<number | undefined>();
-  const { examReviews, setSize } = useGetExamReview(certificateId, examDifficulty, startMonths, endPreMonths);
+  const { examReviews, setSize, isError } = useGetExamReview(certificateId, examDifficulty, startMonths, endPreMonths);
   // 따끈후기를 입력할 수 있는 자격이 있는지 검증
   const { reviewWriteAccess } = useCheckReviewWriteAccess(certificateId);
+  // 시험 정보를 관리자가 입력하지 않은 경우 에러 발생
+  const [examReviewsCRT_003Error, setExamReviewsCRT_003Error] = useState<boolean>(false);
+  // 시험 후기를 작성할 수 있는 기간(시험일로부터 2주)이 지난 경우
+  const [examReviewsCRT_004Error, setExamReviewsCRT_004Error] = useState<boolean>(false);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -86,10 +90,25 @@ const ExamReviewBoardList = (props: Props) => {
     );
   };
 
+  useEffect(() => {
+    if (isError && !examReviewsCRT_003Error && isError.response.data.responseCode === 'CRT_003') {
+      setExamReviewsCRT_003Error(true);
+    }
+    if (isError && !examReviewsCRT_004Error && isError.response.data.responseCode === 'CRT_004') {
+      setExamReviewsCRT_004Error(true);
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    console.log(examReviewsCRT_003Error);
+  }, [isError]);
+
   return (
     <>
       <div className={'relative px-5 flex flex-col gap-y-4 '}>
-        {reviewWriteAccess && reviewWriteAccess.result && (<UserActionReminder content={'크루들에게 따끈후기를 공유해주세요!'} button={userActionReminderMove()} />)}
+        {reviewWriteAccess && reviewWriteAccess.result && (
+          <UserActionReminder content={'크루들에게 따끈후기를 공유해주세요!'} button={userActionReminderMove()} />
+        )}
         {/*filter*/}
         <div className={'flex gap-x-2'}>
           <div
@@ -125,39 +144,49 @@ const ExamReviewBoardList = (props: Props) => {
             ) : null}
           </div>
         </div>
-        <div className={'flex flex-col gap-y-4'}>
-          {examReviews
-            ? examReviews.map((examReview, index) => {
-                return examReview?.result.content.map((review: ReviewPost, postIndex: number) => {
-                  const isLastElement =
-                    index === examReviews.length - 1 && postIndex === examReview?.result.content.length - 1;
-                  return (
-                    <div
-                      key={review.createdAt}
-                      ref={isLastElement ? ref : null}
-                      className={'flex flex-col gap-y-1 py-4 px-5 rounded-[32px] bg-white'}>
-                      <div className={'flex flex-col gap-y-3'}>
-                        <div className={'w-full flex items-center gap-x-[6px]'}>
-                          <div className={'flex items-center gap-x-[9px]'}>
-                            <div className={'truncate text-gray4 text-h6'}>{review.user.nickname}</div>
-                            <div
-                              className={
-                                'rounded-full border-[1px] border-gray2 py-[2px] px-[10px] text-gray4 text-h6'
-                              }>
-                              {`준비기간 ${review.prepareMonths}개월`}
+        {examReviewsCRT_003Error ? (
+          <div className={'flex flex-col justify-center items-center min-h-[500px] text-h3 text-gray4'}>
+            관리자가 시험 정보를 입력하지 않았어요.
+          </div>
+        ) : examReviewsCRT_004Error ? (
+          <div className={'flex flex-col justify-center items-center min-h-[500px] text-h3 text-gray4'}>
+            따끈 후기 작성 기간이 아니에요.
+          </div>
+        ) : (
+          <div className={'flex flex-col gap-y-4'}>
+            {examReviews
+              ? examReviews.map((examReview, index) => {
+                  return examReview?.result.content.map((review: ReviewPost, postIndex: number) => {
+                    const isLastElement =
+                      index === examReviews.length - 1 && postIndex === examReview?.result.content.length - 1;
+                    return (
+                      <div
+                        key={review.createdAt}
+                        ref={isLastElement ? ref : null}
+                        className={'flex flex-col gap-y-1 py-4 px-5 rounded-[32px] bg-white'}>
+                        <div className={'flex flex-col gap-y-3'}>
+                          <div className={'w-full flex items-center gap-x-[6px]'}>
+                            <div className={'flex items-center gap-x-[9px]'}>
+                              <div className={'truncate text-gray4 text-h6'}>{review.user.nickname}</div>
+                              <div
+                                className={
+                                  'rounded-full border-[1px] border-gray2 py-[2px] px-[10px] text-gray4 text-h6'
+                                }>
+                                {`준비기간 ${review.prepareMonths}개월`}
+                              </div>
                             </div>
+                            {changeTagForExamDifficulty(review.examDifficulty)}
                           </div>
-                          {changeTagForExamDifficulty(review.examDifficulty)}
+                          <div className={''}>{review.content}</div>
                         </div>
-                        <div className={''}>{review.content}</div>
+                        <div className={'text-gray3 text-h6'}>작성일 {formatDate(new Date(review.createdAt))}</div>
                       </div>
-                      <div className={'text-gray3 text-h6'}>작성일 {formatDate(new Date(review.createdAt))}</div>
-                    </div>
-                  );
-                });
-              })
-            : null}
-        </div>
+                    );
+                  });
+                })
+              : null}
+          </div>
+        )}
       </div>
     </>
   );

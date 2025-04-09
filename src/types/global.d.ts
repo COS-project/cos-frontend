@@ -303,7 +303,7 @@ export interface Post {
   user: User;
   question?: Question;
   recommendTags?: RecommendTags[];
-  postImages: string[];
+  postImages: ImageType[];
   dateTime: DateTime;
   commentCount: number;
   likeCount: number;

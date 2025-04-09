@@ -1,5 +1,6 @@
 'use client';
 
+import { getDate } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -17,7 +18,6 @@ import {
   selectedReportTypeState,
 } from '@/recoil/home/atom';
 import { ScoreAVGListType, UserCertGoalPeriodType } from '@/types/home/type';
-import { getDate } from 'date-fns';
 
 const GrowthChartView = () => {
   const certificateId = useRecoilValue(certificateIdAtom);

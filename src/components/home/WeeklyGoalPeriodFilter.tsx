@@ -31,7 +31,6 @@ const WeeklyGoalPeriodFilter = (props: Props) => {
     }
   };
 
-
   return (
     <div
       className={

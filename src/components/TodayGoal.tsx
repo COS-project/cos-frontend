@@ -15,6 +15,13 @@ const TodayGoal = (props: Props) => {
   const { todayMockExams, todayStudyTime, mockExamsPerDay, studyTimePerDay } = props;
   const router = useRouter();
 
+  const millisecondsToMinutes = (time: number | null) => {
+    // 1분은 60000 밀리세컨드입니다.
+    if (time !== null) {
+      return Math.floor(time / 60000);
+    }
+  };
+
   return (
     <div className={'p-4 rounded-[32px] bg-white'}>
       <div className={'flex justify-between'}>
@@ -37,7 +44,7 @@ const TodayGoal = (props: Props) => {
         maintitle=" 공부하기"
         subtitle="오늘 공부한 시간"
         goaltime={studyTimePerDay}
-        presenttime={todayStudyTime}
+        presenttime={millisecondsToMinutes(todayStudyTime) || 0}
         unit="분"
       />
       <GoalRunningGraph

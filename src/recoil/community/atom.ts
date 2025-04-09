@@ -1,12 +1,7 @@
 'use client';
 import { atom } from 'recoil';
 
-import {
-  BoardType,
-  CreatePostDataType,
-  EditPostDataType,
-  ExamReviewPostType,
-} from '@/types/community/type';
+import { BoardType, CreatePostDataType, EditPostDataType, ExamReviewPostType } from '@/types/community/type';
 import { GenerateComment, ImageType } from '@/types/global';
 
 //게시판 종류
