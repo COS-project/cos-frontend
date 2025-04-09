@@ -2,9 +2,34 @@ import { useRouter } from 'next/navigation';
 import { SVGProps } from 'react';
 import * as React from 'react';
 
+interface Props {
+  maxScore: number;
+  currentStudyTime: number;
+  currentMockExams: number;
+  goalScore: number;
+  goalStudyTime: number;
+  goalMockExams: number;
+}
+
 import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
-const GoalBox = () => {
+
+const GoalBox = (props: Props) => {
+  const { maxScore, currentStudyTime, currentMockExams, goalScore, goalStudyTime, goalMockExams } = props;
+
+  const millisecondsToMinutes = (time: number | null) => {
+    // 1분은 60000 밀리세컨드입니다.
+    if (time !== null) {
+      return Math.floor(time / 60000);
+    }
+  };
+
   const router = useRouter();
+  const { maxScore, currentStudyTime, currentMockExams, goalScore, goalStudyTime, goalMockExams } = props;
+
+  function convertMsToM(ms: number) {
+    return Math.floor(ms / 60000); // 1분 = 60000ms
+  }
+
   return (
     <div className={'flex flex-col gap-y-4 p-4 bg-white rounded-[32px]'}>
       <div className={'flex justify-between'}>
@@ -24,7 +49,7 @@ const GoalBox = () => {
             <div className={'font-normal text-h6 px-[20px] py-[2px] rounded-full bg-gray0'}>목표점수</div>
           </div>
           <div className="relative mt-[10px]">
-            <ScoredDonutChart mainscore={65} totalscore={100} unit="점" />
+            <ScoredDonutChart mainscore={maxScore} totalscore={goalScore} unit="점" />
           </div>
         </div>
         <div className="w-[33%]">
@@ -32,7 +57,11 @@ const GoalBox = () => {
             <div className={'font-normal text-h6 px-[20px] py-[2px] rounded-full bg-gray0'}>공부시간</div>
           </div>
           <div className="relative mt-[10px]">
-            <ScoredDonutChart mainscore={500} totalscore={1000} unit="분" />
+            <ScoredDonutChart
+              mainscore={millisecondsToMinutes(currentStudyTime)}
+              totalscore={goalStudyTime}
+              unit="분"
+            />
           </div>
         </div>
         <div className="w-[33%]">
@@ -40,7 +69,7 @@ const GoalBox = () => {
             <div className={'font-normal text-h6 px-[20px] py-[2px] rounded-full bg-gray0'}>모의고사</div>
           </div>
           <div className="relative mt-[10px]">
-            <ScoredDonutChart mainscore={10} totalscore={30} unit="회" />
+            <ScoredDonutChart mainscore={currentMockExams} totalscore={goalMockExams} unit="회" />
           </div>
         </div>
       </div>

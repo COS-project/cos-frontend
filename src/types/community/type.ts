@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FavoriteBoard, MockExam, PostComments, QuestionsResponse } from '@/types/global';
+import { FavoriteBoard, MockExam, Post, PostComments, QuestionsResponse } from '@/types/global';
 import { UserInfo } from '@/types/mypage/type';
 
 export type BoardType = 'REVIEW' | 'COMMENTARY' | 'TIP' | 'NORMAL';
@@ -51,11 +51,6 @@ export interface EditPostDataType {
   removeImageIds?: number[];
 }
 
-export interface RecentSearchResult {
-  keyword: string;
-  createdAt: string;
-}
-
 export interface PopularSearchKeyword {
   sequence: number;
   keyword: string;
@@ -66,29 +61,23 @@ export interface PopularSearchKeyword {
  ************ post Detail *************
  */
 
-export interface ResponseBest3PostType {
-  responseCode: string;
-  result: PostType[];
-}
-
 export interface ResponsePostType {
-  responseCode: string;
-  message: string;
-  result: {
-    postResponse: PostType;
-    postComments: PostComments[];
-    hasNext: boolean;
-  };
+  content: PostType[];
+  postComments: PostComments[];
+  hasNext: boolean;
 }
 
 export interface PostType {
   postId: number;
   postContent: PostContent;
-  postStatus: PostStatus;
+  postImages: string[];
   user: UserInfo;
-  recommendTags?: RecommendTags[]; //꿀팁
   question?: QuestionsResponse; //해설
+  recommendTags?: RecommendTags[]; //꿀팁
   dateTime: DateTime;
+  likeStatus: boolean;
+  likeCount: number;
+  commentCount: number;
 }
 
 export interface PostContent {
@@ -102,12 +91,6 @@ export interface Image {
   imageUrl: string;
 }
 
-export interface PostStatus {
-  postType: string;
-  likeCount: number;
-  commentCount: number;
-}
-
 export interface ReviewPost {
   examDifficulty: ExamDifficulty;
   prepareMonths: number;
@@ -119,11 +102,8 @@ export interface ReviewPost {
 export type ExamDifficulty = 'TOO_EASY' | 'EASY' | 'NORMAL' | 'TOO_DIFFICULT' | 'LITTLE_DIFFICULT';
 
 export interface ResponseReviewPost {
-  responseCode: string;
-  result: {
-    content: ReviewPost[];
-    hasNext: boolean;
-  };
+  content: ReviewPost[];
+  hasNext: boolean;
 }
 
 export interface RecommendTags {
@@ -154,4 +134,14 @@ export interface BoardListResponseType {
   responseCode: string;
   message: string;
   result: FavoriteBoard[];
+}
+
+// 정렬 Type
+export type SortFieldType = 'createdAt' | 'count';
+export type SortFieldKorType = '최신순' | '인기순';
+
+// 게시글 상세
+export interface ResponsePostDetailType {
+  postResponse: Post;
+  postComments: PostComments[];
 }

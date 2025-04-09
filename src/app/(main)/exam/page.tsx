@@ -7,6 +7,7 @@ import NavBar from '@/components/common/NavBar';
 import RandomMockExamModal from '@/components/exam/RandomMockExamModal';
 import SubjectSessionCard from '@/components/exam/SubjectList';
 import YearSelector from '@/components/exam/YearSelector';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 
 const Exam = () => {
@@ -57,6 +58,7 @@ const SolveExamBox = () => {
           selectedYear={selectedYear}
         />
         <SubjectSessionCard selectedYear={selectedYear} />
+        <StopWatchActiveButton />
       </div>
     </>
   );

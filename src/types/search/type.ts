@@ -1,25 +1,7 @@
-export interface TrendingKeywordsResponseType {
-  responseCode: string;
-  message: string;
-  result: TrendingKeywordType[];
-}
-
 export interface TrendingKeywordType {
+  rank: number;
   keyword: string;
   status: string;
-}
-
-/**
- * 최근 검색 기록
- */
-export interface RecentSearchResponseType {
-  responseCode: string;
-  message: string;
-  result: RecentSearchType[];
-}
-export interface RecentSearchType {
-  keyword: string;
-  createdAt: string;
 }
 
 /**

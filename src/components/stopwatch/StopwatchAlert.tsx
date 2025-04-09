@@ -88,7 +88,7 @@ function StopwatchAlert(props: Props) {
                       postStudyTimes(
                         selectedPrepareTime.goalId,
                         convertToMilliseconds(hStopwatchTime, mStopwatchTime, sStopwatchTime),
-                      ).then(() => {
+                      ).then((res) => {
                         setOnAccumulatedModal(true); //모달창 열기
                         setOnModal(false); //현재창 닫기
                         setStartTime(Date.now());

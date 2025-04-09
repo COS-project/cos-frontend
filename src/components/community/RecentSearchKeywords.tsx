@@ -1,24 +1,25 @@
 import * as React from 'react';
 import { SVGProps, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { deleteAllSearchResults, deleteEachSearchResult } from '@/lib/api/community';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
+import { certificateIdAtom } from '@/recoil/atom';
 import { autoCompleteSearchKeywordState, recentSearchResultState } from '@/recoil/community/atom';
-import { RecentSearchResult } from '@/types/community/type';
 
 interface Props {
-  keywords: RecentSearchResult[] | undefined;
+  keywords: string[] | undefined;
 }
 
 const RecentSearchKeywords = (props: Props) => {
   const { keywords } = props;
-  const { mutate } = useGetRecentSearchResults();
+  const certificateId = useRecoilValue(certificateIdAtom);
+  const { mutate } = useGetRecentSearchResults(certificateId);
   const [recentSearchResult, setRecentSearchResult] = useRecoilState(recentSearchResultState);
   const [searchValue, setSearchValue] = useRecoilState<string>(autoCompleteSearchKeywordState);
 
   useEffect(() => {
-    deleteEachSearchResult(recentSearchResult.keyword, recentSearchResult.createdAt).then(() => mutate());
+    deleteEachSearchResult(certificateId, recentSearchResult).then(() => mutate());
   }, [recentSearchResult]);
 
   return (
@@ -38,18 +39,18 @@ const RecentSearchKeywords = (props: Props) => {
 
         <div className={'w-[100%] overflow-x-scroll flex gap-x-2'}>
           {keywords
-            ? keywords.map((keyword: RecentSearchResult, index: number) => {
+            ? keywords.map((keyword: string, index: number) => {
                 return (
                   <div
                     key={index}
                     className={'flex items-center gap-x-1 flex-shrink-0 py-1 px-3 rounded-[8px] bg-white w-fit'}>
-                    <div onClick={() => setSearchValue(keyword.keyword)} className={'text-gray4 text-h4'}>
-                      {keyword.keyword}
+                    <div onClick={() => setSearchValue(keyword)} className={'text-gray4 text-h4'}>
+                      {keyword}
                     </div>
                     <DeleteButton
                       className={'cursor-pointer'}
                       onClick={() => {
-                        setRecentSearchResult(() => ({ keyword: keyword.keyword, createdAt: keyword.createdAt }));
+                        setRecentSearchResult(keyword);
                       }}
                     />
                   </div>

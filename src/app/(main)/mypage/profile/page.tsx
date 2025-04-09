@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { SVGProps, useCallback, useEffect, useRef, useState } from 'react';
 
 import Header from '@/components/common/Header';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import { patchProfileData } from '@/lib/api/onboarding';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 
@@ -111,6 +112,8 @@ const ProfileSettings = () => {
               defaultValue={userProfile ? userProfile.nickname : ''}></input>
           </div>
         </div>
+
+        <StopWatchActiveButton />
 
         <button
           type={'submit'}

@@ -76,11 +76,12 @@ const MyPageNormalAndTipBoardList = (props: Props) => {
                   postId={userPost.postId}
                   content={userPost.postContent.content}
                   title={userPost.postContent.title}
-                  commentCount={userPost.postStatus.commentCount}
+                  commentCount={userPost.commentCount}
                   createdAt={userPost.dateTime.modifiedAt ? userPost.dateTime.modifiedAt : userPost.dateTime.createdAt}
                   bottomElement={bottomElement(userPost.postId)}
                   imageUrl={userPost.postContent.images.length !== 0 ? userPost.postContent.images[0].imageUrl : null}
-                  likeCount={userPost.postStatus.likeCount}></Post>
+                  likeStatus={userPost.likeStatus}
+                  likeCount={userPost.likeCount}></Post>
               </div>
             );
           });

@@ -100,21 +100,14 @@ const sendRequest = async (config: any) => {
 };
 
 export const swrGetFetcher = async (url: any) => {
-  try {
-    // 액세스 토큰을 헤더에 담아 요청 보내기
-
-    const response = await sendRequest({
-      headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
-      },
-      method: 'GET',
-      url: url,
-    });
-    return response.data;
-  } catch (error) {
-    // 에러 처리
-    console.error('에러 발생:', error);
-  }
+  const response = await sendRequest({
+    headers: {
+      'Access-Token': localStorage.getItem('accessToken'),
+    },
+    method: 'GET',
+    url: url,
+  });
+  return response.data;
 };
 
 export { client, getTokensFromLocalStorage, saveTokensToLocalStorage, sendRequest, setAuthHeader };

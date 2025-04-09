@@ -1,11 +1,12 @@
 import useSWRInfinite from 'swr/infinite';
 
 import { swrGetFetcher } from '@/lib/axios';
+import { ResponseType } from '@/types/common/type';
 import { ExamDifficulty, ResponseReviewPost } from '@/types/community/type';
 
 const getKey = (
   pageIndex: number,
-  previousPageData: ResponseReviewPost | null,
+  previousPageData: ResponseType<ResponseReviewPost> | null,
   certificateId: number,
   examDifficulty: ExamDifficulty | undefined,
   startMonths: number | undefined,
@@ -37,7 +38,7 @@ const useGetExamReview = (
   startMonths: number | undefined,
   endPreMonths: number | undefined,
 ) => {
-  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<ResponseReviewPost>(
+  const { data, isLoading, error, size, setSize, mutate } = useSWRInfinite<ResponseType<ResponseReviewPost>>(
     (pageIndex, previousPageData) =>
       getKey(pageIndex, previousPageData, certificateId, examDifficulty, startMonths, endPreMonths),
     swrGetFetcher,

@@ -1,6 +1,7 @@
 //공감수, 댓글 수, 추천버튼 라인
 'use client';
 
+import type { SVGProps } from 'react';
 import React from 'react';
 
 import DdbongIcon from './DdabongIcon';
@@ -18,7 +19,7 @@ const CommentBar = (props: Props) => {
     <div className="flex justify-between">
       <div className="flex gap-2 items-end">
         <div className="flex items-center">
-          <DdbongIcon color="#3B3DFF" width="19" height="17"></DdbongIcon>
+          {isLike ? <FillLikeIcon /> : <DdbongIcon color="#3B3DFF" width="19" height="17" />}
           <div className="text-primary text-h6 font-normal font-['Pretendard Variable'] leading-[21px]">{empathy}</div>
         </div>
         <div className="flex items-center">
@@ -53,3 +54,12 @@ const CommentBar = (props: Props) => {
   );
 };
 export default CommentBar;
+
+const FillLikeIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={17} fill="none" {...props}>
+    <path
+      fill="#6283FD"
+      d="M17.7 6.3q.575 0 1.038.462.462.463.462 1.038v1a1.7 1.7 0 0 1-.1.55l-2.65 6.3q-.2.45-.675.75t-.975.3H6.55q-.625 0-1.062-.437A1.45 1.45 0 0 1 5.05 15.2V6.925q0-.3.125-.588A1.6 1.6 0 0 1 5.5 5.85L10.575.825A.8.8 0 0 1 10.95.6a.57.57 0 0 1 .375.025q.175.075.25.275a.9.9 0 0 1 .025.475l-1 4.925zM2.3 16.7q-.625 0-1.062-.437A1.45 1.45 0 0 1 .8 15.2V7.8q0-.625.438-1.063A1.45 1.45 0 0 1 2.3 6.3h.55q.624 0 1.063.437.437.438.437 1.063v7.425q0 .626-.437 1.05a1.47 1.47 0 0 1-1.063.425z"
+    />
+  </svg>
+);

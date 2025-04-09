@@ -52,7 +52,6 @@ const GoalRunningGraph = (props: Props) => {
               </div>
             </div>
           </div>
-          <MoveIcon />
         </div>
         <div className="flex w-[90%] mx-auto mt-[15%] mb-[5%] justify-center ">
           <HorizontalBarChart

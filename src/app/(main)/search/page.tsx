@@ -1,32 +1,27 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import qs from 'query-string';
 import { Suspense } from 'react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import AutoCompleteSearchKeywords from '@/components/community/AutoCompleteSearchKeywords';
 import RecentSearchKeywords from '@/components/community/RecentSearchKeywords';
 import SearchInput from '@/components/community/SearchInput';
 import TrendingSearchKeywords from '@/components/community/TrendingSearchKeywords';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useDebounce from '@/hooks/useDebounce';
-import useGetAutoCompleteSearchKeywords from '@/lib/hooks/useGetAutoCompleteSearchKeywords';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
 import useGetTrendingKeywords from '@/lib/hooks/useGetTrendingKeywords';
 import { certificateIdAtom } from '@/recoil/atom';
-import { autoCompleteSearchKeywordState, boardTypeState } from '@/recoil/community/atom';
-import { BoardType } from '@/types/community/type';
+import { autoCompleteSearchKeywordState } from '@/recoil/community/atom';
 
 const SearchComponents = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
-  const parameter = useSearchParams();
-  const { autoCompleteKeywords } = useGetAutoCompleteSearchKeywords(certificateId, parameter.get('keyword'));
-  const { recentSearchResults } = useGetRecentSearchResults();
-  const { trendingKeywords, lastFetchedTime } = useGetTrendingKeywords(certificateId);
+  const { recentSearchResults } = useGetRecentSearchResults(certificateId);
+  const { trendingKeywords, requestTime } = useGetTrendingKeywords(certificateId);
   const [isClickedAutoCompleteSearchKeywords, setIsClickedAutoCompleteSearchKeywords] = useState(false);
-  const [boardType, setBoardType] = useRecoilState<BoardType>(boardTypeState);
   const [searchValue, setSearchValue] = useRecoilState<string>(autoCompleteSearchKeywordState);
   const debouncedValue = useDebounce<string>(searchValue, 100);
   const router = useRouter();
@@ -57,29 +52,17 @@ const SearchComponents = () => {
     }).format(date ?? new Date());
   };
 
-  useEffect(() => {
-    console.log('recentSearchResults', recentSearchResults);
-  }, [recentSearchResults]);
-
   return (
     <div className={'relative flex flex-col gap-y-5 bg-gray0 min-h-screen'}>
       {/*input*/}
       <SearchInput
-        boardType={boardType}
+        isClickedAutoCompleteSearchKeywords={isClickedAutoCompleteSearchKeywords}
         searchValue={searchValue}
         setSearchValue={setSearchValue}
         setIsClickedAutoCompleteSearchKeywords={setIsClickedAutoCompleteSearchKeywords}
       />
 
       <div className={'px-5'}>
-        {/*자동완성 필터*/}
-        {isClickedAutoCompleteSearchKeywords ? (
-          <AutoCompleteSearchKeywords
-            setIsClickedAutoCompleteSearchKeywords={setIsClickedAutoCompleteSearchKeywords}
-            keywords={autoCompleteKeywords}
-          />
-        ) : null}
-
         <div className={'flex flex-col gap-y-8'}>
           {/*최근 검색어*/}
           <RecentSearchKeywords keywords={recentSearchResults} />
@@ -87,11 +70,12 @@ const SearchComponents = () => {
           {/*인기 검색어*/}
           <TrendingSearchKeywords
             setSearchValue={setSearchValue}
-            lastFetchedTime={formattedDate(lastFetchedTime)}
             keywords={trendingKeywords}
+            requestTime={requestTime}
           />
         </div>
       </div>
+      <StopWatchActiveButton className={'bottom-5'} />
     </div>
   );
 };

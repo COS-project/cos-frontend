@@ -63,21 +63,18 @@ export const putPostDetail = async (certificateId: number, postType: string, for
 };
 
 // 통합 검색
-export const getTotalSearchResults = async (certificateId: number, postType: BoardType, keyword: string) => {
+export const getTotalSearchResults = async (certificateId: number, keyword: string) => {
   try {
-    // 액세스 토큰을 헤더에 담아 요청 보내기
-    if (postType !== 'REVIEW') {
-      const response = await sendRequest({
-        headers: {
-          'Access-Token': localStorage.getItem('accessToken'),
-        },
-        method: 'GET',
-        url: `/api/v2/certificates/${certificateId}/search?postType=${postType}&keyword=${keyword}&page=0&size=10&sortFields=subjectResultEntity.mockExamResultEntity.createdAt, questionEntity.questionSeq&sortDirections=DESC, ASC`,
-      });
-      console.log(response.data);
-      // 성공적인 응답 처리
-      return response.data;
-    }
+    const response = await sendRequest({
+      headers: {
+        'Access-Token': localStorage.getItem('accessToken'),
+      },
+      method: 'GET',
+      url: `/api/v2/certificates/${certificateId}/posts?keyword=${keyword}&page=0&size=10&sortFields=createdAt, id&sortDirections=DESC, ASC`,
+    });
+    console.log(response.data);
+    // 성공적인 응답 처리
+    return response.data;
   } catch (error) {
     // 에러 처리
     console.error('에러 발생:', error);
@@ -129,7 +126,7 @@ export const deleteAllSearchResults = async () => {
 };
 
 // 특정 검색 기록 삭제
-export const deleteEachSearchResult = async (keyword: string, createdAt: string) => {
+export const deleteEachSearchResult = async (certificateId: number, keyword: string) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
@@ -137,7 +134,7 @@ export const deleteEachSearchResult = async (keyword: string, createdAt: string)
         'Access-Token': localStorage.getItem('accessToken'),
       },
       method: 'DELETE',
-      url: `/api/v2/search-logs?keyword=${keyword}&createdAt=${createdAt}`,
+      url: `/api/v2/certificates/${certificateId}/search-logs?keyword=${keyword}`,
     });
     console.log(response.data);
     // 성공적인 응답 처리

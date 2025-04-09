@@ -8,14 +8,15 @@ import { KeyedMutator } from 'swr';
 
 import { postCommentData } from '@/lib/api/communityPost';
 import { GenerateCommentState } from '@/recoil/community/atom';
-import { ResponsePostDetailType } from '@/types/global';
+import { ResponseType } from '@/types/common/type';
+import { ResponsePostDetailType } from '@/types/community/type';
 
 interface Props {
   link?: string; //버튼 눌렀을 때 데이터를 저장하는 경로 입력, api연결하면서 "?"수정 필요함
   padding?: string; //pl설정
   commentId?: number; //부모댓글 id
   postId: number; //포스트 id
-  communityPostDataMutate: KeyedMutator<ResponsePostDetailType>; // communityPostData를 바로 불러오는 mutate함수
+  communityPostDataMutate: KeyedMutator<ResponseType<ResponsePostDetailType>>; // communityPostData를 바로 불러오는 mutate함수
   setReplyOnOff?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -36,7 +36,7 @@ export default function StopWatch() {
   }, [stringLocation]);
 
   return (
-    <>
+    <main>
       {onModal ? ( //기록하기 알림창 열림OnOff
         <StopwatchAlert setOnAccumulatedModal={setOnAccumulatedModal} setOnModal={setOnModal} />
       ) : null}
@@ -45,7 +45,7 @@ export default function StopWatch() {
       ) : null}
       <Header />
       <Header headerType={'second'} />
-      <div className="relative flex justify-center items-center mt-[100px]">
+      <div className="flex justify-center items-center mt-[100px]">
         <div className="w-80 h-[449px] flex-col justify-start items-center gap-6 flex">
           {/* <div className={twMerge('h-[320px] w-[320px] border border-gray2 rounded-full', className)}> */}
           <div style={rotateStyle} className="h-[320px] w-[320px] border border-gray2 rounded-full">
@@ -120,6 +120,6 @@ export default function StopWatch() {
         </div>
       </div>
       <NavBar />
-    </>
+    </main>
   );
 }

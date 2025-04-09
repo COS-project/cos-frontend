@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import Header from '@/components/common/Header';
 import IncorrectQuestionCard from '@/components/exam/IncorrectQuestionCard';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useAllIncorrectQuestions from '@/lib/hooks/useAllIncorrectQuestions';
 import { ReviewIncorrectAnswers, ReviewIncorrectAnswersContent } from '@/types/global';
 
@@ -51,6 +52,7 @@ const IncorrectQuestion = () => {
             })
           : null}
       </div>
+      <StopWatchActiveButton className={'bottom-5'} />
     </>
   );
 };

@@ -10,6 +10,7 @@ import MyPageCommentaryBoardList from '@/components/mypage/MyPageCommentaryBoard
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import MyPageNormalAndTipBoardList from '@/components/mypage/MyPageNormalAndTipBoardList';
 import MyWritingMenu from '@/components/mypage/MyWritingMenu';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useGetUserPosts from '@/lib/hooks/useGetUserPosts';
 import { MyPageBoardType } from '@/types/mypage/type';
 import { filterContent } from '@/utils/mypage/FilterContent';
@@ -17,7 +18,7 @@ import { filterContent } from '@/utils/mypage/FilterContent';
 export default function MyWriting() {
   // REVIEW, COMMENTARY, TIP, NORMAL
   const [boardType, setBoardType] = useState<MyPageBoardType>('COMMENTARY');
-  // 최신순:createdAt, 작성순:popular
+  // 최신순:createdAt, 인기순:count
   const [selectedFilterContent, setSelectedFilterContent] = useState<'최신순' | '인기순'>('최신순');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDeleteWarningModalOpen, setIsDeleteWarningModalOpen] = useState<boolean>(false);
@@ -101,7 +102,8 @@ export default function MyWriting() {
               ) : null}
             </div>
           </div>
-          <div className={'h-[60px]'} />
+          <div className={'h-[100px]'} />
+          <StopWatchActiveButton />
           <NavBar />
         </>
       )}

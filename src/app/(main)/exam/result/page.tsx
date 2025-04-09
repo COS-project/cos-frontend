@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
@@ -11,6 +11,7 @@ import MockExamReportHeader from '@/components/exam/MockExamReportHeader';
 import MockExamResultReport from '@/components/exam/MockExamResultReport';
 import TakenTimeGraphReport from '@/components/exam/TakenTimeGraphReport';
 import UserExamAttemptsFilterContent from '@/components/exam/UserExamAttemptsFilterContent';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 import { certificateIdAtom } from '@/recoil/atom';
@@ -64,7 +65,7 @@ const Result = () => {
               <MockExamResultReport
                 timeLimit={examResults[examResults.length - 1]?.mockExam.timeLimit || 0}
                 totalTakenTime={sumTotalTakenTime()}
-                totalScore={300} //TODO: TotalScore 변경하기
+                totalScore={examResults[0].mockExam.maxScore}
                 score={examResults[examResults.length - 1]?.totalScore || 0}
                 subjectResults={examResults[examResults.length - 1]?.subjectResults || []}
               />
@@ -103,7 +104,7 @@ const Result = () => {
               <MockExamResultReport
                 timeLimit={examResults[userExamAttempt - 1]?.mockExam.timeLimit || 0}
                 totalTakenTime={sumTotalTakenTime()}
-                totalScore={300} //TODO: TotalScore 변경하기
+                totalScore={examResults[0].mockExam.maxScore}
                 score={examResults[userExamAttempt - 1]?.totalScore || 0}
                 subjectResults={examResults[userExamAttempt - 1]?.subjectResults || []}
               />
@@ -139,7 +140,8 @@ const Result = () => {
       <Header headerType={'dynamic'} title={'성적리포트'} onBack={onBack}></Header>
       <MockExamReportHeader isClicked={isClicked} setIsClicked={setIsClicked} />
       <div className={'bg-gray0 min-h-screen p-5'}>{displayComponentBasedOnExamResults(examResults)}</div>
-      <div className={'h-[60px]'} />
+      <div className={'h-[100px]'} />
+      <StopWatchActiveButton />
       <NavBar />
     </>
   );
