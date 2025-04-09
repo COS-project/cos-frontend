@@ -1,5 +1,9 @@
 'use client';
 
+import React, { useEffect, useMemo } from 'react';
+import { useRef } from 'react';
+import { useRecoilState } from 'recoil';
+
 import {
   hStopwatchTimeState,
   integralTimeState,
@@ -12,16 +16,13 @@ import {
   startTimeState,
   stringLocationState,
 } from '@/recoil/stopwatch/atom';
-import React, { useEffect, useMemo } from 'react';
-import { useRef } from 'react';
-import { useRecoilState } from 'recoil';
 
 export default function Timer() {
   const [integralTime, setIntegralTime] = useRecoilState(integralTimeState); //누적 시간(초단위)
   const [startTime, setStartTime] = useRecoilState(startTimeState); //시작 시간(밀리초 단위)
   const [now, setNow] = useRecoilState(nowTimeState); //현재 시간(밀리초 단위)
 
-  const intervalRef = useRef<number | null>(null); //interval 타이머를 위한 참조 변수
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null); //interval 타이머를 위한 참조 변수
   const [isStart, setIsStart] = useRecoilState(isStartState); //시작 여부
   const [isStop, setIsStop] = useRecoilState(isStopState); //멈춤 여부
   const [isReset, setIsReset] = useRecoilState(isResetState); //리셋 여부
