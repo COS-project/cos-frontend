@@ -1,47 +1,83 @@
 'use client';
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 import { SVGProps } from 'react';
+import { useRecoilValue } from 'recoil';
 
+import AutoCompleteSearchKeywords from '@/components/community/AutoCompleteSearchKeywords';
 import { getTotalSearchResults } from '@/lib/api/community';
+import useGetAutoCompleteSearchKeywords from '@/lib/hooks/useGetAutoCompleteSearchKeywords';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
-import { BoardType } from '@/types/community/type';
+import { certificateIdAtom } from '@/recoil/atom';
 
 interface Props {
+  isClickedAutoCompleteSearchKeywords: boolean;
   setIsClickedAutoCompleteSearchKeywords: React.Dispatch<React.SetStateAction<boolean>>;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
   searchValue: string;
-  boardType: BoardType;
 }
 const SearchInput = (props: Props) => {
-  const { boardType, setIsClickedAutoCompleteSearchKeywords, setSearchValue, searchValue } = props;
-  const { mutate } = useGetRecentSearchResults();
+  const { isClickedAutoCompleteSearchKeywords, setIsClickedAutoCompleteSearchKeywords, setSearchValue, searchValue } =
+    props;
+  const parameter = useSearchParams();
+  const certificateId = useRecoilValue(certificateIdAtom);
+  const { mutate } = useGetRecentSearchResults(certificateId);
+  const { autoCompleteKeywords } = useGetAutoCompleteSearchKeywords(certificateId, parameter.get('keyword'));
+  const router = useRouter();
+
   const handleSubmit = async () => {
-    await getTotalSearchResults(1, boardType, searchValue).then((r) => console.log('검색 결과', r));
+    await getTotalSearchResults(1, searchValue).then((r) => console.log('검색 결과', r));
     await mutate().then((r) => console.log('response임', r));
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
   return (
-    <div className={'bg-white my-[6px] px-5 py-[10px]'}>
+    <div className={'bg-white px-5 py-[10px]'}>
       <div className={'flex gap-x-3  items-center'}>
-        <BackIcon />
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            await handleSubmit();
+        <BackIcon
+          onClick={() => {
+            router.push(`/community/${certificateId}`);
           }}
-          className={'flex gap-x-1 py-2 px-3 border-[1px] border-gray2 rounded-[16px] w-full'}>
-          <SearchIcon />
-          <input
-            value={searchValue}
-            title={'keyContent'}
-            onChange={(e) => {
-              setSearchValue(e.target.value);
-              setIsClickedAutoCompleteSearchKeywords(true);
+        />
+        <section className={'relative w-full'}>
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              await handleSubmit();
             }}
-            className={'text-h4 text-gray4 outline-none'}
-            placeholder={'궁금한 것을 검색해보세요.'}></input>
-        </form>
+            className={
+              searchValue === ''
+                ? 'flex justify-between py-2 px-3 border-[1px] border-gray2 rounded-[16px] w-full'
+                : 'flex justify-between py-2 px-3 border-[1px] border-gray2 rounded-t-[16px] w-full'
+            }>
+            <input
+              value={searchValue}
+              title={'keyContent'}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+                setIsClickedAutoCompleteSearchKeywords(true);
+              }}
+              onKeyDown={handleKeyDown}
+              className={'text-h4 text-gray4 outline-none'}
+              placeholder={'검색어를 입력해주세요.'}></input>
+            <SearchIcon />
+          </form>
+          {/*자동완성 필터*/}
+          {isClickedAutoCompleteSearchKeywords && searchValue !== '' ? (
+            <AutoCompleteSearchKeywords
+              query={parameter.get('keyword')}
+              setIsClickedAutoCompleteSearchKeywords={setIsClickedAutoCompleteSearchKeywords}
+              keywords={autoCompleteKeywords}
+            />
+          ) : null}
+        </section>
       </div>
     </div>
   );

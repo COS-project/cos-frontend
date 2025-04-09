@@ -1,7 +1,7 @@
 'use client';
 import { format } from 'date-fns';
 import { useParams } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SVGProps } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -17,6 +17,7 @@ import CommunityTag from '@/components/community/CommunityTag';
 import EditPost from '@/components/community/EditPost';
 import PostingModal from '@/components/community/PostingModal';
 import Question from '@/components/community/Question';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import { postToggleLikeData } from '@/lib/api/communityPost';
 import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
@@ -46,7 +47,6 @@ const CommunityDetailPage = () => {
   //삭제하는 글의 아이디를 넘기기 위해 사용
   const [postDelete, setPostDelete] = useRecoilState(postDeleteState);
   const [likeTargetType, setLikeTargetType] = useState<'POST' | 'COMMENT'>('POST');
-  const { likeStatus, likeStatusMutate } = useGetLikeStatus(likeTargetType, params.id);
   //현재 사용자 정보 가져오기, (글, 댓글) 작성자인지 아닌지 체크하기 위함.
   const { userProfile } = useGetUserProfile();
   //해설 게시글 문제보기 버튼을 클릭했는지 체크하기 위해 사용
@@ -55,6 +55,8 @@ const CommunityDetailPage = () => {
   const { bestTipPosts } = useBest3TipPosts(certificateId);
   //수정 modal
   const [isClickEditPost, setIsClickEditPost] = useState(false);
+  //좋아요 버튼을 눌렀는지 확인하는 state
+  const [isPOSTLikeButtonClick, setIsPOSTLikeButtonClick] = useState(false);
 
   //답글달기 버튼 클릭시에 사용
   const commentReplyControll = (index: number, id: number) => {
@@ -75,9 +77,12 @@ const CommunityDetailPage = () => {
       resolve();
     });
 
+    if (likeTargetType === 'POST') {
+      setIsPOSTLikeButtonClick(true);
+    }
+
     // 상태 업데이트가 완료된 후에 나머지 로직을 실행
     await postToggleLikeData(id, likeTargetType);
-    await likeStatusMutate();
     await communityPostDataMutate();
   };
 
@@ -122,9 +127,9 @@ const CommunityDetailPage = () => {
           <Header
             headerType={'dynamic'}
             title={
-              communityPostData && communityPostData.postResponse?.postStatus.postType === 'COMMENTARY'
+              communityPostData && communityPostData.postResponse?.postType === 'COMMENTARY'
                 ? '해설 게시글'
-                : communityPostData?.postResponse?.postStatus.postType === 'TIP'
+                : communityPostData?.postResponse?.postType === 'TIP'
                 ? '꿀팁 게시글'
                 : '자유 게시글'
             }></Header>
@@ -176,7 +181,7 @@ const CommunityDetailPage = () => {
                 <CommunityPost
                   subject={communityPostData.postResponse?.postContent.title}
                   content={communityPostData.postResponse?.postContent.content}
-                  images={communityPostData.postResponse?.postContent.images}></CommunityPost>
+                  images={communityPostData.postResponse?.postImages}></CommunityPost>
                 {/* 꿀팁 태그 */}
                 <div className={'flex gap-x-2'}>
                   {communityPostData.postResponse.recommendTags
@@ -186,14 +191,15 @@ const CommunityDetailPage = () => {
                     : null}
                 </div>
                 <CommentBar
-                  empathy={communityPostData.postResponse?.postStatus.likeCount} //공감수
-                  comment={communityPostData.postResponse?.postStatus.commentCount} //댓글수
-                  isLike={likeStatus} //사용자 좋아요 클릭 여부
+                  empathy={communityPostData.postResponse?.likeCount} //공감수
+                  comment={communityPostData.postResponse?.commentCount} //댓글수
+                  isLike={communityPostData.postResponse.likeStatus} //사용자 좋아요 클릭 여부
                   onClick={async () => {
                     //추천버튼 클릭 시 동작
                     handlePostLikeClick('POST', communityPostData.postResponse.postId);
                     //mutete를 사용하여 반영이 바로 되도록 구현
-                  }}></CommentBar>
+                  }}
+                />
                 <CommentWriting
                   postId={communityPostData.postResponse.postId}
                   communityPostDataMutate={communityPostDataMutate}></CommentWriting>
@@ -261,6 +267,7 @@ const CommunityDetailPage = () => {
               </div>
             </div>
           ) : null}
+          {/*<StopWatchActiveButton />*/}
           {isClickEditPost ? null : <NavBar />}
         </div>
       )}

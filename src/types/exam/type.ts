@@ -25,6 +25,7 @@ export interface MockExamResultType {
   mockExam: ReviewIncorrectMockExam;
   subjectResults: SubjectResultsType[];
   totalScore: number;
+  timeLimit: number;
 }
 
 export interface SubjectResultsType {
@@ -71,8 +72,7 @@ export interface MockExamDetailResponseType {
 }
 export interface MockExamDetailType {
   content: MockExamDetailContentType[];
-  currentPage: number;
-  pageSize: number;
+  hasNext: boolean;
 }
 export interface MockExamDetailContentType {
   mockExamResultId: number;

@@ -157,9 +157,9 @@ const CommentaryBoardList = (props: Props) => {
   };
 
   return (
-    <div className={'relative px-5 flex flex-col gap-y-4 '}>
+    <main className={'relative px-5 flex flex-col gap-y-4 '}>
       {/*필터*/}
-      <div className={'flex gap-x-2'}>
+      <section className={'flex gap-x-2'}>
         {/*년도 필터*/}
         <div
           onClick={() => setIsOpenCommentaryYearFilter(!isOpenCommentaryYearFilter)}
@@ -214,40 +214,42 @@ const CommentaryBoardList = (props: Props) => {
           />
           <QuestionSeqSearchIcon />
         </form>
-      </div>
-      <div className={'flex flex-col gap-y-4'}>
-        {commentarySearchResults &&
-          commentarySearchResults.map((userPosts: ResponsePostType, index: number) => {
-            const postResponse = userPosts?.result?.postResponse; // 안전한 접근
-            if (!postResponse) return null; // 데이터가 없는 경우 렌더링하지 않음
+      </section>
 
-            return (
-              <div key={postResponse.postId} ref={ref}>
-                <Post
-                  postId={postResponse.postId}
-                  content={postResponse.postContent?.content || ''}
-                  title={postResponse.postContent?.title || ''}
-                  commentCount={postResponse.postStatus?.commentCount || 0}
-                  createdAt={formatDate(postResponse.dateTime?.createdAt || '')}
-                  imageUrl={
-                    postResponse.postContent?.images?.length ? postResponse.postContent.images[0].imageUrl : null
-                  }
-                  likeCount={postResponse.postStatus?.likeCount || 0}
-                  topElement={
-                    postResponse.question
-                      ? commentaryTopElement(
-                          postResponse.question.mockExam.examYear,
-                          postResponse.question.mockExam.round,
-                          postResponse.question.questionSeq,
-                        )
-                      : undefined
-                  }
-                />
-              </div>
-            );
+      <section className={'flex flex-col gap-y-4'}>
+        {commentarySearchResults &&
+          commentarySearchResults.map((userPosts, index: number) => {
+            const posts = userPosts?.result?.content; // 안전한 접근
+            if (!posts) return null; // 데이터가 없는 경우 렌더링하지 않음
+
+            return posts.map((postResponse) => {
+              return (
+                <div key={postResponse.postId} ref={ref}>
+                  <Post
+                    postId={postResponse.postId}
+                    content={postResponse.postContent?.content || ''}
+                    title={postResponse.postContent?.title || ''}
+                    commentCount={postResponse?.commentCount || 0}
+                    likeCount={postResponse?.likeCount || 0}
+                    likeStatus={postResponse?.likeStatus || false}
+                    createdAt={formatDate(postResponse.dateTime?.createdAt || '')}
+                    imageUrl={postResponse.postImages.length ? postResponse.postImages[0] : null}
+                    topElement={
+                      postResponse.question
+                        ? commentaryTopElement(
+                            postResponse.question.mockExam.examYear,
+                            postResponse.question.mockExam.round,
+                            postResponse.question.questionSeq,
+                          )
+                        : undefined
+                    }
+                  />
+                </div>
+              );
+            });
           })}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 export default CommentaryBoardList;

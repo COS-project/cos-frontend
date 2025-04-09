@@ -102,3 +102,9 @@ export const goalSettingCertificateId = atom<number | undefined>({
   key: 'goalSettingCertificateId',
   default: 1,
 });
+
+//전체 점수
+export const CertificateMaxScoreAtom = atom<number | undefined>({
+  key: 'CertificateMaxScoreAtom',
+  default: 100,
+});

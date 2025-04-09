@@ -32,6 +32,7 @@ export interface ExamStaticsDataResponseType {
  */
 export interface ExamStaticsDataType {
   totalAverage: number;
+  maxScore: number;
   scoreAVGList: ScoreAVGListType[];
 }
 
@@ -39,6 +40,7 @@ export interface ExamStaticsDataType {
  * 성장 그래프 통계 각각의 데이터
  */
 export interface ScoreAVGListType {
+  maxScore: number;
   scoreAverage: number;
   dayOfWeek?: string;
   weekOfMonth?: number;
@@ -122,6 +124,7 @@ export interface AverageSubjectInfoType {
   };
   correctRate: number;
   totalTakenTime: number;
+  timeLimit: number;
 }
 ////////////////////////////////////////////////////
 /**

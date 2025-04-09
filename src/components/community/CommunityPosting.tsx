@@ -25,10 +25,10 @@ const CommunityPost = (props: Props) => {
         {content}
       </div>
       <div className="mb-6 h-[100px] justify-start items-start gap-3 inline-flex overflow-y-hidden">
-        {images?.map((image, idex) => {
+        {images?.map((image) => {
           return (
             <div key={image.id} className={'relative w-[95px] h-[100px]'}>
-              <Image fill className={'object-cover rounded-[5px]'} src={image.imageUrl} alt={`${image.id}`} />
+              <Image fill className={'object-cover rounded-[5px]'} src={image.imageUrl} alt={image.imageUrl} />
             </div>
           );
         })}

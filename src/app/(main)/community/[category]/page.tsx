@@ -17,28 +17,31 @@ import WriteExplanationPost from '@/components/community/WriteExplanationPost';
 import WriteNormalPost from '@/components/community/WriteNormalPost';
 import WriteReviewModal from '@/components/community/WriteReviewModal';
 import WriteTipPost from '@/components/community/WriteTipPost';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useDebounce from '@/hooks/useDebounce';
+import useCheckReviewWriteAccess from '@/lib/hooks/useCheckReviewWriteAccess';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { certificateIdAtom } from '@/recoil/atom';
 import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
-import { BoardType } from '@/types/community/type';
+import { BoardType, SortFieldKorType, SortFieldType } from '@/types/community/type';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
   const certificateId = useRecoilValue(certificateIdAtom);
   //필터값
-  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<string>('최신순');
+  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] =
+    useState<SortFieldKorType>('최신순');
   const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number | string>(
     '전체',
   );
   const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number | string>(
     '전체',
   );
-  const [sortField, setSortField] = useState<string>('createdAt'); //최신순 인기순
+  const [sortField, setSortField] = useState<SortFieldType>('createdAt'); //최신순 인기순
   //보드 타입
   const [boardType, setBoardType] = useState<BoardType>('REVIEW');
-  const { userPostsList, setSize, mutate } = useGetTotalSearchResults(boardType, certificateId, sortField);
+  const { userPosts, setSize, mutate } = useGetTotalSearchResults(boardType, certificateId, sortField);
   const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('COMMENTARY');
   //글쓰기 버튼
   const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
@@ -53,12 +56,13 @@ export default function CommunityCategoryPage() {
     searchValue,
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+  const { reviewWriteAccess } = useCheckReviewWriteAccess(certificateId);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
    */
   const getMoreItem = useCallback(async () => {
-    if (userPostsList) {
+    if (userPosts) {
       setSize((prev: number) => prev + 1);
     }
     return;
@@ -86,7 +90,7 @@ export default function CommunityCategoryPage() {
     if (selectedNormalAndTipFilterContent == '최신순') {
       setSortField('createdAt');
     } else if (selectedNormalAndTipFilterContent == '인기순') {
-      setSortField('likeCount');
+      setSortField('count');
     }
   }, [selectedNormalAndTipFilterContent]);
 
@@ -130,7 +134,9 @@ export default function CommunityCategoryPage() {
     <WriteNormalPost setIsClickedWriteButton={setIsClickedWriteButton} />
   ) : (
     <>
-      {isModalOpen ? <WriteReviewModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} /> : null}
+      {reviewWriteAccess && reviewWriteAccess.result ? (
+        <WriteReviewModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
+      ) : null}
       <Header
         headerType={'dynamic'}
         onBack={onMoveCommunityMenuPage}
@@ -169,7 +175,8 @@ export default function CommunityCategoryPage() {
           setBoardTypeForPost={setBoardTypeForPost}
         />
       )}
-      <div className={'h-[60px] bg-gray0'} />
+      <div className={'h-[120px] bg-gray0'} />
+      <StopWatchActiveButton />
       <NavBar />
     </>
   );

@@ -2,22 +2,25 @@ import { useRouter } from 'next/navigation';
 import { SVGProps } from 'react';
 import * as React from 'react';
 
-import GoalRunningGraph from '@/components/home/goal-attaining/GoalRunningGraph';
-
 interface Props {
-  todayStudyTime: number | undefined;
-  todayMockExams: number | undefined;
-  goalStudyTime: number | undefined; //목표 공부 시간
-  goalMockExams: number | undefined; //목표 모의고사
+  todayMockExams: number;
+  todayStudyTime: number;
+  mockExamsPerDay: number;
+  studyTimePerDay: number;
 }
 
+import GoalRunningGraph from '@/components/home/goal-attaining/GoalRunningGraph';
+
 const TodayGoal = (props: Props) => {
-  const { todayStudyTime, todayMockExams, goalStudyTime, goalMockExams } = props;
+  const { todayMockExams, todayStudyTime, mockExamsPerDay, studyTimePerDay } = props;
   const router = useRouter();
 
-  function convertMsToM(ms: number) {
-    return Math.floor(ms / 60000); // 1분 = 60000ms
-  }
+  const millisecondsToMinutes = (time: number | null) => {
+    // 1분은 60000 밀리세컨드입니다.
+    if (time !== null) {
+      return Math.floor(time / 60000);
+    }
+  };
 
 
   return (
@@ -41,15 +44,15 @@ const TodayGoal = (props: Props) => {
         goalRunningGraphType={'time'}
         maintitle=" 공부하기"
         subtitle="오늘 공부한 시간"
-        goaltime={goalStudyTime}
-        presenttime={convertMsToM(todayStudyTime)}
+        goaltime={studyTimePerDay}
+        presenttime={millisecondsToMinutes(todayStudyTime) || 0}
         unit="분"
       />
       <GoalRunningGraph
         goalRunningGraphType={'exam'}
         maintitle=" 모의고사 풀기"
         subtitle="오늘 푼 모의고사"
-        goaltime={goalMockExams}
+        goaltime={mockExamsPerDay}
         presenttime={todayMockExams}
         unit="회분"
       />

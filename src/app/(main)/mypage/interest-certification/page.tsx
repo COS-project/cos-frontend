@@ -1,10 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import CertificationPriority from '@/components/onboarding/CertificationPriority';
 import ChooseCertification from '@/components/onboarding/ChooseCertification';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useGetInterestCertificates from '@/lib/hooks/useGetInterestCertificates';
 
 const EditInterestCertification = () => {
@@ -29,6 +30,7 @@ const EditInterestCertification = () => {
           interestCertificateDataMutate={interestCertificateDataMutate}
         />
       )}
+      <StopWatchActiveButton />
     </main>
   );
 };

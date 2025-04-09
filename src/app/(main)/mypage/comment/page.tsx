@@ -7,6 +7,7 @@ import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import Post from '@/components/mypage/Post';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useGetUserCommentPost from '@/lib/hooks/useGetUserCommentPost';
 import { PostType } from '@/types/community/type';
 import { MyPostsResponseType } from '@/types/mypage/type';
@@ -76,7 +77,7 @@ export default function MyComment() {
                           postId={userCommentPost.postId}
                           content={userCommentPost.postContent.content}
                           title={userCommentPost.postContent.title}
-                          commentCount={userCommentPost.postStatus.commentCount}
+                          commentCount={userCommentPost.commentCount}
                           createdAt={
                             userCommentPost.dateTime.modifiedAt
                               ? userCommentPost.dateTime.modifiedAt
@@ -91,7 +92,8 @@ export default function MyComment() {
                                 )
                               : null
                           }
-                          likeCount={userCommentPost.postStatus.likeCount}
+                          likeCount={userCommentPost.likeCount}
+                          likeStatus={userCommentPost.likeStatus}
                           imageUrl={
                             userCommentPost.postContent.images.length !== 0
                               ? userCommentPost.postContent.images[0].imageUrl
@@ -105,7 +107,8 @@ export default function MyComment() {
           </div>
         </div>
       </div>
-      <div className={'h-[60px]'} />
+      <div className={'h-[100px]'} />
+      <StopWatchActiveButton />
       <NavBar />
     </>
   );

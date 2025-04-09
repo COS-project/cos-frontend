@@ -3,7 +3,7 @@
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useSearchParams } from 'next/navigation';
 import React, { Suspense, SVGProps, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
@@ -14,6 +14,7 @@ import GoalSettingStatusModal from '@/components/home/goal-setting/GoalSettingSt
 import GoalBox from '@/components/home/GoalBox';
 import RecentGrowthChart from '@/components/home/RecentGrowthChart';
 import UserCertGoalPeriods from '@/components/home/UserCertGoalPeriods';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import TodayGoal from '@/components/TodayGoal';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import useGetCertificationInfo from '@/lib/hooks/useGetCertificationInfo';
@@ -21,6 +22,8 @@ import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
 import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
 import { certificateIdAtom } from '@/recoil/atom';
+import { selectedPrepareTimeState } from '@/recoil/home/atom';
+import { AverageSubjectInfoType, UserCertGoalPeriodType } from '@/types/home/type';
 function HomeComponents() {
   const searchParams = useSearchParams();
   const certificateId = useRecoilValue(certificateIdAtom);
@@ -30,10 +33,11 @@ function HomeComponents() {
   const [isGoalSettingStatusModalOpen, setIsGoalSettingStatusModalOpen] = useState(false);
   const EventSource = EventSourcePolyfill;
 
+  const setSelectedPrepareTime = useSetRecoilState(selectedPrepareTimeState);
+
   const accessToken = searchParams.get('accessToken') || '';
   const refreshToken = searchParams.get('refreshToken') || '';
 
-  const { certificationInfo } = useGetCertificationInfo();
   const { userGoals } = useGetUserGoals(certificateId);
   const { goalAchievementData } = useGoalAchievement(certificateId);
   const { averageSubjectList } = useAverageSubjectInfo(certificateId);
@@ -48,7 +52,72 @@ function HomeComponents() {
       console.log('리프레시 토큰 저장:', refreshToken);
     }
   }, [accessToken, refreshToken]);
-  //
+
+  /**
+   * 주차를 계산해주는 함수
+   * @param date 목표 날짜
+   */
+  const getWeek = (date: Date) => {
+    const currentDate = date.getDate();
+    const firstDay = new Date(date.setDate(1)).getDay();
+
+    return Math.ceil((currentDate + firstDay) / 7);
+  };
+
+  /**
+   * 31일 이전이면 YY.MM.DD, 31일 이후이면 YY.MM.주차
+   * @param prepareStartDateTime 목표 시작 날짜
+   * @param prepareFinishDateTime 목표 종료 날짜
+   * @param datum 목표 시작 날짜와 종료날짜를 담고있는 date
+   */
+  const formatGoalPeriod = (prepareStartDateTime: Date, prepareFinishDateTime: Date, datum: UserCertGoalPeriodType) => {
+    const diff = prepareFinishDateTime.getTime() - prepareStartDateTime.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    const formatDate = (date: Date) => {
+      const year = date.getFullYear().toString().slice(-2); // 연도의 마지막 두 자리만 사용
+      const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월을 두 자리로 맞추기
+      const day = date.getDate().toString().padStart(2, '0'); // 일을 두 자리로 맞추기
+      return `${year}.${month}.${day}`;
+    };
+
+    if (days < 31) {
+      const startDate = new Date(datum.prepareStartDateTime);
+      const finishDate = new Date(datum.prepareFinishDateTime);
+      return `${formatDate(startDate)} ~ ${formatDate(finishDate)}`;
+    } else {
+      const startDate = new Date(datum.prepareStartDateTime);
+      const finishDate = new Date(datum.prepareFinishDateTime);
+      const startYear = startDate.getFullYear().toString().slice(-2);
+      const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0');
+      const startWeek = getWeek(startDate);
+
+      const finishYear = finishDate.getFullYear().toString().slice(-2);
+      const finishMonth = (finishDate.getMonth() + 1).toString().padStart(2, '0');
+      const finishWeek = getWeek(finishDate);
+
+      return `${startYear}.${startMonth}.${startWeek}주차 ~ ${finishYear}.${finishMonth}.${finishWeek}주차`;
+    }
+  };
+
+  useEffect(() => {
+    if (userGoals) {
+      setGoalPeriodContent(
+        formatGoalPeriod(
+          new Date(userGoals[0].prepareStartDateTime),
+          new Date(userGoals[0].prepareStartDateTime),
+          userGoals[0],
+        ),
+      );
+      setSelectedPrepareTime((prevState) => ({
+        ...prevState,
+        prepareFinishDateTime: userGoals[0].prepareFinishDateTime,
+        prepareStartDateTime: userGoals[0].prepareStartDateTime,
+        goalId: userGoals[0].goalId,
+      }));
+    }
+  }, [userGoals]);
+  
   // // EventSource 연결
   // useEffect(() => {
   //   if (typeof window !== 'undefined' && localStorage.getItem('accessToken')) {
@@ -80,11 +149,6 @@ function HomeComponents() {
   };
 
   useEffect(() => {
-    console.log('goalAchievementData:', goalAchievementData);
-    console.log('averageSubjectList', averageSubjectList);
-  }, [goalAchievementData, averageSubjectList]);
-
-  useEffect(() => {
     if (goalSettingStatus) {
       setIsGoalSettingStatusModalOpen(!goalSettingStatus.result);
     }
@@ -102,65 +166,40 @@ function HomeComponents() {
         <Header />
         <Header headerType={'second'}></Header>
         <div className={'mt-4 px-5 flex flex-col gap-y-5'}>
-          {!isGoalSettingStatusModalOpen && (
-            <div className={'relative'}>
-              <button
-                onClick={() => setIsGoalPeriodFilterOpen(!isGoalPeriodFilterOpen)}
-                className={'flex py-[6px] px-3 rounded-full bg-white w-fit items-center'}>
-                {goalPeriodContent}
-                {isGoalPeriodFilterOpen ? <DropDownIcon /> : <DropUpIcon />}
-              </button>
-              {isGoalPeriodFilterOpen && (
-                <UserCertGoalPeriods
-                  setIsOpen={setIsGoalPeriodFilterOpen}
-                  data={userGoals}
-                  setDataState={setGoalPeriodContent}
-                  className={'absolute top-10 h-fit'}
-                />
-              )}
-            </div>
+          {goalAchievementData && (
+            <GoalBox
+              goalMockExams={goalAchievementData.result.goalMockExams}
+              currentMockExams={goalAchievementData.result.currentMockExams}
+              goalStudyTime={goalAchievementData.result.goalStudyTime}
+              currentStudyTime={goalAchievementData.result.currentStudyTime}
+              maxScore={goalAchievementData.result.maxScore}
+              goalScore={goalAchievementData.result.goalScore}
+            />
           )}
-          <GoalBox
-            maxScore={goalAchievementData?.result.maxScore}
-            currentMockExams={goalAchievementData?.result.currentMockExams}
-            currentStudyTime={goalAchievementData?.result.currentStudyTime}
-            goalScore={goalAchievementData?.result.goalScore}
-            goalMockExams={goalAchievementData?.result.goalMockExams}
-            goalStudyTime={goalAchievementData?.result.goalStudyTime}
-          />
-          <TodayGoal
-            goalStudyTime={goalAchievementData?.result.goalStudyTime}
-            goalMockExams={goalAchievementData?.result.goalMockExams}
-            todayMockExams={goalAchievementData?.result.todayMockExams}
-            todayStudyTime={goalAchievementData?.result.todayStudyTime}
-          />
+          {goalAchievementData && (
+            <TodayGoal
+              todayMockExams={goalAchievementData.result.todayMockExams}
+              mockExamsPerDay={goalAchievementData.result.mockExamsPerDay}
+              todayStudyTime={goalAchievementData.result.todayStudyTime}
+              studyTimePerDay={goalAchievementData.result.studyTimePerDay}
+            />
+          )}
           <RecentGrowthChart />
           <AverageAccurayChat subjectResults={averageSubjectList || []} />
           <AverageTakenTimeGraphReport
             totalTakenTime={sumTotalTakenTime()}
             subjectResults={averageSubjectList}
-            timeLimit={certificationInfo?.result.examInfo.examTimeLimit.practicalExamTimeLimit}
+            timeLimit={averageSubjectList && averageSubjectList[0].timeLimit}
           />
           <BestTip />
         </div>
-        <div className={'h-[80px]'}></div>
+        <div className={'h-[120px]'}></div>
+        <StopWatchActiveButton />
         <NavBar />
       </div>
     </main>
   );
 }
-
-const DropUpIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none" {...props}>
-    <path stroke="#0D0E10" strokeLinecap="round" d="M6.5 12 10 9l3.5 3" />
-  </svg>
-);
-
-const DropDownIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={21} fill="none" {...props}>
-    <path stroke="#0D0E10" strokeLinecap="round" d="M13.5 9 10 12 6.5 9" />
-  </svg>
-);
 
 export default function Home() {
   return (

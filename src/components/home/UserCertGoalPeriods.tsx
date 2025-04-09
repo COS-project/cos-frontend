@@ -53,7 +53,7 @@ const UserCertGoalPeriods = (props: Props) => {
   };
 
   /**
-   * 31일 이전이면 00년 00월 00알, 31일 이후이면 00년 00월 00주
+   * 31일 이전이면 YY.MM.DD, 31일 이후이면 YY.MM.주차
    * @param prepareStartDateTime 목표 시작 날짜
    * @param prepareFinishDateTime 목표 종료 날짜
    * @param datum 목표 시작 날짜와 종료날짜를 담고있는 date
@@ -62,18 +62,29 @@ const UserCertGoalPeriods = (props: Props) => {
     const diff = prepareFinishDateTime.getTime() - prepareStartDateTime.getTime();
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
+    const formatDate = (date: Date) => {
+      const year = date.getFullYear().toString().slice(-2); // 연도의 마지막 두 자리만 사용
+      const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월을 두 자리로 맞추기
+      const day = date.getDate().toString().padStart(2, '0'); // 일을 두 자리로 맞추기
+      return `${year}.${month}.${day}`;
+    };
+
     if (days < 31) {
-      return `${getYear(new Date(datum.prepareStartDateTime))}년 ${getMonth(
-        new Date(datum.prepareStartDateTime),
-      )}월 ${getDate(new Date(datum.prepareStartDateTime))}일 ~ ${getYear(
-        new Date(datum.prepareFinishDateTime),
-      )}년 ${getMonth(new Date(datum.prepareFinishDateTime))}월 ${getDate(new Date(datum.prepareFinishDateTime))}일`;
+      const startDate = new Date(datum.prepareStartDateTime);
+      const finishDate = new Date(datum.prepareFinishDateTime);
+      return `${formatDate(startDate)} ~ ${formatDate(finishDate)}`;
     } else {
-      return `${getYear(new Date(datum.prepareStartDateTime))}년 ${getMonth(
-        new Date(datum.prepareStartDateTime),
-      )}월 ${getWeek(new Date(datum.prepareStartDateTime))}주차 ~ ${getYear(
-        new Date(datum.prepareFinishDateTime),
-      )}년 ${getMonth(new Date(datum.prepareFinishDateTime))}월 ${getWeek(new Date(datum.prepareFinishDateTime))}주차`;
+      const startDate = new Date(datum.prepareStartDateTime);
+      const finishDate = new Date(datum.prepareFinishDateTime);
+      const startYear = startDate.getFullYear().toString().slice(-2);
+      const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0');
+      const startWeek = getWeek(startDate);
+
+      const finishYear = finishDate.getFullYear().toString().slice(-2);
+      const finishMonth = (finishDate.getMonth() + 1).toString().padStart(2, '0');
+      const finishWeek = getWeek(finishDate);
+
+      return `${startYear}.${startMonth}.${startWeek}주차 ~ ${finishYear}.${finishMonth}.${finishWeek}주차`;
     }
   };
 

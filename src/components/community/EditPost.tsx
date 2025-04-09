@@ -102,24 +102,21 @@ const EditPost = (props: Props) => {
       const response = postDetailData;
       if (response) {
         // 해설 게시글일 때,
-        if (postDetailData?.postResponse.postStatus.postType === 'COMMENTARY') {
+        if (postDetailData?.postResponse.postType === 'COMMENTARY') {
           const initialCommentaryState: EditPostDataType = initializeCommentaryEditPostData(response);
           setEditPostData(initialCommentaryState);
         }
         // 꿀팁 게시글일 때,
-        if (postDetailData?.postResponse.postStatus.postType === 'TIP') {
+        if (postDetailData?.postResponse.postType === 'TIP') {
           const initialTipState: EditPostDataType = initializeTipEditPostData(response);
           setEditPostData(initialTipState);
         }
         //자유게시글일 때,
-        if (
-          postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
-          postDetailData?.postResponse.postStatus.postType !== 'TIP'
-        ) {
+        if (postDetailData?.postResponse.postType !== 'COMMENTARY' && postDetailData?.postResponse.postType !== 'TIP') {
           const initialNormalState: EditPostDataType = initializeNormalEditPostData(response);
           setEditPostData(initialNormalState);
         }
-        setPastImageUrls(postDetailData.postResponse.postContent.images);
+        setPastImageUrls(postDetailData.postResponse.postImages);
       } else {
         // 에러 처리를 수행할 수 있습니다.
         console.error('Failed to fetch');
@@ -139,7 +136,7 @@ const EditPost = (props: Props) => {
    * 꿀팁 게시글 수정하기 전 과거 remonnedTags 값을 가져와서 onlineCourseInputs 값을 초기화해주는 함수
    */
   const updateNewOnlineCourseInput = () => {
-    if (postDetailData?.postResponse.recommendTags && postDetailData?.postResponse.postStatus.postType === 'TIP') {
+    if (postDetailData?.postResponse.recommendTags && postDetailData?.postResponse.postType === 'TIP') {
       postDetailData.postResponse.recommendTags.map((recommendTag: TipPostTagType) => {
         if (!onlineCourseInputs.includes(recommendTag.tagName)) {
           if (recommendTag.tagType === 'LECTURE') {
@@ -154,7 +151,7 @@ const EditPost = (props: Props) => {
    * 꿀팁 게시 과거 remonnedTags 값을 가져와서 workbookInputs 값을 초기화해주는 함수
    */
   const updateNewWorkBookInput = () => {
-    if (postDetailData?.postResponse.recommendTags && postDetailData?.postResponse.postStatus.postType === 'TIP') {
+    if (postDetailData?.postResponse.recommendTags && postDetailData?.postResponse.postType === 'TIP') {
       postDetailData.postResponse.recommendTags.map((recommendTag: TipPostTagType) => {
         if (!workbookInputs.includes(recommendTag.tagName)) {
           if (recommendTag.tagType === 'BOOK') {
@@ -314,7 +311,7 @@ const EditPost = (props: Props) => {
   };
 
   useEffect(() => {
-    if (postDetailData?.postResponse.postStatus.postType === 'TIP' && isTipSubmitEnabled) {
+    if (postDetailData?.postResponse.postType === 'TIP' && isTipSubmitEnabled) {
       // removeImageUrls에서 id만 추출하여 배열로 변환
       const idsToRemove = (editPostData.removeImageIds || []).map((item: any) => item.id);
 
@@ -382,7 +379,7 @@ const EditPost = (props: Props) => {
       }),
     );
     try {
-      if (postDetailData?.postResponse.postStatus.postType === 'COMMENTARY') {
+      if (postDetailData?.postResponse.postType === 'COMMENTARY') {
         await putPostDetail(1, 'COMMENTARY', formData).then(() => {
           //수정된 게시글 불러오기
           mutate();
@@ -393,10 +390,7 @@ const EditPost = (props: Props) => {
           setIsClickEditPost(false);
         }); // API 호출
       }
-      if (
-        postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
-        postDetailData?.postResponse.postStatus.postType !== 'TIP'
-      ) {
+      if (postDetailData?.postResponse.postType !== 'COMMENTARY' && postDetailData?.postResponse.postType !== 'TIP') {
         await putPostDetail(1, 'NORMAL', formData).then(() => {
           //수정된 게시글 불러오기
           mutate();
@@ -447,14 +441,11 @@ const EditPost = (props: Props) => {
     }
 
     if (isValid) {
-      if (
-        postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
-        postDetailData?.postResponse.postStatus.postType !== 'TIP'
-      ) {
+      if (postDetailData?.postResponse.postType !== 'COMMENTARY' && postDetailData?.postResponse.postType !== 'TIP') {
         return handleNormalAndCommentarySubmit(e);
-      } else if (postDetailData?.postResponse.postStatus.postType === 'COMMENTARY') {
+      } else if (postDetailData?.postResponse.postType === 'COMMENTARY') {
         return handleNormalAndCommentarySubmit(e);
-      } else if (postDetailData?.postResponse.postStatus.postType === 'TIP') {
+      } else if (postDetailData?.postResponse.postType === 'TIP') {
         return handleTipSubmit(e);
       }
     }
@@ -472,10 +463,9 @@ const EditPost = (props: Props) => {
           CancelIcon={CancelIcon}
           headerType={'dynamic'}
           title={
-            postDetailData?.postResponse.postStatus.postType !== 'COMMENTARY' &&
-            postDetailData?.postResponse.postStatus.postType !== 'TIP'
+            postDetailData?.postResponse.postType !== 'COMMENTARY' && postDetailData?.postResponse.postType !== 'TIP'
               ? '자유게시판 수정'
-              : postDetailData?.postResponse.postStatus.postType === 'COMMENTARY'
+              : postDetailData?.postResponse.postType === 'COMMENTARY'
               ? '해설게시판 수정'
               : '꿀팁게시판 수정'
           }
@@ -485,7 +475,7 @@ const EditPost = (props: Props) => {
             </button>
           }></Header>
         <div className={'mx-5'}>
-          {postDetailData?.postResponse.postStatus.postType === 'COMMENTARY' && (
+          {postDetailData?.postResponse.postType === 'COMMENTARY' && (
             <div className={'flex flex-col gap-y-4 mt-5 my-8'}>
               {/* 년도 선택 세션 */}
               <div className={'flex flex-col relative gap-y-2'}>
@@ -566,9 +556,9 @@ const EditPost = (props: Props) => {
           {/* 제목, 글 작성 세션 */}
           <div className={'flex flex-col gap-y-2 mt-[16px]'}>
             <div className={'text-h3 font-bold ml-2'}>
-              {postDetailData?.postResponse.postStatus.postType === 'TIP'
+              {postDetailData?.postResponse.postType === 'TIP'
                 ? '꿀팁'
-                : postDetailData?.postResponse.postStatus.postType === 'COMMENTARY'
+                : postDetailData?.postResponse.postType === 'COMMENTARY'
                 ? '해설'
                 : '자유'}
               작성
@@ -594,7 +584,7 @@ const EditPost = (props: Props) => {
           </div>
 
           {/* 인강 추천 태그 세션*/}
-          {postDetailData?.postResponse.postStatus.postType === 'TIP' && (
+          {postDetailData?.postResponse.postType === 'TIP' && (
             <div className={'flex flex-col gap-y-2 mt-[16px]'}>
               <div className={'text-h3 font-bold ml-2'}>
                 추천 인강 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
@@ -629,7 +619,7 @@ const EditPost = (props: Props) => {
           )}
 
           {/* 문제집 추천 태그 세션*/}
-          {postDetailData?.postResponse.postStatus.postType === 'TIP' && (
+          {postDetailData?.postResponse.postType === 'TIP' && (
             <div className={'flex flex-col gap-y-2 mt-[16px]'}>
               <div className={'text-h3 font-bold ml-2'}>
                 추천 문제집 <span className={'font-normal text-gray3 text-h4'}>(선택)</span>
@@ -694,7 +684,7 @@ const EditPost = (props: Props) => {
             {/* 현재 추가된 urls */}
             {imagePreviews.map((img, i) => {
               return (
-                <div key={i} className={'relative rounded-[8px]'}>
+                <div key={img} className={'relative rounded-[8px]'}>
                   <ImageDeleteButton i={i} type={'현재 이미지 URL'} usage={'edit'} />
                   <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
                     <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;

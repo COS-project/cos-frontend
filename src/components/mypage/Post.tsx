@@ -12,13 +12,25 @@ interface Props {
   content: string;
   imageUrl?: string | null;
   likeCount: number;
+  likeStatus: boolean;
   commentCount: number;
   createdAt: string;
   topElement?: JSX.Element | null;
   bottomElement?: React.JSX.Element | null;
 }
 const Post = (props: Props) => {
-  const { title, postId, content, imageUrl, likeCount, commentCount, createdAt, bottomElement, topElement } = props;
+  const {
+    title,
+    postId,
+    content,
+    imageUrl,
+    likeCount,
+    commentCount,
+    createdAt,
+    bottomElement,
+    topElement,
+    likeStatus,
+  } = props;
   const certificateId = useRecoilValue(certificateIdAtom);
   const router = useRouter();
 
@@ -54,7 +66,7 @@ const Post = (props: Props) => {
             {/*좋아요 수, 댓글 수*/}
             <div className={'flex gap-x-2'}>
               <div className={'flex items-center'}>
-                <LikeIcon />
+                {likeStatus ? <FillLikeIcon /> : <EmptyLikeIcon />}
                 <span className={'text-h6 text-second'}>{likeCount}</span>
               </div>
               <div className={'flex items-center'}>
@@ -81,7 +93,7 @@ const Post = (props: Props) => {
 };
 export default Post;
 
-const LikeIcon = (props: SVGProps<SVGSVGElement>) => (
+const EmptyLikeIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none" {...props}>
     <mask
       id="a"
@@ -101,6 +113,15 @@ const LikeIcon = (props: SVGProps<SVGSVGElement>) => (
         d="M20.2 9.3q.575 0 1.038.463.462.462.462 1.037v1q0 .13-.025.277-.025.149-.075.273l-2.651 6.303a1.7 1.7 0 0 1-.674.747q-.475.3-.984.3H7.55V9.3l5.525-5.475a.8.8 0 0 1 .375-.225.5.5 0 0 1 .375.05q.175.1.25.3t.025.425l-1 4.925zm-11.95.3V19h9.05q.274 0 .563-.15a.97.97 0 0 0 .437-.5L21 12v-1.2a.78.78 0 0 0-.225-.575A.78.78 0 0 0 20.2 10h-7.95l1.1-5.45zM4.8 19.7q-.618 0-1.06-.44a1.44 1.44 0 0 1-.44-1.06v-7.4q0-.619.44-1.06.442-.44 1.06-.44h2.75v.7H4.8a.78.78 0 0 0-.575.225A.78.78 0 0 0 4 10.8v7.4q0 .35.225.575T4.8 19h2.75v.7z"
       />
     </g>
+  </svg>
+);
+
+const FillLikeIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={17} fill="none" {...props}>
+    <path
+      fill="#6283FD"
+      d="M17.7 6.3q.575 0 1.038.462.462.463.462 1.038v1a1.7 1.7 0 0 1-.1.55l-2.65 6.3q-.2.45-.675.75t-.975.3H6.55q-.625 0-1.062-.437A1.45 1.45 0 0 1 5.05 15.2V6.925q0-.3.125-.588A1.6 1.6 0 0 1 5.5 5.85L10.575.825A.8.8 0 0 1 10.95.6a.57.57 0 0 1 .375.025q.175.075.25.275a.9.9 0 0 1 .025.475l-1 4.925zM2.3 16.7q-.625 0-1.062-.437A1.45 1.45 0 0 1 .8 15.2V7.8q0-.625.438-1.063A1.45 1.45 0 0 1 2.3 6.3h.55q.624 0 1.063.437.437.438.437 1.063v7.425q0 .626-.437 1.05a1.47 1.47 0 0 1-1.063.425z"
+    />
   </svg>
 );
 

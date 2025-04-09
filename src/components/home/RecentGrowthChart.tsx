@@ -1,13 +1,18 @@
 import { useRouter } from 'next/navigation';
-import { SVGProps } from 'react';
-import { useRecoilState } from 'recoil';
+import { SVGProps, useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import StickGraph from '@/components/exam/StickGraph';
 import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
-import { selectedDateTypeState, selectedReportTypeState } from '@/recoil/home/atom';
+import { certificateIdAtom } from '@/recoil/atom';
+import { CertificateMaxScoreAtom, selectedDateTypeState, selectedReportTypeState } from '@/recoil/home/atom';
 import { ScoreAVGListType } from '@/types/home/type';
 
 const RecentGrowthChart = () => {
+  const certificateId = useRecoilValue(certificateIdAtom);
+
+  const [certificateMaxScore, setCertificateMaxScore] = useRecoilState(CertificateMaxScoreAtom);
+
   const [selectedReportType, setSelectedReportType] = useRecoilState<'WEEKLY' | 'MONTHLY' | 'YEARLY'>(
     selectedReportTypeState,
   );
@@ -44,12 +49,19 @@ const RecentGrowthChart = () => {
 
   const currentWeekInfo = getCurrentWeekInfo();
   const { statisticsData } = useGetMockExamStatistics(
-    1,
+    certificateId,
     selectedReportType,
     currentWeekInfo.year,
     currentWeekInfo.month,
     currentWeekInfo.weekOfMonth,
   );
+
+  useEffect(() => {
+    if (statisticsData) {
+      setCertificateMaxScore(statisticsData.maxScore);
+    }
+  }, [statisticsData]);
+
   const router = useRouter();
 
   /**
@@ -67,7 +79,7 @@ const RecentGrowthChart = () => {
       const height = scoreAVG ? scoreAVG.scoreAverage : 0;
       return (
         <div key={day} className="w-full flex justify-center space-x-2">
-          <StickGraph height={height} color="blue" />
+          <StickGraph height={height} color="blue" maxNumber={certificateMaxScore} />
         </div>
       );
     });
@@ -88,7 +100,7 @@ const RecentGrowthChart = () => {
       const height = scoreAVG ? scoreAVG.scoreAverage : 0;
       return (
         <div key={week} className="w-full flex justify-center space-x-2">
-          <StickGraph height={height} color="blue" />
+          <StickGraph height={height} color="blue" maxNumber={certificateMaxScore} />
         </div>
       );
     });
@@ -109,7 +121,7 @@ const RecentGrowthChart = () => {
           const height = scoreAVG ? scoreAVG.scoreAverage : 0;
           return (
             <div key={month} className="w-full flex justify-center space-x-2">
-              <StickGraph height={height} color="blue" />
+              <StickGraph height={height} color="blue" maxNumber={certificateMaxScore} />
             </div>
           );
         })}
@@ -264,28 +276,32 @@ const RecentGrowthChart = () => {
           {/* 그래프 */}
           <div className={''}>
             <div className={'relative'}>
-              <div className="flex items-center space-x-1">
-                <div className="xl:w-[97%] sm:w-[85%] border-t border-gray1 "></div>
-                <div className="xl:w-[3%] sm:w-[15%] text-gray3 text-h5 ">100점</div>
-              </div>
+              {statisticsData && statisticsData.scoreAVGList.length > 0 && (
+                <div className="flex items-center space-x-1">
+                  <div className="xl:w-[97%] sm:w-[85%] border-t border-gray1 "></div>
+                  <div className="xl:w-[3%] sm:w-[15%] text-gray3 text-h5 ">{certificateMaxScore}점</div>
+                </div>
+              )}
 
-              {/*TODO: 총합 바꿔야 함. 어디서 가져올 수 있는지 못찾겠음*/}
-              <div
-                style={{
-                  bottom:
-                    (statisticsData?.totalAverage ?? 0) >= 100 ? '85%' : `${6 + (statisticsData?.totalAverage ?? 0)}%`,
-                }}
-                className={'w-full absolute flex items-center space-x-1'}>
-                <div className="w-[86%] border-t border-dashed border-primary"></div>
-                <div className="text-primary text-h5">평균</div>
-              </div>
+              {statisticsData?.totalAverage !== 0 && certificateMaxScore && (
+                <div
+                  style={{
+                    bottom: `${3 + ((statisticsData?.totalAverage ?? 0) / certificateMaxScore) * 100}%`,
+                  }}
+                  className={'w-full absolute flex items-center space-x-1'}>
+                  <div className="w-[86%] border-t border-dashed border-primary"></div>
+                  <div className="text-primary text-h5">평균</div>
+                </div>
+              )}
 
               <div className="w-full flex items-end overflow-x-scroll" style={{ width: '100%' }}>
                 <div className={'w-full flex flex-col'}>
                   <div className="w-full justify-between">
-                    <div className="flex h-32">{renderGraphLabelsByReportType()}</div>
+                    <div className="flex h-32">
+                      {statisticsData && statisticsData.scoreAVGList.length > 0 && renderGraphLabelsByReportType()}
+                    </div>
                   </div>
-                  <div className="w-full flex mt-10 justify-between">{renderLabelComponent(selectedReportType)}</div>
+                  <div className="w-full flex justify-between">{renderLabelComponent(selectedReportType)}</div>
                 </div>
               </div>
             </div>

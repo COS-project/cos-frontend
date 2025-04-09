@@ -36,7 +36,11 @@ const AverageAccurayChat = (props: Props) => {
           margin={{ top: 30, right: 70, bottom: 0, left: 70 }}
           // maxValue={subjectResults[0].subject.totalScore} // 최댓값을 부여할지 말지 고민
           borderWidth={1}
-          borderColor="#3B3DFF"
+          borderColor={({ key }) => {
+            if (key === 'subjectCorrectRate') return '#3B3DFF';
+            if (key === 'averageSubjectRate') return '#9E9FA1';
+            return '#000000'; // fallback
+          }}
           gridShape="linear"
           gridLabelOffset={13}
           dotLabelYOffset={-3}
@@ -47,10 +51,12 @@ const AverageAccurayChat = (props: Props) => {
           dotColor={{ theme: 'background' }}
           dotBorderWidth={2}
           dotLabel="value"
-          colors={{ scheme: 'blues', size: 5 }}
+          colors={['#3B3DFF1A', '#9E9FA133']} // ✅ 커스텀 색상 배열
+          // colors={{ scheme: 'blues', size: 5 }}
           fillOpacity={1}
           blendMode="multiply"
           motionConfig="wobbly"
+          curve="linearClosed"
         />
       </div>
     </div>

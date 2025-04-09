@@ -2,18 +2,27 @@ import { useRouter } from 'next/navigation';
 import { SVGProps } from 'react';
 import * as React from 'react';
 
-import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
-
 interface Props {
-  maxScore: number | undefined; //현재 최대 점수
-  currentStudyTime: number | undefined; // 현재 공부 시간
-  currentMockExams: number | undefined; // 현재 모의고사 푼 갯수
-  goalScore: number | undefined; //목표 점수
-  goalStudyTime: number | undefined; //목표 공부 시간
-  goalMockExams: number | undefined; //목표 모의고사
+  maxScore: number;
+  currentStudyTime: number;
+  currentMockExams: number;
+  goalScore: number;
+  goalStudyTime: number;
+  goalMockExams: number;
 }
 
+import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
+
 const GoalBox = (props: Props) => {
+  const { maxScore, currentStudyTime, currentMockExams, goalScore, goalStudyTime, goalMockExams } = props;
+
+  const millisecondsToMinutes = (time: number | null) => {
+    // 1분은 60000 밀리세컨드입니다.
+    if (time !== null) {
+      return Math.floor(time / 60000);
+    }
+  };
+
   const router = useRouter();
   const { maxScore, currentStudyTime, currentMockExams, goalScore, goalStudyTime, goalMockExams } = props;
 
@@ -48,7 +57,11 @@ const GoalBox = (props: Props) => {
             <div className={'font-normal text-h6 px-[20px] py-[2px] rounded-full bg-gray0'}>공부시간</div>
           </div>
           <div className="relative mt-[10px]">
-            <ScoredDonutChart mainscore={convertMsToM(currentStudyTime)} totalscore={goalStudyTime} unit="분" />
+            <ScoredDonutChart
+              mainscore={millisecondsToMinutes(currentStudyTime)}
+              totalscore={goalStudyTime}
+              unit="분"
+            />
           </div>
         </div>
         <div className="w-[33%]">

@@ -5,6 +5,7 @@ import React from 'react';
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useGetBoardList from '@/lib/hooks/useGetBoardList';
 import { FavoriteBoard } from '@/types/global';
 
@@ -63,6 +64,7 @@ export default function Community() {
             : null}
         </div>
       </div>
+      <StopWatchActiveButton />
       <NavBar />
     </>
   );

@@ -7,6 +7,7 @@ import { useRecoilValue } from 'recoil';
 import AlarmItem from '@/components/alarm/AlarmItem';
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import { getAlarms, postReadAlarmList } from '@/lib/api/alarm';
 import useAlarm from '@/lib/hooks/useAlarm';
 import { certificateIdAtom } from '@/recoil/atom';
@@ -26,7 +27,7 @@ export default function Alarm() {
         return;
       }
 
-      const eventSource = new EventSourcePolyfill('http://cercat.o-r.kr/api/v2/alarms/subscribe', {
+      const eventSource = new EventSourcePolyfill('https://cercat.o-r.kr/alert/api/v2/alarms/subscribe', {
         headers: {
           'Access-Token': accessToken,
         },
@@ -104,6 +105,7 @@ export default function Alarm() {
             : null}
         </div>
       </div>
+      <StopWatchActiveButton />
       <NavBar />
     </>
   );
