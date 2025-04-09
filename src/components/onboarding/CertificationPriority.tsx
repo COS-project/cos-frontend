@@ -102,9 +102,7 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({
       </div>
 
       <button
-        className={
-          'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0 hover:bg-primary transition'
-        }
+        className={'w-full bg-primary h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0 transition'}
         onClick={() => {
           handleSubmit();
           onNext();

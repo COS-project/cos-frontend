@@ -131,8 +131,11 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
       {/* 완료 버튼 */}
       <button
         className={
-          'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0 hover:bg-primary transition'
+          allIsClickFalse(allCertifications)
+            ? 'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0'
+            : 'w-full bg-primary h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0'
         }
+        disabled={allIsClickFalse(allCertifications)}
         onClick={() => {
           if (allIsClickFalse(allCertifications)) {
             setIsNullErrorModalOpen(!isNullErrorModalOpen);
