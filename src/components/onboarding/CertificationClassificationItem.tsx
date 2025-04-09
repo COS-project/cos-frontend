@@ -9,6 +9,7 @@ import { twMerge } from 'tailwind-merge';
 import { postFavoriteBoards } from '@/lib/api/community';
 import { certificationsListState } from '@/recoil/atom';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
+import useGetBoardList from '@/lib/hooks/useGetBoardList';
 
 export interface Props {
   usage: string;
@@ -41,7 +42,7 @@ const CertificationClassificationItem = (props: Props) => {
   const router = useRouter();
   const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
   const [interestCertificates, setInterestCertificates] = useRecoilState(interestCertificatesState);
-  const { mutate } = useSWRConfig();
+  const {mutate} = useGetBoardList();
 
   //CertificationClassificationItem 컴포넌트의 이동버튼 클릭했을 때 함수
   const onClickMoveButton = () => {
@@ -86,9 +87,10 @@ const CertificationClassificationItem = (props: Props) => {
   //게시판 아이템을 클릭하면 post 요청이 보내지는 함수
   const onClickCertification = async (certificateId: number) => {
     // POST 요청을 통해 즐겨찾기 상태 업데이트
-    await postFavoriteBoards(certificateId);
+    await postFavoriteBoards(certificateId).then(() => {
+      mutate();
+    });
     // /boards 경로에 대한 데이터를 새로고침하여 최신 상태 반영
-    mutate('/boards');
   };
 
   return (
@@ -98,11 +100,13 @@ const CertificationClassificationItem = (props: Props) => {
           createInterestCertification();
           handleCertificationClick(certificateId);
         }
+        onClickMoveButton();
       }}
       className={twMerge('certificationItem-not-clicked', isClickState && className)}>
       <div className="relative flex items-center gap-x-3 p-2">
         <div
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation(); // ✅ 이벤트 전파 막기
             if (usage === 'board') {
               onClickCertification(certificateId);
             }
@@ -111,9 +115,7 @@ const CertificationClassificationItem = (props: Props) => {
           {icon}
         </div>
         <div className="text-h4 font-semibold">{children}</div>
-        <div className="absolute right-4" onClick={onClickMoveButton}>
-          {isMoveButton ? <MoveButtonIcon /> : null}
-        </div>
+        <div className="absolute right-4">{isMoveButton ? <MoveButtonIcon /> : null}</div>
       </div>
     </button>
   );
