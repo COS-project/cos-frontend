@@ -1,5 +1,4 @@
-import Image from 'next/image';
-import { FormEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Header from '@/components/common/Header';
 import { patchProfileData } from '@/lib/api/onboarding';
@@ -34,9 +33,6 @@ const ProfileSettings = (props: Props) => {
 
     if (imgRef.current && imgRef.current.files && imgRef.current.files[0]) {
       formData.append('file', imgRef.current.files[0]); // 파일을 formData에 추가
-    } else {
-      console.error('파일이 선택되지 않았습니다.');
-      return; // 파일이 없으면 제출하지 않음
     }
 
     const json = { nickname: e.target.nickname.value };
@@ -101,9 +97,7 @@ const ProfileSettings = (props: Props) => {
 
         <button
           type={'submit'}
-          className={
-            'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0 hover:bg-primary transition'
-          }>
+          className={'w-full bg-primary h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0'}>
           <div className="text-white text-h3 py-[25px]">완료</div>
         </button>
       </form>
