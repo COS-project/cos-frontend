@@ -22,11 +22,8 @@ export default function Timer() {
   const [startTime, setStartTime] = useRecoilState(startTimeState); //시작 시간(밀리초 단위)
   const [now, setNow] = useRecoilState(nowTimeState); //현재 시간(밀리초 단위)
 
-<<<<<<< HEAD
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null); //interval 타이머를 위한 참조 변수
-=======
-  const intervalRef = useRef<NodeJS.Timeout | null>(null); //interval 타이머를 위한 참조 변수
->>>>>>> origin/dev
+
   const [isStart, setIsStart] = useRecoilState(isStartState); //시작 여부
   const [isStop, setIsStop] = useRecoilState(isStopState); //멈춤 여부
   const [isReset, setIsReset] = useRecoilState(isResetState); //리셋 여부

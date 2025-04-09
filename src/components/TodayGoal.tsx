@@ -22,7 +22,6 @@ const TodayGoal = (props: Props) => {
     }
   };
 
-
   return (
     <div className={'p-4 rounded-[32px] bg-white'}>
       <div className={'flex justify-between'}>

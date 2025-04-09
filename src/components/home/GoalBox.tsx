@@ -24,7 +24,6 @@ const GoalBox = (props: Props) => {
   };
 
   const router = useRouter();
-  const { maxScore, currentStudyTime, currentMockExams, goalScore, goalStudyTime, goalMockExams } = props;
 
   function convertMsToM(ms: number) {
     return Math.floor(ms / 60000); // 1분 = 60000ms
