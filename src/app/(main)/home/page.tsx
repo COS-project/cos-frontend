@@ -118,32 +118,6 @@ function HomeComponents() {
     }
   }, [userGoals]);
 
-  // // EventSource 연결
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined' && localStorage.getItem('accessToken')) {
-  //     const eventSource = new EventSourcePolyfill('http://cercat.o-r.kr/api/v2/alarms/subscribe', {
-  //       headers: {
-  //         'Access-Token': localStorage.getItem('accessToken') || '',
-  //       },
-  //     });
-  //
-  //     eventSource.addEventListener('connect', (event: any) => {
-  //       const { data: receivedConnectData } = event;
-  //       if (receivedConnectData === 'SSE 연결이 완료되었습니다.') {
-  //         console.log('SSE CONNECTED');
-  //       } else {
-  //         console.log('Event:', event);
-  //       }
-  //     });
-  //
-  //     setAlarmEvent(eventSource);
-  //
-  //     return () => {
-  //       eventSource.close();
-  //     };
-  //   }
-  // }, [accessToken]);
-
   const sumTotalTakenTime = () => {
     return averageSubjectList ? averageSubjectList.reduce((sum, subject) => sum + subject.totalTakenTime, 0) : 0;
   };
