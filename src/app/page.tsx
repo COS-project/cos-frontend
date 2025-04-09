@@ -72,7 +72,7 @@ export default function Page() {
       )}
       <WhiteLogoIcon />
       <Link
-        href="http://cercat.o-r.kr/oauth2/authorization/kakao"
+        href="https://cercat.o-r.kr/oauth2/authorization/kakao"
         className={
           'flex gap-x-2 absolute bottom-5 justify-center bg-white rounded-[16px] font-semibold w-[90%] py-[14px]'
         }>

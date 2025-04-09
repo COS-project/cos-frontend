@@ -117,7 +117,7 @@ function HomeComponents() {
       }));
     }
   }, [userGoals]);
-
+  
   // // EventSource 연결
   // useEffect(() => {
   //   if (typeof window !== 'undefined' && localStorage.getItem('accessToken')) {

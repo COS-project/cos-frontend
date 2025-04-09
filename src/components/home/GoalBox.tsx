@@ -12,6 +12,7 @@ interface Props {
 }
 
 import ScoredDonutChart from '@/components/home/goal-attaining/ScoredDonutChart';
+
 const GoalBox = (props: Props) => {
   const { maxScore, currentStudyTime, currentMockExams, goalScore, goalStudyTime, goalMockExams } = props;
 
@@ -23,6 +24,12 @@ const GoalBox = (props: Props) => {
   };
 
   const router = useRouter();
+  const { maxScore, currentStudyTime, currentMockExams, goalScore, goalStudyTime, goalMockExams } = props;
+
+  function convertMsToM(ms: number) {
+    return Math.floor(ms / 60000); // 1분 = 60000ms
+  }
+
   return (
     <div className={'flex flex-col gap-y-4 p-4 bg-white rounded-[32px]'}>
       <div className={'flex justify-between'}>
