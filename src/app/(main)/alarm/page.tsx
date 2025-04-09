@@ -9,7 +9,6 @@ import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import { getAlarms, postReadAlarmList } from '@/lib/api/alarm';
-import useAlarm from '@/lib/hooks/useAlarm';
 import { certificateIdAtom } from '@/recoil/atom';
 import { Alarm } from '@/types/alarm/type';
 import { ResponseType } from '@/types/common/type';
@@ -57,10 +56,6 @@ export default function Alarm() {
 
     connect();
   }, []);
-
-  useEffect(() => {
-    console.log("alarms", alarms)
-  }, [alarms])
 
   const moveButton = (targetPostId: number) => {
     return (

@@ -3,13 +3,12 @@
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { useSWRConfig } from 'swr';
 import { twMerge } from 'tailwind-merge';
 
 import { postFavoriteBoards } from '@/lib/api/community';
+import useGetBoardList from '@/lib/hooks/useGetBoardList';
 import { certificationsListState } from '@/recoil/atom';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
-import useGetBoardList from '@/lib/hooks/useGetBoardList';
 
 export interface Props {
   usage: string;
@@ -42,7 +41,7 @@ const CertificationClassificationItem = (props: Props) => {
   const router = useRouter();
   const [allCertifications, setAllCertifications] = useRecoilState(certificationsListState);
   const [interestCertificates, setInterestCertificates] = useRecoilState(interestCertificatesState);
-  const {mutate} = useGetBoardList();
+  const { mutate } = useGetBoardList();
 
   //CertificationClassificationItem 컴포넌트의 이동버튼 클릭했을 때 함수
   const onClickMoveButton = () => {

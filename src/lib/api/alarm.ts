@@ -1,6 +1,5 @@
 // 알림 정보 가져오기
 import axios from 'axios';
-import { ResponseType } from '@/types/common/type';
 
 export const getAlarms = async () => {
   try {
