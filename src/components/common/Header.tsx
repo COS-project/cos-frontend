@@ -39,7 +39,9 @@ export default function Header(props: Props) {
 
   useEffect(() => {
     getAlarmUnreadCount().then((res: ResponseType<number>) => {
-      setUnreadCount(res.result);
+      if (res && res.result) {
+        setUnreadCount(res.result);
+      }
     });
   }, []);
 
