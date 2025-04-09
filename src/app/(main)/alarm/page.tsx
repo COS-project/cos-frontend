@@ -11,11 +11,13 @@ import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton'
 import { getAlarms, postReadAlarmList } from '@/lib/api/alarm';
 import useAlarm from '@/lib/hooks/useAlarm';
 import { certificateIdAtom } from '@/recoil/atom';
+import { Alarm } from '@/types/alarm/type';
+import { ResponseType } from '@/types/common/type';
 
 export default function Alarm() {
   const router = useRouter();
-  const { alarms } = useAlarm();
   const certificateId = useRecoilValue(certificateIdAtom);
+  const [alarms, setAlarms] = useState<Alarm[]>([]);
   const [readAlarmList, setReadAlarmList] = useState<number[]>([]);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function Alarm() {
         return;
       }
 
-      const eventSource = new EventSourcePolyfill('https://cercat.o-r.kr/alert/api/v2/alarms/subscribe', {
+      const eventSource = new EventSourcePolyfill('http://34.64.140.236:8081/api/v2/alarms/subscribe', {
         headers: {
           'Access-Token': accessToken,
         },
@@ -35,7 +37,12 @@ export default function Alarm() {
 
       eventSource.onopen = () => {
         console.log('Connection opened.');
-        getAlarms();
+        getAlarms().then((res: ResponseType<Alarm[]>) => {
+          console.log('res', res.result);
+          if (res && res.result) {
+            setAlarms(res.result);
+          }
+        });
       };
 
       eventSource.onerror = (error) => {
@@ -52,8 +59,8 @@ export default function Alarm() {
   }, []);
 
   useEffect(() => {
-    console.log('alarms', alarms);
-  }, [alarms]);
+    console.log("alarms", alarms)
+  }, [alarms])
 
   const moveButton = (targetPostId: number) => {
     return (
@@ -71,7 +78,7 @@ export default function Alarm() {
   useEffect(() => {
     if (alarms) {
       // 새로운 alarmId 중 readAlarmList에 없는 값만 필터링
-      const newAlarmIds = alarms.map((alarm) => alarm.alarmId).filter((alarmId) => !readAlarmList.includes(alarmId)); // 중복 체크
+      const newAlarmIds = alarms.map((alarm) => alarm.id).filter((alarmId) => !readAlarmList.includes(alarmId)); // 중복 체크
 
       // 새로운 alarmId가 있을 때만 상태 업데이트
       if (newAlarmIds.length > 0) {
@@ -86,19 +93,22 @@ export default function Alarm() {
   };
 
   return (
-    <>
+    <div className={'bg-gray0 min-h-screen'}>
       <Header headerType={'dynamic'} title={'알림'} rightElement={<EmptyIcon />} onBack={onBack} />
-      <div className={'bg-gray0 min-h-screen'}>
+      <div className={'mt-[20px]'}>
         <div className={'flex flex-col gap-y-4 px-5'}>
           {alarms
             ? alarms.map((alarm, index) => {
                 return (
                   <AlarmItem
-                    key={alarm.alarmId}
-                    alarmText={alarm.alarmText}
+                    setReadAlarmList={setReadAlarmList}
+                    id={alarm.id}
+                    key={alarm.id}
                     time={alarm.alarmTime}
+                    type={alarm.alarmType}
                     moveButton={moveButton}
-                    targetPostId={alarm.targetPostId}
+                    targetPostId={alarm.originId}
+                    receiver={alarm.receiver}
                   />
                 );
               })
@@ -107,7 +117,8 @@ export default function Alarm() {
       </div>
       <StopWatchActiveButton />
       <NavBar />
-    </>
+      <div className={'h-[120px]'} />
+    </div>
   );
 }
 

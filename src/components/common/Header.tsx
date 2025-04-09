@@ -3,8 +3,10 @@ import React, { ReactNode, SVGProps, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import FilterModal from '@/components/common/FilterModal';
+import { getAlarmUnreadCount } from '@/lib/api/alarm';
 import useGetInterestCertificates from '@/lib/hooks/useGetInterestCertificates';
 import { certificateIdAtom, certificateNameAtom } from '@/recoil/atom';
+import { ResponseType } from '@/types/common/type';
 import { HeaderType } from '@/types/global';
 
 interface Props {
@@ -25,6 +27,7 @@ export default function Header(props: Props) {
   const { interestCertificates } = useGetInterestCertificates();
   const router = useRouter();
   const [initialTrigger, setInitialTrigger] = useState(true);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     if (interestCertificates && initialTrigger) {
@@ -34,13 +37,28 @@ export default function Header(props: Props) {
     }
   }, [interestCertificates]);
 
+  useEffect(() => {
+    getAlarmUnreadCount().then((res: ResponseType<number>) => {
+      setUnreadCount(res.result);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log('unreadCount', unreadCount);
+  }, [unreadCount]);
+
   const renderHeader = (headerType: HeaderType) => {
     switch (headerType) {
       case 'static':
         return (
           <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
             <Logo />
-            <AlarmIcon />
+            <div className={'relative flex items-center justify-center w-[40px] h-[40px]'}>
+              <div className={'absolute top-1 right-1 text-[10px] text-white bg-primary rounded-full px-1'}>
+                {unreadCount}
+              </div>
+              <AlarmIcon onClick={() => router.push('/alarm')} />
+            </div>
           </header>
         );
       case 'dynamic':
@@ -126,17 +144,14 @@ function Logo(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function AlarmIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg width={40} height={40} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path
-        d="M10 28.648v-.939h2.239V16.715c0-1.72.615-3.229 1.847-4.525 1.231-1.296 2.78-2.09 4.645-2.38v-.67c0-.317.123-.586.37-.808A1.29 1.29 0 0119.995 8c.35 0 .65.11.9.332.248.222.373.491.373.808v.67c1.865.29 3.414 1.084 4.645 2.38 1.231 1.296 1.847 2.804 1.847 4.525V27.71H30v.939H10zM19.993 32c-.617 0-1.143-.197-1.579-.59-.435-.395-.653-.868-.653-1.421h4.478c0 .558-.22 1.033-.66 1.424-.44.392-.968.587-1.586.587zm-6.71-4.29h13.433V16.715c0-1.676-.653-3.1-1.959-4.274-1.306-1.173-2.891-1.76-4.757-1.76-1.866 0-3.451.587-4.758 1.76-1.305 1.173-1.958 2.598-1.958 4.274V27.71z"
-        fill="#0D0E10"
-      />
-      <rect x={23} y={10} width={7} height={7} rx={3.5} fill="#3B3DFF" />
-    </svg>
-  );
-}
+const AlarmIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={20} height={24} fill="none" {...props}>
+    <path
+      fill="#0D0E10"
+      d="M0 20.648v-.939h2.239V8.715q0-2.58 1.847-4.525T8.73 1.81v-.67q0-.475.37-.808A1.3 1.3 0 0 1 9.995 0q.525 0 .9.332.372.333.373.808v.67q2.798.436 4.645 2.38t1.847 4.525V19.71H20v.939zM9.993 24q-.925 0-1.579-.59-.653-.592-.653-1.421h4.478q0 .837-.66 1.424-.66.588-1.586.587m-6.71-4.29h13.433V8.715q0-2.513-1.959-4.274-1.959-1.76-4.757-1.76-2.799 0-4.757 1.76-1.96 1.76-1.96 4.274z"
+    />
+  </svg>
+);
 
 const PrevArrow = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={33} height={32} fill="none" {...props}>

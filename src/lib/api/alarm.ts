@@ -1,15 +1,31 @@
 // 알림 정보 가져오기
-import { sendRequest } from '@/lib/axios';
+import axios from 'axios';
+import { ResponseType } from '@/types/common/type';
 
 export const getAlarms = async () => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
-    const response = await sendRequest({
+    const response = await axios.get('http://34.64.140.236:8081/api/v2/alarms', {
       headers: {
         'Access-Token': localStorage.getItem('accessToken'),
       },
-      method: 'GET',
-      url: '/api/v2/alarms',
+    });
+    console.log(response.data);
+    // 성공적인 응답 처리
+    return response.data;
+  } catch (error) {
+    // 에러 처리
+    console.error('에러 발생:', error);
+  }
+};
+
+export const getAlarmUnreadCount = async () => {
+  try {
+    // 액세스 토큰을 헤더에 담아 요청 보내기
+    const response = await axios.get('http://34.64.140.236:8081/api/v2/alarms/unread', {
+      headers: {
+        'Access-Token': localStorage.getItem('accessToken'),
+      },
     });
     console.log(response.data);
     // 성공적인 응답 처리
@@ -23,13 +39,10 @@ export const getAlarms = async () => {
 export const postReadAlarmList = async (readAlarmList: number[]) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
-    const response = await sendRequest({
+    const response = await axios.post('http://34.64.140.236:8081/api/v2/alarms/read', readAlarmList, {
       headers: {
         'Access-Token': localStorage.getItem('accessToken'),
       },
-      method: 'POST',
-      data: readAlarmList,
-      url: '/api/v2/alarms/read',
     });
     console.log(response.data);
     // 성공적인 응답 처리
