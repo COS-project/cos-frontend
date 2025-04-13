@@ -45,10 +45,6 @@ export default function Header(props: Props) {
     });
   }, []);
 
-  useEffect(() => {
-    console.log('unreadCount', unreadCount);
-  }, [unreadCount]);
-
   const renderHeader = (headerType: HeaderType) => {
     switch (headerType) {
       case 'static':

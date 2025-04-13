@@ -32,7 +32,7 @@ const TimerModal: React.FC<SessionModalProps> = ({
   }, [closeSessionModal]);
 
   return (
-    <div className="fixed z-20 inset-0 flex items-center justify-center bg-black bg-opacity-30">
+    <div className="fixed z-30 inset-0 flex items-center justify-center bg-black bg-opacity-30">
       <div className="w-[80%]">
         <button onClick={closeTimerModal} className="w-full flex items-center justify-end text-white text-h6 px-2 my-2">
           닫기 <CancleIcon />

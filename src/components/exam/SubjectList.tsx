@@ -23,7 +23,7 @@ const SubjectSessionCard = (props: Props) => {
           <div key={index}>
             <SubjectCard
               timeLimit={mockExam.timeLimit}
-              total={300} //TODO: 총점
+              total={mockExam.maxScore}
               round={mockExam.round}
               mockExamId={mockExam.mockExamId}></SubjectCard>
           </div>

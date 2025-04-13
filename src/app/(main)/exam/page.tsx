@@ -5,9 +5,12 @@ import Banner from '@/components/common/Banner';
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import RandomMockExamModal from '@/components/exam/RandomMockExamModal';
+import SkeletonSubjectSessionCard from '@/components/exam/skeleton/SkeletonSubjectSessionCard';
+import SkeletonYearSelector from '@/components/exam/skeleton/SkeletonYearSelector';
 import SubjectSessionCard from '@/components/exam/SubjectList';
 import YearSelector from '@/components/exam/YearSelector';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
+import useDelayOver from '@/hooks/useDelayOver';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 
 const Exam = () => {
@@ -21,18 +24,17 @@ const Exam = () => {
 };
 
 const SolveExamBox = () => {
-  const { examYears } = useGetMockExamYears();
+  const { examYears, examYearsIsLoading } = useGetMockExamYears();
   const [isClickedYearSelector, setIsClickedYearSelector] = useState<boolean>(false);
-  const [selectedYear, setSelectedYear] = useState<number | null>(examYears ? examYears[0] : null);
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [isRandomMockExamModalOpen, setIsRandomMockExamModalOpen] = useState(false);
-  const [isFirstRender, setIsFirstRender] = useState(true);
+  const [isDelayOver] = useDelayOver(400);
 
   useEffect(() => {
-    if (examYears && isFirstRender) {
+    if (examYears && selectedYear === null) {
       setSelectedYear(examYears[0]);
-      setIsFirstRender(false);
     }
-  }, [examYears]);
+  }, [examYears, selectedYear]);
 
   return (
     <>
@@ -50,14 +52,23 @@ const SolveExamBox = () => {
           />
         </div>
         <div className="text-h3 mt-[24px] font-bold">모의고사 풀기</div>
-        <YearSelector
-          isClickedYearSelector={isClickedYearSelector}
-          examYears={examYears}
-          setSelectedYear={setSelectedYear}
-          setIsClickedYearSelector={setIsClickedYearSelector}
-          selectedYear={selectedYear}
-        />
-        <SubjectSessionCard selectedYear={selectedYear} />
+        {!isDelayOver || examYearsIsLoading || !selectedYear ? (
+          <>
+            <SkeletonYearSelector />
+            <SkeletonSubjectSessionCard />
+          </>
+        ) : (
+          <>
+            <YearSelector
+              isClickedYearSelector={isClickedYearSelector}
+              examYears={examYears}
+              setSelectedYear={setSelectedYear}
+              setIsClickedYearSelector={setIsClickedYearSelector}
+              selectedYear={selectedYear}
+            />
+            <SubjectSessionCard selectedYear={selectedYear} />
+          </>
+        )}
         <StopWatchActiveButton />
       </div>
     </>

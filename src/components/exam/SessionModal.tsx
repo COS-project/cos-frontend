@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { SVGProps, useEffect, useState } from 'react';
 import React from 'react';
+import Skeleton from 'react-loading-skeleton';
 
+import useDelayOver from '@/hooks/useDelayOver';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 
 import SubjectGradeCard from './SubjectGradeCard';
@@ -16,7 +18,8 @@ interface SessionModalProps {
 
 const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeModal, openTimerModal, total }) => {
   const [changedRound, setChangedRound] = useState<number>(0);
-  const { examResults } = useGetTestResults(mockExamId);
+  const { examResults, isLoading, isError } = useGetTestResults(mockExamId);
+  const [isDelayOver] = useDelayOver(200);
 
   useEffect(() => {
     if (round) {
@@ -26,7 +29,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
 
   return (
     <div>
-      <div className="fixed z-20 inset-0 flex items-center justify-center bg-black bg-opacity-30">
+      <div className="fixed z-30 inset-0 flex items-center justify-center bg-black bg-opacity-30">
         <div className="w-[80%]">
           <button onClick={closeModal} className="w-full flex justify-end items-center text-white text-h6 px-2 my-2">
             닫기 <CancleIcon />
@@ -34,42 +37,63 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
           <div className="relative bg-white rounded-[32px]">
             <div className="flex flex-col gap-y-4 p-5">
               <div className=" flex justify-center">
-                <div>{`${round}회차`}</div>
+                {isLoading || !isDelayOver ? (
+                  <Skeleton height={24} width={70} borderRadius={8} />
+                ) : (
+                  <div>{`${round}회차`}</div>
+                )}
               </div>
               <div className="border-t border-gray1"></div>
               <div className="flex justify-between">
-                {examResults ? (
+                {isLoading || !isDelayOver ? (
+                  <div className="absolute right-5">
+                    <Skeleton height={37} width={112} borderRadius={999} />
+                  </div>
+                ) : (
                   <Link
                     href={'/exam/result'}
                     className="absolute right-5 px-3 py-2 flex gap-x-2 items-center bg-gray0 rounded-full text-h6">
                     <span>성적 리포트</span> <MoveIcon />
                   </Link>
-                ) : null}
+                )}
                 <div>
                   {/* 점수 */}
-                  <div className="font-semibold text-h6">최근 점수</div>
-                  {examResults &&
-                  examResults.length > 0 &&
-                  examResults[examResults.length - 1].totalScore !== undefined ? (
-                    <div className={''}>
-                      <div className="flex items-end">
-                        <div className="font-bold text-h1">{examResults[examResults?.length - 1].totalScore}점</div>
-                        <div className="text-gray3 text-h6 mb-1">/{`${total}점`}</div>
-                      </div>
-                    </div>
+                  {!isDelayOver || isLoading ? (
+                    <Skeleton height={21} width={60} borderRadius={8} />
                   ) : (
-                    <div className="font-bold text-h1">미응시</div>
+                    <div className="font-semibold text-h6">최근 점수</div>
+                  )}
+                  {!isDelayOver || !examResults || isLoading ? (
+                    <Skeleton height={30} width={93} borderRadius={8} />
+                  ) : (
+                    <>
+                      {examResults[examResults.length - 1].totalScore !== undefined ? (
+                        <div className={''}>
+                          <div className="flex items-end">
+                            <div className="font-bold text-h1">{examResults[examResults?.length - 1].totalScore}점</div>
+                            <div className="text-gray3 text-h6 mb-1">/{`${total}점`}</div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="font-bold text-h1">미응시</div>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
 
               {/* 과목별 맞춘 문제 갯수 표 */}
               <div>
-                {examResults && examResults[examResults?.length - 1]?.subjectResults ? (
+                {!isDelayOver || !examResults || isLoading ? (
+                  <div className={'flex flex-col gap-y-2'}>
+                    <Skeleton height={20} width={120} borderRadius={8} />
+                    <Skeleton height={81} width={283} />
+                  </div>
+                ) : (
                   <div className={'flex flex-col gap-y-2'}>
                     <div className="text-h6 font-semibold">과목별 맞춘 문제 수</div>
                     <div className={'grid grid-cols-3'}>
-                      {examResults[examResults?.length - 1]?.subjectResults?.map((subjectResult, index) => {
+                      {examResults[examResults.length - 1]?.subjectResults?.map((subjectResult, index) => {
                         return (
                           <div className={'w-full'} key={index}>
                             <SubjectGradeCard
@@ -82,7 +106,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                       })}
                     </div>
                   </div>
-                ) : null}
+                )}
               </div>
               <div className="flex justify-center">
                 <button onClick={() => openTimerModal()} className="w-full bg-black text-white rounded-3xl text-h5 p-4">
@@ -98,18 +122,6 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
 };
 
 export default SessionModal;
-
-const BeforeIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={28} height={28} fill="none" {...props}>
-    <path stroke="#0D0E10" strokeLinecap="round" strokeLinejoin="round" d="m18 22-8-8 8-8" />
-  </svg>
-);
-
-const AfterIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={28} height={28} fill="none" {...props}>
-    <path stroke="#0D0E10" strokeLinecap="round" strokeLinejoin="round" d="m10 6 8 8-8 8" />
-  </svg>
-);
 
 const MoveIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={16} height={17} fill="none" {...props}>

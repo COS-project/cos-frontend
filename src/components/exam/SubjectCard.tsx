@@ -17,7 +17,7 @@ interface SubjectCard {
 }
 
 const SubjectCard: React.FC<SubjectCard> = ({ timeLimit, round, mockExamId, total }) => {
-  const { examResultRecent } = useGetExamResultRecent(mockExamId);
+  const { examResultRecent, isError } = useGetExamResultRecent(mockExamId);
   const [selectedSession, setSelectedSession] = useRecoilState<Session | null>(selectedSessionState);
 
   // 모달 관련 states
@@ -62,8 +62,9 @@ const SubjectCard: React.FC<SubjectCard> = ({ timeLimit, round, mockExamId, tota
               <div className="mb-[3px] text-gray3 text-h6">{`/${total}점`}</div>
             </ul>
           ) : (
-            <p className="text-center text-h2 font-semibold">미응시</p>
+            <div className="bg-white animate-pulse h-[30px]" />
           )}
+          {isError && <p className="text-center text-h2 font-semibold">미응시</p>}
         </div>
         <button onClick={() => openSessionModal()} className="w-full bg-gray0 rounded-3xl py-3 text-h6">
           시험 보기
