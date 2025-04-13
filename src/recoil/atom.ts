@@ -2,19 +2,28 @@
 
 import { format } from 'date-fns';
 import { atom } from 'recoil';
+// persist 설정
+import { recoilPersist } from 'recoil-persist';
 
 import { Certificate } from '@/types/global';
+
+const { persistAtom } = recoilPersist({
+  key: 'recoil-persist', // localStorage key
+  storage: localStorage, // 또는 sessionStorage
+});
 
 // 현재 선택된 자격증 이름
 export const certificateNameAtom = atom<string>({
   key: 'certificateNameAtom',
   default: '정보처리기사',
+  effects_UNSTABLE: [persistAtom],
 });
 
 // 현재 선택된 자격증 id
 export const certificateIdAtom = atom<number>({
   key: 'certificateIdAtom',
   default: 1,
+  effects_UNSTABLE: [persistAtom],
 });
 
 //자격증 응시 정보를 확인하는 페이지에서 navbar, header가 보이지 않도록 하는 state
