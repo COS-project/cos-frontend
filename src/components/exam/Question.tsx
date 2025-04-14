@@ -17,7 +17,6 @@ import {
 import { QuestionOptions, QuestionsResponse, UserAnswerRequests } from '@/types/global';
 
 import { AllQuestionModal } from './AllQuestionModal';
-import { Timer } from 'd3-timer';
 
 const Question = () => {
   const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
