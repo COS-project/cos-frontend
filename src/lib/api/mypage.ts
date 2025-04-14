@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 import { sendRequest } from '@/lib/axios';
 
 // 유저 정보 삭제
@@ -5,7 +7,7 @@ export const deleteUserInfo = async () => {
   try {
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'DELETE',
       url: '/api/v2/users/me',
@@ -22,7 +24,7 @@ export const patchLogout = async () => {
   try {
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'PATCH',
       url: '/api/v2/logout',

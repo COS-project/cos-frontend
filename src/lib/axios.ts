@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import Cookies from 'js-cookie';
 
 const client = axios.create({
   baseURL: 'https://cercat.o-r.kr',
@@ -16,7 +17,7 @@ const client = axios.create({
 const setAuthHeader = (token: string) => {
   if (token) {
     client.defaults.headers['access-token'] = `${token}`;
-    localStorage.removeItem('accessToken');
+    Cookies.remove('accessToken');
   } else {
     delete client.defaults.headers['access-token'];
   }
@@ -25,17 +26,17 @@ const setAuthHeader = (token: string) => {
 /**
  * 액세스 토큰 및 리프레시 토큰을 저장하는 함수
  */
-const saveTokensToLocalStorage = (accessToken: string, refreshToken: string) => {
-  localStorage.setItem('accessToken', accessToken);
-  localStorage.setItem('refreshToken', refreshToken);
+const saveTokensToCookies = (accessToken: string, refreshToken: string) => {
+  Cookies.set('accessToken', accessToken);
+  Cookies.set('refreshToken', refreshToken);
 };
 
 /**
  * 액세스 토큰 및 리프레시 토큰을 불러오는 함수
  */
-const getTokensFromLocalStorage = () => {
-  const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
+const getTokensFromCookies = () => {
+  const accessToken = Cookies.get('accessToken');
+  const refreshToken = Cookies.get('refreshToken');
   return { accessToken, refreshToken };
 };
 
@@ -50,7 +51,7 @@ const sendRequest = async (config: any) => {
     const axiosError = error as AxiosError; // AxiosError로 캐스팅
     if (axiosError.response && axiosError.response.status === 401) {
       // 만료된 액세스 ㅇ토큰일 경우 리프레시 토큰으로 갱신
-      const { refreshToken } = getTokensFromLocalStorage();
+      const { refreshToken } = getTokensFromCookies();
       if (refreshToken) {
         try {
           const response = await client.post(
@@ -69,10 +70,10 @@ const sendRequest = async (config: any) => {
 
           if (newAccessToken && newRefreshToken) {
             // 갱신된 토큰을 처리
-            localStorage.removeItem('refreshToken');
-            localStorage.removeItem('accessToken');
+            Cookies.remove('refreshToken');
+            Cookies.remove('accessToken');
             setAuthHeader(newAccessToken);
-            saveTokensToLocalStorage(newAccessToken, newRefreshToken);
+            saveTokensToCookies(newAccessToken, newRefreshToken);
 
             // 이전 요청 재시도
             return await client({
@@ -102,7 +103,7 @@ const sendRequest = async (config: any) => {
 export const swrGetFetcher = async (url: any) => {
   const response = await sendRequest({
     headers: {
-      'Access-Token': localStorage.getItem('accessToken'),
+      'Access-Token': Cookies.get('accessToken'),
     },
     method: 'GET',
     url: url,
@@ -110,4 +111,4 @@ export const swrGetFetcher = async (url: any) => {
   return response.data;
 };
 
-export { client, getTokensFromLocalStorage, saveTokensToLocalStorage, sendRequest, setAuthHeader };
+export { client, getTokensFromCookies, saveTokensToCookies, sendRequest, setAuthHeader };

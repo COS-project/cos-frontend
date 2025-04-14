@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 import { sendRequest } from '@/lib/axios';
 import { PostInterestCertificate } from '@/types/global';
 
@@ -6,7 +8,7 @@ export const postInterestCertificates = async (interestCertificates: PostInteres
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'POST',
       data: interestCertificates,
@@ -26,7 +28,7 @@ export const putInterestCertificates = async (interestCertificates: PostInterest
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'PUT',
       data: interestCertificates,
@@ -45,7 +47,7 @@ export const patchProfileData = async (profileData: FormData) => {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
         'Content-Type': 'multipart/form-data',
       },
       method: 'PATCH',

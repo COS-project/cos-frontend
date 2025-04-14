@@ -1,5 +1,6 @@
 'use client';
 
+import Cookies from 'js-cookie';
 import { useSearchParams } from 'next/navigation';
 import React, { Suspense, useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
@@ -39,11 +40,9 @@ function HomeComponents() {
 
   // AccessToken, RefreshToken 저장
   useEffect(() => {
-    if (typeof window !== 'undefined' && accessToken && refreshToken) {
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      console.log('액세스 토큰 저장:', accessToken);
-      console.log('리프레시 토큰 저장:', refreshToken);
+    if (accessToken && refreshToken) {
+      Cookies.set('accessToken', accessToken, { expires: Date.now() + 604800000 });
+      Cookies.set('refreshToken', refreshToken, { expires: Date.now() + 604800000 });
     }
   }, [accessToken, refreshToken]);
 

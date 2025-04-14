@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 import { sendRequest } from '@/lib/axios';
 import { SubjectResultRequests } from '@/types/global';
 
@@ -9,7 +11,7 @@ export const postSubjectResultRequestsList = async (
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'POST',
       data: { createSubjectResultRequests: subjectResultRequestsList },
@@ -28,7 +30,7 @@ export const deleteIncorrectQuestion = async (userAnswerId: number) => {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'PATCH',
       url: `/api/v2/user-answers/${userAnswerId}/review`,

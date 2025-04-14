@@ -1,5 +1,6 @@
 'use client';
 
+import Cookies from 'js-cookie';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 
@@ -27,10 +28,10 @@ const OnBoardingComponents = () => {
 
   useEffect(() => {
     if (accessToken) {
-      localStorage.setItem('accessToken', accessToken);
+      Cookies.set('accessToken', accessToken);
     }
     if (refreshToken) {
-      localStorage.setItem('refreshToken', refreshToken);
+      Cookies.set('refreshToken', refreshToken);
     }
   }, [accessToken, refreshToken]);
 

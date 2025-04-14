@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 import { BoardType, ExamReviewPostType } from '@/types/community/type';
 
 import { sendRequest } from '../axios';
@@ -7,7 +9,7 @@ export const postFavoriteBoards = async (certificateId: number) => {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'POST',
       url: `/api/v2/favorite-boards/${certificateId}`,
@@ -25,7 +27,7 @@ export const postCommentary = async (certificateId: number, postType: string, fo
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
         'Content-Type': 'multipart/form-data',
       },
       method: 'POST',
@@ -46,7 +48,7 @@ export const putPostDetail = async (certificateId: number, postType: string, for
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
         'Content-Type': 'multipart/form-data',
       },
       method: 'PUT',
@@ -67,7 +69,7 @@ export const getTotalSearchResults = async (certificateId: number, keyword: stri
   try {
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'GET',
       url: `/api/v2/certificates/${certificateId}/posts?keyword=${keyword}&page=0&size=10&sortFields=createdAt, id&sortDirections=DESC, ASC`,
@@ -91,7 +93,7 @@ export const getCommentarySearchResults = async (
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'GET',
       url: `/api/v2/certificates/${certificateId}/posts?examYear=${examYear}&round=${round}&questionSequence=${questionSequence}&page=0&size=10&sortKey=id`,
@@ -111,7 +113,7 @@ export const deleteAllSearchResults = async () => {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'DELETE',
       url: '/api/v2/search-logs/all',
@@ -131,7 +133,7 @@ export const deleteEachSearchResult = async (certificateId: number, keyword: str
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'DELETE',
       url: `/api/v2/certificates/${certificateId}/search-logs?keyword=${keyword}`,
@@ -151,7 +153,7 @@ export const postExamReview = async (certificateId: number, postData: ExamReview
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'POST',
       data: postData,

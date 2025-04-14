@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 import { GenerateComment } from '@/types/global';
 
 import { sendRequest } from '../axios';
@@ -8,7 +10,7 @@ export const postToggleLikeData = async (targetId: number, likeTargetType: strin
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'POST',
       url: `/api/v2/likes?likeTargetType=${likeTargetType}&targetId=${targetId}`,
@@ -28,7 +30,7 @@ export const postCommentData = async (postId: number, commentData: GenerateComme
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'POST',
       data: commentData,
@@ -48,7 +50,7 @@ export const postCommentDelete = async (commentId: number) => {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'DELETE',
       url: `/api/v2/post-comments/${commentId}`,
@@ -67,7 +69,7 @@ export const postingDelete = async (postId: number) => {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'DELETE',
       url: `/api/v2/posts/${postId}`,

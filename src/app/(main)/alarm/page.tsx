@@ -1,5 +1,7 @@
 'use client';
+
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import React, { SVGProps, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -21,7 +23,7 @@ export default function Alarm() {
 
   useEffect(() => {
     const connect = () => {
-      const accessToken = localStorage.getItem('accessToken');
+      const accessToken = Cookies.get('accessToken');
 
       if (!accessToken) {
         console.error('Access token is missing.');

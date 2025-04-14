@@ -1,5 +1,7 @@
 'use client';
 
+import Cookies from 'js-cookie';
+
 import { GoalSettingInfo } from '@/types/global';
 
 import { sendRequest } from '../axios';
@@ -9,7 +11,7 @@ export const postGoalSettingData = async (goalSettingInfo: GoalSettingInfo, cert
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'POST',
       data: goalSettingInfo,
@@ -28,7 +30,7 @@ export const putGoalSettingData = async (goalSettingInfo: GoalSettingInfo, goalI
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'PUT',
       data: goalSettingInfo,

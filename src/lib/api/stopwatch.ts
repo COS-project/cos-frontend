@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 import { sendRequest } from '@/lib/axios';
 
 export const postStudyTimes = async (goalId: number, studyTime: number) => {
@@ -5,7 +7,7 @@ export const postStudyTimes = async (goalId: number, studyTime: number) => {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
       headers: {
-        'Access-Token': localStorage.getItem('accessToken'),
+        'Access-Token': Cookies.get('accessToken'),
       },
       method: 'POST',
       url: `/api/v2/goals/${goalId}/study-times?studyTime=${studyTime}`,
