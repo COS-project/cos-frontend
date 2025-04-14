@@ -7,25 +7,33 @@ import { recoilPersist } from 'recoil-persist';
 
 import { Certificate } from '@/types/global';
 
-const isClient = typeof window !== 'undefined';
+let safeStorage: Storage | undefined = undefined;
+
+try {
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+    safeStorage = localStorage;
+  }
+} catch (e) {
+  safeStorage = undefined;
+}
 
 const { persistAtom } = recoilPersist({
-  key: 'recoil-persist', // localStorage key
-  storage: isClient ? localStorage : undefined,
+  key: 'recoil-persist',
+  storage: safeStorage,
 });
 
 // 현재 선택된 자격증 이름
 export const certificateNameAtom = atom<string>({
   key: 'certificateNameAtom',
   default: '정보처리기사',
-  effects_UNSTABLE: isClient ? [persistAtom] : [],
+  effects_UNSTABLE: [persistAtom],
 });
 
 // 현재 선택된 자격증 id
 export const certificateIdAtom = atom<number>({
   key: 'certificateIdAtom',
   default: 1,
-  effects_UNSTABLE: isClient ? [persistAtom] : [],
+  effects_UNSTABLE: [persistAtom],
 });
 
 //자격증 응시 정보를 확인하는 페이지에서 navbar, header가 보이지 않도록 하는 state
