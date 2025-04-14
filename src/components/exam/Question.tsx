@@ -17,6 +17,7 @@ import {
 import { QuestionOptions, QuestionsResponse, UserAnswerRequests } from '@/types/global';
 
 import { AllQuestionModal } from './AllQuestionModal';
+import { Timer } from 'd3-timer';
 
 const Question = () => {
   const [selectedMockExamId, setSelectedMockExamId] = useRecoilState(mockExamIdState);
@@ -110,19 +111,20 @@ const Question = () => {
    * 문제당 걸린 시간을 측정하는 스톱워치
    */
   useEffect(() => {
-    let interval: number | undefined;
+    let interval: ReturnType<typeof setInterval> | undefined;
 
     if (isRunning && !isPaused) {
-      interval = window.setInterval(() => {
+      interval = setInterval(() => {
         setTime((prevTime) => prevTime + 1000);
       }, 1000);
     } else {
-      clearInterval(interval);
+      if (interval) clearInterval(interval);
     }
 
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [isRunning, isPaused]);
-
   /**
    * 다음 문제로 넘어갈 때, 스톱워치를 다시 키고, 다시 0으로 릿셋
    */
