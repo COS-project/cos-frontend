@@ -8,6 +8,7 @@ import CertificationClassificationItem from '@/components/onboarding/Certificati
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useGetBoardList from '@/lib/hooks/useGetBoardList';
 import { FavoriteBoard } from '@/types/global';
+import CertificationItemSkeleton from '@/components/community/skeleton/CertificationItemSkeleton';
 
 export default function Community() {
   // 관심 자격증 리스트 데이터 패칭
@@ -61,7 +62,9 @@ export default function Community() {
                   </CertificationClassificationItem>
                 );
               })
-            : null}
+            : (
+              <CertificationItemSkeleton />
+            )}
         </div>
       </div>
       <StopWatchActiveButton />
