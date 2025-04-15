@@ -1,20 +1,17 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 
+import Header from '@/components/common/Header';
+import NavBar from '@/components/common/NavBar';
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
+import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
+import useGetBoardList from '@/lib/hooks/useGetBoardList';
+import { FavoriteBoard } from '@/types/global';
 
 export default function Community() {
-  // CertificationClassificationItem 컴포넌트의 className
-  const CERTIFICATION_ITEM_STYLE = 'w-full h-16 bg-gray0 rounded-full';
-  const [isCheck, setIsCheck] = useState<boolean>(false);
-  const router = useRouter();
-
-  // CertificationClassificationItem 컴포넌트가 클릭하면 true, 클릭되지 않으면 false로 바꿔주는 함수
-  const onClick = () => {
-    setIsCheck(!isCheck);
-  };
+  // 관심 자격증 리스트 데이터 패칭
+  const { boardList, isLoading, isError } = useGetBoardList();
 
   // CertificationClassificationItem 컴포넌트가 클릭됐을 때, 안됐을 때 아이콘
   const chooseClassificationItemIcon = (isCheck: boolean) => {
@@ -36,51 +33,40 @@ export default function Community() {
   };
 
   return (
-    <div className="grid gap-y-8 m-5 mt-6">
-      <div className="grid gap-y-2">
-        <div className="text-primary text-h4">게시판</div>
-        <div className="text-black text-h1 font-bold">
-          어떤 자격증 정보와 <br /> 소식이 궁금하신가요?
+    <>
+      <Header />
+      <div className={' border-t-[1px] border-gray0'}></div>
+      <div className="grid gap-y-8 m-5 mt-6">
+        <div className="grid gap-y-2">
+          <div className="text-primary text-h4">게시판</div>
+          <div className="text-black text-h1 font-bold">
+            어떤 자격증 정보와 <br /> 소식이 궁금하신가요?
+          </div>
+        </div>
+        {/* 자격증 선택 */}
+        <div className="grid gap-y-4">
+          {boardList
+            ? boardList.map((certification: FavoriteBoard) => {
+                return (
+                  <CertificationClassificationItem
+                    usage={'board'}
+                    key={certification.certificateId}
+                    certificateId={certification.certificateId}
+                    certificateName={certification.boardName}
+                    isClickState={certification.isFavorite}
+                    isMoveButton={true}
+                    path={certification.certificateId}
+                    icon={chooseClassificationItemIcon(certification.isFavorite)}>
+                    {certification.boardName}
+                  </CertificationClassificationItem>
+                );
+              })
+            : null}
         </div>
       </div>
-
-      {/* 자격증 선택 */}
-      {/* 백엔드 API 나오면 map 코드로 바꿀 예정 */}
-      <div className="grid gap-y-4">
-        <CertificationClassificationItem
-          className={CERTIFICATION_ITEM_STYLE}
-          onClickItem={onClick}
-          icon={chooseClassificationItemIcon(isCheck)}
-          isMoveButton={true}
-          path="Comhwal_level1">
-          컴퓨터활용능력 1급 게시판
-        </CertificationClassificationItem>
-        <CertificationClassificationItem
-          className={CERTIFICATION_ITEM_STYLE}
-          onClickItem={onClick}
-          icon={chooseClassificationItemIcon(isCheck)}
-          isMoveButton={true}
-          path="Comhwal_level2 ">
-          컴퓨터활용능력 2급 게시판
-        </CertificationClassificationItem>
-        <CertificationClassificationItem
-          className={CERTIFICATION_ITEM_STYLE}
-          onClickItem={onClick}
-          icon={chooseClassificationItemIcon(isCheck)}
-          isMoveButton={true}
-          path="JCG">
-          정보처리기사 게시판
-        </CertificationClassificationItem>
-        <CertificationClassificationItem
-          className={CERTIFICATION_ITEM_STYLE}
-          onClickItem={onClick}
-          icon={chooseClassificationItemIcon(isCheck)}
-          isMoveButton={true}
-          path="SJS">
-          사회조사분석사 게시판
-        </CertificationClassificationItem>
-      </div>
-    </div>
+      <StopWatchActiveButton />
+      <NavBar />
+    </>
   );
 }
 

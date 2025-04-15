@@ -16,7 +16,7 @@ const config: Config = {
       point: '#FF6A3B',
 
       // Achromatic colors
-      black: '#191919',
+      black: '#0D0E10',
       gray4: '#727375',
       gray3: '#9E9FA1',
       gray2: '#CBCCCE',
@@ -24,6 +24,7 @@ const config: Config = {
       gray0: '#F4F5F7',
       white: '#FFFFFF',
       blue: '#6283FD',
+      sky: '#C8D3F9',
 
       // 그 외 추가 컬러
       // ...
@@ -38,7 +39,16 @@ const config: Config = {
       h6: '14px', // SubTitle 2, Body2, Button
       h7: '12px',
     },
+    screens: {
+      sm: '375px',    // sm을 500px로 변경
+      md: '700px',    // md를 850px로 변경
+      lg: '1080px',   // lg를 1080px로 변경
+      xl: '1440px',   // xl을 1440px로 변경
+      '2xl': '1800px' // 2xl을 1800px로 변경
+    }
   },
   plugins: [],
 };
 export default config;
+
+// 주석

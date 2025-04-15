@@ -4,19 +4,22 @@ import React, { ReactNode } from 'react';
 
 export interface DoneButtonProps {
   children: ReactNode;
-  onClick?: () => void;
-  isClick: boolean;
+  onNext: () => void;
+  postData?: () => void;
 }
 
-const DoneButton: React.FC<DoneButtonProps> = ({ children, onClick, isClick }) => {
+const DoneButton: React.FC<DoneButtonProps> = ({ children, onNext, postData }) => {
   return (
     <button
       className={
-        isClick
-          ? 'w-full bg-primary h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0'
-          : 'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0'
+        'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0 hover:bg-primary transition'
       }
-      onClick={onClick}>
+      onClick={() => {
+        if (postData) {
+          postData();
+        }
+        onNext();
+      }}>
       <div className="text-white text-h3 py-[25px]">{children}</div>
     </button>
   );

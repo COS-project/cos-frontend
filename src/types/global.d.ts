@@ -1,8 +1,13 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
+
+import { BoardType } from '@/types/community/type';
+
+export type HeaderType = 'static' | 'dynamic' | 'second';
 
 export interface MenuList {
   id: number;
   Icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+  ClickedIcon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
   name: string;
   path: string;
 }
@@ -32,21 +37,49 @@ export interface SpecificSubject {
   // 과목명
   name: string;
   // 정답 개수
-  correctAnswer: number;
+  correctAnswer: Number | null;
   // 전체 문제 수
-  totalProblems: number;
+  totalProblems: Number | null;
+  // 평균 머문 시간 (기존)
+  averageTime: Number | null;
+  // 과목에 머문 시간
+  takenTime: Number | null;
 }
 
-// 온보딩 관심 자격증 리스트
-export const LicenseInfo: Array<License> = [];
-
-// 온보딩 관심 자격증 리스트의 객체 형태 자격증 번호
-interface License {
-  // TODO: 백엔드 API 나오는것 보고 변경될 예정
-  id: string;
-  title: string;
+// api 기준
+export interface ExamInfo {
+  responseCode: string;
+  result: {
+    // examYearWithRounds: Record<string, number[]>[];
+    examYearWithRounds: examYearWithRounds[];
+  };
 }
 
+export interface examYearWithRounds {
+  year: string;
+  rounds: number[];
+}
+
+export interface ExamResult {
+  responseCode: string;
+  result: MockExam[];
+}
+
+export interface MockExam {
+  mockExamId: number;
+  round: number;
+  isTake: boolean;
+}
+
+export interface ProblemInfo {
+  questionNum: number;
+  choiceAnswer: multipleChoice;
+}
+
+export interface multipleChoice {
+  problem: string;
+  example: string[];
+}
 // 자격증 정보 공통 분류
 export interface ExamInfoCommonCategory {
   intro: ExamInfoCommonType;
@@ -66,12 +99,310 @@ export interface ExamInfoCommonType {
 }
 
 // 공통 제목 type
-interface CommonTitleType {
-  intro: ExamInfoCommonType;
-  schedule: ExamInfoCommonType;
-  subject: ExamInfoCommonType;
-  fee: ExamInfoCommonType;
-  method: ExamInfoCommonType;
-  qualifications: ExamInfoCommonType;
-  criteria: ExamInfoCommonType;
+export interface CommonTitleType {
+  description: ExamInfoCommonType;
+  examFee: ExamInfoCommonType;
+  examSchedule: ExamInfoCommonType;
+  subjectsInfo: ExamInfoCommonType;
+  examFormat: ExamInfoCommonType;
+  examEligibility: ExamInfoCommonType;
+  examTimeLimit: ExamInfoCommonType;
+  passingCriteria: ExamInfoCommonType;
+}
+
+// 목표 설정 type
+export interface GoalSettingInfo {
+  certificate?: Certificate;
+  goalScore: number;
+  prepareStartDateTime: string;
+  prepareFinishDateTime: string;
+  goalPrepareDays: number;
+  mockExamsPerDay: number;
+  goalMockExams: number;
+  mockExamRepeatDays: number[];
+  studyTimePerDay: number;
+  goalStudyTime: number;
+  studyRepeatDays: number[];
+}
+
+//온보딩 자격증
+export interface Certificate {
+  certificateId: number;
+  certificateName: string;
+  isClick: boolean; // 자격증을 선택했을 경우
+}
+
+//온보딩 흥미 자격증 타입
+export interface InterestCertificateOnboarding {
+  certificateId: number;
+  interestPriority: string;
+  certificateName?: string;
+}
+export interface PostInterestCertificate {
+  interestTargetList: InterestCertificateOnboarding[];
+}
+//게시판 즐겨찾기
+export interface FavoriteBoard {
+  certificateId: number;
+  boardName: string;
+  isFavorite: boolean;
+}
+
+//관심 자격증
+export interface InterestCertificate {
+  certificate: {
+    certificateId: number;
+    certificateName: string;
+  };
+  interestPriority: string;
+}
+
+export interface InterestCertificateResponseType {
+  responseCode: string;
+  message: string;
+  result: InterestCertificate[];
+}
+
+/**
+ * 사용자 정보 responseType
+ */
+
+export interface UserProfileResponseType {
+  responseCode: string;
+  message: string;
+  result: UserProfile;
+}
+
+//userProfile
+export interface UserProfile {
+  userId?: number;
+  nickname: string;
+  email?: string;
+  profileImage: string;
+}
+
+//모의고사 시험 문제 선지
+export interface QuestionOptions {
+  optionSequence: number;
+  optionContent: string;
+  optionImage: string;
+}
+
+//서버에 보낼 모의고사 시험 응시 결과
+export interface UserAnswerRequests {
+  questionId: number;
+  selectOptionSeq: number; //1,2,3,4
+  takenTime: number; // 밀리세컨드
+  isCorrect?: boolean;
+}
+
+//서버에 보낼 과목별 채점 결과
+export interface SubjectResultRequests {
+  subjectId: number;
+  score: number;
+  createUserAnswerRequests: UserAnswerRequests[];
+}
+
+//모의고사 문제들 가져오기
+export interface QuestionsResponseType {
+  responseCode: string;
+  message: string;
+  result: QuestionsResponse[];
+}
+
+//모의고사 시험 문제, 선지 전체
+export interface QuestionsResponse {
+  questionId: number;
+  mockExam: ReviewIncorrectMockExam;
+  subject: {
+    subjectId: number;
+    subjectName: string;
+    numberOfQuestions: number;
+    totalScore: number;
+  };
+  questionSeq: number;
+  questionText: string;
+  questionImage: {
+    id: number;
+    imageUrl: string;
+  };
+  questionOptions: QuestionOptions[];
+  correctOption: number;
+  score: number;
+}
+
+export interface ReviewIncorrectAnswers {
+  responseCode: string;
+  result: {
+    content: ReviewIncorrectAnswersContent[];
+    hasNext: boolean;
+  };
+}
+
+export interface ReviewIncorrectAnswersContent {
+  question: QuestionsResponse;
+  userAnswerId: number;
+  selectOptionSeq: number;
+  takenTime: number;
+  isCorrect: boolean;
+}
+
+export interface ReviewIncorrectMockExam {
+  mockExamId: number;
+  examYear: number;
+  round: number;
+  timeLimit: number;
+  maxScore: number;
+  certificate: Certificate;
+}
+
+//유저
+interface User {
+  userId: number;
+  nickname: string;
+  email: string;
+  profileImage: string;
+}
+
+//태그
+interface RecommendTags {
+  tagType: string; //Lecture
+  tagName: string;
+}
+
+//모의고사
+interface MockExam {
+  mockExamId: number;
+  examYear: number;
+  round: number;
+  timeLimit: number;
+  maxScore: number;
+  certificate: Certificate;
+}
+
+//과목
+interface Subject {
+  subjectId: number;
+  subjectName: string;
+  numberOfQuestions: number;
+  totalScore: number;
+}
+
+//질문옵션(무엇을 의미하는지 파악 못함)
+interface QuestionOptions {
+  optionSequence: number;
+  optionContent: string;
+  optionImage: string;
+}
+
+//커뮤니티 포스트
+export interface Post {
+  postId: number;
+  postType: BoardType;
+  postContent: PostContent;
+  user: User;
+  question?: Question;
+  recommendTags?: RecommendTags[];
+  postImages: ImageType[];
+  dateTime: DateTime;
+  commentCount: number;
+  likeCount: number;
+  likeStatus: boolean;
+}
+
+export interface PostContent {
+  title: string;
+  content: string;
+}
+
+export interface ImageType {
+  id: number;
+  imageUrl: string;
+}
+
+//커뮤니티 포스팅 댓글
+interface PostComments {
+  postCommentId: number;
+  user: User;
+  parentCommentId?: number;
+  likeCount: number;
+  likeStatus: boolean;
+  content: string;
+  dateTime: DateTime;
+  childPostComments?: PostComments[];
+}
+
+//날짜 타입
+export interface DateTime {
+  createdAt: string;
+  modifiedAt: string;
+}
+
+//유저
+interface User {
+  userId: number;
+  nickname: string;
+  email: string;
+  profileImage: string;
+}
+
+//태그
+interface RecommendTags {
+  tagType: string; //Lecture
+  tagName: string;
+}
+
+//댓글 생성 양식
+export interface GenerateComment {
+  parentCommentId: null | number;
+  content: string;
+}
+
+//모의고사
+interface MockExam {
+  MockExamId: number;
+  examYear: number;
+  round: number;
+  timeLimit: number;
+  certificate: Certificate;
+}
+
+//과목
+interface Subject {
+  subjectId: number;
+  subjectName: string;
+  numberOfQuestions: number;
+  totalScore: number;
+}
+
+//질문옵션(무엇을 의미하는지 파악 못함)
+interface QuestionOptions {
+  optionSequence: number;
+  optionContent: string;
+  optionImage: string;
+}
+
+//질문
+interface Question {
+  questionId: number;
+  mockExam: MockExam;
+  subject: Subject;
+  questionSeq: number;
+  questionText: string;
+  questionImage: string;
+  questionOptions: QuestionOptions[];
+  correctOption: number;
+  score: number;
+}
+
+//온보딩 자격증
+export interface CertificatesResponseType {
+  responseCode: string;
+  message: string;
+  result: CertificateType[];
+}
+
+export interface CertificateType {
+  certificateId: number;
+  certificateName: string;
 }

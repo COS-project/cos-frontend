@@ -1,50 +1,71 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { useRecoilState } from 'recoil';
+import { KeyedMutator } from 'swr';
 
-import DoneButton from '@/components/onboarding/DoneButton';
+import Header from '@/components/common/Header';
+import { postInterestCertificates } from '@/lib/api/onboarding';
+import { interestCertificatesState } from '@/recoil/onboarding/atom';
+import { InterestCertificateOnboarding, InterestCertificateResponseType } from '@/types/global';
 
 export interface CertificationPriorityProps {
-  onNext?: () => void;
-  onBefore?: () => void;
+  onNext: () => void;
+  onBefore: () => void;
+  interestCertificateDataMutate?: KeyedMutator<InterestCertificateResponseType>;
 }
 
-const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, onBefore }) => {
-  const router = useRouter();
-
-  // 자격증 데이터
-  const [certifications, setCertifications] = useState<LicenseInfo[]>([
-    // TODO: 백엔드 API 받으면 변경될 예정
-    { id: '1', title: '컴퓨터활용능력시험 1급' },
-    { id: '2', title: '컴퓨터활용능력시험 2급' },
-    { id: '3', title: '정보처리기사' },
-  ]);
-
-  //완료 버튼이 눌리면 primary 컬러로 바뀌도록 하는 state
-  const [isClick, setIsClick] = useState<boolean>(false);
-
-  //드레그 엔 드롭 순서 저장하는 함수
-  const handleChange = (result) => {
+const CertificationPriority: React.FC<CertificationPriorityProps> = ({
+  onNext,
+  onBefore,
+  interestCertificateDataMutate,
+}) => {
+  const [interestCertificates, setInterestCertificates] = useRecoilState(interestCertificatesState);
+  const [isClickedDoneButton, setIsClickedDoneButton] = useState(false); // 제출할 때, useEffect 를 움직이기 위한 트리거
+  // 드래그 앤 드롭 작업이 끝났을 때 호출되는 함수입니다. 자격증의 순서를 변경합니다.
+  const handleDragEnd = (result: any) => {
     if (!result.destination) return;
 
-    console.log(result);
-    const items = [...certifications];
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+    const reorderedCertificates = Array.from(interestCertificates.interestTargetList);
+    const [selectedCertificate] = reorderedCertificates.splice(result.source.index, 1);
+    reorderedCertificates.splice(result.destination.index, 0, selectedCertificate);
 
-    setCertifications(items);
+    setInterestCertificates(() => ({ interestTargetList: reorderedCertificates }));
   };
+
+  // 자격증 객체에서 certificateName 속성을 제거합니다. API 요청을 위한 데이터 정제 과정입니다.
+  const sanitizeCertificates = (certificates: InterestCertificateOnboarding[]) =>
+    certificates.map(({ certificateName, ...rest }) => rest);
+
+  // 각 자격증에 새로운 우선 순위를 할당합니다. 이는 사용자가 설정한 드래그 앤 드롭 순서에 기반합니다.
+  const updateCertificatesPriority = (certificates: InterestCertificateOnboarding[]) =>
+    certificates.map((certificate, index) => ({
+      ...certificate,
+      interestPriority: ['HIGH', 'NORMAL', 'LOW'][index] || certificate.interestPriority,
+    }));
+
+  // 우선 순위가 업데이트된 자격증 목록을 서버에 전송하고, 로컬 상태를 업데이트합니다.
+  const handleSubmit = () => {
+    const prioritizedCertificates = updateCertificatesPriority(interestCertificates.interestTargetList);
+    const sanitizedCertificates = sanitizeCertificates(prioritizedCertificates);
+    setInterestCertificates(() => ({ interestTargetList: sanitizedCertificates }));
+    setIsClickedDoneButton(true);
+  };
+
+  // post 요청
+  useEffect(() => {
+    if (!interestCertificates.interestTargetList[0].certificateName && isClickedDoneButton) {
+      postInterestCertificates(interestCertificates).then((r) => {
+        console.log('r', r);
+      });
+    }
+  }, [isClickedDoneButton]);
 
   return (
     <div>
-      {/* TODO: Header */}
-      <div>
-        <button onClick={onBefore}>이전</button>
-      </div>
+      <Header headerType={'dynamic'} onBack={onBefore} title={'종목설정'}></Header>
 
-      {/* 온보딩 멘트 */}
       <div className="grid gap-y-8 m-4">
         <div className="grid">
           <span className="text-h1 font-bold">
@@ -53,29 +74,22 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
           <span className="text-h5 text-gray4">우선 순위가 높은 종목부터 맨위로 끌어다 놓으세요.</span>
         </div>
 
-        {/* 자격증 종류 나열 - drag and drop*/}
-        <DragDropContext onDragEnd={handleChange}>
-          <Droppable droppableId="todos">
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="certificates">
             {(provided) => (
-              <div className="grid gap-y-2" ref={provided.innerRef} {...provided.droppableProps}>
-                {certifications.map(({ id, title }, index) => (
-                  <Draggable key={id} draggableId={id} index={index}>
+              <div className="grid gap-y-[16px]" ref={provided.innerRef} {...provided.droppableProps}>
+                {interestCertificates.interestTargetList.map(({ certificateId, certificateName }, index) => (
+                  <Draggable key={certificateId} draggableId={certificateId.toString()} index={index}>
                     {(provided) => (
                       <div
-                        className="w-full h-16 bg-gray0 rounded-full"
+                        className="w-full h-16 bg-gray0 rounded-full flex items-center gap-x-3 p-2"
                         ref={provided.innerRef}
                         {...provided.dragHandleProps}
                         {...provided.draggableProps}>
-                        <div>
-                          <div className="flex items-center gap-x-3 p-2">
-                            <div className="w-12 h-12 rounded-full bg-white">
-                              <div className="p-[10px]">
-                                <Icon />
-                              </div>
-                            </div>
-                            <div className="text-h4 font-semibold">{title}</div>
-                          </div>
+                        <div className="w-12 h-12 rounded-full bg-white p-[10px]">
+                          <Icon />
                         </div>
+                        <div className="text-h4 font-semibold">{certificateName}</div>
                       </div>
                     )}
                   </Draggable>
@@ -87,13 +101,19 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({ onNext, o
         </DragDropContext>
       </div>
 
-      {/* 완료 버튼 */}
-      <DoneButton onClick={onNext} isClick={isClick}>
-        완료
-      </DoneButton>
+      <button
+        className={'w-full bg-primary h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0 transition'}
+        onClick={() => {
+          handleSubmit();
+          onNext();
+          interestCertificateDataMutate ? interestCertificateDataMutate : null;
+        }}>
+        <div className="text-white text-h3 py-[25px]">완료</div>
+      </button>
     </div>
   );
 };
+
 export default CertificationPriority;
 
 function Icon(props: React.SVGProps<SVGSVGElement>) {

@@ -5,14 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04137b8a-1737-4fb7-bb7a-17b33d146a9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/app/(main)/mypage/components/DoneButton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/onboarding/certification-priority/page.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/onboarding/choose-certification/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+<<<<<<< Updated upstream
+      <change afterPath="$PROJECT_DIR$/public/logo.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/sw.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/public/sw.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(main)/exam/result/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(main)/exam/result/page.tsx" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/public/logo.png" afterDir="false" />
+>>>>>>> Stashed changes
       <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/AccuracyChart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/AccuracyChart.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/MockExamResultReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/MockExamResultReport.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/SubjectList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/SubjectList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/SubmitConfirmationModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/SubmitConfirmationModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/TakenTimeGraphReport.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/TakenTimeGraphReport.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/TestSubmitOrCancle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/TestSubmitOrCancle.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/TimerModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/TimerModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/exam/UserExamAttemptsFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/exam/UserExamAttemptsFilter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/hooks/useGetTestResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/hooks/useGetTestResults.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,10 +31,18 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="fix_mypage-final-bug" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -33,21 +52,51 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< Updated upstream
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "fix/error-on-mockExam-page",
+    "last_opened_file_path": "/Users/hwang-yulim/Documents/GitHub/cercat-front",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/prettier",
+    "ts.external.directory.path": "/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+=======
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;yurim&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cos-frontend&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cos-frontend/node_modules/typescript/lib&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/prettier&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/hwang-yulim/Documents/GitHub/cercat-front/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+>>>>>>> Stashed changes
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23726.96" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -62,10 +111,94 @@
       <workItem from="1704112025702" duration="1065000" />
       <workItem from="1704118250285" duration="160000" />
       <workItem from="1704118419630" duration="9436000" />
+      <workItem from="1708765855642" duration="6911000" />
+      <workItem from="1708786283914" duration="4899000" />
+      <workItem from="1708818146370" duration="1351000" />
+      <workItem from="1708916679803" duration="15776000" />
+      <workItem from="1708940160356" duration="13450000" />
+      <workItem from="1708953643190" duration="1175000" />
+      <workItem from="1708954824691" duration="3462000" />
+      <workItem from="1709195160861" duration="1270000" />
+      <workItem from="1709278300769" duration="6840000" />
+      <workItem from="1709295027122" duration="13399000" />
+      <workItem from="1709359851123" duration="16582000" />
+      <workItem from="1709377616546" duration="1086000" />
+      <workItem from="1709378738230" duration="229000" />
+      <workItem from="1709378971986" duration="5385000" />
+      <workItem from="1709459376722" duration="2360000" />
+      <workItem from="1709529966402" duration="1195000" />
+      <workItem from="1709797885677" duration="21000" />
+      <workItem from="1710081590527" duration="1861000" />
+      <workItem from="1710237566298" duration="1376000" />
+      <workItem from="1710238948087" duration="5184000" />
+      <workItem from="1710257275263" duration="3970000" />
+      <workItem from="1710289936304" duration="12093000" />
+      <workItem from="1710396369661" duration="605000" />
+      <workItem from="1710424561536" duration="7842000" />
+      <workItem from="1710854232358" duration="609000" />
+      <workItem from="1710898876230" duration="2072000" />
+      <workItem from="1710926518180" duration="610000" />
+      <workItem from="1711016732559" duration="1423000" />
+      <workItem from="1711018748679" duration="23000" />
+      <workItem from="1711018787714" duration="656000" />
+      <workItem from="1711020407681" duration="72000" />
+      <workItem from="1711028052036" duration="138000" />
+      <workItem from="1711112742250" duration="600000" />
+      <workItem from="1711451480919" duration="602000" />
+      <workItem from="1711456659252" duration="4260000" />
+      <workItem from="1711624482380" duration="21894000" />
+      <workItem from="1711885129398" duration="3499000" />
+      <workItem from="1711888758243" duration="8574000" />
+      <workItem from="1711977024625" duration="1555000" />
+      <workItem from="1712205240660" duration="378000" />
+      <workItem from="1712205874658" duration="496000" />
+      <workItem from="1712482242705" duration="20698000" />
+      <workItem from="1712878931687" duration="11236000" />
+      <workItem from="1714503983170" duration="6598000" />
+      <workItem from="1714562222791" duration="8739000" />
+      <workItem from="1714611962110" duration="1329000" />
+      <workItem from="1714820712763" duration="6383000" />
+      <workItem from="1715048202330" duration="4341000" />
+      <workItem from="1715154350854" duration="16864000" />
+      <workItem from="1715184765387" duration="3394000" />
+      <workItem from="1715261809381" duration="311000" />
+      <workItem from="1715154350854" duration="16864000" />
+      <workItem from="1715184765387" duration="3394000" />
+      <workItem from="1725362460747" duration="2945000" />
+      <workItem from="1725429117888" duration="5366000" />
+      <workItem from="1725868198509" duration="7405000" />
+      <workItem from="1726733459523" duration="6000" />
+      <workItem from="1726909272319" duration="3513000" />
+      <workItem from="1727055698935" duration="2482000" />
+      <workItem from="1727509758898" duration="980000" />
+      <workItem from="1727511295935" duration="277000" />
+      <workItem from="1730870361438" duration="1844000" />
+      <workItem from="1730894430537" duration="3886000" />
+      <workItem from="1730946380491" duration="34000" />
+      <workItem from="1730946432834" duration="31000" />
+      <workItem from="1730946546478" duration="7740000" />
+      <workItem from="1730958407947" duration="4834000" />
+      <workItem from="1730978077552" duration="1634000" />
+      <workItem from="1731026452192" duration="1426000" />
+      <workItem from="1731116951657" duration="599000" />
+      <workItem from="1731456670508" duration="1275000" />
+      <workItem from="1731459575203" duration="9760000" />
+      <workItem from="1731910040527" duration="8006000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/recoil/community/atom.ts</url>
+          <line>23</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
