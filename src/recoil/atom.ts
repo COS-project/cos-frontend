@@ -2,25 +2,9 @@
 
 import { format } from 'date-fns';
 import { atom } from 'recoil';
-// persist 설정
-import { recoilPersist } from 'recoil-persist';
 
+import { persistAtom } from '@/recoil/recoilPersistClient';
 import { Certificate } from '@/types/global';
-
-let safeStorage: Storage | undefined = undefined;
-
-try {
-  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-    safeStorage = localStorage;
-  }
-} catch (e) {
-  safeStorage = undefined;
-}
-
-const { persistAtom } = recoilPersist({
-  key: 'recoil-persist',
-  storage: safeStorage,
-});
 
 // 현재 선택된 자격증 이름
 export const certificateNameAtom = atom<string>({

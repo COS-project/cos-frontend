@@ -4,7 +4,9 @@ import './globals.css';
 
 import { RecoilRoot } from 'recoil';
 
+import ClientOnlyRecoil from '@/components/common/ClientOnlyRecoil';
 import Timer from '@/components/common/Timer';
+import { certificateNameAtom } from '@/recoil/atom';
 
 // export const metadata: Metadata = {
 //   title: 'COS project',
@@ -14,10 +16,9 @@ import Timer from '@/components/common/Timer';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html className="">
-      <RecoilRoot>
-        <body>{children}</body>
-        <Timer></Timer>
-      </RecoilRoot>
+      <body>
+        <ClientOnlyRecoil>{children}</ClientOnlyRecoil>
+      </body>
     </html>
   );
 }
