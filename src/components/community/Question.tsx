@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React, { SVGProps } from 'react';
 
 import { QuestionOptions } from '@/types/global';
@@ -28,7 +29,13 @@ const Question = (props: Props) => {
         className={
           'absolute left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-5 min-h-screen'
         }>
-        <div
+          <motion.div
+            className={'flex flex-col gap-y-2'}
+            initial={{ y: 200, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 200, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
+          <div
           onClick={() => {
             setIsClickQuestionButton(!isClickQuestionButton);
           }}
@@ -65,6 +72,7 @@ const Question = (props: Props) => {
             })}
           </div>
         </div>
+        </motion.div>
       </div>
     </>
   );
