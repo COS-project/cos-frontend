@@ -28,7 +28,7 @@ const SolveExamBox = () => {
   const [isClickedYearSelector, setIsClickedYearSelector] = useState<boolean>(false);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [isRandomMockExamModalOpen, setIsRandomMockExamModalOpen] = useState(false);
-  const [isDelayOver] = useDelayOver(400);
+  const isDelayOver = useDelayOver(300, examYears);
 
   useEffect(() => {
     if (examYears && selectedYear === null) {
@@ -52,7 +52,7 @@ const SolveExamBox = () => {
           />
         </div>
         <div className="text-h3 mt-[24px] font-bold">모의고사 풀기</div>
-        {!isDelayOver || examYearsIsLoading || !selectedYear ? (
+        {!isDelayOver ? (
           <>
             <SkeletonYearSelector />
             <SkeletonSubjectSessionCard />

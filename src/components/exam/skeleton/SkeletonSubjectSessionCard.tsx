@@ -1,3 +1,7 @@
+'use client';
+
+import 'react-loading-skeleton/dist/skeleton.css';
+
 import Skeleton from 'react-loading-skeleton';
 
 const SkeletonSubjectSessionCard = () => {
@@ -6,7 +10,7 @@ const SkeletonSubjectSessionCard = () => {
       {[1, 2, 3, 4].map((_, i) => (
         <div
           key={i}
-          className="mt-[16px] flex flex-col items-center gap-y-4 p-3 border-[1px] border-gray2 rounded-[32px] w-[178px]">
+          className="mt-[16px] flex flex-col items-center gap-y-4 p-3 border-[1px] border-gray2 rounded-[32px] w-full">
           <div className="font-semibold text-center pb-2 border-b border-gray1">
             <Skeleton height={20} width={135} borderRadius={8} />
           </div>

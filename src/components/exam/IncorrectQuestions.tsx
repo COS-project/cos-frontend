@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
+import Spinner from '@/components/common/Spinner';
 import IncorrectQuestionCard from '@/components/exam/IncorrectQuestionCard';
 import useGetIncorrectQuestionsResult from '@/lib/hooks/useGetIncorrectQuestionsResult';
 import { MockExamIncorrectQuestionsResult, MockExamIncorrectQuestionsResultResponseType } from '@/types/exam/type';
@@ -28,25 +29,27 @@ const IncorrectQuestions = (props: Props) => {
   return (
     <>
       <div className={'flex flex-col bg-gray0 gap-y-5'}>
-        {incorrectQuestionsResult
-          ? incorrectQuestionsResult.map((pastWrongQuestion: MockExamIncorrectQuestionsResultResponseType) => {
-              return pastWrongQuestion?.result.content.map(
-                (wrongQuestion: MockExamIncorrectQuestionsResult, index: number) => {
-                  return (
-                    <div key={index} ref={ref}>
-                      <IncorrectQuestionCard
-                        selectOptionSeq={wrongQuestion.selectOptionSeq}
-                        mockExam={wrongQuestion.question.mockExam}
-                        correctOption={wrongQuestion.question.correctOption}
-                        questionOptions={wrongQuestion.question.questionOptions}
-                        questionText={wrongQuestion.question.questionText}
-                        questionSeq={wrongQuestion.question.questionSeq}></IncorrectQuestionCard>
-                    </div>
-                  );
-                },
-              );
-            })
-          : null}
+        {incorrectQuestionsResult ? (
+          incorrectQuestionsResult.map((pastWrongQuestion: MockExamIncorrectQuestionsResultResponseType) => {
+            return pastWrongQuestion?.result.content.map(
+              (wrongQuestion: MockExamIncorrectQuestionsResult, index: number) => {
+                return (
+                  <div key={index} ref={ref}>
+                    <IncorrectQuestionCard
+                      selectOptionSeq={wrongQuestion.selectOptionSeq}
+                      mockExam={wrongQuestion.question.mockExam}
+                      correctOption={wrongQuestion.question.correctOption}
+                      questionOptions={wrongQuestion.question.questionOptions}
+                      questionText={wrongQuestion.question.questionText}
+                      questionSeq={wrongQuestion.question.questionSeq}></IncorrectQuestionCard>
+                  </div>
+                );
+              },
+            );
+          })
+        ) : (
+          <Spinner />
+        )}
       </div>
     </>
   );

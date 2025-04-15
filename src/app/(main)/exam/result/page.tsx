@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import Spinner from '@/components/common/Spinner';
 import AccuracyChart from '@/components/exam/AccuracyChart';
 import IncorrectQuestions from '@/components/exam/IncorrectQuestions';
 import MockExamReportHeader from '@/components/exam/MockExamReportHeader';
@@ -54,7 +55,7 @@ const Result = () => {
   const displayComponentBasedOnExamResults = (examResults: MockExamResultType[] | null | undefined) => {
     if (isInitialLoad || !examResults || examResults.length === 0) {
       // 데이터 로드 중일 때 로딩 상태 표시
-      return <div>Loading...</div>;
+      return <Spinner />;
     }
 
     if (!isInitialLoad && examResults && examResults.length === 1) {
@@ -136,14 +137,14 @@ const Result = () => {
   };
 
   return (
-    <>
-      <Header headerType={'dynamic'} title={'성적리포트'} onBack={onBack}></Header>
+    <div className={'bg-gray0 min-h-screen'}>
+      <Header headerType={'dynamic'} title={'성적 리포트'} onBack={onBack}></Header>
       <MockExamReportHeader isClicked={isClicked} setIsClicked={setIsClicked} />
-      <div className={'bg-gray0 min-h-screen p-5'}>{displayComponentBasedOnExamResults(examResults)}</div>
+      <div className={'p-5'}>{displayComponentBasedOnExamResults(examResults)}</div>
       <div className={'h-[100px]'} />
       <StopWatchActiveButton />
       <NavBar />
-    </>
+    </div>
   );
 };
 
