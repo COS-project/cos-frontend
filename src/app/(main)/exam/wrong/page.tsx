@@ -46,7 +46,8 @@ const IncorrectQuestion = () => {
                         correctOption={wrongQuestion.question.correctOption}
                         questionOptions={wrongQuestion.question.questionOptions}
                         questionText={wrongQuestion.question.questionText}
-                        questionSeq={wrongQuestion.question.questionSeq} />
+                        questionSeq={wrongQuestion.question.questionSeq}
+                      />
                     </div>
                   );
                 },

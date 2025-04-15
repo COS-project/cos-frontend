@@ -1,10 +1,10 @@
 'use client';
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import React, { SVGProps, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { mockExamIdState, timerIsPaused } from '@/recoil/exam/atom';
-import { motion } from 'framer-motion';
 
 interface SessionModalProps {
   mockExamId: number;

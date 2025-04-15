@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { SVGProps, useEffect, useState } from 'react';
 import React from 'react';
@@ -7,7 +8,6 @@ import useDelayOver from '@/hooks/useDelayOver';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 
 import SubjectGradeCard from './SubjectGradeCard';
-import { motion } from 'framer-motion';
 
 interface SessionModalProps {
   round: number;
@@ -30,7 +30,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
 
   return (
     <div>
-      <div className='fixed inset-0 left-0 right-0 top-0 z-50 flex flex-col justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'>
+      <div className="fixed inset-0 left-0 right-0 top-0 z-50 flex flex-col justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen">
         <motion.div
           className={'flex flex-col gap-y-2'}
           initial={{ y: 200, opacity: 0 }}
