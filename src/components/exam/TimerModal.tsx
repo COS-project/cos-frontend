@@ -4,6 +4,7 @@ import React, { SVGProps, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 import { mockExamIdState, timerIsPaused } from '@/recoil/exam/atom';
+import { motion } from 'framer-motion';
 
 interface SessionModalProps {
   mockExamId: number;
@@ -32,8 +33,13 @@ const TimerModal: React.FC<SessionModalProps> = ({
   }, [closeSessionModal]);
 
   return (
-    <div className="fixed z-30 inset-0 flex items-center justify-center bg-black bg-opacity-30">
-      <div className="w-[80%]">
+    <div className="fixed inset-0 left-0 right-0 top-0 z-50 flex flex-col justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen">
+      <motion.div
+        className={'flex flex-col gap-y-2'}
+        initial={{ y: 200, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 200, opacity: 0 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
         <button onClick={closeTimerModal} className="w-full flex items-center justify-end text-white text-h6 px-2 my-2">
           닫기 <CancleIcon />
         </button>
@@ -65,7 +71,7 @@ const TimerModal: React.FC<SessionModalProps> = ({
             시험 보기
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

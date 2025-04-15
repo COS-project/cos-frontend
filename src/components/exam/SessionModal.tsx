@@ -7,6 +7,7 @@ import useDelayOver from '@/hooks/useDelayOver';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 
 import SubjectGradeCard from './SubjectGradeCard';
+import { motion } from 'framer-motion';
 
 interface SessionModalProps {
   round: number;
@@ -19,7 +20,7 @@ interface SessionModalProps {
 const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeModal, openTimerModal, total }) => {
   const [changedRound, setChangedRound] = useState<number>(0);
   const { examResults, isLoading, isError } = useGetTestResults(mockExamId);
-  const [isDelayOver] = useDelayOver(200);
+  const isDelayOver = useDelayOver(200, examResults);
 
   useEffect(() => {
     if (round) {
@@ -29,23 +30,24 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
 
   return (
     <div>
-      <div className="fixed z-30 inset-0 flex items-center justify-center bg-black bg-opacity-30">
-        <div className="w-[80%]">
+      <div className='fixed inset-0 left-0 right-0 top-0 z-50 flex flex-col justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'>
+        <motion.div
+          className={'flex flex-col gap-y-2'}
+          initial={{ y: 200, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 200, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
           <button onClick={closeModal} className="w-full flex justify-end items-center text-white text-h6 px-2 my-2">
             닫기 <CancleIcon />
           </button>
           <div className="relative bg-white rounded-[32px]">
             <div className="flex flex-col gap-y-4 p-5">
               <div className=" flex justify-center">
-                {isLoading || !isDelayOver ? (
-                  <Skeleton height={24} width={70} borderRadius={8} />
-                ) : (
-                  <div>{`${round}회차`}</div>
-                )}
+                {!isDelayOver ? <Skeleton height={24} width={70} borderRadius={8} /> : <div>{`${round}회차`}</div>}
               </div>
               <div className="border-t border-gray1"></div>
               <div className="flex justify-between">
-                {isLoading || !isDelayOver ? (
+                {!isDelayOver ? (
                   <div className="absolute right-5">
                     <Skeleton height={37} width={112} borderRadius={999} />
                   </div>
@@ -58,12 +60,12 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                 )}
                 <div>
                   {/* 점수 */}
-                  {!isDelayOver || isLoading ? (
+                  {!isDelayOver ? (
                     <Skeleton height={21} width={60} borderRadius={8} />
                   ) : (
                     <div className="font-semibold text-h6">최근 점수</div>
                   )}
-                  {!isDelayOver || !examResults || isLoading ? (
+                  {!isDelayOver || !examResults ? (
                     <Skeleton height={30} width={93} borderRadius={8} />
                   ) : (
                     <>
@@ -87,7 +89,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                 {!isDelayOver || !examResults || isLoading ? (
                   <div className={'flex flex-col gap-y-2'}>
                     <Skeleton height={20} width={120} borderRadius={8} />
-                    <Skeleton height={81} width={283} />
+                    <Skeleton height={81} width={257} />
                   </div>
                 ) : (
                   <div className={'flex flex-col gap-y-2'}>
@@ -115,7 +117,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

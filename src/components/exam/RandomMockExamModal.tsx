@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import type { SVGProps } from 'react';
 import * as React from 'react';
 
@@ -10,34 +11,41 @@ const RandomMockExamModal = (props: Props) => {
     <>
       <div
         className={
-          'fixed left-0 right-0 top-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
+          'fixed inset-0 left-0 right-0 top-0 z-50 flex flex-col justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
         }>
-        <div
-          onClick={() => {
-            setIsRandomMockExamModalOpen(false);
-          }}
-          className={'flex justify-end items-center'}>
-          <div className={'text-white text-h6'}>닫기</div>
-          <CancelIcon />
-        </div>
-        <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
-          <div className={'flex flex-col gap-y-1'}>
-            <div className={'text-h2 font-semibold text-black'}>랜덤 모의고사는 준비중이에요</div>
-            <div>
-              <div className={'flex items-center text-h6'}>서비스 준비가 완료될 때까지</div>
-              <div className={'text-h6'}>기다려주시겠어요?</div>
+        <motion.div
+          className={'flex flex-col gap-y-2'}
+          initial={{ y: 200, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 200, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
+          <div
+            onClick={() => {
+              setIsRandomMockExamModalOpen(false);
+            }}
+            className={'flex justify-end items-center'}>
+            <div className={'text-white text-h6'}>닫기</div>
+            <CancelIcon />
+          </div>
+          <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
+            <div className={'flex flex-col gap-y-1'}>
+              <div className={'text-h2 font-semibold text-black'}>랜덤 모의고사는 준비중이에요</div>
+              <div>
+                <div className={'flex items-center text-h6'}>서비스 준비가 완료될 때까지</div>
+                <div className={'text-h6'}>기다려주시겠어요?</div>
+              </div>
+            </div>
+            <div className={'flex justify-end gap-x-2'}>
+              <button
+                onClick={() => {
+                  setIsRandomMockExamModalOpen(false);
+                }}
+                className={'bg-black rounded-full text-white py-[7px] px-4'}>
+                확인
+              </button>
             </div>
           </div>
-          <div className={'flex justify-end gap-x-2'}>
-            <button
-              onClick={() => {
-                setIsRandomMockExamModalOpen(false);
-              }}
-              className={'bg-black rounded-full text-white py-[7px] px-4'}>
-              확인
-            </button>
-          </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );
