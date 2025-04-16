@@ -7,6 +7,11 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    extend: {
+      fontFamily: {
+        pre: ['"Pretendard Variable"', 'ui-sans-serif', 'system-ui'],
+      },
+    },
     colors: {
       // Brand colors
       primary: '#3B3DFF',
@@ -45,7 +50,7 @@ const config: Config = {
       lg: '1080px',   // lg를 1080px로 변경
       xl: '1440px',   // xl을 1440px로 변경
       '2xl': '1800px' // 2xl을 1800px로 변경
-    }
+    },
   },
   plugins: [],
 };

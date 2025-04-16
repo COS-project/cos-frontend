@@ -3,8 +3,8 @@ import React, { SVGProps } from 'react';
 
 import { QuestionOptions } from '@/types/global';
 interface Props {
-  setIsClickQuestionButton: React.Dispatch<React.SetStateAction<boolean>>;
-  isClickQuestionButton: boolean;
+  setIsQuestionModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isQuestionModalOpen: boolean;
   examYear: number | undefined;
   examRound: number | undefined;
   questionSeq: number | undefined;
@@ -14,8 +14,8 @@ interface Props {
 }
 const Question = (props: Props) => {
   const {
-    setIsClickQuestionButton,
-    isClickQuestionButton,
+    setIsQuestionModalOpen,
+    isQuestionModalOpen,
     examYear,
     examRound,
     questionSeq,
@@ -29,49 +29,49 @@ const Question = (props: Props) => {
         className={
           'absolute left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-5 min-h-screen'
         }>
-          <motion.div
-            className={'flex flex-col gap-y-2'}
-            initial={{ y: 200, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 200, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
+        <motion.div
+          className={'flex flex-col gap-y-2'}
+          initial={{ y: 200, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 200, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
           <div
-          onClick={() => {
-            setIsClickQuestionButton(!isClickQuestionButton);
-          }}
-          className={'flex justify-end items-center'}>
-          <div className={'text-white text-h6'}>닫기</div>
-          <CancelIcon />
-        </div>
-        <div className={'w-full flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
-          <div className={'text-h6 text-gray4 px-2 py-[2px] rounded-[8px] bg-gray0 w-fit'}>
-            {examYear}년도 {examRound}회차 {questionSeq}번
+            onClick={() => {
+              setIsQuestionModalOpen(!isQuestionModalOpen);
+            }}
+            className={'flex justify-end items-center'}>
+            <div className={'text-white text-h6'}>닫기</div>
+            <CancelIcon />
           </div>
-          <div className={'text-h3 font-semibold'}>{content}</div>
-          <div className={'flex flex-col gap-y-4'}>
-            {questionOptions?.map((questionOption, index) => {
-              return (
-                <div
-                  key={index}
-                  className={
-                    correctOption === questionOption.optionSequence
-                      ? 'flex gap-x-2 p-4 rounded-[16px] border-[1px] border-primary text-second items-start bg-[#6283FD] bg-opacity-20'
-                      : 'flex gap-x-2 p-4 rounded-[16px] border-[1px] border-gray1'
-                  }>
-                  <div>
-                    {correctOption === questionOption.optionSequence ? (
-                      <CorrectOptionIcon className={'mt-1'} />
-                    ) : (
-                      questionOption.optionSequence
-                    )}
-                    .
+          <div className={'w-full flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
+            <div className={'text-h6 text-gray4 px-2 py-[2px] rounded-[8px] bg-gray0 w-fit'}>
+              {examYear}년도 {examRound}회차 {questionSeq}번
+            </div>
+            <div className={'text-h3 font-semibold'}>{content}</div>
+            <div className={'flex flex-col gap-y-4'}>
+              {questionOptions?.map((questionOption, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={
+                      correctOption === questionOption.optionSequence
+                        ? 'flex gap-x-2 p-4 rounded-[16px] border-[1px] border-primary text-second items-start bg-[#6283FD] bg-opacity-20'
+                        : 'flex gap-x-2 p-4 rounded-[16px] border-[1px] border-gray1'
+                    }>
+                    <div>
+                      {correctOption === questionOption.optionSequence ? (
+                        <CorrectOptionIcon className={'mt-1'} />
+                      ) : (
+                        questionOption.optionSequence
+                      )}
+                      .
+                    </div>
+                    <div>{questionOption.optionContent}</div>
                   </div>
-                  <div>{questionOption.optionContent}</div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
         </motion.div>
       </div>
     </>

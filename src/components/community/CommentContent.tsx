@@ -1,7 +1,7 @@
 //커뮤니티 댓글 내용부분(프로필과 댓글 내용을 분리해놓음, 댓글과 대댓글 컴포넌트는 따로 구현돼있음)
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import DdbongIcon from './DdabongIcon';
 
@@ -33,11 +33,11 @@ const CommentContent = (props: Props) => {
         </div>
         <div className="flex-col justify-center items-center inline-flex cursor-pointer">
           {isLike ? (
-            <DdbongIcon width="19" height="17" color="#6283FD" onClick={DdabongClick}></DdbongIcon>
+            <DdbongIcon width="19" height="17" color="#6283FD" onClick={DdabongClick} />
           ) : (
-            <DdbongIcon width="19" height="17" color="#727375" onClick={DdabongClick}></DdbongIcon>
+            <DdbongIcon width="19" height="17" color="#727375" onClick={DdabongClick} />
           )}
-          <div className="text-gray4 text-h7 font-light font-['Inter']">{ddabonhNumber}</div>
+          <div className="text-gray4 text-h7 font-light font-['Pretendard Variable']">{ddabonhNumber}</div>
         </div>
       </div>
     </div>
