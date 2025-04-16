@@ -2,7 +2,7 @@ import type { SVGProps } from 'react';
 import * as React from 'react';
 import { KeyedMutator } from 'swr';
 
-import { postingDelete } from '@/lib/api/communityPost';
+import { deletePost } from '@/lib/api/communityPost';
 import { BoardType } from '@/types/community/type';
 import { MyPostsResponseType } from '@/types/mypage/type';
 interface Props {
@@ -45,7 +45,7 @@ const DeleteWarningModal = (props: Props) => {
             <button
               onClick={async () => {
                 setIsDeleteWarningModalOpen(!isDeleteWarningModalOpen);
-                await postingDelete(postId);
+                await deletePost(postId);
                 await mutate();
               }}
               className={'bg-black rounded-full text-white py-[7px] px-3'}>

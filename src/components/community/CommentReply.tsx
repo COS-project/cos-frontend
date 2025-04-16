@@ -40,7 +40,8 @@ const CommentReply = (props: Props) => {
         isLike={info.likeStatus}
         ddabonhNumber={info.likeCount}
         content={info.content}
-        DdabongClick={DdabongClick}></CommentContent>
+        DdabongClick={DdabongClick}
+      />
     </div>
   );
 };

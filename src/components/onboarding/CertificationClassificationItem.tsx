@@ -98,8 +98,9 @@ const CertificationClassificationItem = (props: Props) => {
         if (usage === 'onboarding') {
           createInterestCertification();
           handleCertificationClick(certificateId);
+        } else {
+          onClickMoveButton();
         }
-        onClickMoveButton();
       }}
       className={twMerge('certificationItem-not-clicked', isClickState && className)}>
       <div className="relative flex items-center gap-x-3 p-2">

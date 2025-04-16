@@ -668,7 +668,7 @@ const EditPost = (props: Props) => {
                 style={{ display: 'none' }}></input>
             </div>
           </div>
-          <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
+          <div className={'w-[375px] flex items-center overflow-x-scroll gap-x-3 pb-8'}>
             {/* API에서 받은 과거의 urls */}
             {pastImageUrls?.map((img, i) => {
               return (

@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useRecoilState } from 'recoil';
 
-import { postCommentDelete, postingDelete } from '@/lib/api/communityPost';
+import { deletePost, postCommentDelete } from '@/lib/api/communityPost';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 
@@ -55,7 +55,7 @@ const PostingModal = (props: Props) => {
                 }
                 if (postDelete != 0 && commentDelete == 0) {
                   //게시글 삭제
-                  await postingDelete(postDelete);
+                  await deletePost(postDelete);
                   setOnPostModal(false);
                   router.push(afterDelete || '/'); //'/'는 사실상 실행 안됨 게시글 삭제후 이전페이지로 돌아감
                 }

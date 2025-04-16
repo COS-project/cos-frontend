@@ -1,6 +1,49 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
+@font-face {
+    font-family:"Pretendard Variable";
+    src: url("/fonts/PretendardVariable.ttf") format("opentype");
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    /* 온보딩, 게시판 선택시 사용되는 컴포넌트 스타일 */
+    .head1 {
+        @apply text-h1 font-bold leading-[36px] tracking-[-0.02em] font-pre
+    }
+    .title1 {
+        @apply text-h2 font-bold leading-[36px] tracking-[-0.02em] font-pre
+    }
+    .title2 {
+        @apply text-h3 font-bold leading-[36px] tracking-[-0.02em] font-pre
+    }
+    .title3 {
+        @apply text-h3 font-semibold leading-[36px] tracking-[-0.02em] font-pre
+    }
+    .title4 {
+        @apply text-h4 font-bold leading-[36px] tracking-[-0.02em] font-pre
+    }
+    .title5 {
+        @apply text-h4 font-semibold leading-[36px] tracking-[-0.02em] font-pre
+    }
+    .subtitle1 {
+        @apply text-h4 font-medium leading-[36px] tracking-[-0.02em] font-pre
+    }
+    .subtitle2 {
+        @apply text-h6 font-semibold leading-[36px] tracking-[-0.02em] font-pre
+    }
+    .body1 {
+        @apply text-h4 font-normal leading-[36px] tracking-[-0.02em] font-pre
+    }
+    .body2 {
+        @apply text-h6 font-normal leading-[36px] tracking-[-0.02em] font-pre
+    }
+    .button {
+        @apply text-h6 font-medium leading-[36px] tracking-[-0.02em] font-pre
+    }
+}
 
 @layer components {
     /* 온보딩, 게시판 선택시 사용되는 컴포넌트 스타일 */

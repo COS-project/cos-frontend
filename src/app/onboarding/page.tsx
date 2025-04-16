@@ -9,9 +9,9 @@ import ChooseCertification from '@/components/onboarding/ChooseCertification';
 import ProfileSettings from '@/components/onboarding/ProfileSettings';
 
 const OnBoardingComponents = () => {
-  const parameter = useSearchParams();
-  const accessToken: string | null = parameter.get('accessToken');
-  const refreshToken: string | null = parameter.get('refreshToken');
+  const searchParams = useSearchParams();
+  const accessToken = searchParams.get('accessToken') || '';
+  const refreshToken = searchParams.get('refreshToken') || '';
 
   const [step, setStep] = useState<'ProfileSetting' | 'ChooseCertification' | 'CertificationPriority'>(
     'ProfileSetting',

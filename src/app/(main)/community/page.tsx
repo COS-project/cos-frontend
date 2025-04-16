@@ -4,6 +4,7 @@ import React from 'react';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import CertificationItemSkeleton from '@/components/community/skeleton/CertificationItemSkeleton';
 import CertificationClassificationItem from '@/components/onboarding/CertificationClassificationItem';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useGetBoardList from '@/lib/hooks/useGetBoardList';
@@ -45,23 +46,25 @@ export default function Community() {
         </div>
         {/* 자격증 선택 */}
         <div className="grid gap-y-4">
-          {boardList
-            ? boardList.map((certification: FavoriteBoard) => {
-                return (
-                  <CertificationClassificationItem
-                    usage={'board'}
-                    key={certification.certificateId}
-                    certificateId={certification.certificateId}
-                    certificateName={certification.boardName}
-                    isClickState={certification.isFavorite}
-                    isMoveButton={true}
-                    path={certification.certificateId}
-                    icon={chooseClassificationItemIcon(certification.isFavorite)}>
-                    {certification.boardName}
-                  </CertificationClassificationItem>
-                );
-              })
-            : null}
+          {boardList ? (
+            boardList.map((certification: FavoriteBoard) => {
+              return (
+                <CertificationClassificationItem
+                  usage={'board'}
+                  key={certification.certificateId}
+                  certificateId={certification.certificateId}
+                  certificateName={certification.boardName}
+                  isClickState={certification.isFavorite}
+                  isMoveButton={true}
+                  path={certification.certificateId}
+                  icon={chooseClassificationItemIcon(certification.isFavorite)}>
+                  {certification.boardName}
+                </CertificationClassificationItem>
+              );
+            })
+          ) : (
+            <CertificationItemSkeleton />
+          )}
         </div>
       </div>
       <StopWatchActiveButton />
