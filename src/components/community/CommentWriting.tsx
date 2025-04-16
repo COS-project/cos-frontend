@@ -2,7 +2,8 @@
 //link부분 수정 필요함
 'use client';
 
-import React, { FormEvent, useEffect, useState } from 'react';
+import Image from 'next/image';
+import React, { FormEvent, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { KeyedMutator } from 'swr';
 
@@ -10,27 +11,15 @@ import { postCommentData } from '@/lib/api/communityPost';
 import { GenerateCommentState } from '@/recoil/community/atom';
 import { ResponseType } from '@/types/common/type';
 import { ResponsePostDetailType } from '@/types/community/type';
-import Image from 'next/image';
 
 interface Props {
-  link?: string; //버튼 눌렀을 때 데이터를 저장하는 경로 입력, api연결하면서 "?"수정 필요함
-  commentId?: number; //부모댓글 id
   postId: number; //포스트 id
   communityPostDataMutate: KeyedMutator<ResponseType<ResponsePostDetailType>>; // communityPostData를 바로 불러오는 mutate함수
-  setReplyOnOff?: React.Dispatch<React.SetStateAction<boolean>>;
-
 }
 
 const CommentWriting = (props: Props) => {
-  const { link, commentId, postId, communityPostDataMutate, setReplyOnOff} = props;
+  const { postId, communityPostDataMutate } = props;
   const [generateComment, setGenerateComment] = useRecoilState(GenerateCommentState);
-
-  useEffect(() => {
-    if (commentId != null) {
-      //부모댓글이 있을 때(대댓글일 때)
-      setGenerateComment({ ...generateComment, parentCommentId: commentId });
-    }
-  }, [commentId]);
 
   /**
    * form 형식 제출 함수
@@ -43,9 +32,6 @@ const CommentWriting = (props: Props) => {
         communityPostDataMutate();
       }); // API 호출
       setGenerateComment({ ...generateComment, content: '', parentCommentId: null });
-      if (setReplyOnOff) {
-        setReplyOnOff(false);
-      }
     } catch (error) {
       console.error('댓글 제출 중 오류 발생:', error);
     }
@@ -60,9 +46,11 @@ const CommentWriting = (props: Props) => {
           contentEditable
           onInput={(e) => {
             const content = e.currentTarget.textContent || '';
-            setGenerateComment({ ...generateComment, content });
+            setGenerateComment({ ...generateComment, content: content });
           }}
-          data-placeholder="의견을 남겨주세요."
+          data-placeholder={
+            generateComment.parentCommentId !== null ? '대댓글을 작성해주세요.' : '댓글을 작성해주세요.'
+          }
           className="w-full min-h-[40px] max-h-[200px] overflow-y-auto outline-none placeholder:text-gray4 text-black text-[15px] font-['Pretendard Variable'] leading-snug bg-gray0 rounded-[12px] py-4 empty:before:content-[attr(data-placeholder)] empty:before:text-gray4"
         />
         <div className="w-10 h-10 relative">

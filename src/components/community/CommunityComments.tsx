@@ -1,24 +1,20 @@
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import Profile from '@/components/community/Profile';
-import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
-import { PostComments } from '@/types/global';
 import { deleteToggleLikeData, postToggleLikeData } from '@/lib/api/communityPost';
+import { GenerateCommentState } from '@/recoil/community/atom';
+import { PostComments } from '@/types/global';
 
 interface Props {
-  postId: number;
   commentList: PostComments[];
   setCommentIsOptionModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedCommentId: React.Dispatch<React.SetStateAction<number>>;
 }
 const CommunityComments = (props: Props) => {
-  const { commentList, setCommentIsOptionModalOpen, setSelectedCommentId, postId } = props;
-  const params = useParams();
-  const { communityPostDataMutate } = useGetCommunityPost(params.id);
-
+  const { commentList, setCommentIsOptionModalOpen } = props;
   const [localCommentList, setLocalCommentList] = useState<PostComments[]>([]);
+  const [generateComment, setGenerateComment] = useRecoilState(GenerateCommentState);
 
   useEffect(() => {
     setLocalCommentList(commentList);
@@ -81,7 +77,15 @@ const CommunityComments = (props: Props) => {
                     <p className={'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-black'}>
                       {comment.content}
                     </p>
-                    <button className={'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-gray4'}>
+                    <button
+                      onClick={() => {
+                        setGenerateComment({ ...generateComment, parentCommentId: comment.postCommentId });
+                      }}
+                      className={
+                        generateComment.parentCommentId === comment.postCommentId
+                          ? 'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-point'
+                          : 'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-gray4'
+                      }>
                       답글 달기
                     </button>
                   </div>
@@ -89,14 +93,14 @@ const CommunityComments = (props: Props) => {
                     onClick={() => {
                       if (comment.likeStatus) {
                         deleteToggleLikeData(comment.postCommentId, 'COMMENT').then(() => {
-                          console.log('좋아요 삭제')
-                        })
+                          console.log('좋아요 삭제');
+                        });
                       } else {
                         postToggleLikeData(comment.postCommentId, 'COMMENT').then(() => {
-                          console.log('좋아요 추가')
-                        })
+                          console.log('좋아요 추가');
+                        });
                       }
-                      handleLikeClick(comment.postCommentId)
+                      handleLikeClick(comment.postCommentId);
                     }}
                     className={'flex flex-col items-center'}>
                     <Image
@@ -138,12 +142,12 @@ const CommunityComments = (props: Props) => {
                           onClick={() => {
                             if (replyComment.likeStatus) {
                               deleteToggleLikeData(replyComment.postCommentId, 'COMMENT').then(() => {
-                                console.log('좋아요 삭제')
-                              })
+                                console.log('좋아요 삭제');
+                              });
                             } else {
                               postToggleLikeData(replyComment.postCommentId, 'COMMENT').then(() => {
-                                console.log('좋아요 추가')
-                              })
+                                console.log('좋아요 추가');
+                              });
                             }
                             handleLikeClick(comment.postCommentId, replyComment.postCommentId);
                           }}

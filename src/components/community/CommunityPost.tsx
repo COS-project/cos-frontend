@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import React, { ReactNode, useEffect, useState } from 'react';
 
-import { ImageType } from '@/types/global';
 import { deleteToggleLikeData, postToggleLikeData } from '@/lib/api/communityPost';
+import { ImageType } from '@/types/global';
 
 interface Props {
   postId: number;
@@ -28,23 +28,10 @@ const CommunityPost = (props: Props) => {
   useEffect(() => {
     if (firstRendering) {
       setIsLiked(likeStatus);
-      if (likeStatus) {
-        setFakeLikeCount(likeCount - 1);
-      } else {
-        setFakeLikeCount(likeCount);
-      }
+      setFakeLikeCount(likeCount);
       setFirstRendering(false);
     }
   }, [likeStatus, likeCount]);
-
-  /**
-   * 이후 isLiked true 일 때 +1, isLiked false 일 때 -1
-   */
-  useEffect(() => {
-    if (!firstRendering) {
-      setFakeLikeCount((prev) => (isLiked ? prev + 1 : prev - 1));
-    }
-  }, [isLiked]);
 
   return (
     <div className={'mt-[16px]'}>
@@ -101,10 +88,12 @@ const CommunityPost = (props: Props) => {
               deleteToggleLikeData(postId, 'POST').then(() => {
                 console.log('좋아요 삭제');
               });
+              setFakeLikeCount((prev) => prev - 1);
             } else {
               postToggleLikeData(postId, 'POST').then(() => {
                 console.log('좋아요 추가');
               });
+              setFakeLikeCount((prev) => prev + 1);
             }
             setIsLiked(!isLiked);
           }}

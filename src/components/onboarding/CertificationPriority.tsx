@@ -106,7 +106,7 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({
         onClick={() => {
           handleSubmit();
           onNext();
-          interestCertificateDataMutate ? interestCertificateDataMutate : null;
+          interestCertificateDataMutate ? interestCertificateDataMutate() : null;
         }}>
         <div className="text-white text-h3 py-[25px]">완료</div>
       </button>

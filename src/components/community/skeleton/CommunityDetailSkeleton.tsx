@@ -1,7 +1,4 @@
 const CommunityDetailSkeleton = () => {
-  return (
-    <>
-    </>
-  );
+  return <></>;
 };
 export default CommunityDetailSkeleton;

@@ -94,7 +94,7 @@ function HomeComponents() {
   };
 
   useEffect(() => {
-    if (userGoals) {
+    if (userGoals && userGoals.length > 0) {
       setGoalPeriodContent(
         formatGoalPeriod(
           new Date(userGoals[0].prepareStartDateTime),
@@ -156,7 +156,7 @@ function HomeComponents() {
           <AverageTakenTimeGraphReport
             totalTakenTime={sumTotalTakenTime()}
             subjectResults={averageSubjectList}
-            timeLimit={averageSubjectList && averageSubjectList[0].timeLimit}
+            timeLimit={averageSubjectList && averageSubjectList.length > 0 ? averageSubjectList[0].timeLimit : 0}
           />
           <BestTip />
         </div>

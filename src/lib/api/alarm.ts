@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 export const getAlarms = async () => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
-    const response = await axios.get('http://34.64.140.236:8081/api/v2/alarms', {
+    const response = await axios.get('https://34.64.140.236:8081/api/v2/alarms', {
       headers: {
         'Access-Token': Cookies.get('accessToken'),
       },
@@ -22,7 +22,7 @@ export const getAlarms = async () => {
 export const getAlarmUnreadCount = async () => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
-    const response = await axios.get('http://34.64.140.236:8081/api/v2/alarms/unread', {
+    const response = await axios.get('https://34.64.140.236:8081/api/v2/alarms/unread', {
       headers: {
         'Access-Token': Cookies.get('accessToken'),
       },
@@ -39,7 +39,7 @@ export const getAlarmUnreadCount = async () => {
 export const postReadAlarmList = async (readAlarmList: number[]) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
-    const response = await axios.post('http://34.64.140.236:8081/api/v2/alarms/read', readAlarmList, {
+    const response = await axios.post('https://34.64.140.236:8081/api/v2/alarms/read', readAlarmList, {
       headers: {
         'Access-Token': Cookies.get('accessToken'),
       },

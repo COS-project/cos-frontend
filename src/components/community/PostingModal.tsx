@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useRecoilState } from 'recoil';
 
-import { postCommentDelete, deletePost } from '@/lib/api/communityPost';
+import { deletePost, postCommentDelete } from '@/lib/api/communityPost';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 

@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { SVGProps } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
@@ -10,14 +9,13 @@ import Spinner from '@/components/common/Spinner';
 import CommentWriting from '@/components/community/CommentWriting';
 import CommunityComments from '@/components/community/CommunityComments';
 import CommunityPost from '@/components/community/CommunityPost';
+import EditPost from '@/components/community/EditPost';
+import PostOptionModal from '@/components/community/PostOptionModal';
 import Profile from '@/components/community/Profile';
 import Question from '@/components/community/Question';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import { certificateIdAtom } from '@/recoil/atom';
 import { BoardType } from '@/types/community/type';
-import { formatDateTime } from '@/utils/community/function';
-import PostOptionModal from '@/components/community/PostOptionModal';
-import EditPost from '@/components/community/EditPost';
 
 const CommunityDetailPage = () => {
   const params = useParams();
@@ -28,6 +26,7 @@ const CommunityDetailPage = () => {
   const [isPostOptionModalOpen, setPostIsOptionModalOpen] = useState(true);
   const [isCommentOptionModalOpen, setCommentIsOptionModalOpen] = useState(true);
   const [selectedCommentId, setSelectedCommentId] = useState(0);
+  const [selectedParentCommentId, setSelectedParentCommentId] = useState(0);
   const [isClickEditPost, setIsClickEditPost] = useState(false);
 
   useEffect(() => {
@@ -150,12 +149,7 @@ const CommunityDetailPage = () => {
               content={postData.postContent.content}>
               <div>{switchTopElementByBoardType(postData.postType)}</div>
             </CommunityPost>
-            <CommunityComments
-              postId={postData.postId}
-              commentList={commentList}
-              setCommentIsOptionModalOpen={setCommentIsOptionModalOpen}
-              setSelectedCommentId={setSelectedCommentId}
-            />
+            <CommunityComments commentList={commentList} setCommentIsOptionModalOpen={setCommentIsOptionModalOpen} />
           </section>
           <div className={'h-[100px]'} />
         </main>

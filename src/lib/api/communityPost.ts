@@ -45,7 +45,7 @@ export const deleteToggleLikeData = async (targetId: number, likeTargetType: 'CO
 };
 
 //댓글 추가
-export const postCommentData = async (postId: number, commentData: GenerateComment) => {
+export const postCommentData = async (postId: number, commentData?: GenerateComment) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
