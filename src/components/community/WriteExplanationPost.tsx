@@ -23,8 +23,8 @@ const WriteExplanationPost = (props: Props) => {
   const certificateId = useRecoilValue(certificateIdAtom);
 
   const { setIsClickedWriteButton } = props;
-  const { examYears } = useGetMockExamYears();
-  const { questions } = useMockExamQuestions(1); //TODO: 나중에 모의고사 번호로 변경해야 함.
+  const { examYears } = useGetMockExamYears(certificateId);
+  const { questions } = useMockExamQuestions(certificateId);
   const [isYearsFilterOpen, setIsYearsFilterOpen] = useState(false);
   const [isRoundsFilterOpen, setIsRoundsFilterOpen] = useState(false);
 

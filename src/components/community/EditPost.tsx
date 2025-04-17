@@ -30,7 +30,7 @@ const EditPost = (props: Props) => {
   const certificateId = useRecoilValue(certificateIdAtom);
   const { postDetailData, mutate } = useGetPost(postId);
   const { questions } = useMockExamQuestions(mockExamId);
-  const { examYears } = useGetMockExamYears();
+  const { examYears } = useGetMockExamYears(certificateId);
   const [editPostData, setEditPostData] = useRecoilState(editPostDataState);
   const [onlineCourseInputs, setOnlineCourseInputs] = useState<string[]>([]);
   const [workbookInputs, setWorkbookInputs] = useState<string[]>([]);
