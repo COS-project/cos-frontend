@@ -16,6 +16,12 @@ export const boardTypeStateAtom = atom<BoardType>({
   default: 'REVIEW',
 });
 
+//게시판 종류
+export const boardTypeInitAtom = atom<boolean>({
+  key: 'boardTypeInitAtom',
+  default: true,
+});
+
 //글 삭제 및 수정 모달창 조작
 export let postingModalState = atom<boolean>({
   key: 'postingModalState',
@@ -127,4 +133,14 @@ export const examReviewsCRT_004ErrorAtom = atom<boolean>({
 export const selectedNormalAndTipFilterContentAtom = atom<SortFieldKorType>({
   key: 'selectedNormalAndTipFilterContentAtom',
   default: '최신순',
+});
+
+export const selectedCommentaryYearFilterContentAtom = atom<number | string>({
+  key: 'selectedCommentaryYearFilterContentAtom',
+  default: '전체',
+});
+
+export const selectedCommentaryRoundFilterContentAtom = atom<number | string>({
+  key: 'selectedCommentaryRoundFilterContentAtom',
+  default: '전체',
 });

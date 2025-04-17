@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import qs from 'query-string';
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -25,8 +25,11 @@ import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchRes
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { certificateIdAtom, certificateNameAtom } from '@/recoil/atom';
 import {
+  boardTypeInitAtom,
   boardTypeStateAtom,
   commentarySearchQuestionSequence,
+  selectedCommentaryRoundFilterContentAtom,
+  selectedCommentaryYearFilterContentAtom,
   selectedNormalAndTipFilterContentAtom,
 } from '@/recoil/community/atom';
 import { BoardType, SortFieldKorType, SortFieldType } from '@/types/community/type';
@@ -39,18 +42,17 @@ export default function CommunityCategoryPage() {
   const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useRecoilState<SortFieldKorType>(
     selectedNormalAndTipFilterContentAtom,
   );
-  const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number | string>(
-    '전체',
+  const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useRecoilState<number | string>(
+    selectedCommentaryYearFilterContentAtom,
   );
-  const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number | string>(
-    '전체',
-  );
+  const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useRecoilState<
+    number | string
+  >(selectedCommentaryRoundFilterContentAtom);
   const [sortField, setSortField] = useState<SortFieldType>('createdAt'); //최신순 인기순
   const { checkReviewPeriod, isError } = useCheckReviewPeriod(certificateId);
   //보드 타입
   const [boardType, setBoardType] = useRecoilState<BoardType>(boardTypeStateAtom);
   const { userPosts, setSize, mutate } = useGetTotalSearchResults(boardType, certificateId, sortField);
-  const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('COMMENTARY');
   //글쓰기 버튼
   const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
   const router = useRouter();
@@ -66,26 +68,35 @@ export default function CommunityCategoryPage() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
   const { reviewWriteAccess } = useCheckReviewWriteAccess(certificateId);
   //처음 boardType 랜더링시만 -> 따끈후기 아닐 때
-  const [init, setInit] = useState(true);
+  const [boardTypeInit, setBoardTypeInit] = useRecoilState(boardTypeInitAtom);
+  const pathname = usePathname();
+  const [prevPath, setPrevPath] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (prevPath !== null && pathname !== prevPath) {
+      setBoardTypeInit(false); // 페이지 이동 감지 후 초기화
+    }
+    setPrevPath(pathname);
+  }, [pathname]);
 
   //따끈후기 기간이 아닌 경우에는 해설 게시판이 default로 보이도록 조작
   useEffect(() => {
-    if (init) {
+    if (boardTypeInit) {
       if (boardType === 'TIP' && selectedNormalAndTipFilterContent === '인기순') {
-        setInit(false);
+        setBoardTypeInit(false);
         return;
       }
       if (isError && isError.response.data.responseCode === 'CRT_003') {
         setBoardType('COMMENTARY');
-        setInit(false);
+        setBoardTypeInit(false);
       }
       if (isError && isError.response.data.responseCode === 'CRT_004') {
         setBoardType('COMMENTARY');
-        setInit(false);
+        setBoardTypeInit(false);
       }
       if (checkReviewPeriod && !checkReviewPeriod.result) {
         setBoardType('COMMENTARY');
-        setInit(false);
+        setBoardTypeInit(false);
       }
     }
   }, [isError]);
@@ -127,16 +138,6 @@ export default function CommunityCategoryPage() {
   }, [selectedNormalAndTipFilterContent]);
 
   /**
-   * boardType 이 변경되면 필터값 초기화
-   */
-  useEffect(() => {
-    if (!init) {
-      setSelectedNormalAndTipFilterContent('최신순');
-      setSelectedCommentaryYearFilterContent('전체');
-    }
-  }, [boardType]);
-
-  /**
    * 쿼리파라미터에서 검색어
    */
   useEffect(() => {
@@ -160,11 +161,11 @@ export default function CommunityCategoryPage() {
     router.push('/community');
   };
 
-  return boardTypeForPost === 'COMMENTARY' && isClickedWriteButton ? (
+  return boardType === 'COMMENTARY' && isClickedWriteButton ? (
     <WriteExplanationPost setIsClickedWriteButton={setIsClickedWriteButton} />
-  ) : boardTypeForPost === 'TIP' && isClickedWriteButton ? (
+  ) : boardType === 'TIP' && isClickedWriteButton ? (
     <WriteTipPost setIsClickedWriteButton={setIsClickedWriteButton} mutate={mutate} />
-  ) : boardTypeForPost === 'NORMAL' && isClickedWriteButton ? (
+  ) : boardType === 'NORMAL' && isClickedWriteButton ? (
     <WriteNormalPost setIsClickedWriteButton={setIsClickedWriteButton} mutate={mutate} />
   ) : (
     <>
@@ -201,16 +202,16 @@ export default function CommunityCategoryPage() {
             debouncedValue={debouncedValue}
           />
         ) : boardType === 'TIP' ? (
-          <NormalAndTipBoardList boardType={boardType} init={init} />
+          <NormalAndTipBoardList boardType={boardType} init={boardTypeInit} />
         ) : boardType === 'NORMAL' ? (
-          <NormalAndTipBoardList boardType={boardType} init={init} />
+          <NormalAndTipBoardList boardType={boardType} init={boardTypeInit} />
         ) : null}
       </div>
       {boardType === 'REVIEW' ? null : (
         <WriteButton
           setIsClickedWriteButton={setIsClickedWriteButton}
           boardType={boardType}
-          setBoardTypeForPost={setBoardTypeForPost}
+          setBoardTypeForPost={setBoardType}
         />
       )}
       <div className={'h-[120px] bg-gray0'} />

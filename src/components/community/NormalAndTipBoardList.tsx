@@ -55,15 +55,6 @@ const NormalAndTipBoardList = (props: Props) => {
   }, [selectedNormalAndTipFilterContent]);
 
   /**
-   * boardType 이 변경되면 필터값 초기화
-   */
-  useEffect(() => {
-    if (!init) {
-      setSelectedNormalAndTipFilterContent('최신순');
-    }
-  }, [boardType]);
-
-  /**
    * Best3 Post 태그
    */
   const tipTopElement = (normalTipPostId: number): JSX.Element | undefined => {

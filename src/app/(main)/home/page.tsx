@@ -55,7 +55,7 @@ function HomeComponents() {
   const { bestTipPosts } = useBest3TipPosts(certificateId);
 
   useEffect(() => {
-    console.log('bestTipPosts', bestTipPosts)
+    console.log('bestTipPosts', bestTipPosts);
   }, [bestTipPosts]);
 
   // AccessToken, RefreshToken 저장
