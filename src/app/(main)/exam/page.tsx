@@ -12,6 +12,7 @@ import YearSelector from '@/components/exam/YearSelector';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useDelayOver from '@/hooks/useDelayOver';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
+import Spinner from '@/components/common/Spinner';
 
 const Exam = () => {
   return (

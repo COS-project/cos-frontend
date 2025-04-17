@@ -4,6 +4,7 @@ import { SVGProps, useEffect, useState } from 'react';
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
+import Spinner from '@/components/common/Spinner';
 import useDelayOver from '@/hooks/useDelayOver';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
 
@@ -28,6 +29,10 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
     }
   }, [round]);
 
+  if (!examResults) {
+    return <Spinner />;
+  }
+
   return (
     <div>
       <div className="fixed inset-0 left-0 right-0 top-0 z-50 flex flex-col justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen">
@@ -43,30 +48,33 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
           <div className="relative bg-white rounded-[32px]">
             <div className="flex flex-col gap-y-4 p-5">
               <div className=" flex justify-center">
-                {!isDelayOver ? <Skeleton height={24} width={70} borderRadius={8} /> : <div>{`${round}회차`}</div>}
+                {!examResults ? <Skeleton height={24} width={70} borderRadius={8} /> : <div>{`${round}회차`}</div>}
               </div>
               <div className="border-t border-gray1"></div>
               <div className="flex justify-between">
-                {!isDelayOver ? (
+                {!examResults ? (
                   <div className="absolute right-5">
                     <Skeleton height={37} width={112} borderRadius={999} />
                   </div>
-                ) : (
+                ) : examResults.length !== 0 ? (
                   <Link
                     href={'/exam/result'}
                     className="absolute right-5 px-3 py-2 flex gap-x-2 items-center bg-gray0 rounded-full text-h6">
                     <span>성적 리포트</span> <MoveIcon />
                   </Link>
-                )}
+                ) : null}
                 <div>
                   {/* 점수 */}
-                  {!isDelayOver ? (
+                  {!examResults ? (
                     <Skeleton height={21} width={60} borderRadius={8} />
                   ) : (
                     <div className="font-semibold text-h6">최근 점수</div>
                   )}
-                  {!isDelayOver || !examResults ? (
+                  {}
+                  {!examResults ? (
                     <Skeleton height={30} width={93} borderRadius={8} />
+                  ) : examResults.length === 0 ? (
+                    <div className="font-bold text-h1">미응시</div>
                   ) : (
                     <>
                       {examResults[examResults.length - 1].totalScore !== undefined ? (
@@ -76,9 +84,7 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                             <div className="text-gray3 text-h6 mb-1">/{`${total}점`}</div>
                           </div>
                         </div>
-                      ) : (
-                        <div className="font-bold text-h1">미응시</div>
-                      )}
+                      ) : null}
                     </>
                   )}
                 </div>
