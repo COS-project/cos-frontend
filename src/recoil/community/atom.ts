@@ -105,3 +105,14 @@ export const examReviewPostState = atom<ExamReviewPostType>({
     content: '',
   },
 });
+
+//따끈후기 시험정보 입력 안할경우 생기는 에러
+export const examReviewsCRT_003ErrorAtom = atom<boolean>({
+  key: 'examReviewsCRT_003ErrorAtom',
+  default: false,
+});
+
+export const examReviewsCRT_004ErrorAtom = atom<boolean>({
+  key: 'examReviewsCRT_004ErrorAtom',
+  default: false,
+})

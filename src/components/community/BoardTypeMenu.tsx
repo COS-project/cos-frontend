@@ -5,22 +5,25 @@ import { BoardType } from '@/types/community/type';
 interface Props {
   boardType: BoardType;
   setBoardType: React.Dispatch<React.SetStateAction<BoardType>>;
+  checkReviewPeriod?: boolean | undefined;
 }
 const BoardTypeMenu = (props: Props) => {
-  const { boardType, setBoardType } = props;
+  const { boardType, setBoardType, checkReviewPeriod } = props;
   const changeBoardType = (type: BoardType) => {
     setBoardType(type);
   };
 
   return (
     <div className={'bg-white px-4 py-3 flex gap-x-2 w-full overflow-x-scroll'}>
-      <button
-        onClick={() => {
-          changeBoardType('REVIEW');
-        }}
-        className={boardType === 'REVIEW' ? 'tag-clicked' : 'tag-not-clicked'}>
-        따끈후기
-      </button>
+      {checkReviewPeriod && (
+        <button
+          onClick={() => {
+            changeBoardType('REVIEW');
+          }}
+          className={boardType === 'REVIEW' ? 'tag-clicked' : 'tag-not-clicked'}>
+          따끈후기
+        </button>
+      )}
       <button
         onClick={() => {
           changeBoardType('COMMENTARY');

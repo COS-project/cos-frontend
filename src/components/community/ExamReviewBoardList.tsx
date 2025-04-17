@@ -2,7 +2,7 @@
 
 import React, { type SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import ExamDifficultyFilter from '@/components/community/ExamDifficultyFilter';
 import PreparePeriodFilter from '@/components/community/PreparePeriodFilter';
@@ -11,6 +11,7 @@ import useCheckReviewWriteAccess from '@/lib/hooks/useCheckReviewWriteAccess';
 import useGetExamReview from '@/lib/hooks/useGetExamReview';
 import { certificateIdAtom } from '@/recoil/atom';
 import { ExamDifficulty, ReviewPost } from '@/types/community/type';
+import { examReviewsCRT_003ErrorAtom, examReviewsCRT_004ErrorAtom } from '@/recoil/community/atom';
 
 interface Props {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,9 +32,9 @@ const ExamReviewBoardList = (props: Props) => {
   // 따끈후기를 입력할 수 있는 자격이 있는지 검증
   const { reviewWriteAccess } = useCheckReviewWriteAccess(certificateId);
   // 시험 정보를 관리자가 입력하지 않은 경우 에러 발생
-  const [examReviewsCRT_003Error, setExamReviewsCRT_003Error] = useState<boolean>(false);
+  const [examReviewsCRT_003Error, setExamReviewsCRT_003Error] = useRecoilState<boolean>(examReviewsCRT_003ErrorAtom);
   // 시험 후기를 작성할 수 있는 기간(시험일로부터 2주)이 지난 경우
-  const [examReviewsCRT_004Error, setExamReviewsCRT_004Error] = useState<boolean>(false);
+  const [examReviewsCRT_004Error, setExamReviewsCRT_004Error] = useRecoilState<boolean>(examReviewsCRT_004ErrorAtom);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -97,10 +98,6 @@ const ExamReviewBoardList = (props: Props) => {
     if (isError && !examReviewsCRT_004Error && isError.response.data.responseCode === 'CRT_004') {
       setExamReviewsCRT_004Error(true);
     }
-  }, [isError]);
-
-  useEffect(() => {
-    console.log(examReviewsCRT_003Error);
   }, [isError]);
 
   return (

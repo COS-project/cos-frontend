@@ -19,6 +19,7 @@ import WriteReviewModal from '@/components/community/WriteReviewModal';
 import WriteTipPost from '@/components/community/WriteTipPost';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useDebounce from '@/hooks/useDebounce';
+import useCheckReviewPeriod from '@/lib/hooks/useCheckReviewPeriod';
 import useCheckReviewWriteAccess from '@/lib/hooks/useCheckReviewWriteAccess';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
@@ -40,6 +41,7 @@ export default function CommunityCategoryPage() {
     '전체',
   );
   const [sortField, setSortField] = useState<SortFieldType>('createdAt'); //최신순 인기순
+  const { checkReviewPeriod, isError } = useCheckReviewPeriod(certificateId);
   //보드 타입
   const [boardType, setBoardType] = useState<BoardType>('REVIEW');
   const { userPosts, setSize, mutate } = useGetTotalSearchResults(boardType, certificateId, sortField);
@@ -58,6 +60,19 @@ export default function CommunityCategoryPage() {
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
   const { reviewWriteAccess } = useCheckReviewWriteAccess(certificateId);
+
+  //따끈후기 기간이 아닌 경우에는 해설 게시판이 default로 보이도록 조작
+  useEffect(() => {
+    if (isError && isError.response.data.responseCode === 'CRT_003') {
+      setBoardType('COMMENTARY');
+    }
+    if (isError && isError.response.data.responseCode === 'CRT_004') {
+      setBoardType('COMMENTARY');
+    }
+    if (checkReviewPeriod && !checkReviewPeriod.result) {
+      setBoardType('COMMENTARY');
+    }
+  }, [isError]);
 
   /**
    * 무한 스크롤 뷰 감지하고 size+1 해줌
@@ -152,10 +167,14 @@ export default function CommunityCategoryPage() {
       />
       <div className={'flex flex-col gap-y-4 bg-gray0 min-h-screen'}>
         {/*boardType 변경 메뉴*/}
-        <BoardTypeMenu boardType={boardType} setBoardType={setBoardType} />
+        <BoardTypeMenu
+          boardType={boardType}
+          setBoardType={setBoardType}
+          checkReviewPeriod={checkReviewPeriod?.result}
+        />
         {/*post*/}
         {boardType === 'REVIEW' ? (
-          <ExamReviewBoardList setIsModalOpen={setIsModalOpen} />
+          checkReviewPeriod?.result && <ExamReviewBoardList setIsModalOpen={setIsModalOpen} />
         ) : boardType === 'COMMENTARY' ? (
           <CommentaryBoardList
             boardType={boardType}
