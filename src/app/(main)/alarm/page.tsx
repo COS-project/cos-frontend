@@ -30,7 +30,7 @@ export default function Alarm() {
         return;
       }
 
-      const eventSource = new EventSourcePolyfill('https://cercat.o-r.kr/api/v2/alarms/subscribe', {
+      const eventSource = new EventSourcePolyfill(`${process.env.NEXT_PUBLIC_ALARM_URL}/api/v2/alarms/subscribe`, {
         headers: {
           'Access-Token': accessToken,
         },
