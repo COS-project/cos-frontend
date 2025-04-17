@@ -7,6 +7,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import Spinner from '@/components/common/Spinner';
 import AverageAccurayChat from '@/components/home/AverageAccurayChat';
 import AverageTakenTimeGraphReport from '@/components/home/AverageTakenTimeGraphReport';
 import BestTip from '@/components/home/BestTip';
@@ -28,7 +29,8 @@ import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
 import { certificateIdAtom } from '@/recoil/atom';
 import { selectedPrepareTimeState } from '@/recoil/home/atom';
 import { UserCertGoalPeriodType } from '@/types/home/type';
-import Spinner from '@/components/common/Spinner';
+import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
+
 function HomeComponents() {
   const searchParams = useSearchParams();
   const certificateId = useRecoilValue(certificateIdAtom);
@@ -50,6 +52,11 @@ function HomeComponents() {
   const { goalAchievementData } = useGoalAchievement(certificateId);
   const { averageSubjectList } = useAverageSubjectInfo(certificateId);
   const { goalSettingStatus } = useGoalSettingStatus(certificateId);
+  const { bestTipPosts } = useBest3TipPosts(certificateId);
+
+  useEffect(() => {
+    console.log('bestTipPosts', bestTipPosts)
+  }, [bestTipPosts]);
 
   // AccessToken, RefreshToken 저장
   useEffect(() => {
@@ -208,7 +215,7 @@ function HomeComponents() {
             ) : (
               <AverageTakenTimeGraphReportSkeleton />
             )}
-            <BestTip />
+            {bestTipPosts && bestTipPosts?.length > 0 ? <BestTip /> : null}
           </div>
         ) : (
           <HomeSkeleton />
@@ -223,7 +230,7 @@ function HomeComponents() {
 
 export default function Home() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spinner />}>
       <HomeComponents />
     </Suspense>
   );
