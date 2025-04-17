@@ -17,16 +17,16 @@ import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton'
 import TodayGoal from '@/components/TodayGoal';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
+import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
 import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
 import { certificateIdAtom } from '@/recoil/atom';
 import { selectedPrepareTimeState } from '@/recoil/home/atom';
 import { UserCertGoalPeriodType } from '@/types/home/type';
-import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 function HomeComponents() {
   const searchParams = useSearchParams();
   const certificateId = useRecoilValue(certificateIdAtom);
-  const {userProfile} = useGetUserProfile();
+  const { userProfile } = useGetUserProfile();
   const [goalPeriodContent, setGoalPeriodContent] = useState<string>('목표 기간 선택');
   const [isGoalSettingStatusModalOpen, setIsGoalSettingStatusModalOpen] = useState(false);
 
