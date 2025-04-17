@@ -41,6 +41,6 @@ const AverageTakenTimeGraphReportSkeleton = () => {
         </div>
       </div>
     </section>
-  )
-}
-export default AverageTakenTimeGraphReportSkeleton
+  );
+};
+export default AverageTakenTimeGraphReportSkeleton;

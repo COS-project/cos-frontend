@@ -137,10 +137,6 @@ function HomeComponents() {
     }
   }, [goalSettingStatus]);
 
-  useEffect(() => {
-    console.log('averageSubjectList', averageSubjectList)
-  }, [averageSubjectList]);
-
   return (
     <main>
       {isGoalSettingStatusModalOpen && (

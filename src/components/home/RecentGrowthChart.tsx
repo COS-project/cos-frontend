@@ -3,11 +3,11 @@ import { SVGProps, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import StickGraph from '@/components/exam/StickGraph';
+import RecentGrowthChartSkeleton from '@/components/home/skeleton/RecentGrowthChartSkeleton';
 import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
 import { certificateIdAtom } from '@/recoil/atom';
 import { CertificateMaxScoreAtom, selectedDateTypeState, selectedReportTypeState } from '@/recoil/home/atom';
 import { ScoreAVGListType } from '@/types/home/type';
-import RecentGrowthChartSkeleton from '@/components/home/skeleton/RecentGrowthChartSkeleton';
 
 const RecentGrowthChart = () => {
   const certificateId = useRecoilValue(certificateIdAtom);

@@ -43,6 +43,6 @@ const TodayGoalSkeleton = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 export default TodayGoalSkeleton;

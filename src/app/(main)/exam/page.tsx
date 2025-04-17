@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import Banner from '@/components/common/Banner';
 import Header from '@/components/common/Header';
@@ -12,8 +13,6 @@ import YearSelector from '@/components/exam/YearSelector';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useDelayOver from '@/hooks/useDelayOver';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
-import Spinner from '@/components/common/Spinner';
-import { useRecoilValue } from 'recoil';
 import { certificateIdAtom } from '@/recoil/atom';
 
 const Exam = () => {

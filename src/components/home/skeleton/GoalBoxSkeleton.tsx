@@ -39,6 +39,6 @@ const GoalBoxSkeleton = () => {
         </div>
       </div>
     </section>
-  )
-}
-export default GoalBoxSkeleton
+  );
+};
+export default GoalBoxSkeleton;

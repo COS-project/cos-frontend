@@ -2,12 +2,12 @@
 
 import 'react-loading-skeleton/dist/skeleton.css';
 
-import GoalBoxSkeleton from '@/components/home/skeleton/GoalBoxSkeleton';
-import TodayGoalSkeleton from '@/components/home/skeleton/TodayGoalSkeleton';
-import RecentGrowthChartSkeleton from '@/components/home/skeleton/RecentGrowthChartSkeleton';
 import AverageAccurayChatSkeleton from '@/components/home/skeleton/AverageAccurayChatSkeleton';
 import AverageTakenTimeGraphReportSkeleton from '@/components/home/skeleton/AverageTakenTimeGraphReportSkeleton';
 import BestTipSkeleton from '@/components/home/skeleton/BestTipSkeleton';
+import GoalBoxSkeleton from '@/components/home/skeleton/GoalBoxSkeleton';
+import RecentGrowthChartSkeleton from '@/components/home/skeleton/RecentGrowthChartSkeleton';
+import TodayGoalSkeleton from '@/components/home/skeleton/TodayGoalSkeleton';
 
 const HomeSkeleton = () => {
   return (

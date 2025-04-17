@@ -3,12 +3,12 @@
 import * as React from 'react';
 import { useRecoilValue } from 'recoil';
 
+import Spinner from '@/components/common/Spinner';
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
 import SetGoalsItem from '@/components/home/goal-setting/SetGoalsItem';
-import { goalSettingState } from '@/recoil/home/atom';
-import { certificateIdAtom } from '@/recoil/atom';
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
-import Spinner from '@/components/common/Spinner';
+import { certificateIdAtom } from '@/recoil/atom';
+import { goalSettingState } from '@/recoil/home/atom';
 
 /**
  * 목표 점수를 설정하는 컴포넌트

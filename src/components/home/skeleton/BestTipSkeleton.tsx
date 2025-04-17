@@ -19,6 +19,6 @@ const BestTipSkeleton = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 export default BestTipSkeleton;
