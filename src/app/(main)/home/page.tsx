@@ -28,6 +28,7 @@ import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
 import { certificateIdAtom } from '@/recoil/atom';
 import { selectedPrepareTimeState } from '@/recoil/home/atom';
 import { UserCertGoalPeriodType } from '@/types/home/type';
+import Spinner from '@/components/common/Spinner';
 function HomeComponents() {
   const searchParams = useSearchParams();
   const certificateId = useRecoilValue(certificateIdAtom);
@@ -43,6 +44,8 @@ function HomeComponents() {
   const accessToken = rawAccessToken.replace('%20', ' ');
   const refreshToken = rawRefreshToken.replace('%20', ' ');
 
+  const [isCookieSet, setIsCookieSet] = useState(false); // ✅ 쿠키 저장 여부
+
   const { userGoals } = useGetUserGoals(certificateId);
   const { goalAchievementData } = useGoalAchievement(certificateId);
   const { averageSubjectList } = useAverageSubjectInfo(certificateId);
@@ -50,9 +53,21 @@ function HomeComponents() {
 
   // AccessToken, RefreshToken 저장
   useEffect(() => {
+    const existingAccessToken = Cookies.get('accessToken');
+    const existingRefreshToken = Cookies.get('refreshToken');
+    if (existingAccessToken && existingRefreshToken) {
+      setIsCookieSet(true);
+      return;
+    }
+
+    // 쿠키가 없고 URL에서 토큰이 있으면 세팅
     if (accessToken && refreshToken) {
       Cookies.set('accessToken', accessToken, { expires: Date.now() + 604800000 });
       Cookies.set('refreshToken', refreshToken, { expires: Date.now() + 604800000 });
+      setIsCookieSet(true);
+    } else {
+      // 둘 다 없으면 그래도 isCookieSet은 true로 둬야 UI 진행됨
+      setIsCookieSet(false);
     }
   }, [accessToken, refreshToken]);
 
@@ -136,6 +151,11 @@ function HomeComponents() {
       setIsGoalSettingStatusModalOpen(!goalSettingStatus.result);
     }
   }, [goalSettingStatus]);
+
+  // ✅ 쿠키 저장 전이면 로딩 UI
+  if (!isCookieSet) {
+    return <Spinner />;
+  }
 
   return (
     <main>
