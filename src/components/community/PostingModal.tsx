@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { useRecoilState } from 'recoil';
 
-import { deletePost, postCommentDelete } from '@/lib/api/communityPost';
+import { deleteComment, deletePost } from '@/lib/api/communityPost';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import { commentDeleteState, commentModalState, postDeleteState, postingModalState } from '@/recoil/community/atom';
 
@@ -50,7 +50,7 @@ const PostingModal = (props: Props) => {
               onClick={async () => {
                 if (commentDelete != 0 && postDelete == 0) {
                   //댓글 삭제
-                  await postCommentDelete(commentDelete);
+                  await deleteComment(commentDelete);
                   setOnCommentModal(false);
                 }
                 if (postDelete != 0 && commentDelete == 0) {

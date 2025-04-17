@@ -65,7 +65,7 @@ export const postCommentData = async (postId: number, commentData?: GenerateComm
 };
 
 //댓글 삭제
-export const postCommentDelete = async (commentId: number) => {
+export const deleteComment = async (commentId: number) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({

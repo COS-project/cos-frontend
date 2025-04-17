@@ -10,8 +10,11 @@ import ProfileSettings from '@/components/onboarding/ProfileSettings';
 
 const OnBoardingComponents = () => {
   const searchParams = useSearchParams();
-  const accessToken = searchParams.get('accessToken') || '';
-  const refreshToken = searchParams.get('refreshToken') || '';
+  const rawAccessToken = searchParams.get('accessToken') || '';
+  const rawRefreshToken = searchParams.get('refreshToken') || '';
+
+  const accessToken = rawAccessToken.replace('%20', ' ');
+  const refreshToken = rawRefreshToken.replace('%20', ' ');
 
   const [step, setStep] = useState<'ProfileSetting' | 'ChooseCertification' | 'CertificationPriority'>(
     'ProfileSetting',

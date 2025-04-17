@@ -17,6 +17,7 @@ import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton'
 import TodayGoal from '@/components/TodayGoal';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
+import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
 import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
 import { certificateIdAtom } from '@/recoil/atom';
@@ -25,13 +26,17 @@ import { UserCertGoalPeriodType } from '@/types/home/type';
 function HomeComponents() {
   const searchParams = useSearchParams();
   const certificateId = useRecoilValue(certificateIdAtom);
+  const { userProfile } = useGetUserProfile();
   const [goalPeriodContent, setGoalPeriodContent] = useState<string>('목표 기간 선택');
   const [isGoalSettingStatusModalOpen, setIsGoalSettingStatusModalOpen] = useState(false);
 
   const setSelectedPrepareTime = useSetRecoilState(selectedPrepareTimeState);
 
-  const accessToken = searchParams.get('accessToken') || '';
-  const refreshToken = searchParams.get('refreshToken') || '';
+  const rawAccessToken = searchParams.get('accessToken') || '';
+  const rawRefreshToken = searchParams.get('refreshToken') || '';
+
+  const accessToken = rawAccessToken.replace('%20', ' ');
+  const refreshToken = rawRefreshToken.replace('%20', ' ');
 
   const { userGoals } = useGetUserGoals(certificateId);
   const { goalAchievementData } = useGoalAchievement(certificateId);
@@ -45,6 +50,12 @@ function HomeComponents() {
       Cookies.set('refreshToken', refreshToken, { expires: Date.now() + 604800000 });
     }
   }, [accessToken, refreshToken]);
+
+  useEffect(() => {
+    if (userProfile) {
+      Cookies.set('userId', String(userProfile.userId), { expires: Date.now() + 604800000 });
+    }
+  }, [userProfile]);
 
   /**
    * 주차를 계산해주는 함수

@@ -1,20 +1,20 @@
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
 import React, { Dispatch, SetStateAction } from 'react';
+import { KeyedMutator } from 'swr';
 
-import { deletePost } from '@/lib/api/communityPost';
+import { deleteComment } from '@/lib/api/communityPost';
+import { ResponseType } from '@/types/common/type';
+import { ResponsePostDetailType } from '@/types/community/type';
 
 interface Props {
-  communityId: string | string[];
-  postId: number;
-  setPostIsOptionModal: Dispatch<React.SetStateAction<boolean>>;
-  setIsClickEditPost: Dispatch<SetStateAction<boolean>>;
+  commentId: number;
+  setCommentIsOptionModal: Dispatch<React.SetStateAction<boolean>>;
   setIsReportSubmittedModalOpen: Dispatch<SetStateAction<boolean>>;
+  communityPostDataMutate: KeyedMutator<ResponseType<ResponsePostDetailType>>; // communityPostData를 바로 불러오는 mutate함수
 }
 
-const PostOptionModal = (props: Props) => {
-  const { setPostIsOptionModal, communityId, postId, setIsClickEditPost, setIsReportSubmittedModalOpen } = props;
-  const router = useRouter();
+const CommentOptionModal = (props: Props) => {
+  const { commentId, setCommentIsOptionModal, setIsReportSubmittedModalOpen, communityPostDataMutate } = props;
   return (
     <div
       className={'fixed left-0 right-0 z-50 flex flex-col gap-y-2 justify-end bg-[rgba(0,0,0,0.6)] px-5 min-h-screen'}>
@@ -34,18 +34,8 @@ const PostOptionModal = (props: Props) => {
             </div>
             <button
               onClick={() => {
-                setIsClickEditPost(true);
-                setPostIsOptionModal(false);
-              }}
-              className={
-                'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center border-b border-gray0'
-              }>
-              수정하기
-            </button>
-            <button
-              onClick={() => {
                 setIsReportSubmittedModalOpen(true);
-                setPostIsOptionModal(false);
+                setCommentIsOptionModal(false);
               }}
               className={
                 'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center border-b border-gray0'
@@ -54,9 +44,9 @@ const PostOptionModal = (props: Props) => {
             </button>
             <button
               onClick={() => {
-                deletePost(postId).then(() => {
-                  setPostIsOptionModal(false);
-                  router.push(`/community/${communityId}`);
+                deleteComment(commentId).then(() => {
+                  communityPostDataMutate();
+                  setCommentIsOptionModal(false);
                 });
               }}
               className={
@@ -68,7 +58,7 @@ const PostOptionModal = (props: Props) => {
 
           <button
             onClick={() => {
-              setPostIsOptionModal(false);
+              setCommentIsOptionModal(false);
             }}
             className={'rounded-[16px] bg-white h-[56px]'}>
             <p
@@ -83,4 +73,4 @@ const PostOptionModal = (props: Props) => {
     </div>
   );
 };
-export default PostOptionModal;
+export default CommentOptionModal;
