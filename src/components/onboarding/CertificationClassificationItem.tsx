@@ -106,8 +106,8 @@ const CertificationClassificationItem = (props: Props) => {
       <div className="relative flex items-center gap-x-3 p-2">
         <div
           onClick={(e) => {
-            e.stopPropagation(); // ✅ 이벤트 전파 막기
             if (usage === 'board') {
+              e.stopPropagation(); // ✅ 이벤트 전파 막기
               onClickCertification(certificateId);
             }
           }}
