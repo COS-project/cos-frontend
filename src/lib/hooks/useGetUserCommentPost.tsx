@@ -7,7 +7,7 @@ import { MyPostsResponseType } from '@/types/mypage/type';
 const getKey = (pageIndex: number, previousPageData: MyPostsResponseType | null, sortDirections: SortDirections) => {
   // 초기 요청
   if (pageIndex === 0) {
-    return `/api/v2/comment-posts/my-comment-posts?page=${pageIndex}&size=10&sortKey=createdAt, id&sortDirections=${sortDirections}`;
+    return `/api/v2/comment-posts/my-comment-posts?page=${pageIndex}&size=10&sortFields=createdAt, id&sortDirections=${sortDirections}`;
   }
 
   // 이전 페이지 데이터가 없으면 종료
