@@ -463,16 +463,16 @@ const GrowthChart = () => {
               </div>
             )}
 
-            {statisticsData?.totalAverage !== 0 && certificateMaxScore && (
-              <div
-                style={{
-                  bottom: `${3 + ((statisticsData?.totalAverage ?? 0) / certificateMaxScore) * 100}%`,
-                }}
-                className={'absolute w-full flex items-center space-x-1'}>
-                <div className="w-[86%] border-t border-dashed border-primary"></div>
-                <div className="text-primary text-h5">평균</div>
-              </div>
-            )}
+            {/*{statisticsData?.totalAverage !== 0 && certificateMaxScore && (*/}
+            {/*  <div*/}
+            {/*    style={{*/}
+            {/*      bottom: `${3 + ((statisticsData?.totalAverage ?? 0) / certificateMaxScore) * 100}%`,*/}
+            {/*    }}*/}
+            {/*    className={'absolute w-full flex items-center space-x-1'}>*/}
+            {/*    <div className="w-[86%] border-t border-dashed border-primary"></div>*/}
+            {/*    <div className="text-primary text-h5">평균</div>*/}
+            {/*  </div>*/}
+            {/*)}*/}
 
             <div className="w-full flex items-end overflow-x-scroll" style={{ width: '100%' }}>
               <div className={'w-full'}>
