@@ -94,13 +94,11 @@ const NormalAndTipBoardList = (props: Props) => {
   return (
     <div className={'relative px-5 flex flex-col gap-y-4'}>
       <div>
-        <div className={'relative w-fit flex px-3 py-1 rounded-full bg-white '}>
+        <div
+          onClick={() => setIsOpenNormalAndTipFilter(!isOpenNormalAndTipFilter)}
+          className={'relative w-fit flex px-3 py-1 rounded-full bg-white '}>
           <span className={'text-gray4 text-h6'}>{selectedNormalAndTipFilterContent}</span>
-          {isOpenNormalAndTipFilter ? (
-            <ActivationIcon onClick={() => setIsOpenNormalAndTipFilter(!isOpenNormalAndTipFilter)} />
-          ) : (
-            <DisableIcon onClick={() => setIsOpenNormalAndTipFilter(!isOpenNormalAndTipFilter)} />
-          )}
+          {isOpenNormalAndTipFilter ? <ActivationIcon /> : <DisableIcon />}
           {isOpenNormalAndTipFilter ? (
             <MyPageFilter
               className={boardType === 'TIP' ? 'top-[120%] left-0 w-full' : 'top-[120%] left-0 w-full'}
