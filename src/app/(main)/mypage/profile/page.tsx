@@ -13,7 +13,15 @@ const ProfileSettings = () => {
   const imgRef = useRef<HTMLInputElement>(null);
   const [uploadImage, setUploadImage] = useState<string | ArrayBuffer | null>();
   const router = useRouter();
-  const [nickname, setNickname] = useState(userProfile?.nickname || '');
+  const [nickname, setNickname] = useState('');
+  const [init, setInit] = useState(true);
+
+  useEffect(() => {
+    if (userProfile && init) {
+      setNickname(userProfile.nickname);
+      setInit(false);
+    }
+  }, [userProfile]);
 
   const isNicknameEmpty = !nickname?.trim();
 
