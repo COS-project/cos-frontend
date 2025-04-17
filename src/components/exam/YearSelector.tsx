@@ -17,7 +17,7 @@ const YearSelector = (props: Props) => {
   const { examYears, isClickedYearSelector, setSelectedYear, setIsClickedYearSelector, selectedYear } = props;
 
   return (
-    <>
+    <div className={'relative'}>
       <div
         onClick={() => {
           setIsClickedYearSelector(!isClickedYearSelector);
@@ -33,7 +33,7 @@ const YearSelector = (props: Props) => {
           yearList={examYears}
         />
       ) : null}
-    </>
+    </div>
   );
 };
 
