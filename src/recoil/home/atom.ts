@@ -47,7 +47,7 @@ export const certificationInfoState = atom<CertificateInfoType>({
 export let goalSettingState = atom<GoalSettingInfo>({
   key: 'goalSettingState',
   default: {
-    goalScore: 100,
+    goalScore: 0,
     prepareStartDateTime: '2024-01-21T06:45:07.833Z',
     prepareFinishDateTime: '2024-01-21T06:45:07.833Z',
     goalPrepareDays: 0,

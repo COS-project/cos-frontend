@@ -2,8 +2,10 @@
 
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
+import useGetMockExams from '@/lib/hooks/useGetMockExams';
+import { certificateIdAtom } from '@/recoil/atom';
 import { goalSettingState } from '@/recoil/home/atom';
 
 interface Props {
@@ -21,6 +23,8 @@ interface Props {
  */
 const SetGoalsItem = (props: Props) => {
   const { usage, ContentIcon, goalString, unitString, actionString } = props;
+  const certificateId = useRecoilValue(certificateIdAtom);
+  const { mockExams } = useGetMockExams(certificateId, 2024);
 
   let [goalData, setGoalData] = useRecoilState(goalSettingState);
 
@@ -37,10 +41,12 @@ const SetGoalsItem = (props: Props) => {
    * button 을 제어하는 함수
    */
   const UpButtonHandler = () => {
-    if (goalData.goalScore == 100) {
-      setGoalScoreUpDisabled(true);
-    } else {
-      setGoalScoreUpDisabled(false);
+    if (mockExams && mockExams.length > 0) {
+      if (goalData.goalScore == mockExams[0].maxScore) {
+        setGoalScoreUpDisabled(true);
+      } else {
+        setGoalScoreUpDisabled(false);
+      }
     }
   };
 
