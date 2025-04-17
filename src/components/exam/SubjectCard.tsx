@@ -68,9 +68,7 @@ const SubjectCard: React.FC<SubjectCard> = ({ timeLimit, round, mockExamId, tota
           )}
           {isError && <p className="text-center text-h2 font-semibold">미응시</p>}
         </div>
-        <button className="w-full bg-gray0 rounded-3xl py-3 text-h6">
-          시험 보기
-        </button>
+        <button className="w-full bg-gray0 rounded-3xl py-3 text-h6">시험 보기</button>
       </div>
       {sessionModalIsOpen && (
         <SessionModal

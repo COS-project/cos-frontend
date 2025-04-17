@@ -1,6 +1,7 @@
 import { useRouter } from 'next/navigation';
 import React, { ReactNode, SVGProps, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
+import { twMerge } from 'tailwind-merge';
 
 import FilterModal from '@/components/common/FilterModal';
 import { getAlarmUnreadCount } from '@/lib/api/alarm';
@@ -15,10 +16,11 @@ interface Props {
   rightElement?: ReactNode;
   onBack?: () => void;
   CancelIcon?: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+  className?: string;
 }
 
 export default function Header(props: Props) {
-  const { headerType = 'static', title, rightElement, onBack, CancelIcon } = props;
+  const { headerType = 'static', title, rightElement, onBack, CancelIcon, className } = props;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   // 선택된 자격증
   const [selectedCertificationName, setSelectedCertificationName] = useRecoilState<string>(certificateNameAtom);
@@ -63,7 +65,11 @@ export default function Header(props: Props) {
         );
       case 'dynamic':
         return (
-          <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-3 z-10">
+          <header
+            className={twMerge(
+              'bg-white flex sticky w-full top-0 justify-between items-center px-5 py-3 z-10',
+              className,
+            )}>
             {CancelIcon ? (
               <CancelIcon
                 onClick={() => {

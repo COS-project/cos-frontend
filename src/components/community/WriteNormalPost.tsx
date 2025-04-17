@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import React, { FormEvent, SVGProps, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { KeyedMutator } from 'swr';
 
 import Header from '@/components/common/Header';
 import EmptyTitleAlertModal from '@/components/community/EmptyTitleAlertModal';
@@ -10,13 +11,16 @@ import ImageDeleteButton from '@/components/community/ImageDeleteButton';
 import { postCommentary } from '@/lib/api/community';
 import { certificateIdAtom } from '@/recoil/atom';
 import { createPostDataState, imagePreviewsState, imageUrlListState } from '@/recoil/community/atom';
+import { ResponseType } from '@/types/common/type';
+import { ResponsePostType } from '@/types/community/type';
 
 interface Props {
   setIsClickedWriteButton: React.Dispatch<React.SetStateAction<boolean>>;
+  mutate: KeyedMutator<ResponseType<ResponsePostType>[]>;
 }
 
 const WriteNormalPost = (props: Props) => {
-  const { setIsClickedWriteButton } = props;
+  const { setIsClickedWriteButton, mutate } = props;
   const certificateId = useRecoilValue(certificateIdAtom);
   const [postData, setPostData] = useRecoilState(createPostDataState);
   const [imagePreviews, setImagePreviews] = useRecoilState<string[]>(imagePreviewsState);
@@ -86,6 +90,7 @@ const WriteNormalPost = (props: Props) => {
 
     try {
       await postCommentary(certificateId, 'NORMAL', formData).then(() => {
+        mutate();
         //글쓰기 초기화
         setPostData(() => ({ title: '', content: '' }));
         setIsTitleEmpty(true);
@@ -130,12 +135,13 @@ const WriteNormalPost = (props: Props) => {
   return (
     <div>
       {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
-      <form onSubmit={handleException} className={'flex flex-col gap-y-3'}>
+      <form onSubmit={handleException} className={'flex flex-col gap-y-3 pt-8 pb-8'}>
         <Header
           onBack={onBack}
           CancelIcon={CancelIcon}
           headerType={'dynamic'}
           title={'자유게시판 쓰기'}
+          className={'fixed'}
           rightElement={
             <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
               완료

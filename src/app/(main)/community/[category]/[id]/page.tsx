@@ -96,17 +96,19 @@ const CommunityDetailPage = () => {
       case 'TIP':
         return (
           <div className={'flex justify-between'}>
-            <div className={'flex gap-x-2'}>
-              {postData.recommendTags?.map((tag) => {
-                return (
-                  <div key={tag.tagName} className={'rounded-[8px] py-[2px] px-2 bg-gray0 h-fit'}>
-                    <p className={'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-gray4'}>
-                      {tag.tagName}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
+            {postData.recommendTags && postData.recommendTags.length > 0 && (
+              <div className={'flex gap-x-2'}>
+                {postData.recommendTags?.map((tag) => {
+                  return (
+                    <div key={tag.tagName} className={'rounded-[8px] py-[2px] px-2 bg-gray0 h-fit'}>
+                      <p className={'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-gray4'}>
+                        {tag.tagName}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
             {bestPostIds?.includes(postData.postId) && (
               <div
                 className={

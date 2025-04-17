@@ -24,7 +24,11 @@ import useCheckReviewWriteAccess from '@/lib/hooks/useCheckReviewWriteAccess';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { certificateIdAtom, certificateNameAtom } from '@/recoil/atom';
-import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
+import {
+  boardTypeStateAtom,
+  commentarySearchQuestionSequence,
+  selectedNormalAndTipFilterContentAtom,
+} from '@/recoil/community/atom';
 import { BoardType, SortFieldKorType, SortFieldType } from '@/types/community/type';
 
 export default function CommunityCategoryPage() {
@@ -32,8 +36,9 @@ export default function CommunityCategoryPage() {
   const certificateId = useRecoilValue(certificateIdAtom);
   const selectedCertificationName = useRecoilValue<string>(certificateNameAtom);
   //필터값
-  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] =
-    useState<SortFieldKorType>('최신순');
+  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useRecoilState<SortFieldKorType>(
+    selectedNormalAndTipFilterContentAtom,
+  );
   const [selectedCommentaryYearFilterContent, setSelectedCommentaryYearFilterContent] = useState<number | string>(
     '전체',
   );
@@ -43,7 +48,7 @@ export default function CommunityCategoryPage() {
   const [sortField, setSortField] = useState<SortFieldType>('createdAt'); //최신순 인기순
   const { checkReviewPeriod, isError } = useCheckReviewPeriod(certificateId);
   //보드 타입
-  const [boardType, setBoardType] = useState<BoardType>('REVIEW');
+  const [boardType, setBoardType] = useRecoilState<BoardType>(boardTypeStateAtom);
   const { userPosts, setSize, mutate } = useGetTotalSearchResults(boardType, certificateId, sortField);
   const [boardTypeForPost, setBoardTypeForPost] = useState<BoardType>('COMMENTARY');
   //글쓰기 버튼
@@ -60,17 +65,28 @@ export default function CommunityCategoryPage() {
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
   const { reviewWriteAccess } = useCheckReviewWriteAccess(certificateId);
+  //처음 boardType 랜더링시만 -> 따끈후기 아닐 때
+  const [init, setInit] = useState(true);
 
   //따끈후기 기간이 아닌 경우에는 해설 게시판이 default로 보이도록 조작
   useEffect(() => {
-    if (isError && isError.response.data.responseCode === 'CRT_003') {
-      setBoardType('COMMENTARY');
-    }
-    if (isError && isError.response.data.responseCode === 'CRT_004') {
-      setBoardType('COMMENTARY');
-    }
-    if (checkReviewPeriod && !checkReviewPeriod.result) {
-      setBoardType('COMMENTARY');
+    if (init) {
+      if (boardType === 'TIP' && selectedNormalAndTipFilterContent === '인기순') {
+        setInit(false);
+        return;
+      }
+      if (isError && isError.response.data.responseCode === 'CRT_003') {
+        setBoardType('COMMENTARY');
+        setInit(false);
+      }
+      if (isError && isError.response.data.responseCode === 'CRT_004') {
+        setBoardType('COMMENTARY');
+        setInit(false);
+      }
+      if (checkReviewPeriod && !checkReviewPeriod.result) {
+        setBoardType('COMMENTARY');
+        setInit(false);
+      }
     }
   }, [isError]);
 
@@ -114,8 +130,10 @@ export default function CommunityCategoryPage() {
    * boardType 이 변경되면 필터값 초기화
    */
   useEffect(() => {
-    setSelectedNormalAndTipFilterContent('최신순');
-    setSelectedCommentaryYearFilterContent('전체');
+    if (!init) {
+      setSelectedNormalAndTipFilterContent('최신순');
+      setSelectedCommentaryYearFilterContent('전체');
+    }
   }, [boardType]);
 
   /**
@@ -147,7 +165,7 @@ export default function CommunityCategoryPage() {
   ) : boardTypeForPost === 'TIP' && isClickedWriteButton ? (
     <WriteTipPost setIsClickedWriteButton={setIsClickedWriteButton} mutate={mutate} />
   ) : boardTypeForPost === 'NORMAL' && isClickedWriteButton ? (
-    <WriteNormalPost setIsClickedWriteButton={setIsClickedWriteButton} />
+    <WriteNormalPost setIsClickedWriteButton={setIsClickedWriteButton} mutate={mutate} />
   ) : (
     <>
       {reviewWriteAccess && reviewWriteAccess.result ? (
@@ -183,9 +201,9 @@ export default function CommunityCategoryPage() {
             debouncedValue={debouncedValue}
           />
         ) : boardType === 'TIP' ? (
-          <NormalAndTipBoardList boardType={boardType} />
+          <NormalAndTipBoardList boardType={boardType} init={init} />
         ) : boardType === 'NORMAL' ? (
-          <NormalAndTipBoardList boardType={boardType} />
+          <NormalAndTipBoardList boardType={boardType} init={init} />
         ) : null}
       </div>
       {boardType === 'REVIEW' ? null : (

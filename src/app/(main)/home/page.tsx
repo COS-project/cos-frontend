@@ -22,6 +22,7 @@ import TodayGoalSkeleton from '@/components/home/skeleton/TodayGoalSkeleton';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import TodayGoal from '@/components/TodayGoal';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
+import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
@@ -29,7 +30,6 @@ import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
 import { certificateIdAtom } from '@/recoil/atom';
 import { selectedPrepareTimeState } from '@/recoil/home/atom';
 import { UserCertGoalPeriodType } from '@/types/home/type';
-import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 
 function HomeComponents() {
   const searchParams = useSearchParams();

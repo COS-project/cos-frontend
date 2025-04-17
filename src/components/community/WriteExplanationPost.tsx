@@ -135,7 +135,7 @@ const WriteExplanationPost = (props: Props) => {
     try {
       await postCommentary(1, 'COMMENTARY', formData).then(() => {
         //글쓰기 초기화
-        setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
+        setPostData(() => ({ title: '', round: 0, examYear: 0, content: '', questionSequence: 0 }));
         setIsTitleEmpty(true);
         setImageUrlList([]);
         setImagePreviews([]);
@@ -152,7 +152,7 @@ const WriteExplanationPost = (props: Props) => {
    */
   const onBack = () => {
     //글쓰기 초기화
-    setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
+    setPostData(() => ({ title: '', round: 0, examYear: 0, content: '', questionSequence: 0 }));
     setIsTitleEmpty(true);
     setImageUrlList([]);
     setImagePreviews([]);
@@ -187,7 +187,7 @@ const WriteExplanationPost = (props: Props) => {
   };
 
   return (
-    <div>
+    <div className={'pt-14 py-8'}>
       {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
       {isQuestionNumberExceedingLimit ? (
         <QuestionNumberExceedingLimitAlertModal setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit} />
@@ -198,6 +198,7 @@ const WriteExplanationPost = (props: Props) => {
           CancelIcon={CancelIcon}
           headerType={'dynamic'}
           title={'해설 쓰기'}
+          className={'fixed'}
           rightElement={
             <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
               완료
@@ -207,7 +208,7 @@ const WriteExplanationPost = (props: Props) => {
         <div className={'flex flex-col m-5 gap-y-4'}>
           {/* 년도 선택 세션 */}
           <div className={'flex flex-col relative gap-y-2'}>
-            <div className={'text-h3 font-bold ml-2'}>모의고사 연도 선택</div>
+            <div className={'text-h3 font-bold ml-2'}>모의고사 년도 선택</div>
             <div
               onClick={() => {
                 setIsYearsFilterOpen(!isYearsFilterOpen);
