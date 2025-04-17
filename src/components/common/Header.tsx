@@ -49,7 +49,7 @@ export default function Header(props: Props) {
     switch (headerType) {
       case 'static':
         return (
-          <header className="pt-[45px] bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
+          <header className="pt-[20px] bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
             <Logo />
             <div className={'relative flex items-center justify-center w-[40px] h-[40px]'}>
               {unreadCount !== 0 && (
@@ -63,7 +63,7 @@ export default function Header(props: Props) {
         );
       case 'dynamic':
         return (
-          <header className="pt-[45px] bg-white flex sticky top-0 justify-between items-center px-5 py-3 z-10">
+          <header className="pt-[20px] bg-white flex sticky top-0 justify-between items-center px-5 py-3 z-10">
             {CancelIcon ? (
               <CancelIcon
                 onClick={() => {
