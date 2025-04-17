@@ -2,16 +2,16 @@
 //link부분 수정 필요함
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import React, { FormEvent, useRef } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { KeyedMutator } from 'swr';
 
 import { postCommentData } from '@/lib/api/communityPost';
 import { GenerateCommentState, selectedReplyParentNameAtom } from '@/recoil/community/atom';
 import { ResponseType } from '@/types/common/type';
 import { ResponsePostDetailType } from '@/types/community/type';
-import { AnimatePresence, motion } from 'framer-motion';
 
 interface Props {
   postId: number; //포스트 id

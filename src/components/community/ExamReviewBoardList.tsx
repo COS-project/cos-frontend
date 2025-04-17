@@ -10,8 +10,8 @@ import UserActionReminder from '@/components/community/UserActionReminder';
 import useCheckReviewWriteAccess from '@/lib/hooks/useCheckReviewWriteAccess';
 import useGetExamReview from '@/lib/hooks/useGetExamReview';
 import { certificateIdAtom } from '@/recoil/atom';
-import { ExamDifficulty, ReviewPost } from '@/types/community/type';
 import { examReviewsCRT_003ErrorAtom, examReviewsCRT_004ErrorAtom } from '@/recoil/community/atom';
+import { ExamDifficulty, ReviewPost } from '@/types/community/type';
 
 interface Props {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;

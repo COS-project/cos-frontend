@@ -132,11 +132,6 @@ const EditPost = (props: Props) => {
     fetchDataAndUpdateState();
   }, [postDetailData]);
 
-
-  useEffect(() => {
-    console.log('edit', editPostData)
-  }, [editPostData]);
-
   /**
    * 꿀팁 게시글 수정하기 전 과거 remonnedTags 값을 가져와서 onlineCourseInputs 값을 초기화해주는 함수
    */

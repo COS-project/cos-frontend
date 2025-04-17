@@ -1,11 +1,11 @@
-import { SVGProps, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { SVGProps } from 'react';
 import React from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
 import { certificateIdAtom } from '@/recoil/atom';
 import { hStopwatchTimeState, mStopwatchTimeState, sStopwatchTimeState } from '@/recoil/stopwatch/atom';
-import { motion } from 'framer-motion';
 
 interface Props {
   setOnAccumulatedModal: React.Dispatch<React.SetStateAction<boolean>>;
