@@ -1,7 +1,9 @@
-import type { SVGProps } from 'react';
+import { SVGProps, useEffect } from 'react';
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
+import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
+import { certificateIdAtom } from '@/recoil/atom';
 import { hStopwatchTimeState, mStopwatchTimeState, sStopwatchTimeState } from '@/recoil/stopwatch/atom';
 
 interface Props {
@@ -10,10 +12,22 @@ interface Props {
 
 function AccumulatedTime(props: Props) {
   const { setOnAccumulatedModal } = props;
+  const certificateId = useRecoilValue(certificateIdAtom);
+  const { goalAchievementData } = useGoalAchievement(certificateId);
 
   const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState); //시 기록
   const [mStopwatchTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState); //분 기록
   const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초 기록
+
+  const formatMillisecondsToTime = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    return { hours, minutes, seconds };
+  };
 
   //기록 완료 알림창
   return (
@@ -45,7 +59,12 @@ function AccumulatedTime(props: Props) {
                 </div>
                 <div className="self-stretch text-primary text-h1 font-bold font-['Pretendard Variable'] leading-[30px]">
                   {/*TODO: 백엔드 수정되면 변경*/}
-                  {hStopwatchTime}시간 {mStopwatchTime}분 {sStopwatchTime}초{' '}
+                  {goalAchievementData && formatMillisecondsToTime(goalAchievementData.result.currentStudyTime).hours}
+                  시간{' '}
+                  {goalAchievementData && formatMillisecondsToTime(goalAchievementData.result.currentStudyTime).minutes}
+                  분{' '}
+                  {goalAchievementData && formatMillisecondsToTime(goalAchievementData.result.currentStudyTime).seconds}
+                  초{' '}
                 </div>
               </div>
             </div>

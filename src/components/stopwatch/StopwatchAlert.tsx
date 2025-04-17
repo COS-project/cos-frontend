@@ -73,9 +73,8 @@ function StopwatchAlert(props: Props) {
                   onClick={() => {
                     setStartTime(Date.now());
                     setNow(Date.now());
-                    setOnModal(false); //현재창 닫기
-                    setIsReset(true); //테스트
-                    setIsReset(false); //테스트
+                    setIsReset(true);
+                    setOnModal(false);
                   }}>
                   <div className="text-gray4 text-h6 font-medium font-['Pretendard Variable'] leading-[21px]">
                     아니요
@@ -93,8 +92,7 @@ function StopwatchAlert(props: Props) {
                         setOnModal(false); //현재창 닫기
                         setStartTime(Date.now());
                         setNow(Date.now());
-                        setIsReset(true); //테스트
-                        setIsReset(false); //테스트
+                        setIsReset(true);
                       });
                     }}>
                     기록하기

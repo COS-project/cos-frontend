@@ -35,6 +35,15 @@ export default function StopWatch() {
     return { transform: `rotate(${stringLocation}deg)` }; //원의 위치가 변경될 수 있도록 함
   }, [stringLocation]);
 
+  useEffect(() => {
+    if (isReset) {
+      setHStopwatchTime(0);
+      setMStopwatchTime(0);
+      setSStopwatchTime(0);
+      setIsReset(false);
+    }
+  }, [isReset]);
+
   return (
     <main className={'min-h-screen'}>
       {onModal ? ( //기록하기 알림창 열림OnOff
