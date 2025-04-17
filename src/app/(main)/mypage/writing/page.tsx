@@ -27,7 +27,7 @@ export default function MyWriting() {
   const [isClickEditPost, setIsClickEditPost] = useState(false);
   const { userPostsList, mutate } = useGetUserPosts(boardType, selectedFilterContent == '최신순' ? 'DESC' : 'ASC');
   return (
-    <>
+    <div>
       {isDeleteWarningModalOpen ? (
         <DeleteWarningModal
           postId={selectedPostId}
@@ -44,7 +44,7 @@ export default function MyWriting() {
           mockExamId={userPostsList[0].result.content[0].question?.mockExam.mockExamId}
         />
       ) : (
-        <>
+        <div className={'bg-gray0'}>
           <Header headerType={'dynamic'} title={'내가 작성한 글'} rightElement={<EmptyIcon />} />
           {/* 게시판 종류 선택 메뉴 */}
           <MyWritingMenu
@@ -54,22 +54,25 @@ export default function MyWriting() {
           />
           {/* 필터 */}
           <div className={'flex flex-col bg-gray0 min-h-screen px-5'}>
-            <div
-              onClick={() => {
-                setIsFilterOpen(!isFilterOpen);
-              }}
-              className={'my-4 flex w-fit items-center px-3 rounded-full bg-white text-h6 py-1'}>
-              {selectedFilterContent}
-              {isFilterOpen ? <ActivationIcon /> : <InActivationIcon />}
+            <div className={'relative'}>
+              <div
+                onClick={() => {
+                  setIsFilterOpen(!isFilterOpen);
+                }}
+                className={'my-4 flex w-fit items-center px-3 rounded-full bg-white text-h6 py-1'}>
+                {selectedFilterContent}
+                {isFilterOpen ? <ActivationIcon /> : <InActivationIcon />}
+              </div>
+              {isFilterOpen ? (
+                <MyPageFilter
+                  data={filterContent}
+                  setIsFilterOpen={setIsFilterOpen}
+                  isFilterOpen={isFilterOpen}
+                  setSelectedFilterContent={setSelectedFilterContent}
+                  className={'top-12'}
+                />
+              ) : null}
             </div>
-            {isFilterOpen ? (
-              <MyPageFilter
-                data={filterContent}
-                setIsFilterOpen={setIsFilterOpen}
-                isFilterOpen={isFilterOpen}
-                setSelectedFilterContent={setSelectedFilterContent}
-              />
-            ) : null}
             {/* boardList */}
             <div className={'flex flex-col gap-y-4'}>
               {boardType === 'COMMENTARY' ? (
@@ -105,9 +108,9 @@ export default function MyWriting() {
           <div className={'h-[100px]'} />
           <StopWatchActiveButton />
           <NavBar />
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }
 const InActivationIcon = (props: SVGProps<SVGSVGElement>) => (
