@@ -117,9 +117,7 @@ const ProfileSettings = () => {
 
         <button
           type={'submit'}
-          className={
-            'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0 hover:bg-primary transition'
-          }>
+          className={'w-full h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0 bg-primary transition'}>
           <div className="text-white text-h3 py-[25px]">완료</div>
         </button>
       </form>

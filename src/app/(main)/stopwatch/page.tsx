@@ -36,7 +36,7 @@ export default function StopWatch() {
   }, [stringLocation]);
 
   return (
-    <main>
+    <main className={'min-h-screen'}>
       {onModal ? ( //기록하기 알림창 열림OnOff
         <StopwatchAlert setOnAccumulatedModal={setOnAccumulatedModal} setOnModal={setOnModal} />
       ) : null}
