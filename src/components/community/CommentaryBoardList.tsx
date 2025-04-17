@@ -31,7 +31,7 @@ const CommentaryBoardList = (props: Props) => {
   const [selectedCommentaryRoundFilterContent, setSelectedCommentaryRoundFilterContent] = useState<number | string>(
     '전체',
   );
-  const { examYears } = useGetMockExamYears(); //해설 년도 필터값 데이터
+  const { examYears } = useGetMockExamYears(certificateId); //해설 년도 필터값 데이터
   const [yearsWithAllOption, setYearsWithAllOption] = useState<Array<number | string>>([]); //해설 년도 필터값 데이터 Copy Array
   const { mockExams } = useGetMockExams(certificateId, selectedCommentaryYearFilterContent); //해설 회차 필터값
   const [roundsWithAllOption, setRoundsWithAllOption] = useState<Array<string | MockExam>>([]); //해설 회차 필터값 데이터 Copy Array

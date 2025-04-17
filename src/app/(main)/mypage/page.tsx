@@ -15,7 +15,7 @@ export default function MyPage() {
   const [isUnRegisterModalOpen, setIsUnRegisterModalOpen] = useState<boolean>(false);
 
   return (
-    <>
+    <div className={'bg-gray0'}>
       {isLogoutModalOpen ? (
         <LogoutModal isLogoutModalOpen={isLogoutModalOpen} setIsLogoutModalOpen={setIsLogoutModalOpen} />
       ) : null}
@@ -26,7 +26,7 @@ export default function MyPage() {
         />
       ) : null}
       <Header />
-      <div className={'flex flex-col gap-y-6 bg-gray0 min-h-screen border-t-[1px] border-t-gray1'}>
+      <div className={'flex flex-col gap-y-6 min-h-screen border-t-[1px] border-t-gray1'}>
         <MyPageHeader />
         <div className={'mx-5 flex flex-col gap-y-3'}>
           {/* 게시판 */}
@@ -39,21 +39,21 @@ export default function MyPage() {
           <div className={'flex flex-col gap-y-3 bg-white rounded-[24px] p-4'}>
             <div className={'text-h6 text-gray4'}>계정관리</div>
             <div className={'flex flex-col gap-y-2'}>
-              <div className={'px-5 py-5 flex justify-between bg-gray0 rounded-[16px] '}>
+              <div
+                onClick={() => {
+                  setIsLogoutModalOpen(!isLogoutModalOpen);
+                }}
+                className={'px-5 py-5 flex justify-between bg-gray0 rounded-[16px] cursor-pointer'}>
                 <div className={'text-h6'}>로그아웃</div>
-                <MoveIcon
-                  onClick={() => {
-                    setIsLogoutModalOpen(!isLogoutModalOpen);
-                  }}
-                />
+                <MoveIcon />
               </div>
-              <div className={'px-5 py-5 flex justify-between bg-gray0 rounded-[16px] '}>
+              <div
+                onClick={() => {
+                  setIsUnRegisterModalOpen(!isUnRegisterModalOpen);
+                }}
+                className={'px-5 py-5 flex justify-between bg-gray0 rounded-[16px] '}>
                 <div className={'text-h6'}>탈퇴하기</div>
-                <MoveIcon
-                  onClick={() => {
-                    setIsUnRegisterModalOpen(!isUnRegisterModalOpen);
-                  }}
-                />
+                <MoveIcon />
               </div>
             </div>
           </div>
@@ -64,7 +64,7 @@ export default function MyPage() {
       <div className={'h-[100px] bg-gray0'} />
       <StopWatchActiveButton />
       <NavBar />
-    </>
+    </div>
   );
 }
 

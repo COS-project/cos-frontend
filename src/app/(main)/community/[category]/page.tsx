@@ -22,13 +22,14 @@ import useDebounce from '@/hooks/useDebounce';
 import useCheckReviewWriteAccess from '@/lib/hooks/useCheckReviewWriteAccess';
 import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchResults';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
-import { certificateIdAtom } from '@/recoil/atom';
+import { certificateIdAtom, certificateNameAtom } from '@/recoil/atom';
 import { commentarySearchQuestionSequence } from '@/recoil/community/atom';
 import { BoardType, SortFieldKorType, SortFieldType } from '@/types/community/type';
 
 export default function CommunityCategoryPage() {
   const [ref, inView] = useInView();
   const certificateId = useRecoilValue(certificateIdAtom);
+  const selectedCertificationName = useRecoilValue<string>(certificateNameAtom);
   //필터값
   const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] =
     useState<SortFieldKorType>('최신순');
@@ -147,7 +148,7 @@ export default function CommunityCategoryPage() {
             }}
           />
         }
-        title={'정보처리기사 게시판'} //TODO: 게시판 내용으로 바꿀 예정
+        title={selectedCertificationName}
       />
       <div className={'flex flex-col gap-y-4 bg-gray0 min-h-screen'}>
         {/*boardType 변경 메뉴*/}

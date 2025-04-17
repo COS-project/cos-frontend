@@ -13,6 +13,11 @@ import BestTip from '@/components/home/BestTip';
 import GoalSettingStatusModal from '@/components/home/goal-setting/GoalSettingStatusModal';
 import GoalBox from '@/components/home/GoalBox';
 import RecentGrowthChart from '@/components/home/RecentGrowthChart';
+import AverageAccurayChatSkeleton from '@/components/home/skeleton/AverageAccurayChatSkeleton';
+import AverageTakenTimeGraphReportSkeleton from '@/components/home/skeleton/AverageTakenTimeGraphReportSkeleton';
+import GoalBoxSkeleton from '@/components/home/skeleton/GoalBoxSkeleton';
+import HomeSkeleton from '@/components/home/skeleton/HomeSkeleton';
+import TodayGoalSkeleton from '@/components/home/skeleton/TodayGoalSkeleton';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import TodayGoal from '@/components/TodayGoal';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
@@ -143,34 +148,51 @@ function HomeComponents() {
       <div className="bg-gray0 h-screen overflow-y-auto">
         <Header />
         <Header headerType={'second'}></Header>
-        <div className={'mt-4 px-5 flex flex-col gap-y-5'}>
-          {goalAchievementData && (
-            <GoalBox
-              goalMockExams={goalAchievementData.result.goalMockExams}
-              currentMockExams={goalAchievementData.result.currentMockExams}
-              goalStudyTime={goalAchievementData.result.goalStudyTime}
-              currentStudyTime={goalAchievementData.result.currentStudyTime}
-              maxScore={goalAchievementData.result.maxScore}
-              goalScore={goalAchievementData.result.goalScore}
-            />
-          )}
-          {goalAchievementData && (
-            <TodayGoal
-              todayMockExams={goalAchievementData.result.todayMockExams}
-              mockExamsPerDay={goalAchievementData.result.mockExamsPerDay}
-              todayStudyTime={goalAchievementData.result.todayStudyTime}
-              studyTimePerDay={goalAchievementData.result.studyTimePerDay}
-            />
-          )}
-          <RecentGrowthChart />
-          <AverageAccurayChat subjectResults={averageSubjectList || []} />
-          <AverageTakenTimeGraphReport
-            totalTakenTime={sumTotalTakenTime()}
-            subjectResults={averageSubjectList}
-            timeLimit={averageSubjectList && averageSubjectList.length > 0 ? averageSubjectList[0].timeLimit : 0}
-          />
-          <BestTip />
-        </div>
+        {userGoals ? (
+          <div className={'mt-4 px-5 flex flex-col gap-y-5'}>
+            {goalAchievementData ? (
+              <GoalBox
+                goalMockExams={goalAchievementData.result.goalMockExams}
+                currentMockExams={goalAchievementData.result.currentMockExams}
+                goalStudyTime={goalAchievementData.result.goalStudyTime}
+                currentStudyTime={goalAchievementData.result.currentStudyTime}
+                maxScore={goalAchievementData.result.maxScore}
+                goalScore={goalAchievementData.result.goalScore}
+              />
+            ) : (
+              <GoalBoxSkeleton />
+            )}
+            {goalAchievementData ? (
+              <TodayGoal
+                todayMockExams={goalAchievementData.result.todayMockExams}
+                mockExamsPerDay={goalAchievementData.result.mockExamsPerDay}
+                todayStudyTime={goalAchievementData.result.todayStudyTime}
+                studyTimePerDay={goalAchievementData.result.studyTimePerDay}
+              />
+            ) : (
+              <TodayGoalSkeleton />
+            )}
+            <RecentGrowthChart />
+
+            {averageSubjectList ? (
+              <AverageAccurayChat subjectResults={averageSubjectList} />
+            ) : (
+              <AverageAccurayChatSkeleton />
+            )}
+            {averageSubjectList ? (
+              <AverageTakenTimeGraphReport
+                totalTakenTime={sumTotalTakenTime()}
+                subjectResults={averageSubjectList}
+                timeLimit={averageSubjectList && averageSubjectList.length > 0 ? averageSubjectList[0].timeLimit : 0}
+              />
+            ) : (
+              <AverageTakenTimeGraphReportSkeleton />
+            )}
+            <BestTip />
+          </div>
+        ) : (
+          <HomeSkeleton />
+        )}
         <div className={'h-[120px]'}></div>
         <StopWatchActiveButton />
         <NavBar />

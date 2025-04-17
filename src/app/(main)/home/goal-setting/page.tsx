@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useSWRConfig } from 'swr';
 
@@ -15,12 +15,14 @@ import SetGoalScore from '@/components/home/goal-setting/SetGoalScore';
 import SettingNewGoalModal from '@/components/home/goal-setting/SettingNewGoalModal';
 import { postGoalSettingData, putGoalSettingData } from '@/lib/api/home';
 import useGetGoalSettingData from '@/lib/hooks/useGetGoalSettingData';
+import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import { certificateIdAtom } from '@/recoil/atom';
 import { goalSettingCertificateId, goalSettingState } from '@/recoil/home/atom';
 
 const GoalSetting = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
+  const { mockExams } = useGetMockExams(certificateId, 2024);
   // 선택된 자격증 Id
   const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number | undefined>(
     goalSettingCertificateId,
@@ -67,18 +69,33 @@ const GoalSetting = () => {
    * 목표를 새로 생성할 때, state를 변경하는 함수
    */
   const resetGoalSettingState = () => {
-    return {
-      goalScore: 100,
-      prepareStartDateTime: new Date().toISOString(),
-      prepareFinishDateTime: new Date().toISOString(),
-      goalPrepareDays: 0,
-      mockExamsPerDay: 0,
-      goalMockExams: 0,
-      mockExamRepeatDays: [],
-      studyTimePerDay: 0,
-      goalStudyTime: 0,
-      studyRepeatDays: [],
-    };
+    if (mockExams && mockExams.length > 0) {
+      return {
+        goalScore: mockExams[0].maxScore as number,
+        prepareStartDateTime: new Date().toISOString(),
+        prepareFinishDateTime: new Date().toISOString(),
+        goalPrepareDays: 0,
+        mockExamsPerDay: 0,
+        goalMockExams: 0,
+        mockExamRepeatDays: [],
+        studyTimePerDay: 0,
+        goalStudyTime: 0,
+        studyRepeatDays: [],
+      };
+    } else {
+      return {
+        goalScore: 100,
+        prepareStartDateTime: new Date().toISOString(),
+        prepareFinishDateTime: new Date().toISOString(),
+        goalPrepareDays: 0,
+        mockExamsPerDay: 0,
+        goalMockExams: 0,
+        mockExamRepeatDays: [],
+        studyTimePerDay: 0,
+        goalStudyTime: 0,
+        studyRepeatDays: [],
+      };
+    }
   };
 
   /**
@@ -108,10 +125,6 @@ const GoalSetting = () => {
     setGoalData(resetState);
   };
 
-  // useEffect(() => {
-  //   console.log('goalData', goalData);
-  // }, [goalData]);
-
   return (
     <div className={'min-h-screen'}>
       {isSettingNewGoalModalOpen && userGoals ? (
@@ -131,7 +144,9 @@ const GoalSetting = () => {
           isResetButtonClick ? (
             <Button
               onClick={async () => {
-                await postGoalSettingData(goalData, selectedCertificationId);
+                await postGoalSettingData(goalData, selectedCertificationId).then((r) => {
+                  console.log('목표 저장 성공~r', r);
+                });
                 await mutate(`/certificates/${certificateId}/goals`);
                 setIsResetButtonClick(false);
                 router.push('/home');
@@ -143,6 +158,7 @@ const GoalSetting = () => {
             <Button
               onClick={() => {
                 putGoalSettingData(goalData, getLastGoalId() || 0).then((r) => {
+                  console.log('목표 수정 성공', r);
                   router.push('/home');
                 });
               }}
@@ -151,7 +167,7 @@ const GoalSetting = () => {
             </Button>
           )
         }></Header>
-      <div className="flex flex-col gap-y-8 mx-5">
+      <div className="flex flex-col gap-y-8 mx-5 mb-8">
         {/*자격증 선택*/}
         {isResetButtonClick ? <SelectCertification /> : null}
         {/*목표 점수 설정*/}

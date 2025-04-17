@@ -46,27 +46,30 @@ export default function MyComment() {
   };
 
   return (
-    <>
+    <div className={'bg-gray0'}>
       <Header headerType={'dynamic'} title={'내가 작성한 댓글'} rightElement={<EmptyIcon />} />
-      <div className={'py-6 bg-gray0 min-h-screen'}>
+      <div className={'py-6 min-h-screen'}>
         <div className={'relative px-5 flex flex-col gap-y-4 '}>
           {/*필터*/}
-          <div className={' w-fit flex px-3 py-1 rounded-full bg-white '}>
-            <span className={'text-gray4 text-h6'}>{selectedFilterContent}</span>
+          <div className={'relative'}>
+            <div className={'w-fit flex px-3 py-1 rounded-full bg-white'}>
+              <span className={'text-gray4 text-h6'}>{selectedFilterContent}</span>
+              {isOpenFilter ? (
+                <ActivationIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
+              ) : (
+                <DisableIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
+              )}
+            </div>
             {isOpenFilter ? (
-              <ActivationIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
-            ) : (
-              <DisableIcon onClick={() => setIsOpenFilter(!isOpenFilter)} />
-            )}
+              <MyPageFilter
+                isFilterOpen={isOpenFilter}
+                setSelectedFilterContent={setSelectedFilterContent}
+                setIsFilterOpen={setIsOpenFilter}
+                data={filterContent}
+                className={'top-8'}
+              />
+            ) : null}
           </div>
-          {isOpenFilter ? (
-            <MyPageFilter
-              isFilterOpen={isOpenFilter}
-              setSelectedFilterContent={setSelectedFilterContent}
-              setIsFilterOpen={setIsOpenFilter}
-              data={filterContent}
-            />
-          ) : null}
           <div className={'flex flex-col gap-y-4'}>
             {userCommentPostsList
               ? userCommentPostsList.map((userCommentPosts: MyPostsResponseType) => {
@@ -110,7 +113,7 @@ export default function MyComment() {
       <div className={'h-[100px]'} />
       <StopWatchActiveButton />
       <NavBar />
-    </>
+    </div>
   );
 }
 const DisableIcon = (props: SVGProps<SVGSVGElement>) => (

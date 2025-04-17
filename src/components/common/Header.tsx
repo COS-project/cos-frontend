@@ -49,19 +49,21 @@ export default function Header(props: Props) {
     switch (headerType) {
       case 'static':
         return (
-          <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
+          <header className="pt-[45px] bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
             <Logo />
             <div className={'relative flex items-center justify-center w-[40px] h-[40px]'}>
-              <div className={'absolute top-1 right-1 text-[10px] text-white bg-primary rounded-full px-1'}>
-                {unreadCount}
-              </div>
+              {unreadCount !== 0 && (
+                <div className={'absolute top-1 right-1 text-[10px] text-white bg-primary rounded-full px-1'}>
+                  {unreadCount}
+                </div>
+              )}
               <AlarmIcon onClick={() => router.push('/alarm')} />
             </div>
           </header>
         );
       case 'dynamic':
         return (
-          <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-3 z-10">
+          <header className="pt-[45px] bg-white flex sticky top-0 justify-between items-center px-5 py-3 z-10">
             {CancelIcon ? (
               <CancelIcon
                 onClick={() => {

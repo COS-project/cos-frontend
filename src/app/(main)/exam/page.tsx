@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import Banner from '@/components/common/Banner';
 import Header from '@/components/common/Header';
@@ -12,6 +13,7 @@ import YearSelector from '@/components/exam/YearSelector';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useDelayOver from '@/hooks/useDelayOver';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
+import { certificateIdAtom } from '@/recoil/atom';
 
 const Exam = () => {
   return (
@@ -24,7 +26,8 @@ const Exam = () => {
 };
 
 const SolveExamBox = () => {
-  const { examYears, examYearsIsLoading } = useGetMockExamYears();
+  const certificateId = useRecoilValue(certificateIdAtom);
+  const { examYears, examYearsIsLoading } = useGetMockExamYears(certificateId);
   const [isClickedYearSelector, setIsClickedYearSelector] = useState<boolean>(false);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [isRandomMockExamModalOpen, setIsRandomMockExamModalOpen] = useState(false);

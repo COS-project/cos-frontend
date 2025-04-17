@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 
+import Spinner from '@/components/common/Spinner';
 import CertificationPriority from '@/components/onboarding/CertificationPriority';
 import ChooseCertification from '@/components/onboarding/ChooseCertification';
 import ProfileSettings from '@/components/onboarding/ProfileSettings';
@@ -57,7 +58,7 @@ const OnBoardingComponents = () => {
 };
 export default function OnBoarding() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spinner />}>
       <OnBoardingComponents />
     </Suspense>
   );

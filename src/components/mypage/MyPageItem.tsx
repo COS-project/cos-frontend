@@ -18,19 +18,16 @@ const MyPageItem = (props: Props) => {
       <div className={'flex flex-col gap-y-2'}>
         {contents.map((content: ItemType, index: number) => {
           return (
-            <div key={index} className={'px-5 py-5 flex justify-between bg-gray0 rounded-[16px] '}>
+            <div
+              onClick={() => {
+                if (content.path) {
+                  router.push(content.path);
+                }
+              }}
+              key={index}
+              className={'px-5 py-5 flex justify-between bg-gray0 rounded-[16px] cursor-pointer'}>
               <div className={'text-h6'}>{content.title}</div>
-              {content.version ? (
-                <div className={'text-h6 text-gray3'}>{content.version}</div>
-              ) : (
-                <MoveIcon
-                  onClick={() => {
-                    if (content.path) {
-                      router.push(content.path);
-                    }
-                  }}
-                />
-              )}
+              {content.version ? <div className={'text-h6 text-gray3'}>{content.version}</div> : <MoveIcon />}
             </div>
           );
         })}

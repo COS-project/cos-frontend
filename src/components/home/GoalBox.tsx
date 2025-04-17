@@ -48,7 +48,7 @@ const GoalBox = (props: Props) => {
             <div className={'font-normal text-h6 px-[20px] py-[2px] rounded-full bg-gray0'}>목표점수</div>
           </div>
           <div className="relative mt-[10px]">
-            <ScoredDonutChart mainscore={maxScore} totalscore={goalScore} unit="점" />
+            <ScoredDonutChart maxScore={maxScore} goalScore={goalScore} unit="점" />
           </div>
         </div>
         <div className="w-[33%]">
@@ -56,11 +56,7 @@ const GoalBox = (props: Props) => {
             <div className={'font-normal text-h6 px-[20px] py-[2px] rounded-full bg-gray0'}>공부시간</div>
           </div>
           <div className="relative mt-[10px]">
-            <ScoredDonutChart
-              mainscore={millisecondsToMinutes(currentStudyTime)}
-              totalscore={goalStudyTime}
-              unit="분"
-            />
+            <ScoredDonutChart maxScore={millisecondsToMinutes(currentStudyTime)} goalScore={goalStudyTime} unit="분" />
           </div>
         </div>
         <div className="w-[33%]">
@@ -68,7 +64,7 @@ const GoalBox = (props: Props) => {
             <div className={'font-normal text-h6 px-[20px] py-[2px] rounded-full bg-gray0'}>모의고사</div>
           </div>
           <div className="relative mt-[10px]">
-            <ScoredDonutChart mainscore={currentMockExams} totalscore={goalMockExams} unit="회" />
+            <ScoredDonutChart maxScore={currentMockExams} goalScore={goalMockExams} unit="회" />
           </div>
         </div>
       </div>

@@ -3,8 +3,11 @@
 import * as React from 'react';
 import { useRecoilValue } from 'recoil';
 
+import Spinner from '@/components/common/Spinner';
 import GoalSettingTitle from '@/components/home/goal-setting/GoalSettingTitle';
 import SetGoalsItem from '@/components/home/goal-setting/SetGoalsItem';
+import useGetMockExams from '@/lib/hooks/useGetMockExams';
+import { certificateIdAtom } from '@/recoil/atom';
 import { goalSettingState } from '@/recoil/home/atom';
 
 /**
@@ -12,7 +15,12 @@ import { goalSettingState } from '@/recoil/home/atom';
  */
 const SetGoalScore = () => {
   const goalData = useRecoilValue(goalSettingState);
+  const certificateId = useRecoilValue(certificateIdAtom);
+  const { mockExams } = useGetMockExams(certificateId, 2024);
 
+  if (!mockExams) {
+    return <Spinner />;
+  }
   return (
     <div className="flex flex-col gap-y-2">
       <GoalSettingTitle Icon={SetGoalScoreIcon}>목표 점수 설정</GoalSettingTitle>
@@ -21,7 +29,7 @@ const SetGoalScore = () => {
         usage={'goalScore'}
         goalString={'총점'}
         unitString={'점'}
-        actionString={goalData.goalScore == 100 ? '받기' : '이상 받기'} // 총점 변경
+        actionString={mockExams.length > 0 ? (goalData.goalScore == mockExams[0].maxScore ? '받기' : '이상 받기') : ''} // 총점 변경
         ContentIcon={SetGoalScoreContentIcon}
       />
     </div>
