@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { FormEvent, SVGProps, useRef, useState } from 'react';
+import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
@@ -21,7 +21,7 @@ interface Props {
 
 const WriteExplanationPost = (props: Props) => {
   const certificateId = useRecoilValue(certificateIdAtom);
-
+  const [init, setInit] = useState(true);
   const { setIsClickedWriteButton } = props;
   const { examYears } = useGetMockExamYears(certificateId);
   const { questions } = useMockExamQuestions(certificateId);
@@ -39,6 +39,20 @@ const WriteExplanationPost = (props: Props) => {
   const { mockExams } = useGetMockExams(certificateId, postData.examYear); //해설 회차 필터값
   const [isQuestionNumberExceedingLimit, setIsQuestionNumberExceedingLimit] = useState(false);
   const [isTitleEmpty, setIsTitleEmpty] = useState(false);
+  // 1단계: examYear 설정
+  useEffect(() => {
+    if (init && examYears && examYears.length > 0) {
+      setPostData((prev) => ({ ...prev, examYear: examYears[0] }));
+    }
+  }, [examYears]);
+
+  // 2단계: round 설정 (examYear가 설정된 후에만)
+  useEffect(() => {
+    if (init && mockExams && mockExams.length > 0 && postData.examYear) {
+      setPostData((prev) => ({ ...prev, round: mockExams[0].round }));
+      setInit(false); // 마지막에 init을 false로 바꿔줌
+    }
+  }, [mockExams, postData.examYear]);
 
   /**
    * 문제 번호를 변경하는 함수

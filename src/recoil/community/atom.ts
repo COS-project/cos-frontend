@@ -64,8 +64,8 @@ export const createPostDataState = atom<CreatePostDataType>({
     title: '',
     content: '',
     tags: [],
-    examYear: 2023,
-    round: 1,
+    examYear: 0,
+    round: 0,
     questionSequence: 0,
   },
 });
