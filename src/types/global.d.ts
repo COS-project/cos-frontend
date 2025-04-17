@@ -354,7 +354,7 @@ interface RecommendTags {
 
 //댓글 생성 양식
 export interface GenerateComment {
-  parentCommentId: null | number;
+  parentCommentId?: null | number;
   content: string;
 }
 

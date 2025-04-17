@@ -23,20 +23,29 @@ const CommentWriting = (props: Props) => {
 
   const editableRef = useRef<HTMLDivElement>(null); // ✅ contentEditable ref
 
+  const isEmpty = generateComment.content === '';
+
   /**
    * form 형식 제출 함수
    */
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
 
+    const payload =
+      generateComment.parentCommentId === null
+        ? { content: generateComment.content }
+        : {
+            content: generateComment.content,
+            parentCommentId: generateComment.parentCommentId,
+          };
     try {
-      await postCommentData(postId, generateComment).then(() => {
-        communityPostDataMutate();
+      await postCommentData(postId, payload).then(() => {
         setGenerateComment({ ...generateComment, content: '', parentCommentId: null });
         // ✅ DOM 텍스트 초기화
         if (editableRef.current) {
           editableRef.current.textContent = '';
         }
+        communityPostDataMutate();
       }); // API 호출
     } catch (error) {
       console.error('댓글 제출 중 오류 발생:', error);
@@ -61,9 +70,9 @@ const CommentWriting = (props: Props) => {
           className="w-full min-h-[40px] max-h-[200px] overflow-y-auto outline-none placeholder:text-gray4 text-black text-[15px] font-['Pretendard Variable'] leading-snug bg-gray0 rounded-[12px] py-4 empty:before:content-[attr(data-placeholder)] empty:before:text-gray4"
         />
         <div className="w-10 h-10 relative">
-          <button type="submit" className="w-10 h-10 left-0 top-0 absolute bg-indigo-600 grid place-content-center">
+          <button disabled={isEmpty} type="submit">
             <Image
-              src="/community/SubmitButtonIcon.svg"
+              src={isEmpty ? '/community/SubmitGrayButtonIcon.svg' : '/community/SubmitBlueButtonIcon.svg'}
               alt="SubmitButtonIcon"
               width={40}
               height={40}
