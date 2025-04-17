@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -10,9 +11,11 @@ import { PostComments } from '@/types/global';
 interface Props {
   commentList: PostComments[];
   setCommentIsOptionModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedCommentId: React.Dispatch<React.SetStateAction<number>>;
 }
 const CommunityComments = (props: Props) => {
-  const { commentList, setCommentIsOptionModalOpen } = props;
+  const userId = Cookies.get('userId');
+  const { commentList, setCommentIsOptionModalOpen, setSelectedCommentId } = props;
   const [localCommentList, setLocalCommentList] = useState<PostComments[]>([]);
   const [generateComment, setGenerateComment] = useRecoilState(GenerateCommentState);
 
@@ -66,9 +69,10 @@ const CommunityComments = (props: Props) => {
                 nickName={comment.user.nickname}
                 profileUrl={comment.user.profileImage}
                 createdTime={comment.dateTime.createdAt}
-                isWriter={true}
+                isWriter={parseInt(userId as string) === comment.user.userId}
                 setIsOptionModalOpen={() => {
                   setCommentIsOptionModalOpen(true);
+                  setSelectedCommentId(comment.postCommentId);
                 }}
               />
               <section className={'pl-[48px]'}>
@@ -83,7 +87,7 @@ const CommunityComments = (props: Props) => {
                       }}
                       className={
                         generateComment.parentCommentId === comment.postCommentId
-                          ? 'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-point'
+                          ? 'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-primary'
                           : 'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-gray4'
                       }>
                       답글 달기
@@ -125,9 +129,10 @@ const CommunityComments = (props: Props) => {
                         nickName={replyComment.user.nickname}
                         profileUrl={replyComment.user.profileImage}
                         createdTime={replyComment.dateTime.createdAt}
-                        isWriter={true}
+                        isWriter={parseInt(userId as string) === replyComment.user.userId}
                         setIsOptionModalOpen={() => {
                           setCommentIsOptionModalOpen(true);
+                          setSelectedCommentId(replyComment.postCommentId);
                         }}
                         nickNameClassName={'subtitle2 text-gray4 leading-[21px] tracking-[-0.28px]'}
                         imageClassName={'relative w-[36px] h-[36px]'}

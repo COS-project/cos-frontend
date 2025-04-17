@@ -3,7 +3,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { FormEvent, useEffect } from 'react';
+import React, { FormEvent, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { KeyedMutator } from 'swr';
 
@@ -21,6 +21,8 @@ const CommentWriting = (props: Props) => {
   const { postId, communityPostDataMutate } = props;
   const [generateComment, setGenerateComment] = useRecoilState(GenerateCommentState);
 
+  const editableRef = useRef<HTMLDivElement>(null); // ✅ contentEditable ref
+
   /**
    * form 형식 제출 함수
    */
@@ -30,8 +32,12 @@ const CommentWriting = (props: Props) => {
     try {
       await postCommentData(postId, generateComment).then(() => {
         communityPostDataMutate();
+        setGenerateComment({ ...generateComment, content: '', parentCommentId: null });
+        // ✅ DOM 텍스트 초기화
+        if (editableRef.current) {
+          editableRef.current.textContent = '';
+        }
       }); // API 호출
-      setGenerateComment({ ...generateComment, content: '', parentCommentId: null });
     } catch (error) {
       console.error('댓글 제출 중 오류 발생:', error);
     }
@@ -43,6 +49,7 @@ const CommentWriting = (props: Props) => {
         onSubmit={handleSubmit}
         className="mt-4 mb-3 w-full px-4 bg-gray0 rounded-2xl border border-white justify-between items-center inline-flex">
         <div
+          ref={editableRef}
           contentEditable
           onInput={(e) => {
             const content = e.currentTarget.textContent || '';

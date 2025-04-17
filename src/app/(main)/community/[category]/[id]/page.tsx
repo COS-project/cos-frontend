@@ -1,11 +1,13 @@
 'use client';
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
 import Spinner from '@/components/common/Spinner';
+import CommentOptionModal from '@/components/community/CommentOptionModal';
 import CommentWriting from '@/components/community/CommentWriting';
 import CommunityComments from '@/components/community/CommunityComments';
 import CommunityPost from '@/components/community/CommunityPost';
@@ -13,6 +15,8 @@ import EditPost from '@/components/community/EditPost';
 import PostOptionModal from '@/components/community/PostOptionModal';
 import Profile from '@/components/community/Profile';
 import Question from '@/components/community/Question';
+import ReportSubmittedModal from '@/components/community/ReportSubmittedModal';
+import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import { certificateIdAtom } from '@/recoil/atom';
 import { BoardType } from '@/types/community/type';
@@ -20,18 +24,17 @@ import { BoardType } from '@/types/community/type';
 const CommunityDetailPage = () => {
   const params = useParams();
   const certificateId = useRecoilValue(certificateIdAtom);
+  const userId = Cookies.get('userId');
   //커뮤니티 포스트에 해당하는 데이터를 가져옴
   const { communityPostData, isLoading, isError, communityPostDataMutate } = useGetCommunityPost(params.id);
   const [isQuestionModalOpen, setIsQuestionModalOpen] = useState(false);
-  const [isPostOptionModalOpen, setPostIsOptionModalOpen] = useState(true);
-  const [isCommentOptionModalOpen, setCommentIsOptionModalOpen] = useState(true);
+  const [isPostOptionModalOpen, setPostIsOptionModalOpen] = useState(false);
+  const [isCommentOptionModalOpen, setCommentIsOptionModalOpen] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(0);
-  const [selectedParentCommentId, setSelectedParentCommentId] = useState(0);
   const [isClickEditPost, setIsClickEditPost] = useState(false);
-
-  useEffect(() => {
-    console.log('params', params);
-  }, [params]);
+  const [isReportSubmittedModalOpen, setIsReportSubmittedModalOpen] = useState(false);
+  const { bestTipPosts } = useBest3TipPosts(certificateId);
+  const bestPostIds = bestTipPosts?.map((post) => post.postId);
 
   if (!communityPostData) {
     return <Spinner />;
@@ -91,20 +94,54 @@ const CommunityDetailPage = () => {
           </div>
         );
       case 'TIP':
-        return '꿀팁 게시판';
+        return (
+          <div className={'flex justify-between'}>
+            <div className={'flex gap-x-2'}>
+              {postData.recommendTags?.map((tag) => {
+                return (
+                  <div key={tag.tagName} className={'rounded-[8px] py-[2px] px-2 bg-gray0 h-fit'}>
+                    <p className={'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-gray4'}>
+                      {tag.tagName}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+            {bestPostIds?.includes(postData.postId) && (
+              <div
+                className={
+                  'bg-primary text-white px-3 py-[2px] font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] rounded-full'
+                }>
+                BEST
+              </div>
+            )}
+          </div>
+        );
       default:
-        return '자유 게시판';
+        return null;
     }
   };
 
   return (
     <>
+      {isReportSubmittedModalOpen && (
+        <ReportSubmittedModal setIsReportSubmittedModalOpen={setIsReportSubmittedModalOpen} />
+      )}
+      {isCommentOptionModalOpen && (
+        <CommentOptionModal
+          commentId={selectedCommentId}
+          setIsReportSubmittedModalOpen={setIsReportSubmittedModalOpen}
+          setCommentIsOptionModal={setCommentIsOptionModalOpen}
+          communityPostDataMutate={communityPostDataMutate}
+        />
+      )}
       {isPostOptionModalOpen && (
         <PostOptionModal
           communityId={params.category}
           postId={postData.postId}
           setPostIsOptionModal={setPostIsOptionModalOpen}
           setIsClickEditPost={setIsClickEditPost}
+          setIsReportSubmittedModalOpen={setIsReportSubmittedModalOpen}
         />
       )}
       {isQuestionModalOpen && (
@@ -135,7 +172,7 @@ const CommunityDetailPage = () => {
                 setPostIsOptionModalOpen(true);
               }}
               profileUrl={postData.user.profileImage}
-              isWriter={true}
+              isWriter={parseInt(userId as string) === postData.user.userId}
               createdTime={postData.dateTime.createdAt}
               nickName={postData.user.nickname}
             />
@@ -149,14 +186,18 @@ const CommunityDetailPage = () => {
               content={postData.postContent.content}>
               <div>{switchTopElementByBoardType(postData.postType)}</div>
             </CommunityPost>
-            <CommunityComments commentList={commentList} setCommentIsOptionModalOpen={setCommentIsOptionModalOpen} />
+            <CommunityComments
+              commentList={commentList}
+              setCommentIsOptionModalOpen={setCommentIsOptionModalOpen}
+              setSelectedCommentId={setSelectedCommentId}
+            />
           </section>
           <div className={'h-[100px]'} />
+          <CommentWriting postId={postData.postId} communityPostDataMutate={communityPostDataMutate} />
         </main>
       ) : (
         <></>
       )}
-      <CommentWriting postId={postData.postId} communityPostDataMutate={communityPostDataMutate} />
     </>
   );
 };
