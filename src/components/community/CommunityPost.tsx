@@ -58,13 +58,23 @@ const CommunityPost = (props: Props) => {
       <section className={'flex justify-between mt-[24px] mb-[20px] items-end'}>
         <div className={'flex gap-x-2'}>
           <div className={'flex items-center'}>
-            <Image
-              src="/community/BlueLikeIcon.svg"
-              alt="BlueLikeIcon"
-              width={24}
-              height={24}
-              style={{ width: 24, height: 24 }}
-            />
+            {isLiked ? (
+              <Image
+                src="/community/BlueFillLikeIcon.svg"
+                alt="BlueLikeIcon"
+                width={24}
+                height={24}
+                style={{ width: 24, height: 24 }}
+              />
+            ) : (
+              <Image
+                src="/community/BlueLikeIcon.svg"
+                alt="BlueLikeIcon"
+                width={24}
+                height={24}
+                style={{ width: 24, height: 24 }}
+              />
+            )}
             <p className={'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-second'}>
               {fakeLikeCount}
             </p>
