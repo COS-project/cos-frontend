@@ -1,12 +1,18 @@
 'use client';
 import { atom } from 'recoil';
 
-import { BoardType, CreatePostDataType, EditPostDataType, ExamReviewPostType } from '@/types/community/type';
+import {
+  BoardType,
+  CreatePostDataType,
+  EditPostDataType,
+  ExamReviewPostType,
+  SortFieldKorType,
+} from '@/types/community/type';
 import { GenerateComment, ImageType } from '@/types/global';
 
 //게시판 종류
-export const boardTypeState = atom<BoardType>({
-  key: 'boardTypeState',
+export const boardTypeStateAtom = atom<BoardType>({
+  key: 'boardTypeStateAtom',
   default: 'REVIEW',
 });
 
@@ -115,4 +121,10 @@ export const examReviewsCRT_003ErrorAtom = atom<boolean>({
 export const examReviewsCRT_004ErrorAtom = atom<boolean>({
   key: 'examReviewsCRT_004ErrorAtom',
   default: false,
-})
+});
+
+//꿀팁 게시글 더보기 누를때 인기순으로 정렬되도록 하는 atom
+export const selectedNormalAndTipFilterContentAtom = atom<SortFieldKorType>({
+  key: 'selectedNormalAndTipFilterContentAtom',
+  default: '최신순',
+});

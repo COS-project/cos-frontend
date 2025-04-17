@@ -217,12 +217,13 @@ const WriteTipPost = (props: Props) => {
   return (
     <div>
       {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
-      <form onSubmit={handleException} className={'flex flex-col gap-y-3'}>
+      <form onSubmit={handleException} className={'flex flex-col gap-y-3 pt-12 pb-8'}>
         <Header
           onBack={onBack}
           CancelIcon={CancelIcon}
           headerType={'dynamic'}
           title={'꿀팁게시판 쓰기'}
+          className={'fixed'}
           rightElement={
             <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
               완료
