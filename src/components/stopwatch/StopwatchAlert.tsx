@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React, { type SVGProps } from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -39,68 +40,71 @@ function StopwatchAlert(props: Props) {
   return (
     <>
       <div className="">
-        <div className="fixed z-40 w-full h-full px-[36px] py-8 bg-black bg-opacity-60 flex-col justify-center items-center gap-2 inline-flex ">
-          {/* 닫기 버튼 */}
-          <div className="relative self-stretch px-2 items-center inline-flex justify-end mr-2">
+        <div className="fixed left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen">
+          <motion.div
+            className={'flex flex-col gap-y-2'}
+            initial={{ y: 200, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 200, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
+            {/* 닫기 버튼 */}
             <div
-              className=" flex cursor-pointer"
               onClick={() => {
                 setOnModal(false);
-              }}>
-              <div className="text-center text-white text-base font-medium font-['Pretendard Variable'] leading-normal">
-                닫기
-              </div>
+              }}
+              className={'flex justify-end items-center cursor-pointer'}>
+              <div className={'text-white text-h6'}>닫기</div>
               <DeleteIcon />
             </div>
-          </div>
 
-          {/* 모달창 */}
-          <section className="px-5 py-6 bg-white rounded-[32px] flex flex-col gap-2 w-full">
-            <div className="self-stretch flex-col gap-4 flex">
-              <div className={'flex text-h2 font-bold gap-x-1'}>
-                <div className="self-stretch leading-[30px]">누적시간</div>
-                <div className="self-stretch text-primary leading-[30px]">
-                  {hStopwatchTime}시간 {mStopwatchTime}분 {sStopwatchTime}초
-                </div>
-              </div>
-              <div>
-                <div className="text-h6 leading-[21px]">기록할까요?</div>
-                <div className="text-h6 leading-[21px]">기록하지 않으면 타이머의 시간이 초기화됩니다.</div>
-              </div>
-              <div className="justify-end items-center gap-2 inline-flex">
-                <div
-                  className="h-9 px-4 py-1 bg-gray1 cursor-pointer rounded-[999px] justify-center items-center gap-2 flex"
-                  onClick={() => {
-                    setStartTime(Date.now());
-                    setNow(Date.now());
-                    setIsReset(true);
-                    setOnModal(false);
-                  }}>
-                  <div className="text-gray4 text-h6 font-medium font-['Pretendard Variable'] leading-[21px]">
-                    아니요
+            {/* 모달창 */}
+            <section className="flex flex-col gap-y-4 bg-white rounded-[32px] p-5">
+              <div className="self-stretch flex-col gap-4 flex">
+                <div className={'flex text-h2 font-bold gap-x-1'}>
+                  <div className="self-stretch leading-[30px]">누적시간</div>
+                  <div className="self-stretch text-primary leading-[30px]">
+                    {hStopwatchTime}시간 {mStopwatchTime}분 {sStopwatchTime}초
                   </div>
                 </div>
-                <div className="h-9 px-4 py-1 cursor-pointer bg-black rounded-[999px] justify-center items-center gap-2 flex">
+                <div>
+                  <div className="text-h6 leading-[21px]">기록할까요?</div>
+                  <div className="text-h6 leading-[21px]">기록하지 않으면 타이머의 시간이 초기화됩니다.</div>
+                </div>
+                <div className="justify-end items-center gap-2 inline-flex">
                   <div
-                    className="text-white text-h6 font-['Pretendard Variable'] leading-[21px]"
+                    className="h-9 px-4 py-1 bg-gray1 cursor-pointer rounded-[999px] justify-center items-center gap-2 flex"
                     onClick={() => {
-                      postStudyTimes(
-                        selectedPrepareTime.goalId,
-                        convertToMilliseconds(hStopwatchTime, mStopwatchTime, sStopwatchTime),
-                      ).then((res) => {
-                        setOnAccumulatedModal(true); //모달창 열기
-                        setOnModal(false); //현재창 닫기
-                        setStartTime(Date.now());
-                        setNow(Date.now());
-                        setIsReset(true);
-                      });
+                      setStartTime(Date.now());
+                      setNow(Date.now());
+                      setIsReset(true);
+                      setOnModal(false);
                     }}>
-                    기록하기
+                    <div className="text-gray4 text-h6 font-medium font-['Pretendard Variable'] leading-[21px]">
+                      아니요
+                    </div>
+                  </div>
+                  <div className="h-9 px-4 py-1 cursor-pointer bg-black rounded-[999px] justify-center items-center gap-2 flex">
+                    <div
+                      className="text-white text-h6 font-['Pretendard Variable'] leading-[21px]"
+                      onClick={() => {
+                        postStudyTimes(
+                          selectedPrepareTime.goalId,
+                          convertToMilliseconds(hStopwatchTime, mStopwatchTime, sStopwatchTime),
+                        ).then((res) => {
+                          setOnAccumulatedModal(true); //모달창 열기
+                          setOnModal(false); //현재창 닫기
+                          setStartTime(Date.now());
+                          setNow(Date.now());
+                          setIsReset(true);
+                        });
+                      }}>
+                      기록하기
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </motion.div>
         </div>
       </div>
     </>

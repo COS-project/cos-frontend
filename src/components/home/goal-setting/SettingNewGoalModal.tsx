@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { type SVGProps } from 'react';
 import * as React from 'react';
@@ -25,51 +26,58 @@ const SettingNewGoalModal = (props: Props) => {
     <>
       <div
         className={
-          'absolute left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
+          'fixed left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
         }>
-        <div
-          onClick={() => {
-            setIsSettingNewModal(!isSettingNewGoalModal);
-            router.push('/home');
-          }}
-          className={'flex justify-end items-center'}>
-          <div className={'text-white text-h6'}>닫기</div>
-          <CancelIcon />
-        </div>
-        <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
-          <div className={'flex flex-col gap-y-1'}>
-            <div className={'text-h2 font-semibold text-black'}>
-              {isFirstGoalSetting ? '이전에 세우신 목표가 없어요!' : '이전 목표를 불러올까요?'}
-            </div>
-            <div>
-              <div className={'flex items-center text-h6'}>
-                {isFirstGoalSetting ? '새로운 목표를 세워보시겠어요?' : '정보를 불러오면 이전에 설정한 목표를'}
-              </div>
-              {!isFirstGoalSetting && <div className={'text-h6'}>토대로 작성할 수 있어요.</div>}
-            </div>
+        <motion.div
+          className={'flex flex-col gap-y-2'}
+          initial={{ y: 200, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 200, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
+          <div
+            onClick={() => {
+              setIsSettingNewModal(!isSettingNewGoalModal);
+              router.back();
+            }}
+            className={'flex justify-end items-center'}>
+            <div className={'text-white text-h6'}>닫기</div>
+            <CancelIcon />
           </div>
-          <div className={'flex justify-end gap-x-2'}>
-            <button
-              onClick={() => {
-                resetData();
-                setIsResetButtonClick(true);
-                setIsSettingNewModal(!isSettingNewGoalModal);
-              }}
-              className={'bg-gray1 rounded-full text-gray4 py-[7px] px-4'}>
-              새 목표
-            </button>
-            {!isFirstGoalSetting && (
+          <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
+            <div className={'flex flex-col gap-y-1'}>
+              <div className={'text-h2 font-semibold text-black'}>
+                {isFirstGoalSetting ? '이전에 세우신 목표가 없어요!' : '이전 목표를 불러올까요?'}
+              </div>
+              <div>
+                <div className={'flex items-center text-h6'}>
+                  {isFirstGoalSetting ? '새로운 목표를 세워보시겠어요?' : '정보를 불러오면 이전에 설정한 목표를'}
+                </div>
+                {!isFirstGoalSetting && <div className={'text-h6'}>토대로 작성할 수 있어요.</div>}
+              </div>
+            </div>
+            <div className={'flex justify-end gap-x-2'}>
               <button
                 onClick={() => {
-                  fetchDataAndUpdateState();
+                  resetData();
+                  setIsResetButtonClick(true);
                   setIsSettingNewModal(!isSettingNewGoalModal);
                 }}
-                className={'bg-black rounded-full text-white py-[7px] px-3'}>
-                불러오기
+                className={'bg-gray1 rounded-full text-gray4 py-[7px] px-4'}>
+                새 목표
               </button>
-            )}
+              {!isFirstGoalSetting && (
+                <button
+                  onClick={() => {
+                    fetchDataAndUpdateState();
+                    setIsSettingNewModal(!isSettingNewGoalModal);
+                  }}
+                  className={'bg-black rounded-full text-white py-[7px] px-3'}>
+                  불러오기
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );

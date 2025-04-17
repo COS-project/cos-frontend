@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import React, { type SVGProps } from 'react';
 
@@ -22,41 +23,48 @@ const LogoutModal = (props: Props) => {
         className={
           'fixed left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
         }>
-        <div
-          onClick={() => {
-            setIsLogoutModalOpen(!isLogoutModalOpen);
-          }}
-          className={'flex justify-end items-center'}>
-          <div className={'text-white text-h6'}>닫기</div>
-          <CancelIcon />
-        </div>
-        <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
-          <div className={'flex flex-col gap-y-1'}>
-            <div className={'text-h2 font-semibold text-black'}>로그아웃 하시겠어요?</div>
-            <div>
-              <div className={'flex items-center text-h6'}>로그아웃 시 로그인하면 지금까지의 정보들은</div>
-              <div className={'text-h6'}>다시 불러올 수 있어요.</div>
+        <motion.div
+          className={'flex flex-col gap-y-2'}
+          initial={{ y: 200, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 200, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
+          <div
+            onClick={() => {
+              setIsLogoutModalOpen(!isLogoutModalOpen);
+            }}
+            className={'flex justify-end items-center'}>
+            <div className={'text-white text-h6'}>닫기</div>
+            <CancelIcon />
+          </div>
+          <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
+            <div className={'flex flex-col gap-y-1'}>
+              <div className={'text-h2 font-semibold text-black'}>로그아웃 하시겠어요?</div>
+              <div>
+                <div className={'flex items-center text-h6'}>로그아웃 시 로그인하면 지금까지의 정보들은</div>
+                <div className={'text-h6'}>다시 불러올 수 있어요.</div>
+              </div>
+            </div>
+            <div className={'flex justify-end gap-x-2'}>
+              <button
+                onClick={() => {
+                  setIsLogoutModalOpen(!isLogoutModalOpen);
+                }}
+                className={'bg-gray1 rounded-full text-gray4 py-[7px] px-4'}>
+                취소
+              </button>
+              <button
+                onClick={async () => {
+                  await patchLogout();
+                  setIsLogoutModalOpen(!isLogoutModalOpen);
+                  onMove();
+                }}
+                className={'bg-point rounded-full text-white py-[7px] px-3'}>
+                로그아웃
+              </button>
             </div>
           </div>
-          <div className={'flex justify-end gap-x-2'}>
-            <button
-              onClick={() => {
-                setIsLogoutModalOpen(!isLogoutModalOpen);
-              }}
-              className={'bg-gray1 rounded-full text-gray4 py-[7px] px-4'}>
-              취소
-            </button>
-            <button
-              onClick={async () => {
-                await patchLogout();
-                setIsLogoutModalOpen(!isLogoutModalOpen);
-                onMove();
-              }}
-              className={'bg-point rounded-full text-white py-[7px] px-3'}>
-              로그아웃
-            </button>
-          </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );
