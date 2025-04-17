@@ -39,7 +39,7 @@ function StopwatchAlert(props: Props) {
   return (
     <>
       <div className="">
-        <div className="absolute z-40 w-full h-full px-[36px] py-8 bg-black bg-opacity-60 flex-col justify-center items-center gap-2 inline-flex ">
+        <div className="fixed z-40 w-full h-full px-[36px] py-8 bg-black bg-opacity-60 flex-col justify-center items-center gap-2 inline-flex ">
           {/* 닫기 버튼 */}
           <div className="relative self-stretch px-2 items-center inline-flex justify-end mr-2">
             <div

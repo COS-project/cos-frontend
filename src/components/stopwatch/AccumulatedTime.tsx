@@ -19,7 +19,7 @@ function AccumulatedTime(props: Props) {
   return (
     <>
       <div className="">
-        <div className="absolute z-40 w-full h-full px-[39px] py-8 bg-black bg-opacity-60 flex-col justify-center items-center gap-2 inline-flex ">
+        <div className="fixed z-40 w-full h-full px-[39px] py-8 bg-black bg-opacity-60 flex-col justify-center items-center gap-2 inline-flex ">
           <div className="relative self-stretch px-2 justify-end items-center inline-flex">
             <div
               className="flex cursor-pointer"
