@@ -26,6 +26,8 @@ const useAllIncorrectQuestions = () => {
     swrGetFetcher,
     {
       revalidateAll: true,
+      shouldRetryOnError: false, // ❗️에러 발생 시 재요청 방지
+      revalidateOnFocus: false, // ❗️탭 전환 시 자동 재요청 방지 (원하는 경우)
     },
   );
 

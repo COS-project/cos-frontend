@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 import useSWR from 'swr';
 
 import { swrGetFetcher } from '@/lib/axios';
