@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import StickGraph from '@/components/exam/StickGraph';
 import WeeklyGoalPeriodFilter from '@/components/home/WeeklyGoalPeriodFilter';
@@ -109,9 +109,6 @@ const GrowthChart = () => {
     setComponentKey(Date.now());
     // 데이터 갱신 요청
     refreshStatistics();
-
-    console.log('리포트 타입 변경:', selectedReportType);
-    console.log('날짜 타입 변경:', selectedDateType);
   }, [selectedReportType, selectedDateType, refreshStatistics]);
 
   // 선택된 주차/월/년도가 변경될 때 데이터 갱신
@@ -120,13 +117,6 @@ const GrowthChart = () => {
     setComponentKey(Date.now());
     // 데이터 갱신 요청
     refreshStatistics();
-
-    console.log('선택된 기간 변경:', {
-      year: selectedPrepareWeeksBetween.prepareYear,
-      month: selectedPrepareWeeksBetween.prepareMonth,
-      weekly: selectedPrepareWeeksBetween.prepareWeekly,
-      formatted: selectedPrepareWeeksBetween.formattedWeeklyPrepTime,
-    });
   }, [
     selectedPrepareWeeksBetween.prepareYear,
     selectedPrepareWeeksBetween.prepareMonth,
@@ -212,8 +202,6 @@ const GrowthChart = () => {
       return <div>Loading...</div>; // 로딩 중 메시지 또는 스피너 추가
     }
 
-    console.log('주간 그래프 데이터:', statisticsData.scoreAVGList);
-
     // Week 배열을 기반으로 요일별 StickGraph를 렌더링합니다.
     return dayOfWeek.map((day, dayIndex) => {
       // 해당 요일에 해당하는 데이터가 있는지 확인합니다.
@@ -235,8 +223,6 @@ const GrowthChart = () => {
     if (!statisticsData) {
       return <div>Loading...</div>; // 로딩 중 메시지 또는 스피너 추가
     }
-
-    console.log('월간 그래프 데이터:', statisticsData.scoreAVGList);
 
     // Week 배열을 기반으로 요일별 StickGraph를 렌더링합니다.
     return weekOfMonth.map((week, weekIndex) => {
@@ -260,8 +246,6 @@ const GrowthChart = () => {
     if (!statisticsData) {
       return <div>Loading...</div>;
     }
-
-    console.log('연간 그래프 데이터:', statisticsData.scoreAVGList);
 
     // Month 배열을 기반으로 월별 StickGraph를 렌더링합니다.
     return (
@@ -463,16 +447,16 @@ const GrowthChart = () => {
               </div>
             )}
 
-            {statisticsData?.totalAverage !== 0 && certificateMaxScore && (
-              <div
-                style={{
-                  bottom: `${3 + ((statisticsData?.totalAverage ?? 0) / certificateMaxScore) * 100}%`,
-                }}
-                className={'absolute w-full flex items-center space-x-1'}>
-                <div className="w-[86%] border-t border-dashed border-primary"></div>
-                <div className="text-primary text-h5">평균</div>
-              </div>
-            )}
+            {/*{statisticsData?.totalAverage !== 0 && certificateMaxScore && (*/}
+            {/*  <div*/}
+            {/*    style={{*/}
+            {/*      bottom: `${3 + ((statisticsData?.totalAverage ?? 0) / certificateMaxScore) * 100}%`,*/}
+            {/*    }}*/}
+            {/*    className={'absolute w-full flex items-center space-x-1'}>*/}
+            {/*    <div className="w-[86%] border-t border-dashed border-primary"></div>*/}
+            {/*    <div className="text-primary text-h5">평균</div>*/}
+            {/*  </div>*/}
+            {/*)}*/}
 
             <div className="w-full flex items-end overflow-x-scroll" style={{ width: '100%' }}>
               <div className={'w-full'}>

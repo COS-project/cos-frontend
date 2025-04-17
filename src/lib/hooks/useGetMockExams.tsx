@@ -7,6 +7,10 @@ const useGetMockExams = (certificateId: number, year: number | string | undefine
   const { data, error, isLoading } = useSWR<MockExamsByYearResponseType>(
     `/api/v2/certificates/${certificateId}/mock-exams?${year === '전체' ? '' : `examYear=${year}`}`,
     swrGetFetcher,
+    {
+      shouldRetryOnError: false, // ❗️에러 발생 시 재요청 방지
+      revalidateOnFocus: false, // ❗️탭 전환 시 자동 재요청 방지 (원하는 경우)
+    },
   );
 
   return {

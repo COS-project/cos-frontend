@@ -1,11 +1,11 @@
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import Profile from '@/components/community/Profile';
 import { deleteToggleLikeData, postToggleLikeData } from '@/lib/api/communityPost';
-import { GenerateCommentState } from '@/recoil/community/atom';
+import { GenerateCommentState, selectedReplyParentNameAtom } from '@/recoil/community/atom';
 import { PostComments } from '@/types/global';
 
 interface Props {
@@ -18,6 +18,7 @@ const CommunityComments = (props: Props) => {
   const { commentList, setCommentIsOptionModalOpen, setSelectedCommentId } = props;
   const [localCommentList, setLocalCommentList] = useState<PostComments[]>([]);
   const [generateComment, setGenerateComment] = useRecoilState(GenerateCommentState);
+  const setSelectedReplyParentName = useSetRecoilState(selectedReplyParentNameAtom);
 
   useEffect(() => {
     setLocalCommentList(commentList);
@@ -84,6 +85,7 @@ const CommunityComments = (props: Props) => {
                     <button
                       onClick={() => {
                         setGenerateComment({ ...generateComment, parentCommentId: comment.postCommentId });
+                        setSelectedReplyParentName(comment.user.nickname);
                       }}
                       className={
                         generateComment.parentCommentId === comment.postCommentId

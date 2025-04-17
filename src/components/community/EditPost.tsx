@@ -313,13 +313,13 @@ const EditPost = (props: Props) => {
   useEffect(() => {
     if (postDetailData?.postResponse.postType === 'TIP' && isTipSubmitEnabled) {
       // removeImageUrls에서 id만 추출하여 배열로 변환
-      const idsToRemove = (editPostData.removeImageIds || []).map((item: any) => item.id);
+      // const idsToRemove = (editPostData.removeImageIds || []).map((item: any) => item.id);
 
       // editPostData를 복제하고 removeImageUrls를 id 배열로 대체
-      const updatedEditPostData = {
-        ...editPostData,
-        removeImageIds: idsToRemove,
-      };
+      // const updatedEditPostData = {
+      //   ...editPostData,
+      //   removeImageIds: idsToRemove,
+      // };
 
       // 태그가 업데이트된 후 실행할 로직
       const formData = new FormData();
@@ -327,7 +327,7 @@ const EditPost = (props: Props) => {
         formData.append('files', file);
       });
 
-      formData.append('request', new Blob([JSON.stringify(updatedEditPostData)], { type: 'application/json' }));
+      formData.append('request', new Blob([JSON.stringify(editPostData)], { type: 'application/json' }));
 
       putPostDetail(1, 'TIP', formData)
         .then((response) => {
@@ -358,13 +358,15 @@ const EditPost = (props: Props) => {
   const handleNormalAndCommentarySubmit = async (e: FormEvent) => {
     e.preventDefault(); // 폼 제출 시 새로고침 방지
     // removeImageUrls 에서 id만 추출하여 배열로 변환
-    const idsToRemove = (editPostData.removeImageIds || []).map((item: any) => item.id);
+    // const idsToRemove = (editPostData.removeImageIds || []).map((item: any) => item.id);
 
     // editPostData 를 복제하고 removeImageUrls 를 id 배열로 대체
-    const updatedEditPostData = {
-      ...editPostData,
-      removeImageIds: idsToRemove,
-    };
+    // const updatedEditPostData = {
+    //   ...editPostData,
+    //   removeImageIds: idsToRemove,
+    // };
+
+    // console.log('updatedEditPostData', updatedEditPostData)
 
     const formData = new FormData();
 
@@ -374,7 +376,7 @@ const EditPost = (props: Props) => {
 
     formData.append(
       'request',
-      new Blob([JSON.stringify(updatedEditPostData)], {
+      new Blob([JSON.stringify(editPostData)], {
         type: 'application/json',
       }),
     );
@@ -452,7 +454,7 @@ const EditPost = (props: Props) => {
   };
 
   return (
-    <div className={'min-h-screen'}>
+    <div className={'min-h-screen pt-14 pb-5'}>
       {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
       {isQuestionNumberExceedingLimit ? (
         <QuestionNumberExceedingLimitAlertModal setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit} />
@@ -462,6 +464,7 @@ const EditPost = (props: Props) => {
           onBack={onBack}
           CancelIcon={CancelIcon}
           headerType={'dynamic'}
+          className={'fixed'}
           title={
             postDetailData?.postResponse.postType !== 'COMMENTARY' && postDetailData?.postResponse.postType !== 'TIP'
               ? '자유게시판 수정'

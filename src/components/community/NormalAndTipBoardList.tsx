@@ -1,27 +1,29 @@
 import React, { SVGProps, useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import MyPageFilter from '@/components/mypage/MyPageFilter';
 import Post from '@/components/mypage/Post';
 import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetTotalSearchResults from '@/lib/hooks/useGetTotalSearchResults';
 import { certificateIdAtom } from '@/recoil/atom';
+import { selectedNormalAndTipFilterContentAtom } from '@/recoil/community/atom';
 import { BoardType, PostType, SortFieldType } from '@/types/community/type';
 import { filterNormalAndTipContent } from '@/utils/community/FilterContent';
 interface Props {
   boardType: BoardType;
+  init: boolean; //처음 랜더링 되는지 상태 -> best 더보기 클릭시 필터값 변경 트릭
 }
 const NormalAndTipBoardList = (props: Props) => {
-  const { boardType } = props;
+  const { boardType, init } = props;
   const [ref, inView] = useInView();
   const certificateId = useRecoilValue(certificateIdAtom);
   const [sortField, setSortField] = useState<SortFieldType>('createdAt'); //최신순 인기순
   const { userPosts, size, setSize } = useGetTotalSearchResults(boardType, certificateId, sortField);
   //필터값
   const [isOpenNormalAndTipFilter, setIsOpenNormalAndTipFilter] = useState<boolean>(false);
-  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useState<'최신순' | '인기순'>(
-    '최신순',
+  const [selectedNormalAndTipFilterContent, setSelectedNormalAndTipFilterContent] = useRecoilState<'최신순' | '인기순'>(
+    selectedNormalAndTipFilterContentAtom,
   );
   const { bestTipPosts } = useBest3TipPosts(certificateId);
 
@@ -51,13 +53,6 @@ const NormalAndTipBoardList = (props: Props) => {
       setSortField('count');
     }
   }, [selectedNormalAndTipFilterContent]);
-
-  /**
-   * boardType 이 변경되면 필터값 초기화
-   */
-  useEffect(() => {
-    setSelectedNormalAndTipFilterContent('최신순');
-  }, [boardType]);
 
   /**
    * Best3 Post 태그
@@ -94,13 +89,11 @@ const NormalAndTipBoardList = (props: Props) => {
   return (
     <div className={'relative px-5 flex flex-col gap-y-4'}>
       <div>
-        <div className={'relative w-fit flex px-3 py-1 rounded-full bg-white '}>
+        <div
+          onClick={() => setIsOpenNormalAndTipFilter(!isOpenNormalAndTipFilter)}
+          className={'relative w-fit flex px-3 py-1 rounded-full bg-white '}>
           <span className={'text-gray4 text-h6'}>{selectedNormalAndTipFilterContent}</span>
-          {isOpenNormalAndTipFilter ? (
-            <ActivationIcon onClick={() => setIsOpenNormalAndTipFilter(!isOpenNormalAndTipFilter)} />
-          ) : (
-            <DisableIcon onClick={() => setIsOpenNormalAndTipFilter(!isOpenNormalAndTipFilter)} />
-          )}
+          {isOpenNormalAndTipFilter ? <ActivationIcon /> : <DisableIcon />}
           {isOpenNormalAndTipFilter ? (
             <MyPageFilter
               className={boardType === 'TIP' ? 'top-[120%] left-0 w-full' : 'top-[120%] left-0 w-full'}

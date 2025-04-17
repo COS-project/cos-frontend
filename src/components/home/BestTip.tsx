@@ -1,12 +1,20 @@
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { SVGProps } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import CarouselCardView from '@/components/home/goal-attaining/Carousel';
+import { certificateIdAtom } from '@/recoil/atom';
+import { boardTypeStateAtom, selectedNormalAndTipFilterContentAtom } from '@/recoil/community/atom';
+import { BoardType } from '@/types/community/type';
 
 const BestTip = () => {
   const router = useRouter();
-
+  const certificateId = useRecoilValue(certificateIdAtom);
+  const setBoardType = useSetRecoilState<BoardType>(boardTypeStateAtom);
+  const setSelectedNormalAndTipFilterContent = useSetRecoilState<'최신순' | '인기순'>(
+    selectedNormalAndTipFilterContentAtom,
+  );
   return (
     <div>
       <div className="mx-auto mt-2 rounded-3xl bg-white py-[3%]">
@@ -16,7 +24,9 @@ const BestTip = () => {
             <button
               className={'flex items-center py-1 px-3 rounded-full border-[1px] border-gray2 text-h6'}
               onClick={() => {
-                router.push('/community');
+                setBoardType('TIP');
+                setSelectedNormalAndTipFilterContent('인기순');
+                router.push(`/community/${certificateId}`);
               }}>
               더보기
               <ArrowIcon />

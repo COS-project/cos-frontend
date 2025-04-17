@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import React, { type SVGProps } from 'react';
 
@@ -22,38 +23,45 @@ const UnRegisterModal = (props: Props) => {
         className={
           'fixed left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
         }>
-        <div
-          onClick={() => {
-            setIsUnRegisterModalOpen(!isUnRegisterModalOpen);
-          }}
-          className={'flex justify-end items-center'}>
-          <div className={'text-white text-h6'}>닫기</div>
-          <CancelIcon />
-        </div>
-        <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
-          <div className={'flex flex-col gap-y-1'}>
-            <div className={'text-h2 font-semibold text-black'}>정말 탈퇴 하시겠어요?</div>
-            <div className={'flex items-center text-h6'}>탈퇴 후 모든 기록은 사라집니다.</div>
+        <motion.div
+          className={'flex flex-col gap-y-2'}
+          initial={{ y: 200, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 200, opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
+          <div
+            onClick={() => {
+              setIsUnRegisterModalOpen(!isUnRegisterModalOpen);
+            }}
+            className={'flex justify-end items-center'}>
+            <div className={'text-white text-h6'}>닫기</div>
+            <CancelIcon />
           </div>
-          <div className={'flex justify-end gap-x-2'}>
-            <button
-              onClick={() => {
-                setIsUnRegisterModalOpen(!isUnRegisterModalOpen);
-              }}
-              className={'bg-gray1 rounded-full text-gray4 py-[7px] px-4'}>
-              취소
-            </button>
-            <button
-              onClick={async () => {
-                await deleteUserInfo();
-                setIsUnRegisterModalOpen(!isUnRegisterModalOpen);
-                onMove();
-              }}
-              className={'bg-point rounded-full text-white py-[7px] px-3'}>
-              탈퇴하기
-            </button>
+          <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
+            <div className={'flex flex-col gap-y-1'}>
+              <div className={'text-h2 font-semibold text-black'}>정말 탈퇴 하시겠어요?</div>
+              <div className={'flex items-center text-h6'}>탈퇴 후 모든 기록은 사라집니다.</div>
+            </div>
+            <div className={'flex justify-end gap-x-2'}>
+              <button
+                onClick={() => {
+                  setIsUnRegisterModalOpen(!isUnRegisterModalOpen);
+                }}
+                className={'bg-gray1 rounded-full text-gray4 py-[7px] px-4'}>
+                취소
+              </button>
+              <button
+                onClick={async () => {
+                  await deleteUserInfo();
+                  setIsUnRegisterModalOpen(!isUnRegisterModalOpen);
+                  onMove();
+                }}
+                className={'bg-point rounded-full text-white py-[7px] px-3'}>
+                탈퇴하기
+              </button>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );

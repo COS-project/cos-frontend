@@ -52,7 +52,9 @@ const SubjectCard: React.FC<SubjectCard> = ({ timeLimit, round, mockExamId, tota
 
   return (
     <div>
-      <div className="flex flex-col gap-y-4 p-3 border-[1px] border-gray2 rounded-[32px]">
+      <div
+        onClick={() => openSessionModal()}
+        className="flex flex-col gap-y-4 p-3 border-[1px] border-gray2 rounded-[32px]">
         <div className="font-semibold text-center pb-2 border-b border-gray1">{`${round}회차`}</div>
         <div>
           <div className="text-black text-center text-h7">최근 점수</div>
@@ -66,9 +68,7 @@ const SubjectCard: React.FC<SubjectCard> = ({ timeLimit, round, mockExamId, tota
           )}
           {isError && <p className="text-center text-h2 font-semibold">미응시</p>}
         </div>
-        <button onClick={() => openSessionModal()} className="w-full bg-gray0 rounded-3xl py-3 text-h6">
-          시험 보기
-        </button>
+        <button className="w-full bg-gray0 rounded-3xl py-3 text-h6">시험 보기</button>
       </div>
       {sessionModalIsOpen && (
         <SessionModal

@@ -7,6 +7,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
+import Spinner from '@/components/common/Spinner';
 import AverageAccurayChat from '@/components/home/AverageAccurayChat';
 import AverageTakenTimeGraphReport from '@/components/home/AverageTakenTimeGraphReport';
 import BestTip from '@/components/home/BestTip';
@@ -21,6 +22,7 @@ import TodayGoalSkeleton from '@/components/home/skeleton/TodayGoalSkeleton';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import TodayGoal from '@/components/TodayGoal';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
+import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
@@ -28,6 +30,7 @@ import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
 import { certificateIdAtom } from '@/recoil/atom';
 import { selectedPrepareTimeState } from '@/recoil/home/atom';
 import { UserCertGoalPeriodType } from '@/types/home/type';
+
 function HomeComponents() {
   const searchParams = useSearchParams();
   const certificateId = useRecoilValue(certificateIdAtom);
@@ -43,16 +46,31 @@ function HomeComponents() {
   const accessToken = rawAccessToken.replace('%20', ' ');
   const refreshToken = rawRefreshToken.replace('%20', ' ');
 
+  const [isCookieSet, setIsCookieSet] = useState(false); // ✅ 쿠키 저장 여부
+
   const { userGoals } = useGetUserGoals(certificateId);
   const { goalAchievementData } = useGoalAchievement(certificateId);
   const { averageSubjectList } = useAverageSubjectInfo(certificateId);
   const { goalSettingStatus } = useGoalSettingStatus(certificateId);
+  const { bestTipPosts } = useBest3TipPosts(certificateId);
 
   // AccessToken, RefreshToken 저장
   useEffect(() => {
+    const existingAccessToken = Cookies.get('accessToken');
+    const existingRefreshToken = Cookies.get('refreshToken');
+    if (existingAccessToken && existingRefreshToken) {
+      setIsCookieSet(true);
+      return;
+    }
+
+    // 쿠키가 없고 URL에서 토큰이 있으면 세팅
     if (accessToken && refreshToken) {
       Cookies.set('accessToken', accessToken, { expires: Date.now() + 604800000 });
       Cookies.set('refreshToken', refreshToken, { expires: Date.now() + 604800000 });
+      setIsCookieSet(true);
+    } else {
+      // 둘 다 없으면 그래도 isCookieSet은 true로 둬야 UI 진행됨
+      setIsCookieSet(false);
     }
   }, [accessToken, refreshToken]);
 
@@ -137,6 +155,11 @@ function HomeComponents() {
     }
   }, [goalSettingStatus]);
 
+  // ✅ 쿠키 저장 전이면 로딩 UI
+  if (!isCookieSet) {
+    return <Spinner />;
+  }
+
   return (
     <main>
       {isGoalSettingStatusModalOpen && (
@@ -188,7 +211,7 @@ function HomeComponents() {
             ) : (
               <AverageTakenTimeGraphReportSkeleton />
             )}
-            <BestTip />
+            {bestTipPosts && bestTipPosts?.length > 0 ? <BestTip /> : null}
           </div>
         ) : (
           <HomeSkeleton />
@@ -203,7 +226,7 @@ function HomeComponents() {
 
 export default function Home() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spinner />}>
       <HomeComponents />
     </Suspense>
   );

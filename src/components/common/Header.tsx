@@ -1,6 +1,7 @@
 import { useRouter } from 'next/navigation';
 import React, { ReactNode, SVGProps, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
+import { twMerge } from 'tailwind-merge';
 
 import FilterModal from '@/components/common/FilterModal';
 import { getAlarmUnreadCount } from '@/lib/api/alarm';
@@ -15,10 +16,11 @@ interface Props {
   rightElement?: ReactNode;
   onBack?: () => void;
   CancelIcon?: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+  className?: string;
 }
 
 export default function Header(props: Props) {
-  const { headerType = 'static', title, rightElement, onBack, CancelIcon } = props;
+  const { headerType = 'static', title, rightElement, onBack, CancelIcon, className } = props;
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   // 선택된 자격증
   const [selectedCertificationName, setSelectedCertificationName] = useRecoilState<string>(certificateNameAtom);
@@ -49,7 +51,7 @@ export default function Header(props: Props) {
     switch (headerType) {
       case 'static':
         return (
-          <header className="pt-[45px] bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
+          <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
             <Logo />
             <div className={'relative flex items-center justify-center w-[40px] h-[40px]'}>
               {unreadCount !== 0 && (
@@ -63,7 +65,11 @@ export default function Header(props: Props) {
         );
       case 'dynamic':
         return (
-          <header className="pt-[45px] bg-white flex sticky top-0 justify-between items-center px-5 py-3 z-10">
+          <header
+            className={twMerge(
+              'bg-white flex sticky w-full top-0 justify-between items-center px-5 py-3 z-10',
+              className,
+            )}>
             {CancelIcon ? (
               <CancelIcon
                 onClick={() => {
@@ -118,18 +124,18 @@ export default function Header(props: Props) {
   };
 
   return (
-    <>
+    <div className={'relative'}>
       {renderHeader(headerType)}
       {isFilterOpen ? (
         <FilterModal
           setIsOpen={setIsFilterOpen}
-          className={'absolute top-[12%] left-5 w-[90%]'}
+          className={'absolute top-12 left-5 w-[90%]'}
           data={interestCertificates}
           setDataState={setSelectedCertificationName}
           setIdState={setSelectedCertificationId}
         />
       ) : null}
-    </>
+    </div>
   );
 }
 

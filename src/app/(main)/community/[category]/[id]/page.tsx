@@ -1,9 +1,9 @@
 'use client';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import Spinner from '@/components/common/Spinner';
@@ -19,9 +19,11 @@ import ReportSubmittedModal from '@/components/community/ReportSubmittedModal';
 import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import { certificateIdAtom } from '@/recoil/atom';
+import { boardTypeInitAtom, boardTypeStateAtom, selectedReplyParentNameAtom } from '@/recoil/community/atom';
 import { BoardType } from '@/types/community/type';
 
 const CommunityDetailPage = () => {
+  const router = useRouter();
   const params = useParams();
   const certificateId = useRecoilValue(certificateIdAtom);
   const userId = Cookies.get('userId');
@@ -35,6 +37,9 @@ const CommunityDetailPage = () => {
   const [isReportSubmittedModalOpen, setIsReportSubmittedModalOpen] = useState(false);
   const { bestTipPosts } = useBest3TipPosts(certificateId);
   const bestPostIds = bestTipPosts?.map((post) => post.postId);
+  //보드 타입
+  const setBoardType = useSetRecoilState<BoardType>(boardTypeStateAtom);
+  const setBoardTypeInit = useSetRecoilState(boardTypeInitAtom);
 
   if (!communityPostData) {
     return <Spinner />;
@@ -96,17 +101,19 @@ const CommunityDetailPage = () => {
       case 'TIP':
         return (
           <div className={'flex justify-between'}>
-            <div className={'flex gap-x-2'}>
-              {postData.recommendTags?.map((tag) => {
-                return (
-                  <div key={tag.tagName} className={'rounded-[8px] py-[2px] px-2 bg-gray0 h-fit'}>
-                    <p className={'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-gray4'}>
-                      {tag.tagName}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
+            {postData.recommendTags && postData.recommendTags.length > 0 && (
+              <div className={'flex gap-x-2'}>
+                {postData.recommendTags?.map((tag) => {
+                  return (
+                    <div key={tag.tagName} className={'rounded-[8px] py-[2px] px-2 bg-gray0 h-fit'}>
+                      <p className={'font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px] text-gray4'}>
+                        {tag.tagName}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
             {bestPostIds?.includes(postData.postId) && (
               <div
                 className={
@@ -164,7 +171,15 @@ const CommunityDetailPage = () => {
         />
       ) : postData ? (
         <main>
-          <Header headerType={'dynamic'} title={switchBoardType(postData.postType)} />
+          <Header
+            headerType={'dynamic'}
+            title={switchBoardType(postData.postType)}
+            onBack={() => {
+              router.back();
+              setBoardType(postData.postType);
+              setBoardTypeInit(false);
+            }}
+          />
           {/* 게시글 */}
           <section className={'px-5 mt-[20px]'}>
             <Profile

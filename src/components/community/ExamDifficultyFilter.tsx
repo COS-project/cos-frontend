@@ -56,7 +56,7 @@ const ExamDifficultyFilter = (props: Props) => {
   return (
     <div
       className={
-        'absolute left-0 top-[120%] border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 h-[250px] overflow-y-scroll'
+        'absolute left-0 top-[120%] border-[1px] border-gray2 bg-white rounded-[16px] py-2 z-10 h-[250px] overflow-y-scroll w-[140px]'
       }>
       {examDifficulty.map((difficulty, index) => {
         return (

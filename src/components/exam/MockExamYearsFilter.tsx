@@ -8,7 +8,7 @@ interface Props {
 const MockExamYearsFilter = (props: Props) => {
   const { yearList, setIsClickedYearSelector, setSelectedYear } = props;
   return (
-    <div className={'absolute top-[45%] w-[90%] border-[1px] border-gray2 bg-white rounded-[16px] py-2'}>
+    <div className={'absolute top-14 w-full border-[1px] border-gray2 bg-white rounded-[16px] py-2'}>
       {!yearList || yearList.length === 0 ? (
         <div>error</div>
       ) : (

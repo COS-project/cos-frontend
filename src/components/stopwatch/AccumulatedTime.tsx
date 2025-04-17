@@ -1,7 +1,10 @@
-import type { SVGProps } from 'react';
+import { motion } from 'framer-motion';
+import { SVGProps } from 'react';
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
+import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
+import { certificateIdAtom } from '@/recoil/atom';
 import { hStopwatchTimeState, mStopwatchTimeState, sStopwatchTimeState } from '@/recoil/stopwatch/atom';
 
 interface Props {
@@ -10,51 +13,74 @@ interface Props {
 
 function AccumulatedTime(props: Props) {
   const { setOnAccumulatedModal } = props;
+  const certificateId = useRecoilValue(certificateIdAtom);
+  const { goalAchievementData } = useGoalAchievement(certificateId);
 
   const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState); //시 기록
   const [mStopwatchTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState); //분 기록
   const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초 기록
 
+  const formatMillisecondsToTime = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    return { hours, minutes, seconds };
+  };
+
   //기록 완료 알림창
   return (
     <>
       <div className="">
-        <div className="fixed z-40 w-full h-full px-[39px] py-8 bg-black bg-opacity-60 flex-col justify-center items-center gap-2 inline-flex ">
-          <div className="relative self-stretch px-2 justify-end items-center inline-flex">
+        <div className="fixed left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen">
+          <motion.div
+            className={'flex flex-col gap-y-2'}
+            initial={{ y: 200, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 200, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
             <div
-              className="flex cursor-pointer"
               onClick={() => {
                 setOnAccumulatedModal(false); //현재창 닫기
-              }}>
-              <div className="text-center text-white text-base font-medium font-['Pretendard Variable'] leading-normal">
-                닫기
-              </div>
+              }}
+              className={'flex justify-end items-center cursor-pointer'}>
+              <div className={'text-white text-h6'}>닫기</div>
               <DeleteIcon />
             </div>
-          </div>
-          <section className="px-5 py-6 bg-white rounded-[32px] flex-col justify-center gap-2 flex w-full">
-            <div className="self-stretch flex-col gap-4 flex">
-              <div className="self-stretch flex-col gap-1 flex">
-                <div className="self-stretch text-h4 leading-[30px] font-medium">전체 누적 시간</div>
-                <div className="self-stretch text-primary text-h1 font-bold font-['Pretendard Variable'] leading-[30px]">
-                  {hStopwatchTime}시간 {mStopwatchTime}분 {sStopwatchTime}초
-                </div>
-                <div className="self-stretch  text-h4 font-medium leading-[30px]">
-                  <br />
-                  목표 기간 동안의 누적 시간
-                </div>
-                <div className="self-stretch text-primary text-h1 font-bold font-['Pretendard Variable'] leading-[30px]">
-                  {/*TODO: 백엔드 수정되면 변경*/}
-                  {hStopwatchTime}시간 {mStopwatchTime}분 {sStopwatchTime}초{' '}
+            <section className="flex flex-col gap-y-4 bg-white rounded-[32px] p-5">
+              <div className="self-stretch flex-col gap-4 flex">
+                <div className="self-stretch flex-col gap-1 flex">
+                  <div className="self-stretch text-h4 leading-[30px] font-medium">전체 누적 시간</div>
+                  <div className="self-stretch text-primary text-h1 font-bold font-['Pretendard Variable'] leading-[30px]">
+                    {hStopwatchTime}시간 {mStopwatchTime}분 {sStopwatchTime}초
+                  </div>
+                  <div className="self-stretch  text-h4 font-medium leading-[30px]">
+                    <br />
+                    목표 기간 동안의 누적 시간
+                  </div>
+                  <div className="self-stretch text-primary text-h1 font-bold font-['Pretendard Variable'] leading-[30px]">
+                    {/*TODO: 백엔드 수정되면 변경*/}
+                    {goalAchievementData && formatMillisecondsToTime(goalAchievementData.result.currentStudyTime).hours}
+                    시간{' '}
+                    {goalAchievementData &&
+                      formatMillisecondsToTime(goalAchievementData.result.currentStudyTime).minutes}
+                    분{' '}
+                    {goalAchievementData &&
+                      formatMillisecondsToTime(goalAchievementData.result.currentStudyTime).seconds}
+                    초{' '}
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </motion.div>
         </div>
       </div>
     </>
   );
 }
+
 export default AccumulatedTime;
 
 const DeleteIcon = (props: SVGProps<SVGSVGElement>) => (

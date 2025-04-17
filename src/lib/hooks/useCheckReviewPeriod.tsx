@@ -2,11 +2,10 @@ import useSWR from 'swr';
 
 import { swrGetFetcher } from '@/lib/axios';
 import { ResponseType } from '@/types/common/type';
-import { PostType } from '@/types/community/type';
 
-const useBest3TipPosts = (certificateId: number) => {
-  const { data, error } = useSWR<ResponseType<PostType[]>>(
-    `/api/v2/certificates/${certificateId}/tip-posts/best`,
+const useCheckReviewPeriod = (certificateId: number) => {
+  const { data, error } = useSWR<ResponseType<boolean>>(
+    `/api/v2/certificates/${certificateId}/check-review-period`,
     swrGetFetcher,
     {
       shouldRetryOnError: false, // ❗️에러 발생 시 재요청 방지
@@ -14,12 +13,10 @@ const useBest3TipPosts = (certificateId: number) => {
     },
   );
 
-  const parseResultList = data?.result.map((item: PostType) => item).flat();
-
   return {
-    bestTipPosts: parseResultList,
+    checkReviewPeriod: data,
     isLoading: !error && !data,
     isError: error,
   };
 };
-export default useBest3TipPosts;
+export default useCheckReviewPeriod;

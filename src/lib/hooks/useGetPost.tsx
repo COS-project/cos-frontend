@@ -9,6 +9,10 @@ const useGetPost = (postId: number | string | string[]) => {
   const { data, error, mutate } = useSWR<ResponseType<ResponsePostDetailType>>(
     `/api/v2/posts/${postId}`,
     swrGetFetcher,
+    {
+      shouldRetryOnError: false, // ❗️에러 발생 시 재요청 방지
+      revalidateOnFocus: false, // ❗️탭 전환 시 자동 재요청 방지 (원하는 경우)
+    },
   );
   return {
     postDetailData: data ? data.result : null,

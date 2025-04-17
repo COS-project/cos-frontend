@@ -99,7 +99,10 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                   </div>
                 ) : (
                   <div className={'flex flex-col gap-y-2'}>
-                    <div className="text-h6 font-semibold">과목별 맞춘 문제 수</div>
+                    {examResults && examResults.length === 0 ? (
+                      <div className="text-h6 font-semibold">과목별 맞춘 문제 수</div>
+                    ) : null}
+
                     <div className={'grid grid-cols-3'}>
                       {examResults[examResults.length - 1]?.subjectResults?.map((subjectResult, index) => {
                         return (

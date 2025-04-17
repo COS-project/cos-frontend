@@ -13,7 +13,7 @@ const UserExamAttemptsFilterContent = (props: Props) => {
   const { userExamAttempts, userExamAttempt, setUserExamAttempt } = props;
   const [isClickedActionIcon, setIsClickedActionIcon] = useState<boolean>(false);
   return (
-    <>
+    <div className={'relative'}>
       <div className={'text-h3 font-semibold'}>모의고사 응시횟수 선택</div>
       <div
         onClick={() => setIsClickedActionIcon(!isClickedActionIcon)}
@@ -28,7 +28,7 @@ const UserExamAttemptsFilterContent = (props: Props) => {
           isClickedActionIcon={isClickedActionIcon}
         />
       ) : null}
-    </>
+    </div>
   );
 };
 

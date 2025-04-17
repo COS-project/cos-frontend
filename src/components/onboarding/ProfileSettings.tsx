@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Header from '@/components/common/Header';
 import { patchProfileData } from '@/lib/api/onboarding';
@@ -13,6 +13,17 @@ const ProfileSettings = (props: Props) => {
   const { userProfile } = useGetUserProfile();
   const imgRef = useRef<HTMLInputElement>(null);
   const [uploadImage, setUploadImage] = useState<string | ArrayBuffer | null>();
+  const [nickname, setNickname] = useState('');
+  const [init, setInit] = useState(true);
+
+  useEffect(() => {
+    if (userProfile && init) {
+      setNickname(userProfile.nickname);
+      setInit(false);
+    }
+  }, [userProfile]);
+
+  const isNicknameEmpty = !nickname?.trim();
 
   // 이미지 미리보기 설정
   const handleImagePreview = async () => {
@@ -88,6 +99,8 @@ const ProfileSettings = (props: Props) => {
           <div className={'flex flex-col gap-y-2'}>
             <label className={'text-h3 font-bold'}>닉네임</label>
             <input
+              onChange={(e) => setNickname(e.target.value)}
+              placeholder="닉네임을 입력하세요"
               className={'bg-neutral-100 rounded-[16px] py-3 px-4 placeholder:text-black focus:outline-none text-h4'}
               id="nickname"
               name="nickname"
@@ -96,8 +109,13 @@ const ProfileSettings = (props: Props) => {
         </div>
 
         <button
+          disabled={isNicknameEmpty}
           type={'submit'}
-          className={'w-full bg-primary h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0'}>
+          className={
+            isNicknameEmpty
+              ? 'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0'
+              : 'w-full bg-primary h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0'
+          }>
           <div className="text-white text-h3 py-[25px]">완료</div>
         </button>
       </form>

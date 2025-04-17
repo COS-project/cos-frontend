@@ -2,13 +2,15 @@
 
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
 import { postFavoriteBoards } from '@/lib/api/community';
 import useGetBoardList from '@/lib/hooks/useGetBoardList';
 import { certificationsListState } from '@/recoil/atom';
+import { boardTypeInitAtom, boardTypeStateAtom } from '@/recoil/community/atom';
 import { interestCertificatesState } from '@/recoil/onboarding/atom';
+import { BoardType } from '@/types/community/type';
 
 export interface Props {
   usage: string;

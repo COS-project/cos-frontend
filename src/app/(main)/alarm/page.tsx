@@ -30,7 +30,7 @@ export default function Alarm() {
         return;
       }
 
-      const eventSource = new EventSourcePolyfill('https://cercat.o-r.kr/api/v2/alarms/subscribe', {
+      const eventSource = new EventSourcePolyfill(`${process.env.NEXT_PUBLIC_ALARM_URL}/api/v2/alarms/subscribe`, {
         headers: {
           'Access-Token': accessToken,
         },
@@ -58,19 +58,6 @@ export default function Alarm() {
 
     connect();
   }, []);
-
-  const moveButton = (targetPostId: number) => {
-    return (
-      <button
-        className={'flex items-center text-h6 py-1 px-3 rounded-full border-[1px] border-gray2 w-fit'}
-        onClick={() => {
-          router.push(`/community/${certificateId}/${targetPostId}`);
-        }}>
-        게시글 이동하기
-        <ArrowIcon />
-      </button>
-    );
-  };
 
   useEffect(() => {
     if (alarms) {
@@ -103,7 +90,6 @@ export default function Alarm() {
                     key={alarm.id}
                     time={alarm.alarmTime}
                     type={alarm.alarmType}
-                    moveButton={moveButton}
                     targetPostId={alarm.originId}
                     receiver={alarm.receiver}
                   />

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { FormEvent, SVGProps, useRef, useState } from 'react';
+import React, { FormEvent, SVGProps, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
 import Header from '@/components/common/Header';
@@ -21,7 +21,7 @@ interface Props {
 
 const WriteExplanationPost = (props: Props) => {
   const certificateId = useRecoilValue(certificateIdAtom);
-
+  const [init, setInit] = useState(true);
   const { setIsClickedWriteButton } = props;
   const { examYears } = useGetMockExamYears(certificateId);
   const { questions } = useMockExamQuestions(certificateId);
@@ -39,6 +39,20 @@ const WriteExplanationPost = (props: Props) => {
   const { mockExams } = useGetMockExams(certificateId, postData.examYear); //해설 회차 필터값
   const [isQuestionNumberExceedingLimit, setIsQuestionNumberExceedingLimit] = useState(false);
   const [isTitleEmpty, setIsTitleEmpty] = useState(false);
+  // 1단계: examYear 설정
+  useEffect(() => {
+    if (init && examYears && examYears.length > 0) {
+      setPostData((prev) => ({ ...prev, examYear: examYears[0] }));
+    }
+  }, [examYears]);
+
+  // 2단계: round 설정 (examYear가 설정된 후에만)
+  useEffect(() => {
+    if (init && mockExams && mockExams.length > 0 && postData.examYear) {
+      setPostData((prev) => ({ ...prev, round: mockExams[0].round }));
+      setInit(false); // 마지막에 init을 false로 바꿔줌
+    }
+  }, [mockExams, postData.examYear]);
 
   /**
    * 문제 번호를 변경하는 함수
@@ -121,7 +135,7 @@ const WriteExplanationPost = (props: Props) => {
     try {
       await postCommentary(1, 'COMMENTARY', formData).then(() => {
         //글쓰기 초기화
-        setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
+        setPostData(() => ({ title: '', round: 0, examYear: 0, content: '', questionSequence: 0 }));
         setIsTitleEmpty(true);
         setImageUrlList([]);
         setImagePreviews([]);
@@ -138,7 +152,7 @@ const WriteExplanationPost = (props: Props) => {
    */
   const onBack = () => {
     //글쓰기 초기화
-    setPostData(() => ({ title: '', round: 1, examYear: 2023, content: '', questionSequence: 0 }));
+    setPostData(() => ({ title: '', round: 0, examYear: 0, content: '', questionSequence: 0 }));
     setIsTitleEmpty(true);
     setImageUrlList([]);
     setImagePreviews([]);
@@ -173,7 +187,7 @@ const WriteExplanationPost = (props: Props) => {
   };
 
   return (
-    <div>
+    <div className={'pt-14 py-8'}>
       {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
       {isQuestionNumberExceedingLimit ? (
         <QuestionNumberExceedingLimitAlertModal setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit} />
@@ -184,6 +198,7 @@ const WriteExplanationPost = (props: Props) => {
           CancelIcon={CancelIcon}
           headerType={'dynamic'}
           title={'해설 쓰기'}
+          className={'fixed'}
           rightElement={
             <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
               완료
@@ -193,7 +208,7 @@ const WriteExplanationPost = (props: Props) => {
         <div className={'flex flex-col m-5 gap-y-4'}>
           {/* 년도 선택 세션 */}
           <div className={'flex flex-col relative gap-y-2'}>
-            <div className={'text-h3 font-bold ml-2'}>모의고사 연도 선택</div>
+            <div className={'text-h3 font-bold ml-2'}>모의고사 년도 선택</div>
             <div
               onClick={() => {
                 setIsYearsFilterOpen(!isYearsFilterOpen);
