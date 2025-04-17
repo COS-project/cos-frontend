@@ -12,13 +12,12 @@ interface Props {
   id: number;
   time: string;
   targetPostId?: number;
-  moveButton?: (targetPostId: number) => React.JSX.Element;
   type: AlarmType;
   receiver: AlarmReceiverType;
   setReadAlarmList: React.Dispatch<React.SetStateAction<number[]>>;
 }
 const AlarmItem = (props: Props) => {
-  const { time, moveButton, targetPostId, receiver, type, id, setReadAlarmList } = props;
+  const { time, targetPostId, receiver, type, id, setReadAlarmList } = props;
   const certificateId = useRecoilValue(certificateIdAtom);
   const router = useRouter();
 
@@ -79,7 +78,7 @@ const AlarmItem = (props: Props) => {
               className={'flex items-center text-h6 py-1 px-3 rounded-full border-[1px] border-gray2 w-fit'}
               onClick={() => {
                 postReadAlarmList([id]);
-                // router.push(`/community/${certificateId}/${targetPostId}`);
+                router.push(`/community/${certificateId}/${targetPostId}`);
               }}>
               게시글 이동하기
               <ArrowIcon />

@@ -59,19 +59,6 @@ export default function Alarm() {
     connect();
   }, []);
 
-  const moveButton = (targetPostId: number) => {
-    return (
-      <button
-        className={'flex items-center text-h6 py-1 px-3 rounded-full border-[1px] border-gray2 w-fit'}
-        onClick={() => {
-          router.push(`/community/${certificateId}/${targetPostId}`);
-        }}>
-        게시글 이동하기
-        <ArrowIcon />
-      </button>
-    );
-  };
-
   useEffect(() => {
     if (alarms) {
       // 새로운 alarmId 중 readAlarmList에 없는 값만 필터링
@@ -103,7 +90,6 @@ export default function Alarm() {
                     key={alarm.id}
                     time={alarm.alarmTime}
                     type={alarm.alarmType}
-                    moveButton={moveButton}
                     targetPostId={alarm.originId}
                     receiver={alarm.receiver}
                   />
