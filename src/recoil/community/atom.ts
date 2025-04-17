@@ -55,6 +55,12 @@ export let GenerateCommentState = atom<GenerateComment>({
   },
 });
 
+// 대댓글 달 때, 부모 댓글 name
+export let selectedReplyParentNameAtom = atom<string>({
+  key: 'selectedReplyParentNameAtom',
+  default: '',
+});
+
 export const imagePreviewsState = atom<string[]>({
   key: 'imagePreviewsState',
   default: [],

@@ -54,10 +54,6 @@ function HomeComponents() {
   const { goalSettingStatus } = useGoalSettingStatus(certificateId);
   const { bestTipPosts } = useBest3TipPosts(certificateId);
 
-  useEffect(() => {
-    console.log('bestTipPosts', bestTipPosts);
-  }, [bestTipPosts]);
-
   // AccessToken, RefreshToken 저장
   useEffect(() => {
     const existingAccessToken = Cookies.get('accessToken');
