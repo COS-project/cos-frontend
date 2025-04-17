@@ -39,6 +39,6 @@ export const putGoalSettingData = async (goalSettingInfo: GoalSettingInfo, goalI
     return response.data;
   } catch (error) {
     // 에러 처리
-    console.error('에러 발생:', error);
+    console.error('목표 수정 에러 발생:', error);
   }
 };

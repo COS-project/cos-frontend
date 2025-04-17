@@ -7,6 +7,7 @@ import useGetMockExamStatistics from '@/lib/hooks/useGetMockExamStatistics';
 import { certificateIdAtom } from '@/recoil/atom';
 import { CertificateMaxScoreAtom, selectedDateTypeState, selectedReportTypeState } from '@/recoil/home/atom';
 import { ScoreAVGListType } from '@/types/home/type';
+import RecentGrowthChartSkeleton from '@/components/home/skeleton/RecentGrowthChartSkeleton';
 
 const RecentGrowthChart = () => {
   const certificateId = useRecoilValue(certificateIdAtom);
@@ -208,7 +209,7 @@ const RecentGrowthChart = () => {
     }
   };
 
-  return (
+  return statisticsData ? (
     <div>
       <div className="flex flex-col gap-y-3 bg-white rounded-[32px] p-4 border-[1px] border-gray2">
         <div className={'flex justify-between items-center'}>
@@ -309,6 +310,8 @@ const RecentGrowthChart = () => {
         </div>
       </div>
     </div>
+  ) : (
+    <RecentGrowthChartSkeleton />
   );
 };
 export default RecentGrowthChart;
