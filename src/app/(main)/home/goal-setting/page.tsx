@@ -126,7 +126,7 @@ const GoalSetting = () => {
   };
 
   return (
-    <div className={'min-h-screen'}>
+    <>
       {isSettingNewGoalModalOpen && userGoals ? (
         <SettingNewGoalModal
           isFirstGoalSetting={userGoals.length === 0} //새로 생성된 목표가 없을 경우
@@ -137,47 +137,50 @@ const GoalSetting = () => {
           setIsSettingNewModal={setIsSettingNewGoalModalOpen}
         />
       ) : null}
-      <Header
-        headerType={'dynamic'}
-        title={'목표설정'}
-        rightElement={
-          isResetButtonClick ? (
-            <Button
-              onClick={async () => {
-                await postGoalSettingData(goalData, selectedCertificationId).then((r) => {
-                  console.log('목표 저장 성공~r', r);
-                });
-                await mutate(`/certificates/${certificateId}/goals`);
-                setIsResetButtonClick(false);
-                router.push('/home');
-              }}
-              className={' w-fit'}>
-              저장
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                putGoalSettingData(goalData, getLastGoalId() || 0).then((r) => {
-                  console.log('목표 수정 성공', r);
+      <div className={''}>
+        <Header
+          className={'fixed'}
+          headerType={'dynamic'}
+          title={'목표설정'}
+          rightElement={
+            isResetButtonClick ? (
+              <Button
+                onClick={async () => {
+                  await postGoalSettingData(goalData, selectedCertificationId).then((r) => {
+                    console.log('목표 저장 성공~r', r);
+                  });
+                  await mutate(`/certificates/${certificateId}/goals`);
+                  setIsResetButtonClick(false);
                   router.push('/home');
-                });
-              }}
-              className={'w-fit'}>
-              수정
-            </Button>
-          )
-        }></Header>
-      <div className="flex flex-col gap-y-8 mx-5 mb-8">
-        {/*자격증 선택*/}
-        {isResetButtonClick ? <SelectCertification /> : null}
-        {/*목표 점수 설정*/}
-        <SetGoalScore />
-        {/*자격증 준비기간 설정*/}
-        <PreparationPeriodSetting />
-        {/*매일 목표 설정*/}
-        <SetDailyGoals />
+                }}
+                className={' w-fit'}>
+                저장
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  putGoalSettingData(goalData, getLastGoalId() || 0).then((r) => {
+                    console.log('목표 수정 성공', r);
+                    router.push('/home');
+                  });
+                }}
+                className={'w-fit'}>
+                수정
+              </Button>
+            )
+          }></Header>
+        <div className="flex flex-col gap-y-8 pt-20 mx-5 mb-8">
+          {/*자격증 선택*/}
+          {isResetButtonClick ? <SelectCertification /> : null}
+          {/*목표 점수 설정*/}
+          <SetGoalScore />
+          {/*자격증 준비기간 설정*/}
+          <PreparationPeriodSetting />
+          {/*매일 목표 설정*/}
+          <SetDailyGoals />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 export default GoalSetting;
