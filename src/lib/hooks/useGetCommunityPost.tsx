@@ -11,11 +11,9 @@ const useGetCommunityPost = (postId: string[] | string) => {
     swrGetFetcher,
     {
       shouldRetryOnError: false, // ❗️에러 발생 시 재요청 방지
-      revalidateOnFocus: false, // ❗️탭 전환 시 자동 재요청 방지 (원하는 경우)
+      revalidateOnFocus: true, // ❗️탭 전환 시 자동 재요청 방지 (원하는 경우)
     },
   );
-  //주소부분 나중에 형겸오빠꺼랑 연계해서 바꾸기
-  console.log(data);
 
   return {
     communityPostData: data ? data.result : null,

@@ -110,13 +110,20 @@ const CommunityComments = (props: Props) => {
                     }}
                     className={'flex flex-col items-center'}>
                     <Image
-                      src={comment.likeStatus ? '/community/BlueLikeIcon.svg' : '/community/GrayLikeIcon.svg'}
+                      src={comment.likeStatus ? '/community/BlueFillLikeIcon.svg' : '/community/GrayLikeIcon.svg'}
                       alt="Logo"
                       width={24}
                       height={24}
                       style={{ width: 24, height: 24 }}
                     />
-                    <p className={'font-pre text-h7 font-normal leading-normal text-gray4'}>{comment.likeCount}</p>
+                    <p
+                      className={
+                        comment.likeStatus
+                          ? 'font-pre text-h7 font-normal leading-normal text-second'
+                          : 'font-pre text-h7 font-normal leading-normal text-gray4'
+                      }>
+                      {comment.likeCount}
+                    </p>
                   </button>
                 </div>
               </section>
