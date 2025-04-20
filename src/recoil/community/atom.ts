@@ -60,6 +60,11 @@ export let selectedReplyParentNameAtom = atom<string>({
   key: 'selectedReplyParentNameAtom',
   default: '',
 });
+//대댓글, 댓글 옵션 선택
+export const selectedAnswerUserIdAtom = atom<number>({
+  key: 'selectedAnswerUserIdAtom',
+  default: 0,
+});
 
 export const imagePreviewsState = atom<string[]>({
   key: 'imagePreviewsState',

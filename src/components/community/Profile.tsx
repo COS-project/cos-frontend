@@ -5,7 +5,6 @@ import { formatDateTime } from '@/utils/community/function';
 
 interface Props {
   profileUrl: string;
-  isWriter: boolean;
   nickName: string;
   createdTime: string;
   setIsOptionModalOpen: () => void;
@@ -14,7 +13,7 @@ interface Props {
 }
 
 const Profile = (props: Props) => {
-  const { profileUrl, isWriter, nickName, createdTime, setIsOptionModalOpen, imageClassName, nickNameClassName } =
+  const { profileUrl, nickName, createdTime, setIsOptionModalOpen, imageClassName, nickNameClassName } =
     props;
 
   return (
@@ -40,16 +39,14 @@ const Profile = (props: Props) => {
           </p>
         </div>
       </div>
-      {isWriter && (
-        <Image
-          onClick={setIsOptionModalOpen}
-          src="/community/OptionIcon.svg"
-          alt="Logo"
-          width={24}
-          height={24}
-          style={{ width: 24, height: 24 }}
-        />
-      )}
+      <Image
+        onClick={setIsOptionModalOpen}
+        src="/community/OptionIcon.svg"
+        alt="Logo"
+        width={24}
+        height={24}
+        style={{ width: 24, height: 24 }}
+      />
     </div>
   );
 };

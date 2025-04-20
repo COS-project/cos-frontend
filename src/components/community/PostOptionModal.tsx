@@ -7,13 +7,23 @@ import { deletePost } from '@/lib/api/communityPost';
 interface Props {
   communityId: string | string[];
   postId: number;
+  loginUserId: string | undefined;
+  writerUserId: number;
   setPostIsOptionModal: Dispatch<React.SetStateAction<boolean>>;
   setIsClickEditPost: Dispatch<SetStateAction<boolean>>;
   setIsReportSubmittedModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const PostOptionModal = (props: Props) => {
-  const { setPostIsOptionModal, communityId, postId, setIsClickEditPost, setIsReportSubmittedModalOpen } = props;
+  const {
+    setPostIsOptionModal,
+    communityId,
+    postId,
+    loginUserId,
+    writerUserId,
+    setIsClickEditPost,
+    setIsReportSubmittedModalOpen,
+  } = props;
   const router = useRouter();
   return (
     <div
@@ -32,38 +42,44 @@ const PostOptionModal = (props: Props) => {
               }>
               글 메뉴
             </div>
-            <button
-              onClick={() => {
-                setIsClickEditPost(true);
-                setPostIsOptionModal(false);
-              }}
-              className={
-                'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center border-b border-gray0'
-              }>
-              수정하기
-            </button>
+            {parseInt(loginUserId as string) === writerUserId && (
+              <button
+                onClick={() => {
+                  setIsClickEditPost(true);
+                  setPostIsOptionModal(false);
+                }}
+                className={
+                  'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center border-b border-gray0'
+                }>
+                수정하기
+              </button>
+            )}
             <button
               onClick={() => {
                 setIsReportSubmittedModalOpen(true);
                 setPostIsOptionModal(false);
               }}
               className={
-                'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center border-b border-gray0'
+                parseInt(loginUserId as string) === writerUserId
+                  ? 'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center border-b border-gray0'
+                  : 'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center'
               }>
               신고하기
             </button>
-            <button
-              onClick={() => {
-                deletePost(postId).then(() => {
-                  setPostIsOptionModal(false);
-                  router.push(`/community/${communityId}`);
-                });
-              }}
-              className={
-                'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center border-b'
-              }>
-              삭제하기
-            </button>
+            {parseInt(loginUserId as string) === writerUserId && (
+              <button
+                onClick={() => {
+                  deletePost(postId).then(() => {
+                    setPostIsOptionModal(false);
+                    router.push(`/community/${communityId}`);
+                  });
+                }}
+                className={
+                  'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center'
+                }>
+                삭제하기
+              </button>
+            )}
           </div>
 
           <button
