@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import Header from '@/components/common/Header';
@@ -13,6 +13,7 @@ import { ReviewIncorrectAnswers, ReviewIncorrectAnswersContent } from '@/types/g
 const IncorrectQuestion = () => {
   const [ref, inView] = useInView();
   const { incorrectQuestions, setSize, mutate, isLoading } = useAllIncorrectQuestions();
+  const [openCardId, setOpenCardId] = useState<number | null>(null); // ✅ 현재 열려있는 카드 ID
 
   const getMoreItem = useCallback(async () => {
     if (incorrectQuestions) {
@@ -39,6 +40,12 @@ const IncorrectQuestion = () => {
                   return (
                     <div key={index} ref={ref}>
                       <IncorrectQuestionCard
+                        isOpen={openCardId === wrongQuestion.userAnswerId}
+                        onToggle={() =>
+                          setOpenCardId((prev) =>
+                            prev === wrongQuestion.userAnswerId ? null : wrongQuestion.userAnswerId,
+                          )
+                        }
                         incorrectQuestionsMutate={mutate}
                         userAnswerId={wrongQuestion.userAnswerId}
                         selectOptionSeq={wrongQuestion.selectOptionSeq}
