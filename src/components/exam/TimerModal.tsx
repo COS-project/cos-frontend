@@ -32,6 +32,18 @@ const TimerModal: React.FC<SessionModalProps> = ({
     closeSessionModal();
   }, [closeSessionModal]);
 
+  /**
+   * ms 단위를 시간, 분으로 변환하는 함수
+   * @param ms 밀리초 단위의 시간
+   * @returns { hours: number, minutes: number }
+   */
+  function convertMsToHoursMinutes(ms: number): { hours: number; minutes: number } {
+    const totalMinutes = Math.floor(ms / 1000 / 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return { hours, minutes };
+  }
+
   return (
     <div className="fixed inset-0 left-0 right-0 top-0 z-50 flex flex-col justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen">
       <motion.div
@@ -51,11 +63,11 @@ const TimerModal: React.FC<SessionModalProps> = ({
               <div className="flex justify-center font-semibold">시험 시간 설정</div>
               <div className="flex gap-x-8 justify-center rounded-[24px] bg-gray0 p-4">
                 <div className={'flex items-end gap-x-[2px]'}>
-                  <span className={'text-h2 mb-[1px] text-gray3'}>{Math.floor(timeLimit / 3600000)}</span>
+                  <span className={'text-h2 mb-[1px] text-gray3'}>{convertMsToHoursMinutes(timeLimit).hours}</span>
                   <span className={'text-h4 font-normal text-black pb-[3px]'}>시간</span>
                 </div>
                 <div className={'flex items-end gap-x-[2px]'}>
-                  <span className={'text-h2 mb-[1px] text-gray3'}>{Math.floor(timeLimit / 60000)}</span>
+                  <span className={'text-h2 mb-[1px] text-gray3'}>{convertMsToHoursMinutes(timeLimit).minutes}</span>
                   <span className={'text-h4 font-normal text-black pb-[3px]'}>분</span>
                 </div>
               </div>
