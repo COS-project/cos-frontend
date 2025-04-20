@@ -28,13 +28,6 @@ const TodayGoal = (props: Props) => {
         <div className={'flex gap-x-[10px] items-center'}>
           <div className={'pl-1 text-h3 font-semibold'}>오늘 목표</div>
         </div>
-        <button
-          onClick={() => {
-            router.push('/home/goal-setting');
-          }}
-          className={'flex items-center py-1 px-3 rounded-full border-[1px] border-gray2 text-h6'}>
-          목표 수정 <ArrowIcon />
-        </button>
       </div>
       <GoalRunningGraph
         goalRunningGraphType={'time'}
