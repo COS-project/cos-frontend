@@ -2,6 +2,8 @@
 
 import { atom } from 'recoil';
 
+import { persistAtom } from '@/recoil/recoilPersistClient';
+
 //시작한 시간
 export const startTimeState = atom<number | null>({
   key: 'startTimeState',
@@ -54,14 +56,28 @@ export const stringLocationState = atom<String>({
 export let hStopwatchTimeState = atom<number>({
   key: 'hStopwatchTimeState',
   default: 0,
+  effects_UNSTABLE: [persistAtom],
 });
 
 export let mStopwatchTimeState = atom<number>({
   key: 'mStopwatchTimeState',
   default: 0,
+  effects_UNSTABLE: [persistAtom],
 });
 
 export let sStopwatchTimeState = atom<number>({
   key: 'sStopwatchTimeState',
   default: 0,
+  effects_UNSTABLE: [persistAtom],
+});
+
+//기록 모달 오픈
+export const onModalAtom = atom<boolean>({
+  key: 'onModalAtom',
+  default: false,
+});
+
+export const onAccumulatedModalAtom = atom<boolean>({
+  key: 'onAccumulatedModalAtom',
+  default: false,
 });

@@ -14,6 +14,7 @@ import {
   isStartState,
   isStopState,
   mStopwatchTimeState,
+  onModalAtom,
   sStopwatchTimeState,
   stringLocationState,
   timeBoolState,
@@ -21,7 +22,7 @@ import {
 
 export default function StopWatch() {
   const [timebool, setTimebool] = useRecoilState(timeBoolState); // true: 시작 버튼/ false: 일시정지 버튼
-  const [onModal, setOnModal] = useState<boolean>(false); //기록하기 알림창 onoff조절
+  const [onModal, setOnModal] = useRecoilState<boolean>(onModalAtom); //기록하기 알림창 onoff조절
   const [onAccumulatedModal, setOnAccumulatedModal] = useState<boolean>(false); //기록완료 알림창 onoff조절
   const [isStart, setIsStart] = useRecoilState(isStartState); //시작 여부
   const [isStop, setIsStop] = useRecoilState(isStopState); //멈춤 여부
@@ -46,12 +47,6 @@ export default function StopWatch() {
 
   return (
     <main className={'min-h-screen'}>
-      {onModal ? ( //기록하기 알림창 열림OnOff
-        <StopwatchAlert setOnAccumulatedModal={setOnAccumulatedModal} setOnModal={setOnModal} />
-      ) : null}
-      {onAccumulatedModal ? ( //기록완료 알림창OnOff
-        <AccumulatedTime setOnAccumulatedModal={setOnAccumulatedModal} />
-      ) : null}
       <Header />
       <Header headerType={'second'} />
       <div className="flex justify-center items-center mt-[100px]">

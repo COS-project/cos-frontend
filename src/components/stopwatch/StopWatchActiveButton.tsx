@@ -1,5 +1,6 @@
-import { SVGProps, useState } from 'react';
+import Image from 'next/image';
 import * as React from 'react';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
@@ -9,9 +10,11 @@ import {
   isStartState,
   isStopState,
   mStopwatchTimeState,
+  onModalAtom,
   sStopwatchTimeState,
   timeBoolState,
 } from '@/recoil/stopwatch/atom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface Props {
   className?: string; //bottom 위치 수정
@@ -19,6 +22,7 @@ interface Props {
 
 const StopWatchActiveButton = (props: Props) => {
   const { className } = props;
+  const [isActiveButtonClicked, setIsActiveButtonClicked] = useState(false);
   const [timebool, setTimebool] = useRecoilState(timeBoolState); // true: 시작 버튼 / false: 일시정지 버튼
   const [isStart, setIsStart] = useRecoilState(isStartState); //시작 여부
   const [isStop, setIsStop] = useRecoilState(isStopState); //멈춤 여부
@@ -26,20 +30,70 @@ const StopWatchActiveButton = (props: Props) => {
   const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState); //시 기록
   const [mStopwatchTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState); //분 기록
   const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초 기록
+  const [onModal, setOnModal] = useRecoilState<boolean>(onModalAtom); //기록하기 알림창 onoff조절
 
   return (
     <div className={twMerge('fixed flex flex-col bottom-28 z-20 right-3 gap-y-2', className)}>
+      <AnimatePresence>
+        {isActiveButtonClicked && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className={'flex flex-col gap-y-2'}>
+            <button
+              onClick={() => {
+                setOnModal(true); //모달창 열기
+                setIsStop(true); //멈춤 설정
+                setTimebool(true); // true: 시작 버튼
+              }}
+              className={
+                'flex flex-col w-[72px] h-[72px] rounded-full bg-gray0 shadow-[0_2px_15px_rgba(0,0,0,0.25)] items-center justify-center'
+              }>
+              <Image src="/stopwatch/StopIcon.svg" alt="Logo" width={24} height={24} style={{ width: 24, height: 24 }} />
+              <p className={'text-gray4 text-center font-normal text-[14px] leading-[21px] tracking-[-0.28px] font-pre'}>
+                종료
+              </p>
+            </button>
+            <button
+              onClick={() => {
+                if (timebool) {
+                  setIsStart(true); //시작 여부 true
+                  setTimebool(false); // false: 일시정지 버튼
+                  setIsStop(false);
+                } else {
+                  setIsStart(false);
+                  setIsStop(true); //멈춤
+                  setTimebool(true); //true: 시작 버튼
+                }
+              }}
+              className={
+                'flex flex-col w-[72px] h-[72px] rounded-full bg-gray0 shadow-[0_2px_15px_rgba(0,0,0,0.25)] items-center justify-center'
+              }>
+              <Image
+                src={timebool ? '/stopwatch/StartIcon.svg' : '/stopwatch/PauseIcon.svg'}
+                alt="Logo"
+                width={24}
+                height={24}
+                style={{ width: 24, height: 24 }}
+              />
+              <p className={'text-gray4 text-center font-normal text-[14px] leading-[21px] tracking-[-0.28px] font-pre'}>
+                {timebool ? '시작' : '일시정지'}
+              </p>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {timebool ? (
         <button
           onClick={() => {
-            setIsStart(true); //시작 여부 true
-            setTimebool(false); // false: 일시정지 버튼
-            setIsStop(false);
+            setIsActiveButtonClicked(!isActiveButtonClicked);
           }}
           className={
-            'flex flex-col gap-y-1 bg-second justify-center items-center w-[72px] h-[72px] rounded-full shadow-lg'
+            'flex flex-col bg-second justify-center items-center w-[72px] h-[72px] rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.25)]'
           }>
-          <StartIcon />
+          <Image src={'/stopwatch/TimerIcon.svg'} alt="Logo" width={24} height={24} style={{ width: 24, height: 24 }} />
           <span className={'text-white text-h6'}>
             {hStopwatchTime === 0
               ? `${mStopwatchTime.toString().padStart(2, '0')}:${sStopwatchTime.toString().padStart(2, '0')}`
@@ -49,14 +103,12 @@ const StopWatchActiveButton = (props: Props) => {
       ) : (
         <button
           onClick={() => {
-            setIsStart(false);
-            setIsStop(true); //멈춤
-            setTimebool(true); //true: 시작 버튼
+            setIsActiveButtonClicked(!isActiveButtonClicked);
           }}
           className={
-            'flex flex-col gap-y-1 bg-point justify-center items-center w-[72px] h-[72px] rounded-full shadow-lg'
+            'flex flex-col bg-point justify-center items-center w-[72px] h-[72px] rounded-full shadow-[0_2px_15px_rgba(0,0,0,0.25)]'
           }>
-          <StopIcon />
+          <Image src={'/stopwatch/TimerIcon.svg'} alt="Logo" width={24} height={24} style={{ width: 24, height: 24 }} />
           <span className={'text-white text-h6'}>
             {hStopwatchTime === 0
               ? `${mStopwatchTime.toString().padStart(2, '0')}:${sStopwatchTime.toString().padStart(2, '0')}`
@@ -68,18 +120,3 @@ const StopWatchActiveButton = (props: Props) => {
   );
 };
 export default StopWatchActiveButton;
-
-const StopIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={19} height={18} fill="none" {...props}>
-    <rect width={6} height={18} x={0.646} fill="#ffffff" rx={2} />
-    <rect width={6} height={18} x={12.646} fill="#ffffff" rx={2} />
-  </svg>
-);
-const StartIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={16} height={22} fill="none" {...props}>
-    <path
-      fill="#ffffff"
-      d="M14.735 9.448 3.907.65C2.6-.412.646.518.646 2.202v17.596c0 1.684 1.954 2.614 3.26 1.552l10.83-8.798a2 2 0 0 0 0-3.104"
-    />
-  </svg>
-);
