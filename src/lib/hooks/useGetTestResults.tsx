@@ -13,7 +13,7 @@ const useGetTestResults = (mockExamId: number) => {
     },
   );
 
-  const parseResultList = data?.result.map((item: MockExamResultType) => item).flat();
+  const parseResultList = data?.result.map((item) => item).flat();
 
   return {
     examResults: data ? parseResultList : null,
