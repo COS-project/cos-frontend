@@ -116,7 +116,7 @@ export const recentSearchResultState = atom<string>({
 });
 
 //해설 게시글 번호 검색
-export const commentarySearchQuestionSequence = atom<number>({
+export const commentarySearchQuestionSequence = atom<number | undefined>({
   key: 'commentarySearchQuestionSequence',
   default: undefined,
 });

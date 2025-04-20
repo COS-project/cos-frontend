@@ -19,11 +19,7 @@ import ReportSubmittedModal from '@/components/community/ReportSubmittedModal';
 import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import { certificateIdAtom } from '@/recoil/atom';
-import {
-  boardTypeInitAtom,
-  boardTypeStateAtom,
-  selectedAnswerUserIdAtom,
-} from '@/recoil/community/atom';
+import { boardTypeInitAtom, boardTypeStateAtom, selectedAnswerUserIdAtom } from '@/recoil/community/atom';
 import { BoardType } from '@/types/community/type';
 
 const CommunityDetailPage = () => {
