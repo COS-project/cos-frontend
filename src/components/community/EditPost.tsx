@@ -454,12 +454,12 @@ const EditPost = (props: Props) => {
   };
 
   return (
-    <div className={'min-h-screen pt-14 pb-5'}>
+    <div>
       {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
       {isQuestionNumberExceedingLimit ? (
         <QuestionNumberExceedingLimitAlertModal setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit} />
       ) : null}
-      <form onSubmit={handleException}>
+      <form className={'min-h-screen pt-14 pb-5'} onSubmit={handleException}>
         <Header
           onBack={onBack}
           CancelIcon={CancelIcon}
