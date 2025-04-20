@@ -27,9 +27,6 @@ const TodayGoal = (props: Props) => {
       <div className={'flex justify-between'}>
         <div className={'flex gap-x-[10px] items-center'}>
           <div className={'pl-1 text-h3 font-semibold'}>오늘 목표</div>
-          <div className={'bg-gray0 rounded-[4px] text-h6 text-[#3B3DFFCC] font-semibold py-[2px] px-2 w-fit h-fit'}>
-            목표 진행중
-          </div>
         </div>
         <button
           onClick={() => {
