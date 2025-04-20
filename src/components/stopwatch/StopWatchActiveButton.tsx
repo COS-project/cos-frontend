@@ -1,12 +1,12 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
 import {
   hStopwatchTimeState,
-  isResetState,
   isStartState,
   isStopState,
   mStopwatchTimeState,
@@ -14,7 +14,6 @@ import {
   sStopwatchTimeState,
   timeBoolState,
 } from '@/recoil/stopwatch/atom';
-import { AnimatePresence, motion } from 'framer-motion';
 
 interface Props {
   className?: string; //bottom 위치 수정
@@ -24,13 +23,12 @@ const StopWatchActiveButton = (props: Props) => {
   const { className } = props;
   const [isActiveButtonClicked, setIsActiveButtonClicked] = useState(false);
   const [timebool, setTimebool] = useRecoilState(timeBoolState); // true: 시작 버튼 / false: 일시정지 버튼
-  const [isStart, setIsStart] = useRecoilState(isStartState); //시작 여부
-  const [isStop, setIsStop] = useRecoilState(isStopState); //멈춤 여부
-  const [isReset, setIsReset] = useRecoilState(isResetState); //리셋 여부
-  const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState); //시 기록
-  const [mStopwatchTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState); //분 기록
-  const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초 기록
-  const [onModal, setOnModal] = useRecoilState<boolean>(onModalAtom); //기록하기 알림창 onoff조절
+  const setIsStart = useSetRecoilState(isStartState); //시작 여부
+  const setIsStop = useSetRecoilState(isStopState); //멈춤 여부
+  const hStopwatchTime = useRecoilValue(hStopwatchTimeState); //시 기록
+  const mStopwatchTime = useRecoilValue(mStopwatchTimeState); //분 기록
+  const sStopwatchTime = useRecoilValue(sStopwatchTimeState); //초 기록
+  const setOnModal = useSetRecoilState<boolean>(onModalAtom); //기록하기 알림창 onoff조절
 
   return (
     <div className={twMerge('fixed flex flex-col bottom-28 z-20 right-3 gap-y-2', className)}>
@@ -51,8 +49,15 @@ const StopWatchActiveButton = (props: Props) => {
               className={
                 'flex flex-col w-[72px] h-[72px] rounded-full bg-gray0 shadow-[0_2px_15px_rgba(0,0,0,0.25)] items-center justify-center'
               }>
-              <Image src="/stopwatch/StopIcon.svg" alt="Logo" width={24} height={24} style={{ width: 24, height: 24 }} />
-              <p className={'text-gray4 text-center font-normal text-[14px] leading-[21px] tracking-[-0.28px] font-pre'}>
+              <Image
+                src="/stopwatch/StopIcon.svg"
+                alt="Logo"
+                width={24}
+                height={24}
+                style={{ width: 24, height: 24 }}
+              />
+              <p
+                className={'text-gray4 text-center font-normal text-[14px] leading-[21px] tracking-[-0.28px] font-pre'}>
                 종료
               </p>
             </button>
@@ -78,7 +83,8 @@ const StopWatchActiveButton = (props: Props) => {
                 height={24}
                 style={{ width: 24, height: 24 }}
               />
-              <p className={'text-gray4 text-center font-normal text-[14px] leading-[21px] tracking-[-0.28px] font-pre'}>
+              <p
+                className={'text-gray4 text-center font-normal text-[14px] leading-[21px] tracking-[-0.28px] font-pre'}>
                 {timebool ? '시작' : '일시정지'}
               </p>
             </button>

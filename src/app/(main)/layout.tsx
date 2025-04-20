@@ -7,7 +7,7 @@ import AccumulatedTime from '@/components/stopwatch/AccumulatedTime';
 import StopwatchAlert from '@/components/stopwatch/StopwatchAlert';
 import { onModalAtom } from '@/recoil/stopwatch/atom';
 
-export default function layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const [onModal, setOnModal] = useRecoilState<boolean>(onModalAtom); //기록하기 알림창 onoff조절
   const [onAccumulatedModal, setOnAccumulatedModal] = useState<boolean>(false); //기록완료 알림창 onoff조절
   return (

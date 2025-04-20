@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useRef } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import {
   hStopwatchTimeState,
@@ -24,17 +24,17 @@ export default function Timer() {
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null); //interval 타이머를 위한 참조 변수
 
-  const [isStart, setIsStart] = useRecoilState(isStartState); //시작 여부
-  const [isStop, setIsStop] = useRecoilState(isStopState); //멈춤 여부
+  const isStart = useRecoilValue(isStartState); //시작 여부
+  const isStop = useRecoilState(isStopState); //멈춤 여부
   const [isReset, setIsReset] = useRecoilState(isResetState); //리셋 여부
-  const [stringLocation, setStringLocation] = useRecoilState(stringLocationState); //스톱워치 초침 위치(문자열)
-  const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState); //시 기록
-  const [mStopwachTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState); //분 기록
-  const [sSopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초 기록
+  const setStringLocation = useSetRecoilState(stringLocationState); //스톱워치 초침 위치(문자열)
+  const setHStopwatchTime = useSetRecoilState(hStopwatchTimeState); //시 기록
+  const setMStopwatchTime = useSetRecoilState(mStopwatchTimeState); //분 기록
+  const setSStopwatchTime = useSetRecoilState(sStopwatchTimeState); //초 기록
 
   useEffect(() => {
     //타이머 시작 처리
-    if (isStart) {
+    if (isStart && startTime && now) {
       setStartTime(Date.now()); //현재 시작 시간 기록
       setNow(Date.now()); //현재 시간 설정
 
