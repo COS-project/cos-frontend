@@ -29,30 +29,35 @@ export const integralTimeState = atom<number>({
 export const timeBoolState = atom<boolean>({
   key: 'timeBoolState',
   default: true,
+  effects_UNSTABLE: [persistAtom],
 });
 
 //시작 버튼 클릭 시 변경
 export const isStartState = atom<boolean>({
   key: 'isStartState',
   default: false,
+  effects_UNSTABLE: [persistAtom],
 });
 
 //일시중지 버튼 클릭 시 변경
 export const isStopState = atom<boolean>({
   key: 'isStopState',
   default: false,
+  effects_UNSTABLE: [persistAtom],
 });
 
 //재설정 버튼 클릭 시 변경
 export const isResetState = atom<boolean>({
   key: 'isResetState',
   default: false,
+  effects_UNSTABLE: [persistAtom],
 });
 
 //스톱워치 돌아가는 파란 원 회전각
 export const stringLocationState = atom<String>({
   key: 'stringLocationState',
   default: '',
+  effects_UNSTABLE: [persistAtom],
 });
 
 //스톱워치 시간
