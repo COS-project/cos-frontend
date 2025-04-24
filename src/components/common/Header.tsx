@@ -1,11 +1,12 @@
 import { useRouter } from 'next/navigation';
 import React, { ReactNode, SVGProps, useEffect, useState } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
 import FilterModal from '@/components/common/FilterModal';
 import { getAlarmUnreadCount } from '@/lib/api/alarm';
 import useGetInterestCertificates from '@/lib/hooks/useGetInterestCertificates';
+import { unreadAlarmCountAtom } from '@/recoil/alarm/atom';
 import { certificateIdAtom, certificateNameAtom, isInitialCertificateIdSetAtom } from '@/recoil/atom';
 import { ResponseType } from '@/types/common/type';
 import { HeaderType } from '@/types/global';
@@ -32,21 +33,22 @@ export default function Header(props: Props) {
   const router = useRouter();
 
   const [initialTrigger, setInitialTrigger] = useState(true);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const unreadCount = useRecoilValue(unreadAlarmCountAtom);
+  // 변경: alarmAtom useRecoilState 삭제
+  // const [alarms, setAlarms] = useRecoilState<Alarm[]>(alarmAtom);
 
-  // ✅ useEffect 수정: interestCertificates 로드 후 certificateId 및 초기화 상태 설정
+  // 변경: 읽지 않은 개수 Atom의 setter를 가져옴 (초기 설정용)
+  const setUnreadCount = useSetRecoilState(unreadAlarmCountAtom);
+
+  // ✅ useEffect 수정: interestCertificates 로드 후 certificateId 및 초기화 상태 설정 (변경 없음)
   useEffect(() => {
-    // interestCertificates가 로드되었고 (undefined가 아니며), 초기 트리거 상태일 때
     if (interestCertificates !== undefined && initialTrigger) {
       if (interestCertificates.length > 0) {
         setSelectedCertificationName(interestCertificates[0]?.certificate.certificateName);
         setSelectedCertificationId(interestCertificates[0]?.certificate.certificateId);
       } else {
-        // 관심 자격증이 없는 경우 처리 (예: certificateId를 특정 값으로 설정하거나 그대로 둠)
-        // 현재 로직에서는 디폴트 값 1이 유지됩니다.
         console.warn('User has no interest certificates.');
       }
-      // ✅ 초기 certificateId 설정 작업이 완료되었음을 알림
       setIsInitialCertificateIdSet(true);
       setInitialTrigger(false);
     }
@@ -56,15 +58,19 @@ export default function Header(props: Props) {
     setSelectedCertificationName,
     setSelectedCertificationId,
     setIsInitialCertificateIdSet,
-  ]); // 의존성 배열 업데이트
+  ]);
 
+  // ✅ 추가: Header 컴포넌트가 처음 마운트될 때만 읽지 않은 알림 개수를 한 번 가져와서 Recoil Atom에 설정 (변경 없음)
   useEffect(() => {
-    getAlarmUnreadCount().then((res: ResponseType<number>) => {
-      if (res && res.result) {
+    const fetchInitialUnreadCount = async () => {
+      const res: ResponseType<number> = await getAlarmUnreadCount();
+      // Recoil Atom 업데이트
+      if (res && res.result !== undefined) {
         setUnreadCount(res.result);
       }
-    });
-  }, []);
+    };
+    fetchInitialUnreadCount();
+  }, [setUnreadCount]);
 
   const renderHeader = (headerType: HeaderType) => {
     switch (headerType) {

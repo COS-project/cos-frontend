@@ -4,13 +4,14 @@ import { EventSourcePolyfill } from 'event-source-polyfill';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import React, { SVGProps, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import AlarmItem from '@/components/alarm/AlarmItem';
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import { getAlarms, postReadAlarmList } from '@/lib/api/alarm';
+import { alarmAtom, readAlarmListAtom } from '@/recoil/alarm/atom';
 import { certificateIdAtom } from '@/recoil/atom';
 import { Alarm } from '@/types/alarm/type';
 import { ResponseType } from '@/types/common/type';
@@ -18,8 +19,8 @@ import { ResponseType } from '@/types/common/type';
 export default function Alarm() {
   const router = useRouter();
   const certificateId = useRecoilValue(certificateIdAtom);
-  const [alarms, setAlarms] = useState<Alarm[]>([]);
-  const [readAlarmList, setReadAlarmList] = useState<number[]>([]);
+  const [alarms, setAlarms] = useRecoilState<Alarm[]>(alarmAtom);
+  const [readAlarmList, setReadAlarmList] = useRecoilState<number[]>(readAlarmListAtom);
 
   useEffect(() => {
     const connect = () => {
@@ -37,7 +38,6 @@ export default function Alarm() {
       });
 
       eventSource.onopen = () => {
-        console.log('Connection opened.');
         getAlarms().then((res: ResponseType<Alarm[]>) => {
           console.log('res', res.result);
           if (res && res.result) {
@@ -46,22 +46,15 @@ export default function Alarm() {
         });
       };
 
-      eventSource.onmessage = (event) => {
-        console.log('새로운 알림 수신:', event.data);
+      eventSource.addEventListener('alarm', (event: any) => {
         try {
-          // 서버에서 보낸 데이터(event.data)를 파싱합니다.
-          // 서버의 데이터 형식에 따라 JSON.parse가 필요 없을 수도 있습니다.
           const newAlarm = JSON.parse(event.data);
-
-          // 새로운 알림을 기존 알림 목록의 맨 앞에 추가하여 상태를 업데이트합니다.
           setAlarms((prevAlarms) => [newAlarm, ...prevAlarms]);
-
-          // 필요하다면 읽지 않은 알림 카운트 등 다른 상태도 업데이트합니다.
-          // (이 부분은 필요에 따라 추가 구현)
+          // 필요한 추가 로직
         } catch (e) {
           console.error('알림 데이터 파싱 오류:', e);
         }
-      };
+      });
 
       eventSource.onerror = (error) => {
         console.error('EventSource error:', error);
@@ -75,18 +68,6 @@ export default function Alarm() {
 
     connect();
   }, []);
-
-  useEffect(() => {
-    if (alarms) {
-      // 새로운 alarmId 중 readAlarmList에 없는 값만 필터링
-      const newAlarmIds = alarms.map((alarm) => alarm.id).filter((alarmId) => !readAlarmList.includes(alarmId)); // 중복 체크
-
-      // 새로운 alarmId가 있을 때만 상태 업데이트
-      if (newAlarmIds.length > 0) {
-        setReadAlarmList((prevList) => [...prevList, ...newAlarmIds]);
-      }
-    }
-  }, [alarms, readAlarmList]); // alarms나 readAlarmList가 변경될 때 실행
 
   const onBack = () => {
     postReadAlarmList(readAlarmList);
@@ -109,6 +90,7 @@ export default function Alarm() {
                     type={alarm.alarmType}
                     targetPostId={alarm.originId}
                     receiver={alarm.receiver}
+                    likerNickname={alarm.likerNickname}
                   />
                 );
               })
