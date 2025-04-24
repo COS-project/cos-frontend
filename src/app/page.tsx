@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { SVGProps } from 'react';
 
@@ -8,6 +9,14 @@ export default function Page() {
     <div className={'flex flex-col justify-center items-center bg-primary min-h-screen'}>
       <link rel="apple-touch-icon" href="/logo.png" />
       <WhiteLogoIcon />
+      <Link
+        href="https://cercat.o-r.kr/oauth2/authorization/apple"
+        className={
+          'flex gap-x-1 items-center absolute bottom-20 justify-center bg-white rounded-[16px] font-semibold w-[90%] py-[10px]'
+        }>
+        <Image src="/login/AppleLogo.svg" width={30} height={30} alt={'애플로고'} />
+        Apple로 시작하기
+      </Link>
       <Link
         href="https://cercat.o-r.kr/oauth2/authorization/kakao"
         className={
