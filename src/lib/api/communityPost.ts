@@ -13,7 +13,11 @@ export const postToggleLikeData = async (targetId: number, likeTargetType: 'COMM
         'Access-Token': Cookies.get('accessToken'),
       },
       method: 'POST',
-      url: `/api/v2/likes?likeTargetType=${likeTargetType}&targetId=${targetId}`,
+      data: {
+        likeTargetType: likeTargetType,
+        targetId: targetId,
+      },
+      url: '/api/v2/likes',
     });
     // 성공적인 응답 처리
 
@@ -33,7 +37,11 @@ export const deleteToggleLikeData = async (targetId: number, likeTargetType: 'CO
         'Access-Token': Cookies.get('accessToken'),
       },
       method: 'DELETE',
-      url: `/api/v2/likes?likeTargetType=${likeTargetType}&targetId=${targetId}`,
+      data: {
+        likeTargetType: likeTargetType,
+        targetId: targetId,
+      },
+      url: '/api/v2/likes',
     });
     // 성공적인 응답 처리
 
