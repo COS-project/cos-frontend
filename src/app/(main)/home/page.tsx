@@ -58,18 +58,19 @@ function HomeComponents() {
   useEffect(() => {
     const existingAccessToken = Cookies.get('accessToken');
     const existingRefreshToken = Cookies.get('refreshToken');
-    if (existingAccessToken && existingRefreshToken) {
-      setIsCookieSet(true);
-      return;
-    }
 
-    // 쿠키가 없고 URL에서 토큰이 있으면 세팅
+    // ✅ 쿼리에 토큰이 있으면 무조건 쿠키 갱신
     if (accessToken && refreshToken) {
       Cookies.set('accessToken', accessToken, { expires: Date.now() + 604800000 });
       Cookies.set('refreshToken', refreshToken, { expires: Date.now() + 604800000 });
       setIsCookieSet(true);
+      return;
+    }
+
+    // ✅ 쿼리 없지만 쿠키 있으면 그대로 진행
+    if (existingAccessToken && existingRefreshToken) {
+      setIsCookieSet(true);
     } else {
-      // 둘 다 없으면 그래도 isCookieSet은 true로 둬야 UI 진행됨
       setIsCookieSet(false);
     }
   }, [accessToken, refreshToken]);
