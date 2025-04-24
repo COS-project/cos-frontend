@@ -37,7 +37,7 @@ const Comment = (props: Props) => {
         time={
           info.dateTime.createdAt ? format(info.dateTime.createdAt, 'HH:mm') : format(info.dateTime.modifiedAt, 'HH:mm')
         }
-        imgSrc={info.user.profileImage}
+        imgSrc={info.user.profileImage === null ? '/person.png' : info.user.profileImage}
         onClick={profileModal}>
         {/* ...버튼 클릭 시 동작 */}
         {info.user.nickname}
