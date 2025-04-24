@@ -3,13 +3,14 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 import { SVGProps } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import AutoCompleteSearchKeywords from '@/components/community/AutoCompleteSearchKeywords';
 import { getTotalSearchResults } from '@/lib/api/community';
 import useGetAutoCompleteSearchKeywords from '@/lib/hooks/useGetAutoCompleteSearchKeywords';
 import useGetRecentSearchResults from '@/lib/hooks/useGetRecentSearchResults';
 import { certificateIdAtom } from '@/recoil/atom';
+import { totalSearchResultsAtom } from '@/recoil/search/atom';
 
 interface Props {
   isClickedAutoCompleteSearchKeywords: boolean;
@@ -25,16 +26,18 @@ const SearchInput = (props: Props) => {
   const { mutate } = useGetRecentSearchResults(certificateId);
   const { autoCompleteKeywords } = useGetAutoCompleteSearchKeywords(certificateId, parameter.get('keyword'));
   const router = useRouter();
+  const setTotalSearchResults = useSetRecoilState(totalSearchResultsAtom);
 
   const handleSubmit = async () => {
-    await getTotalSearchResults(1, searchValue).then((r) => console.log('검색 결과', r));
-    await mutate().then((r) => console.log('response임', r));
+    await getTotalSearchResults(certificateId, searchValue).then((r) => setTotalSearchResults(r.result.content));
+    await mutate();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       handleSubmit();
+      setSearchValue('');
     }
   };
 
@@ -63,6 +66,7 @@ const SearchInput = (props: Props) => {
               onChange={(e) => {
                 setSearchValue(e.target.value);
                 setIsClickedAutoCompleteSearchKeywords(true);
+                setTotalSearchResults([]);
               }}
               onKeyDown={handleKeyDown}
               className={'text-h4 text-gray4 outline-none'}

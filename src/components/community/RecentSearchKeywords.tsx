@@ -29,8 +29,9 @@ const RecentSearchKeywords = (props: Props) => {
           <div className={'text-h4 font-semibold ml-2'}>최근 검색어</div>
           <button
             onClick={() => {
-              deleteAllSearchResults();
-              mutate();
+              deleteAllSearchResults(certificateId).then(() => {
+                mutate();
+              });
             }}
             className={'text-gray4 text-h6'}>
             전체삭제
