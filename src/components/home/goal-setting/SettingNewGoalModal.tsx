@@ -67,9 +67,9 @@ const SettingNewGoalModal = (props: Props) => {
               </button>
               {!isFirstGoalSetting && (
                 <button
-                  onClick={() => {
-                    fetchDataAndUpdateState();
+                  onClick={async () => {
                     setIsSettingNewModal(!isSettingNewGoalModal);
+                    await fetchDataAndUpdateState(); // 이게 recoil 초기화 + 렌더 트리거
                   }}
                   className={'bg-black rounded-full text-white py-[7px] px-3'}>
                   불러오기
