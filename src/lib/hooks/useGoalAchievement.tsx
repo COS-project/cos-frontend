@@ -3,9 +3,10 @@ import useSWR from 'swr';
 import { swrGetFetcher } from '@/lib/axios';
 import { GoalAchievementResponseType } from '@/types/home/type';
 
-const useGoalAchievement = (certificateId: number) => {
+const useGoalAchievement = (certificateId: number | null) => {
+  const shouldFetch = certificateId !== null;
   const { data, error } = useSWR<GoalAchievementResponseType>(
-    `/api/v2/certificates/${certificateId}/goals/achievement`,
+    shouldFetch ? `/api/v2/certificates/${certificateId}/goals/achievement` : null,
     swrGetFetcher,
     {
       shouldRetryOnError: false, // ❗️에러 발생 시 재요청 방지
@@ -15,7 +16,7 @@ const useGoalAchievement = (certificateId: number) => {
 
   return {
     goalAchievementData: data,
-    isLoading: !error && !data,
+    isLoading: shouldFetch && !error && !data,
     isError: error,
   };
 };

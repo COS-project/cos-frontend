@@ -3,9 +3,10 @@ import useSWR from 'swr';
 import { swrGetFetcher } from '@/lib/axios';
 import { AverageSubjectInfoResponseType, AverageSubjectInfoType } from '@/types/home/type';
 
-const useAverageSubjectInfo = (certificateId: number) => {
+const useAverageSubjectInfo = (certificateId: number | null) => {
+  const shouldFetch = certificateId !== null;
   const { data, error } = useSWR<AverageSubjectInfoResponseType>(
-    `/api/v2/certificates/${certificateId}/mock-exam-results/average`,
+    shouldFetch ? `/api/v2/certificates/${certificateId}/mock-exam-results/average` : null,
     swrGetFetcher,
     {
       shouldRetryOnError: false, // ❗️에러 발생 시 재요청 방지
@@ -17,7 +18,7 @@ const useAverageSubjectInfo = (certificateId: number) => {
 
   return {
     averageSubjectList: parseResultList,
-    isLoading: !error && !data,
+    isLoading: shouldFetch && !error && !data,
     isError: error,
   };
 };

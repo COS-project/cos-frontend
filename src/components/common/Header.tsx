@@ -1,12 +1,12 @@
 import { useRouter } from 'next/navigation';
 import React, { ReactNode, SVGProps, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { twMerge } from 'tailwind-merge';
 
 import FilterModal from '@/components/common/FilterModal';
 import { getAlarmUnreadCount } from '@/lib/api/alarm';
 import useGetInterestCertificates from '@/lib/hooks/useGetInterestCertificates';
-import { certificateIdAtom, certificateNameAtom } from '@/recoil/atom';
+import { certificateIdAtom, certificateNameAtom, isInitialCertificateIdSetAtom } from '@/recoil/atom';
 import { ResponseType } from '@/types/common/type';
 import { HeaderType } from '@/types/global';
 
@@ -25,19 +25,38 @@ export default function Header(props: Props) {
   // 선택된 자격증
   const [selectedCertificationName, setSelectedCertificationName] = useRecoilState<string>(certificateNameAtom);
   // 선택된 자격증 Id
-  const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number>(certificateIdAtom);
   const { interestCertificates } = useGetInterestCertificates();
+  const setIsInitialCertificateIdSet = useSetRecoilState(isInitialCertificateIdSetAtom);
+
+  const [selectedCertificationId, setSelectedCertificationId] = useRecoilState<number>(certificateIdAtom);
   const router = useRouter();
+
   const [initialTrigger, setInitialTrigger] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  // ✅ useEffect 수정: interestCertificates 로드 후 certificateId 및 초기화 상태 설정
   useEffect(() => {
-    if (interestCertificates && initialTrigger) {
-      setSelectedCertificationName(interestCertificates[0]?.certificate.certificateName);
-      setSelectedCertificationId(interestCertificates[0]?.certificate.certificateId);
+    // interestCertificates가 로드되었고 (undefined가 아니며), 초기 트리거 상태일 때
+    if (interestCertificates !== undefined && initialTrigger) {
+      if (interestCertificates.length > 0) {
+        setSelectedCertificationName(interestCertificates[0]?.certificate.certificateName);
+        setSelectedCertificationId(interestCertificates[0]?.certificate.certificateId);
+      } else {
+        // 관심 자격증이 없는 경우 처리 (예: certificateId를 특정 값으로 설정하거나 그대로 둠)
+        // 현재 로직에서는 디폴트 값 1이 유지됩니다.
+        console.warn('User has no interest certificates.');
+      }
+      // ✅ 초기 certificateId 설정 작업이 완료되었음을 알림
+      setIsInitialCertificateIdSet(true);
       setInitialTrigger(false);
     }
-  }, [interestCertificates]);
+  }, [
+    interestCertificates,
+    initialTrigger,
+    setSelectedCertificationName,
+    setSelectedCertificationId,
+    setIsInitialCertificateIdSet,
+  ]); // 의존성 배열 업데이트
 
   useEffect(() => {
     getAlarmUnreadCount().then((res: ResponseType<number>) => {
