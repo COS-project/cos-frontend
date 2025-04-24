@@ -173,7 +173,9 @@ const CommunityComments = (props: Props) => {
                           className={'flex flex-col items-center'}>
                           <Image
                             src={
-                              replyComment.likeStatus ? '/community/BlueLikeIcon.svg' : '/community/GrayLikeIcon.svg'
+                              replyComment.likeStatus
+                                ? '/community/BlueFillLikeIcon.svg'
+                                : '/community/GrayLikeIcon.svg'
                             }
                             alt="Logo"
                             width={24}
