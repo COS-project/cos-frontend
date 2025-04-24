@@ -32,16 +32,18 @@ const QuestionContent = (props: Props) => {
 
   /**
    * 눌린 번호로 state 를 바꾸는 함수
+   * 같은 번호가 눌리면 0으로 초기화
    */
   const resetUserAnswer = () => {
-    return new Promise(async (resolve: (value?: unknown) => void) => {
-      setUserAnswer((prevState) => ({
-        ...prevState,
-        selectOptionSeq: questionSequence,
-        questionId: questionId,
-      }));
-      // 상태 업데이트 후 즉시 다음 코드가 실행되기 전에 약간의 지연을 주어
-      // 상태 업데이트가 반영될 시간을 제공합니다.
+    return new Promise<void>((resolve) => {
+      setUserAnswer((prevState) => {
+        const isSame = prevState.selectOptionSeq === questionSequence;
+        return {
+          ...prevState,
+          selectOptionSeq: isSame ? 0 : questionSequence,
+          questionId: questionId,
+        };
+      });
       setTimeout(() => resolve(), 0);
     });
   };

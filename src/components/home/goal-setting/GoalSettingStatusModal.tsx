@@ -16,17 +16,9 @@ const GoalSettingStatusModal = (props: Props) => {
         className={
           'fixed left-0 right-0 z-50 flex flex-col gap-y-2 justify-center bg-[rgba(0,0,0,0.6)] px-8 min-h-screen'
         }>
-        <div
-          onClick={() => {
-            setIsGoalSettingStatusModalOpen(!isGoalSettingStatusModalOpen);
-          }}
-          className={'flex justify-end items-center'}>
-          <div className={'text-white text-h6'}>닫기</div>
-          <CancleIcon />
-        </div>
         <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
           <div className={'flex flex-col gap-y-1'}>
-            <div className={'text-h2 font-semibold text-black'}>아직 목표 설정을 하지 않았네요!</div>
+            <div className={'text-h2 font-semibold text-black'}>목표설정을 해주세요!</div>
             <div className={'flex flex-col gap-y-1'}>
               <div className={'flex items-center text-h6'}>
                 목표설정을 하면 <LogoIcon className={'mx-1'} /> 이
@@ -38,7 +30,7 @@ const GoalSettingStatusModal = (props: Props) => {
             <button
               onClick={() => {
                 router.push('/home/goal-setting');
-                setIsGoalSettingStatusModalOpen(!isGoalSettingStatusModalOpen);
+                setIsGoalSettingStatusModalOpen(false);
               }}
               className={'flex items-center bg-black rounded-full text-white py-[7px] px-4 text-h6'}>
               설정하기

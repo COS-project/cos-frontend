@@ -63,7 +63,7 @@ const CommentWriting = (props: Props) => {
           exit={{ opacity: 0, y: 30 }} // 위로 사라지는 게 아니라 아래로 사라지게 하려면 y: 30
           transition={{ duration: 0.3 }}
           className={
-            'flex justify-between items-center mt-4 w-full bg-gray0 rounded-t-[16px] bottom-b-[1px] border-x border-t border-gray1 px-4 py-2'
+            'flex justify-between items-center mt-4 w-full rounded-t-[16px] bottom-b-[1px] border-x border-t border-gray1 px-4 py-2'
           }>
           <p className={'text-h6 font-pre text-gray4 '}>{selectedReplyParentName}에게 답글 남기는 중</p>
           <Image
@@ -82,12 +82,12 @@ const CommentWriting = (props: Props) => {
         onSubmit={handleSubmit}
         className={
           generateComment.parentCommentId && selectedReplyParentName
-            ? 'mb-3 w-full px-4 rounded-b-[16px] border-x border-b border-gray1 justify-between items-center inline-flex'
+            ? 'mb-3 w-full px-4 rounded-b-[16px] border-x border-b border-gray1 bg-gray0 justify-between items-center inline-flex'
             : 'mt-4 mb-3 w-full px-4 rounded-[16px] bg-gray0 justify-between items-center inline-flex'
         }>
         <div className={'flex items-center w-full gap-x-1'}>
           {generateComment.parentCommentId && selectedReplyParentName && (
-            <div className={'flex-shrink-0 text-h6 font-pre text-gray4'}>@{selectedReplyParentName}</div>
+            <div className={'flex-shrink-0 text-h6 font-pre text-primary'}>@{selectedReplyParentName}</div>
           )}
           <div
             ref={editableRef}

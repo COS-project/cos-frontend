@@ -1,19 +1,16 @@
 'use client';
 
-import React, { useEffect, useMemo } from 'react';
-import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useMemo } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
-import AccumulatedTime from '@/components/stopwatch/AccumulatedTime';
-import StopwatchAlert from '@/components/stopwatch/StopwatchAlert';
 import {
   hStopwatchTimeState,
-  isResetState,
   isStartState,
   isStopState,
   mStopwatchTimeState,
+  onModalAtom,
   sStopwatchTimeState,
   stringLocationState,
   timeBoolState,
@@ -21,37 +18,20 @@ import {
 
 export default function StopWatch() {
   const [timebool, setTimebool] = useRecoilState(timeBoolState); // true: 시작 버튼/ false: 일시정지 버튼
-  const [onModal, setOnModal] = useState<boolean>(false); //기록하기 알림창 onoff조절
-  const [onAccumulatedModal, setOnAccumulatedModal] = useState<boolean>(false); //기록완료 알림창 onoff조절
-  const [isStart, setIsStart] = useRecoilState(isStartState); //시작 여부
-  const [isStop, setIsStop] = useRecoilState(isStopState); //멈춤 여부
-  const [isReset, setIsReset] = useRecoilState(isResetState); //리셋 여부
-  const [stringLocation, setStringLocation] = useRecoilState(stringLocationState); //스톱워치 돌아가는 원의 위치
-  const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState); //시 기록
-  const [mStopwatchTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState); //분 기록
-  const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초 기록
+  const setOnModal = useSetRecoilState<boolean>(onModalAtom); //기록하기 알림창 onoff조절
+  const setIsStart = useSetRecoilState(isStartState); //시작 여부
+  const setIsStop = useSetRecoilState(isStopState); //멈춤 여부
+  const stringLocation = useRecoilValue(stringLocationState); //스톱워치 돌아가는 원의 위치
+  const hStopwatchTime = useRecoilValue(hStopwatchTimeState); //시 기록
+  const mStopwatchTime = useRecoilValue(mStopwatchTimeState); //분 기록
+  const sStopwatchTime = useRecoilValue(sStopwatchTimeState); //초 기록
 
   const rotateStyle = useMemo(() => {
     return { transform: `rotate(${stringLocation}deg)` }; //원의 위치가 변경될 수 있도록 함
   }, [stringLocation]);
 
-  useEffect(() => {
-    if (isReset) {
-      setHStopwatchTime(0);
-      setMStopwatchTime(0);
-      setSStopwatchTime(0);
-      setIsReset(false);
-    }
-  }, [isReset]);
-
   return (
     <main className={'min-h-screen'}>
-      {onModal ? ( //기록하기 알림창 열림OnOff
-        <StopwatchAlert setOnAccumulatedModal={setOnAccumulatedModal} setOnModal={setOnModal} />
-      ) : null}
-      {onAccumulatedModal ? ( //기록완료 알림창OnOff
-        <AccumulatedTime setOnAccumulatedModal={setOnAccumulatedModal} />
-      ) : null}
       <Header />
       <Header headerType={'second'} />
       <div className="flex justify-center items-center mt-[100px]">

@@ -1,4 +1,5 @@
 'use client';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { SVGProps, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { KeyedMutator } from 'swr';
@@ -9,6 +10,8 @@ import { userAnswerRequests } from '@/recoil/exam/atom';
 import { QuestionOptions, ReviewIncorrectAnswers, ReviewIncorrectMockExam, UserAnswerRequests } from '@/types/global';
 
 interface Props {
+  isOpen: boolean;
+  onToggle: () => void;
   selectOptionSeq: number;
   mockExam: ReviewIncorrectMockExam;
   correctOption: number;
@@ -20,8 +23,9 @@ interface Props {
 }
 
 const IncorrectQuestionCard = (props: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
   const {
+    isOpen,
+    onToggle,
     mockExam,
     questionSeq,
     questionText,
@@ -68,7 +72,9 @@ const IncorrectQuestionCard = (props: Props) => {
   const toggleQuestionModal = async () => {
     resetUserAnswer();
     setSelectedAnswerInThePast(0);
-    setIsOpen(!isOpen);
+    onToggle(); // ✅ 외부 상태 갱신 요청
+    setCorrectAnswer(0);
+    setDisabled(false);
   };
 
   return (
@@ -92,52 +98,52 @@ const IncorrectQuestionCard = (props: Props) => {
       </div>
       <div className={'text-h3 font-semibold'}>{questionText}</div>
       <div className={'flex justify-center items-center'}>
-        {isOpen ? (
-          <DropUpIcon
-            onClick={() => {
-              toggleQuestionModal();
-              setCorrectAnswer(0);
-              setDisabled(false);
-            }}
-          />
-        ) : (
-          <DropDownIcon onClick={() => toggleQuestionModal()} />
-        )}
+        {isOpen ? <DropUpIcon onClick={toggleQuestionModal} /> : <DropDownIcon onClick={toggleQuestionModal} />}
       </div>
 
-      {isOpen && (
-        <div className={'flex flex-col gap-y-5'}>
-          <div className={'flex flex-col gap-y-4'}>
-            {questionOptions.map((question, index) => {
-              return (
-                <QuestionContent
-                  usage={'wrongQuestion'}
-                  key={index}
-                  questionSequence={question.optionSequence}
-                  questionContent={question.optionContent}
-                  questionImage={question.optionImage}
-                  questionId={questionSeq}
-                  userAnswer={userAnswer}
-                  setUserAnswer={setUserAnswer}
-                  correctAnswer={correctAnswer}
-                  disabled={disabled}
-                  selectedAnswerInThePast={selectedAnswerInThePast}
-                  clickedSequence={userAnswer.selectOptionSeq}></QuestionContent>
-              );
-            })}
-          </div>
-          <div className={'flex gap-x-2 justify-end'}>
-            {selectOptionSeq !== 0 ? (
-              <button onClick={() => resetSelectedAnswerInThePast()} className={'border-second-button'}>
-                과거의 나
-              </button>
-            ) : null}
-            <button onClick={() => resetCorrectAnswer()} className={'bg-blue-button'}>
-              정답보기
-            </button>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="question-content"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            className="overflow-hidden">
+            <div className="flex flex-col gap-y-5">
+              <div className="flex flex-col gap-y-4">
+                {questionOptions.map((question, index) => (
+                  <QuestionContent
+                    usage="wrongQuestion"
+                    key={index}
+                    questionSequence={question.optionSequence}
+                    questionContent={question.optionContent}
+                    questionImage={question.optionImage}
+                    questionId={questionSeq}
+                    userAnswer={userAnswer}
+                    setUserAnswer={setUserAnswer}
+                    correctAnswer={correctAnswer}
+                    disabled={disabled}
+                    selectedAnswerInThePast={selectedAnswerInThePast}
+                    clickedSequence={userAnswer.selectOptionSeq}
+                  />
+                ))}
+              </div>
+
+              <div className="flex gap-x-2 justify-end">
+                {selectOptionSeq !== 0 && (
+                  <button onClick={resetSelectedAnswerInThePast} className="border-second-button">
+                    과거의 나
+                  </button>
+                )}
+                <button onClick={resetCorrectAnswer} className="bg-blue-button">
+                  정답보기
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

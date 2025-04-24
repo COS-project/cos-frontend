@@ -1,243 +1,79 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import * as React from 'react';
+import React from 'react';
 import { useRecoilState } from 'recoil';
 
 import { goalSettingState } from '@/recoil/home/atom';
 
 interface Props {
-  usage: string; // 사용된 용도 (모의고사 MockList, 공부시간 StudyTime)
+  usage: 'MockExam' | 'StudyTime';
 }
 
-/**
- * 월, 화, 수, 목, 금, 토, 일 목표를 설정할 수 있는 컴포넌트입니다.
- */
-const SelectRepeatDayItem = (props: Props) => {
-  const { usage } = props;
-  //각 버튼을 눌렀을 때, 눌렸는지를 확인하는 state
-  const [isMonthClick, setIsMonthClick] = useState<boolean>(false);
-  const [isTuesClick, setIsTuesClick] = useState<boolean>(false);
-  const [isWednesClick, setIsWednesClick] = useState<boolean>(false);
-  const [isThursClick, setIsThursClick] = useState<boolean>(false);
-  const [isFriClick, setIsFriClick] = useState<boolean>(false);
-  const [isSaturClick, setIsSaturClick] = useState<boolean>(false);
-  const [isSunClick, setIsSunClick] = useState<boolean>(false);
+const SelectRepeatDayItem = ({ usage }: Props) => {
+  const [goalData, setGoalData] = useRecoilState(goalSettingState);
 
-  // 요일 리스트를 담은 state
-  let [goalData, setGoalData] = useRecoilState(goalSettingState);
+  const selectedDays = usage === 'MockExam' ? goalData.mockExamRepeatDays : goalData.studyRepeatDays;
 
-  /**
-   * 사용된 용도에 따라(모의고사 - MockExam, 공부시간 - StudyTime)
-   * 요일 리스트에 요일을 추가하는 리스트 (2번 클릭 될 경우에는 리스트 제거)
-   * @param dayOfWeek 요일 [일: 1 ~ 토: 6]
-   */
-  const addList = (dayOfWeek: number) => {
-    if (usage == 'MockExam') {
-      if (!goalData.mockExamRepeatDays.includes(dayOfWeek)) {
-        setGoalData((prevGoalSettingData) => ({
-          ...prevGoalSettingData,
-          mockExamRepeatDays: [...prevGoalSettingData.mockExamRepeatDays, dayOfWeek],
-        }));
-      } else {
-        setGoalData((prevGoalSettingData) => ({
-          ...prevGoalSettingData,
-          mockExamRepeatDays: [...prevGoalSettingData.mockExamRepeatDays].filter((day) => day != dayOfWeek),
-        }));
-      }
-    }
-    if (usage == 'StudyTime') {
-      if (!goalData.studyRepeatDays.includes(dayOfWeek)) {
-        setGoalData((prevGoalSettingData) => ({
-          ...prevGoalSettingData,
-          studyRepeatDays: [...prevGoalSettingData.studyRepeatDays, dayOfWeek],
-        }));
-      } else {
-        setGoalData((prevGoalSettingData) => ({
-          ...prevGoalSettingData,
-          studyRepeatDays: [...prevGoalSettingData.studyRepeatDays].filter((day) => day != dayOfWeek),
-        }));
-      }
-    }
+  // ✅ 아직 초기화가 안되었으면 렌더링하지 않음
+  const isInitialized =
+    usage === 'MockExam' ? Array.isArray(goalData.mockExamRepeatDays) : Array.isArray(goalData.studyRepeatDays);
+
+  if (!isInitialized) return null;
+
+  const toggleDay = (day: number) => {
+    const updatedDays = selectedDays.includes(day) ? selectedDays.filter((d) => d !== day) : [...selectedDays, day];
+
+    setGoalData((prev) => ({
+      ...prev,
+      ...(usage === 'MockExam' ? { mockExamRepeatDays: updatedDays } : { studyRepeatDays: updatedDays }),
+    }));
   };
 
-  //처음 랜더링 때, 기존의 저장된 요일 버튼 색상 반영되도록 하기
-  const isClickedState = () => {
-    const repeatDays = usage === 'MockExam' ? goalData.mockExamRepeatDays : goalData.studyRepeatDays;
-
-    if (repeatDays.length !== 0) {
-      repeatDays.forEach((dayOfWeek) => {
-        switch (dayOfWeek) {
-          case 0:
-            setIsSunClick(true);
-            break;
-          case 1:
-            setIsMonthClick(true);
-            break;
-          case 2:
-            setIsTuesClick(true);
-            break;
-          case 3:
-            setIsWednesClick(true);
-            break;
-          case 4:
-            setIsThursClick(true);
-            break;
-          case 5:
-            setIsFriClick(true);
-            break;
-          case 6:
-            setIsSaturClick(true);
-            break;
-          default:
-            break;
-        }
-      });
-    }
-  };
-
-  //처음 랜더링 때, 기존의 저장된 요일 버튼 색상 반영되도록 하기
-  const resetIsClickedState = () => {
-    if (goalData.mockExamRepeatDays.length === 0 && usage == 'MockExam') {
-      setIsSunClick(false);
-      setIsMonthClick(false);
-      setIsTuesClick(false);
-      setIsWednesClick(false);
-      setIsThursClick(false);
-      setIsFriClick(false);
-      setIsSaturClick(false);
-    }
-    if (goalData.studyRepeatDays.length === 0 && usage == 'StudyTime') {
-      setIsSunClick(false);
-      setIsMonthClick(false);
-      setIsTuesClick(false);
-      setIsWednesClick(false);
-      setIsThursClick(false);
-      setIsFriClick(false);
-      setIsSaturClick(false);
-    }
-  };
-
-  useEffect(() => {
-    isClickedState();
-    resetIsClickedState();
-  }, [goalData.studyRepeatDays, goalData.mockExamRepeatDays]);
+  const dayButtons = [
+    { label: '월', value: 1 },
+    { label: '화', value: 2 },
+    { label: '수', value: 3 },
+    { label: '목', value: 4 },
+    { label: '금', value: 5 },
+    { label: '토', value: 6 },
+    { label: '일', value: 0 },
+  ];
 
   return (
     <div className="goal-setting-content">
       <div className="flex flex-col gap-y-2">
-        {/* content */}
         <div className="flex gap-x-1 items-center">
           <Icon />
           <div className="text-gray3 text-h6">반복 요일 선택</div>
         </div>
-
-        {/* 월, 화, 수, 목, 금, 토, 일 선택*/}
         <div className="flex gap-x-1">
-          <button
-            onClick={() => {
-              setIsMonthClick(!isMonthClick);
-              addList(1);
-            }}
-            className={
-              isMonthClick
-                ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
-                : 'bg-white w-10 h-10 rounded-[8px] text-h4'
-            }>
-            월
-          </button>
-          <button
-            onClick={() => {
-              setIsTuesClick(!isTuesClick);
-              addList(2);
-            }}
-            className={
-              isTuesClick
-                ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
-                : 'bg-white w-10 h-10 rounded-[8px] text-h4'
-            }>
-            화
-          </button>
-          <button
-            onClick={() => {
-              setIsWednesClick(!isWednesClick);
-              addList(3);
-            }}
-            className={
-              isWednesClick
-                ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
-                : 'bg-white w-10 h-10 rounded-[8px] text-h4'
-            }>
-            수
-          </button>
-          <button
-            onClick={() => {
-              setIsThursClick(!isThursClick);
-              addList(4);
-            }}
-            className={
-              isThursClick
-                ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
-                : 'bg-white w-10 h-10 rounded-[8px] text-h4'
-            }>
-            목
-          </button>
-          <button
-            onClick={() => {
-              setIsFriClick(!isFriClick);
-              addList(5);
-            }}
-            className={
-              isFriClick
-                ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
-                : 'bg-white w-10 h-10 rounded-[8px] text-h4'
-            }>
-            금
-          </button>
-          <button
-            onClick={() => {
-              setIsSaturClick(!isSaturClick);
-              addList(6);
-            }}
-            className={
-              isSaturClick
-                ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
-                : 'bg-white w-10 h-10 rounded-[8px] text-h4'
-            }>
-            토
-          </button>
-          <button
-            onClick={() => {
-              setIsSunClick(!isSunClick);
-              addList(0);
-            }}
-            className={
-              isSunClick
-                ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
-                : 'bg-white w-10 h-10 rounded-[8px] text-h4'
-            }>
-            일
-          </button>
+          {dayButtons.map(({ label, value }) => {
+            const isActive = selectedDays.includes(value);
+            return (
+              <button
+                key={value}
+                onClick={() => toggleDay(value)}
+                className={
+                  isActive
+                    ? 'bg-primary w-10 h-10 rounded-[8px] text-h4 text-white'
+                    : 'bg-white w-10 h-10 rounded-[8px] text-h4'
+                }>
+                {label}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
   );
 };
+
 export default SelectRepeatDayItem;
 
 function Icon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg width={24} height={24} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <mask
-        id="prefix__a"
-        style={{
-          maskType: 'alpha',
-        }}
-        maskUnits="userSpaceOnUse"
-        x={0}
-        y={0}
-        width={24}
-        height={24}>
+      <mask id="prefix__a" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x={0} y={0} width={24} height={24}>
         <path fill="#D9D9D9" d="M0 0h24v24H0z" />
       </mask>
       <g mask="url(#prefix__a)">

@@ -7,6 +7,7 @@ import Skeleton from 'react-loading-skeleton';
 import Spinner from '@/components/common/Spinner';
 import useDelayOver from '@/hooks/useDelayOver';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
+import { SubjectResultsType } from '@/types/exam/type';
 
 import SubjectGradeCard from './SubjectGradeCard';
 
@@ -99,23 +100,38 @@ const SessionModal: React.FC<SessionModalProps> = ({ round, mockExamId, closeMod
                   </div>
                 ) : (
                   <div className={'flex flex-col gap-y-2'}>
-                    {examResults && examResults.length === 0 ? (
+                    {examResults && examResults.length === 0 ? null : (
                       <div className="text-h6 font-semibold">과목별 맞춘 문제 수</div>
-                    ) : null}
+                    )}
 
-                    <div className={'grid grid-cols-3'}>
-                      {examResults[examResults.length - 1]?.subjectResults?.map((subjectResult, index) => {
-                        return (
-                          <div className={'w-full'} key={index}>
-                            <SubjectGradeCard
-                              name={subjectResult.subject.subjectName}
-                              correctAnswer={subjectResult.numberOfCorrect}
-                              totalCorrect={subjectResult.subject.numberOfQuestions}
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
+                    <table className="table-fixed w-full border border-gray2 border-collapse">
+                      <tbody>
+                        {(examResults[examResults.length - 1]?.subjectResults ?? [])
+                          .reduce((rows, item, index) => {
+                            const rowIndex = Math.floor(index / 3);
+                            if (!rows[rowIndex]) rows[rowIndex] = [];
+                            rows[rowIndex].push(item);
+                            return rows;
+                          }, [] as SubjectResultsType[][])
+                          .map((row, rowIndex) => (
+                            <tr key={rowIndex}>
+                              {row.map((subjectResult, colIndex) => (
+                                <td key={colIndex} className="border border-gray2 p-0 align-top">
+                                  <SubjectGradeCard
+                                    name={subjectResult.subject.subjectName}
+                                    correctAnswer={subjectResult.numberOfCorrect}
+                                    totalCorrect={subjectResult.subject.numberOfQuestions}
+                                  />
+                                </td>
+                              ))}
+                              {/* 마지막 행에 칸이 3개 미만일 경우 빈 셀 채우기 */}
+                              {Array.from({ length: 3 - row.length }).map((_, idx) => (
+                                <td key={`empty-${idx}`} className="border border-white p-0"></td>
+                              ))}
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
                   </div>
                 )}
               </div>

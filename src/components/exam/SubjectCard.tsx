@@ -63,9 +63,7 @@ const SubjectCard: React.FC<SubjectCard> = ({ timeLimit, round, mockExamId, tota
               <li className="font-bold text-h2">{`${examResultRecent?.totalScore}점`}</li>
               <div className="mb-[3px] text-gray3 text-h6">{`/${total}점`}</div>
             </ul>
-          ) : (
-            <div className="bg-white animate-pulse h-[30px]" />
-          )}
+          ) : null}
           {isError && <p className="text-center text-h2 font-semibold">미응시</p>}
         </div>
         <button className="w-full bg-gray0 rounded-3xl py-3 text-h6">시험 보기</button>

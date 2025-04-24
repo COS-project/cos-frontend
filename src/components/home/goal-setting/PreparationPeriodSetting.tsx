@@ -81,20 +81,24 @@ const PreparationPeriodSetting = () => {
       <GoalSettingTitle Icon={ScheduleIcon}>자격증 준비기간 설정</GoalSettingTitle>
 
       {/*시작일 설정*/}
-      <div className="relative flex gap-x-2 justify-between">
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          if (isStartCalendarOpen) {
+            setIsStartCalendarOpen(false);
+          } else {
+            setIsStartCalendarOpen(true);
+            setIsFinishCalendarOpen(false);
+          }
+        }}
+        className="relative flex gap-x-2 justify-between">
         <div className="goal-setting-content">
           <div className="flex items-center gap-x-2">
             <ScheduleContentIcon />
             <div>
               <div className="text-h6 text-gray4">시작일</div>
               <div className="flex items-center gap-x-2">
-                <div
-                  onClick={() => {
-                    setIsStartCalendarOpen(!isStartCalendarOpen);
-                  }}
-                  className="text-h4 font-semibold">
-                  {format(goalData.prepareStartDateTime, 'yyyy.MM.dd')}
-                </div>
+                <div className="text-h4 font-semibold">{format(goalData.prepareStartDateTime, 'yyyy.MM.dd')}</div>
                 {isStartCalendarOpen ? <UpIcon /> : <DownIcon />}
               </div>
             </div>
@@ -102,19 +106,23 @@ const PreparationPeriodSetting = () => {
         </div>
 
         {/*종료일 설정*/}
-        <div className="relative goal-setting-content">
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            if (isFinishCalendarOpen) {
+              setIsFinishCalendarOpen(false);
+            } else {
+              setIsFinishCalendarOpen(true);
+              setIsStartCalendarOpen(false);
+            }
+          }}
+          className="relative goal-setting-content">
           <div className="flex items-center gap-x-2">
             <ScheduleContentIcon />
             <div>
               <div className="text-h6 text-gray4">종료일</div>
               <div className="flex items-center gap-x-2">
-                <div
-                  onClick={() => {
-                    setIsFinishCalendarOpen(!isFinishCalendarOpen);
-                  }}
-                  className="text-h4 font-semibold">
-                  {format(goalData.prepareFinishDateTime, 'yyyy.MM.dd')}
-                </div>
+                <div className="text-h4 font-semibold">{format(goalData.prepareFinishDateTime, 'yyyy.MM.dd')}</div>
                 {isFinishCalendarOpen ? <UpIcon /> : <DownIcon />}
               </div>
             </div>

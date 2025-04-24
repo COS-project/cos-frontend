@@ -97,7 +97,7 @@ const SetDailyGoals = () => {
             unitString={'회'}
             actionString={'풀기'}
           />
-          <SelectRepeatDayItem usage={'MockExam'} />
+          <SelectRepeatDayItem usage={'MockExam'} key={`mock-${goalData.mockExamRepeatDays.join(',')}`} />
           <DescriptionItem>
             <div className="text-h6">
               목표기간 <span className="text-primary">{goalData.goalPrepareDays}일 동안</span> 모의고사{' '}
@@ -116,7 +116,7 @@ const SetDailyGoals = () => {
             unitString={'분'}
             actionString={'공부하기'}
           />
-          <SelectRepeatDayItem usage={'StudyTime'} />
+          <SelectRepeatDayItem usage={'StudyTime'} key={`study-${goalData.studyRepeatDays.join(',')}`} />
           <DescriptionItem>
             <div className="text-h6">
               목표기간 <span className="text-primary">{goalData.goalPrepareDays}일 동안</span> 공부시간{' '}

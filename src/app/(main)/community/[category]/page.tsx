@@ -57,13 +57,13 @@ export default function CommunityCategoryPage() {
   const [isClickedWriteButton, setIsClickedWriteButton] = useState(false);
   const router = useRouter();
   //해설 게시글 검색
-  const [searchValue, setSearchValue] = useRecoilState<number>(commentarySearchQuestionSequence);
-  const debouncedValue = useDebounce<number>(searchValue, 100);
+  const [searchValue, setSearchValue] = useRecoilState<number | undefined>(commentarySearchQuestionSequence);
+  const debouncedValue = useDebounce<number | undefined>(searchValue, 100);
   const { commentarySearchResults } = useGetCommentarySearchResults(
     certificateId,
     selectedCommentaryYearFilterContent,
     selectedCommentaryRoundFilterContent,
-    searchValue,
+    searchValue as number,
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
   const { reviewWriteAccess } = useCheckReviewWriteAccess(certificateId);
@@ -199,7 +199,7 @@ export default function CommunityCategoryPage() {
             boardType={boardType}
             setSearchValue={setSearchValue}
             searchValue={searchValue}
-            debouncedValue={debouncedValue}
+            debouncedValue={debouncedValue as number}
           />
         ) : boardType === 'TIP' ? (
           <NormalAndTipBoardList boardType={boardType} init={boardTypeInit} />

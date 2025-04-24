@@ -2,7 +2,6 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import type { SVGProps } from 'react';
 import * as React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import { useRecoilValue } from 'recoil';
@@ -80,10 +79,29 @@ const CarouselCardView = () => {
                   </div>
                   <div className={'text-h6 text-gray3'}>{bestTipPost.user.nickname}</div>
                 </div>
-                <div>
-                  <LikeCountIcon />
-                  <div className={'text-blue text-[13px]'}>{bestTipPost.likeCount}</div>
-                </div>
+                {bestTipPost.likeStatus ? (
+                  <div>
+                    <Image
+                      src="/community/BlueFillLikeIcon.svg"
+                      alt="GrayArrowIcon"
+                      width={24}
+                      height={24}
+                      style={{ width: 24, height: 24 }}
+                    />
+                    <div className={'text-second text-[13px]'}>{bestTipPost.likeCount}</div>
+                  </div>
+                ) : (
+                  <div>
+                    <Image
+                      src="/community/GrayLikeIcon.svg"
+                      alt="GrayArrowIcon"
+                      width={24}
+                      height={24}
+                      style={{ width: 24, height: 24 }}
+                    />
+                    <div className={'text-gray4 text-[13px]'}>{bestTipPost.likeCount}</div>
+                  </div>
+                )}
               </div>
             </section>
           );
@@ -94,26 +112,3 @@ const CarouselCardView = () => {
 };
 
 export default CarouselCardView;
-
-const LikeCountIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={25} height={24} fill="none" {...props}>
-    <mask
-      id="a"
-      width={25}
-      height={24}
-      x={0}
-      y={0}
-      maskUnits="userSpaceOnUse"
-      style={{
-        maskType: 'alpha',
-      }}>
-      <path fill="#D9D9D9" d="M.5 0h24v24H.5z" />
-    </mask>
-    <g mask="url(#a)">
-      <path
-        fill="#6283FD"
-        d="M20.7 9.3q.575 0 1.038.462.462.463.462 1.038v1a1.7 1.7 0 0 1-.1.55l-2.65 6.3q-.2.45-.675.75t-.975.3H9.55q-.625 0-1.062-.437A1.45 1.45 0 0 1 8.05 18.2V9.925q0-.3.125-.588A1.6 1.6 0 0 1 8.5 8.85l5.075-5.025a.8.8 0 0 1 .375-.225.57.57 0 0 1 .375.025q.175.075.25.275a.9.9 0 0 1 .025.475l-1 4.925zM5.3 19.7q-.625 0-1.062-.437A1.45 1.45 0 0 1 3.8 18.2v-7.4q0-.625.438-1.063A1.45 1.45 0 0 1 5.3 9.3h.55q.624 0 1.063.437.437.438.437 1.063v7.425q0 .625-.437 1.05a1.47 1.47 0 0 1-1.063.425z"
-      />
-    </g>
-  </svg>
-);

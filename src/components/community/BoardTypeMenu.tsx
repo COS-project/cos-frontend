@@ -2,6 +2,7 @@ import React from 'react';
 import { useSetRecoilState } from 'recoil';
 
 import {
+  commentarySearchQuestionSequence,
   selectedCommentaryYearFilterContentAtom,
   selectedNormalAndTipFilterContentAtom,
 } from '@/recoil/community/atom';
@@ -24,6 +25,8 @@ const BoardTypeMenu = (props: Props) => {
   const setSelectedCommentaryYearFilterContent = useSetRecoilState<number | string>(
     selectedCommentaryYearFilterContentAtom,
   );
+  //번호 필터값
+  const setSearchValue = useSetRecoilState<number | undefined>(commentarySearchQuestionSequence);
 
   return (
     <div className={'bg-white px-4 py-3 flex gap-x-2 w-full overflow-x-scroll'}>
@@ -33,6 +36,7 @@ const BoardTypeMenu = (props: Props) => {
             changeBoardType('REVIEW');
             setSelectedNormalAndTipFilterContent('최신순');
             setSelectedCommentaryYearFilterContent('전체');
+            setSearchValue(undefined);
           }}
           className={boardType === 'REVIEW' ? 'tag-clicked' : 'tag-not-clicked'}>
           따끈후기
@@ -43,6 +47,7 @@ const BoardTypeMenu = (props: Props) => {
           changeBoardType('COMMENTARY');
           setSelectedNormalAndTipFilterContent('최신순');
           setSelectedCommentaryYearFilterContent('전체');
+          setSearchValue(undefined);
         }}
         className={boardType === 'COMMENTARY' ? 'tag-clicked' : 'tag-not-clicked'}>
         해설게시판
@@ -52,6 +57,7 @@ const BoardTypeMenu = (props: Props) => {
           changeBoardType('TIP');
           setSelectedNormalAndTipFilterContent('최신순');
           setSelectedCommentaryYearFilterContent('전체');
+          setSearchValue(undefined);
         }}
         className={boardType === 'TIP' ? 'tag-clicked' : 'tag-not-clicked'}>
         꿀팁게시판
@@ -61,6 +67,7 @@ const BoardTypeMenu = (props: Props) => {
           changeBoardType('NORMAL');
           setSelectedNormalAndTipFilterContent('최신순');
           setSelectedCommentaryYearFilterContent('전체');
+          setSearchValue(undefined);
         }}
         className={boardType === 'NORMAL' ? 'tag-clicked' : 'tag-not-clicked'}>
         자유게시판

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import Spinner from '@/components/common/Spinner';
@@ -11,6 +11,7 @@ interface Props {
 const IncorrectQuestions = (props: Props) => {
   const { submittedMockExamResultId } = props;
   const [ref, inView] = useInView();
+  const [openCardId, setOpenCardId] = useState<number | null>(null); // ✅ 현재 열려있는 카드 ID
   const { incorrectQuestionsResult, setSize } = useGetIncorrectQuestionsResult(submittedMockExamResultId);
 
   const getMoreItem = useCallback(async () => {
@@ -36,6 +37,12 @@ const IncorrectQuestions = (props: Props) => {
                 return (
                   <div key={index} ref={ref}>
                     <IncorrectQuestionCard
+                      isOpen={openCardId === wrongQuestion.userAnswerId}
+                      onToggle={() =>
+                        setOpenCardId((prev) =>
+                          prev === wrongQuestion.userAnswerId ? null : wrongQuestion.userAnswerId,
+                        )
+                      }
                       selectOptionSeq={wrongQuestion.selectOptionSeq}
                       mockExam={wrongQuestion.question.mockExam}
                       correctOption={wrongQuestion.question.correctOption}

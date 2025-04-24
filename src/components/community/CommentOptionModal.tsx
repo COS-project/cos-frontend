@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React, { Dispatch, SetStateAction } from 'react';
+import { SetterOrUpdater } from 'recoil';
 import { KeyedMutator } from 'swr';
 
 import { deleteComment } from '@/lib/api/communityPost';
@@ -7,14 +8,25 @@ import { ResponseType } from '@/types/common/type';
 import { ResponsePostDetailType } from '@/types/community/type';
 
 interface Props {
-  commentId: number;
+  selectedCommentId: number;
+  loginUserId: string | undefined;
+  writerUserId: number;
+  setSelectedAnswerUserId: SetterOrUpdater<number>;
   setCommentIsOptionModal: Dispatch<React.SetStateAction<boolean>>;
   setIsReportSubmittedModalOpen: Dispatch<SetStateAction<boolean>>;
   communityPostDataMutate: KeyedMutator<ResponseType<ResponsePostDetailType>>; // communityPostData를 바로 불러오는 mutate함수
 }
 
 const CommentOptionModal = (props: Props) => {
-  const { commentId, setCommentIsOptionModal, setIsReportSubmittedModalOpen, communityPostDataMutate } = props;
+  const {
+    selectedCommentId,
+    loginUserId,
+    writerUserId,
+    setSelectedAnswerUserId,
+    setCommentIsOptionModal,
+    setIsReportSubmittedModalOpen,
+    communityPostDataMutate,
+  } = props;
   return (
     <div
       className={'fixed left-0 right-0 z-50 flex flex-col gap-y-2 justify-end bg-[rgba(0,0,0,0.6)] px-5 min-h-screen'}>
@@ -36,29 +48,35 @@ const CommentOptionModal = (props: Props) => {
               onClick={() => {
                 setIsReportSubmittedModalOpen(true);
                 setCommentIsOptionModal(false);
+                setSelectedAnswerUserId(0); // 선택된 (대)댓글 ID 초기화
               }}
               className={
-                'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center border-b border-gray0'
+                parseInt(loginUserId as string) === writerUserId
+                  ? 'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center border-b border-gray0'
+                  : 'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center'
               }>
               신고하기
             </button>
-            <button
-              onClick={() => {
-                deleteComment(commentId).then(() => {
-                  communityPostDataMutate();
-                  setCommentIsOptionModal(false);
-                });
-              }}
-              className={
-                'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center border-b'
-              }>
-              삭제하기
-            </button>
+            {parseInt(loginUserId as string) === writerUserId && (
+              <button
+                onClick={() => {
+                  deleteComment(selectedCommentId).then(() => {
+                    communityPostDataMutate();
+                    setCommentIsOptionModal(false);
+                    setSelectedAnswerUserId(0); // 선택된 (대)댓글 ID 초기화
+                  });
+                }}
+                className={
+                  'py-[17px] text-h3 font-pre font-normal text-black leading-normal tracking-[-0.09px] text-center'
+                }>
+                삭제하기
+              </button>
+            )}
           </div>
-
           <button
             onClick={() => {
               setCommentIsOptionModal(false);
+              setSelectedAnswerUserId(0); // 선택된 (대)댓글 ID 초기화
             }}
             className={'rounded-[16px] bg-white h-[56px]'}>
             <p

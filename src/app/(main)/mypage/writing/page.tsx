@@ -1,6 +1,6 @@
 'use client';
 
-import React, { SVGProps, useState } from 'react';
+import React, { SVGProps, useEffect, useState } from 'react';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
@@ -26,6 +26,12 @@ export default function MyWriting() {
   //수정 modal
   const [isClickEditPost, setIsClickEditPost] = useState(false);
   const { userPostsList, mutate } = useGetUserPosts(boardType, selectedFilterContent == '최신순' ? 'DESC' : 'ASC');
+
+  useEffect(() => {
+    console.log('userPostsList', userPostsList);
+    console.log('boardType', boardType);
+  }, [userPostsList]);
+
   return (
     <div>
       {isDeleteWarningModalOpen ? (

@@ -19,20 +19,21 @@ import ReportSubmittedModal from '@/components/community/ReportSubmittedModal';
 import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetCommunityPost from '@/lib/hooks/useGetCommunityPost';
 import { certificateIdAtom } from '@/recoil/atom';
-import { boardTypeInitAtom, boardTypeStateAtom, selectedReplyParentNameAtom } from '@/recoil/community/atom';
+import { boardTypeInitAtom, boardTypeStateAtom, selectedAnswerUserIdAtom } from '@/recoil/community/atom';
 import { BoardType } from '@/types/community/type';
 
 const CommunityDetailPage = () => {
   const router = useRouter();
   const params = useParams();
   const certificateId = useRecoilValue(certificateIdAtom);
-  const userId = Cookies.get('userId');
+  const loginUserId = Cookies.get('userId');
   //커뮤니티 포스트에 해당하는 데이터를 가져옴
   const { communityPostData, isLoading, isError, communityPostDataMutate } = useGetCommunityPost(params.id);
   const [isQuestionModalOpen, setIsQuestionModalOpen] = useState(false);
   const [isPostOptionModalOpen, setPostIsOptionModalOpen] = useState(false);
   const [isCommentOptionModalOpen, setCommentIsOptionModalOpen] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(0);
+  const [selectedAnswerUserId, setSelectedAnswerUserId] = useRecoilState(selectedAnswerUserIdAtom);
   const [isClickEditPost, setIsClickEditPost] = useState(false);
   const [isReportSubmittedModalOpen, setIsReportSubmittedModalOpen] = useState(false);
   const { bestTipPosts } = useBest3TipPosts(certificateId);
@@ -136,7 +137,10 @@ const CommunityDetailPage = () => {
       )}
       {isCommentOptionModalOpen && (
         <CommentOptionModal
-          commentId={selectedCommentId}
+          selectedCommentId={selectedCommentId}
+          loginUserId={loginUserId}
+          writerUserId={selectedAnswerUserId}
+          setSelectedAnswerUserId={setSelectedAnswerUserId}
           setIsReportSubmittedModalOpen={setIsReportSubmittedModalOpen}
           setCommentIsOptionModal={setCommentIsOptionModalOpen}
           communityPostDataMutate={communityPostDataMutate}
@@ -144,6 +148,8 @@ const CommunityDetailPage = () => {
       )}
       {isPostOptionModalOpen && (
         <PostOptionModal
+          loginUserId={loginUserId}
+          writerUserId={postData.user.userId}
           communityId={params.category}
           postId={postData.postId}
           setPostIsOptionModal={setPostIsOptionModalOpen}
@@ -187,8 +193,11 @@ const CommunityDetailPage = () => {
                 setPostIsOptionModalOpen(true);
               }}
               profileUrl={postData.user.profileImage}
-              isWriter={parseInt(userId as string) === postData.user.userId}
-              createdTime={postData.dateTime.createdAt}
+              createdTime={
+                postData.dateTime.createdAt === postData.dateTime.modifiedAt
+                  ? postData.dateTime.createdAt
+                  : postData.dateTime.modifiedAt
+              }
               nickName={postData.user.nickname}
             />
             <CommunityPost

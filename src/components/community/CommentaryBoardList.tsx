@@ -16,9 +16,9 @@ import { MockExam } from '@/types/global';
 
 interface Props {
   boardType: BoardType;
-  searchValue: number;
+  searchValue: number | undefined;
   debouncedValue: number;
-  setSearchValue: React.Dispatch<React.SetStateAction<number>>;
+  setSearchValue: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 const CommentaryBoardList = (props: Props) => {
   const { boardType, debouncedValue, searchValue, setSearchValue } = props;
@@ -42,7 +42,7 @@ const CommentaryBoardList = (props: Props) => {
     certificateId,
     selectedCommentaryYearFilterContent,
     selectedCommentaryRoundFilterContent,
-    searchValue,
+    searchValue as number,
   );
 
   //필터 값에 '전체'를 추가하기 위한 트리거

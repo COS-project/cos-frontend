@@ -41,18 +41,37 @@ const MockExamResultReport = (props: Props) => {
     <>
       <div className={'flex flex-col gap-y-2'}>
         <div className={'text-h3 font-semibold'}>과목별 맞춘 문제 수</div>
-        <div className={subjectResults.length > 3 ? 'grid grid-cols-3' : 'flex'}>
-          {subjectResults?.map((subjectResult, index) => {
-            return (
-              <div className={'w-full'} key={index}>
-                <SubjectGradeCard
-                  name={subjectResult.subject.subjectName}
-                  correctAnswer={subjectResult.numberOfCorrect}
-                  totalCorrect={20}></SubjectGradeCard>
-              </div>
-            );
-          })}
-        </div>
+        <table className="w-full table-fixed border-collapse border border-gray2">
+          <tbody>
+            {subjectResults
+              ?.reduce(
+                (rows, item, index) => {
+                  const rowIndex = Math.floor(index / 3);
+                  if (!rows[rowIndex]) rows[rowIndex] = [];
+                  rows[rowIndex].push(item);
+                  return rows;
+                },
+                [] as (typeof subjectResults)[],
+              )
+              .map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                  {row.map((subjectResult, colIndex) => (
+                    <td key={colIndex} className="p-0 border border-gray2 align-top">
+                      <SubjectGradeCard
+                        name={subjectResult.subject.subjectName}
+                        correctAnswer={subjectResult.numberOfCorrect}
+                        totalCorrect={20}
+                      />
+                    </td>
+                  ))}
+                  {/* 마지막 줄에 3칸이 안 채워졌을 경우, 빈 셀로 채움 */}
+                  {Array.from({ length: 3 - row.length }).map((_, idx) => (
+                    <td key={`empty-${idx}`} className="p-0 border border-gray0"></td>
+                  ))}
+                </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
 
       <div className={'flex gap-x-2'}>

@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-import { BoardType, ExamReviewPostType } from '@/types/community/type';
+import { ExamReviewPostType } from '@/types/community/type';
 
 import { sendRequest } from '../axios';
 
@@ -72,7 +72,7 @@ export const getTotalSearchResults = async (certificateId: number, keyword: stri
         'Access-Token': Cookies.get('accessToken'),
       },
       method: 'GET',
-      url: `/api/v2/certificates/${certificateId}/posts?keyword=${keyword}&page=0&size=10&sortFields=createdAt, id&sortDirections=DESC, ASC`,
+      url: `/api/v2/certificates/${certificateId}/posts?keyword=${keyword}&page=0&size=20&sortFields=createdAt, id&sortDirections=DESC, ASC`,
     });
     console.log(response.data);
     // 성공적인 응답 처리
@@ -108,7 +108,7 @@ export const getCommentarySearchResults = async (
 };
 
 // 통합 검색 전체 삭제
-export const deleteAllSearchResults = async () => {
+export const deleteAllSearchResults = async (certificateId: number) => {
   try {
     // 액세스 토큰을 헤더에 담아 요청 보내기
     const response = await sendRequest({
@@ -116,7 +116,7 @@ export const deleteAllSearchResults = async () => {
         'Access-Token': Cookies.get('accessToken'),
       },
       method: 'DELETE',
-      url: '/api/v2/search-logs/all',
+      url: `/api/v2/certificates/${certificateId}/search-logs/all`,
     });
     console.log(response.data);
     // 성공적인 응답 처리

@@ -33,6 +33,22 @@ const CommunityPost = (props: Props) => {
     }
   }, [likeStatus, likeCount]);
 
+  const handleToggleLike = async () => {
+    if (isLiked) {
+      await deleteToggleLikeData(postId, 'POST');
+      setFakeLikeCount((prev) => prev - 1);
+    } else {
+      await postToggleLikeData(postId, 'POST');
+      setFakeLikeCount((prev) => prev + 1);
+    }
+    setIsLiked(!isLiked);
+  };
+
+  useEffect(() => {
+    setIsLiked(likeStatus);
+    setFakeLikeCount(likeCount);
+  }, [likeStatus, likeCount]);
+
   return (
     <div className={'mt-[16px]'}>
       {/* 내용 */}
@@ -93,20 +109,7 @@ const CommunityPost = (props: Props) => {
           </div>
         </div>
         <button
-          onClick={() => {
-            if (isLiked) {
-              deleteToggleLikeData(postId, 'POST').then(() => {
-                console.log('좋아요 삭제');
-              });
-              setFakeLikeCount((prev) => prev - 1);
-            } else {
-              postToggleLikeData(postId, 'POST').then(() => {
-                console.log('좋아요 추가');
-              });
-              setFakeLikeCount((prev) => prev + 1);
-            }
-            setIsLiked(!isLiked);
-          }}
+          onClick={handleToggleLike}
           className={
             isLiked
               ? 'flex gap-x-1 items-center bg-second py-1 px-2 rounded-[8px] text-white font-pre text-h6 font-normal leading-[21px] tracking-[-0.28px]'

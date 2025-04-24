@@ -5,7 +5,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import Profile from '@/components/community/Profile';
 import { deleteToggleLikeData, postToggleLikeData } from '@/lib/api/communityPost';
-import { GenerateCommentState, selectedReplyParentNameAtom } from '@/recoil/community/atom';
+import { GenerateCommentState, selectedAnswerUserIdAtom, selectedReplyParentNameAtom } from '@/recoil/community/atom';
 import { PostComments } from '@/types/global';
 
 interface Props {
@@ -19,6 +19,7 @@ const CommunityComments = (props: Props) => {
   const [localCommentList, setLocalCommentList] = useState<PostComments[]>([]);
   const [generateComment, setGenerateComment] = useRecoilState(GenerateCommentState);
   const setSelectedReplyParentName = useSetRecoilState(selectedReplyParentNameAtom);
+  const setSelectedAnswerUserId = useSetRecoilState(selectedAnswerUserIdAtom);
 
   useEffect(() => {
     setLocalCommentList(commentList);
@@ -69,11 +70,15 @@ const CommunityComments = (props: Props) => {
               <Profile
                 nickName={comment.user.nickname}
                 profileUrl={comment.user.profileImage}
-                createdTime={comment.dateTime.createdAt}
-                isWriter={parseInt(userId as string) === comment.user.userId}
+                createdTime={
+                  comment.dateTime.createdAt === comment.dateTime.modifiedAt
+                    ? comment.dateTime.createdAt
+                    : comment.dateTime.modifiedAt
+                }
                 setIsOptionModalOpen={() => {
                   setCommentIsOptionModalOpen(true);
                   setSelectedCommentId(comment.postCommentId);
+                  setSelectedAnswerUserId(comment.user.userId);
                 }}
               />
               <section className={'pl-[48px]'}>
@@ -110,13 +115,20 @@ const CommunityComments = (props: Props) => {
                     }}
                     className={'flex flex-col items-center'}>
                     <Image
-                      src={comment.likeStatus ? '/community/BlueLikeIcon.svg' : '/community/GrayLikeIcon.svg'}
+                      src={comment.likeStatus ? '/community/BlueFillLikeIcon.svg' : '/community/GrayLikeIcon.svg'}
                       alt="Logo"
                       width={24}
                       height={24}
                       style={{ width: 24, height: 24 }}
                     />
-                    <p className={'font-pre text-h7 font-normal leading-normal text-gray4'}>{comment.likeCount}</p>
+                    <p
+                      className={
+                        comment.likeStatus
+                          ? 'font-pre text-h7 font-normal leading-normal text-second'
+                          : 'font-pre text-h7 font-normal leading-normal text-gray4'
+                      }>
+                      {comment.likeCount}
+                    </p>
                   </button>
                 </div>
               </section>
@@ -131,10 +143,10 @@ const CommunityComments = (props: Props) => {
                         nickName={replyComment.user.nickname}
                         profileUrl={replyComment.user.profileImage}
                         createdTime={replyComment.dateTime.createdAt}
-                        isWriter={parseInt(userId as string) === replyComment.user.userId}
                         setIsOptionModalOpen={() => {
                           setCommentIsOptionModalOpen(true);
                           setSelectedCommentId(replyComment.postCommentId);
+                          setSelectedAnswerUserId(replyComment.user.userId);
                         }}
                         nickNameClassName={'subtitle2 text-gray4 leading-[21px] tracking-[-0.28px]'}
                         imageClassName={'relative w-[36px] h-[36px]'}
@@ -161,7 +173,9 @@ const CommunityComments = (props: Props) => {
                           className={'flex flex-col items-center'}>
                           <Image
                             src={
-                              replyComment.likeStatus ? '/community/BlueLikeIcon.svg' : '/community/GrayLikeIcon.svg'
+                              replyComment.likeStatus
+                                ? '/community/BlueFillLikeIcon.svg'
+                                : '/community/GrayLikeIcon.svg'
                             }
                             alt="Logo"
                             width={24}

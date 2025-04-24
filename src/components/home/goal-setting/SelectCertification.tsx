@@ -52,7 +52,7 @@ const SelectCertification = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="relative flex flex-col gap-y-2">
       <GoalSettingTitle Icon={SelectCertificationIcon}>자격증 선택</GoalSettingTitle>
 
       <div onClick={modalHandler} className="goal-setting-content">
@@ -70,7 +70,7 @@ const SelectCertification = () => {
           setIdState={setSelectedCertificationId}
           setDataState={setSelectedCertificationName}
           data={interestCertificates}
-          className={'absolute top-[134px] w-[90%]'}
+          className={'absolute top-[86px] w-full'}
         />
       ) : null}
     </div>

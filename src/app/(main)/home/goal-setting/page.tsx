@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useSWRConfig } from 'swr';
 
@@ -32,6 +32,7 @@ const GoalSetting = () => {
   const { userGoals } = useGetUserGoals(certificateId);
   const { mutate } = useSWRConfig();
   const router = useRouter();
+
   /**
    * 최근 목표ID를 불러오는 함수
    */
@@ -42,9 +43,11 @@ const GoalSetting = () => {
     return null; // 또는 적절한 기본값/오류 처리
   };
   // 기존에 설정한 목표를 불러오는 데이터 패칭
-  const { goalSettingData, isLoading, isError } = useGetGoalSettingData(getLastGoalId() || 0);
+  const { goalSettingData } = useGetGoalSettingData(getLastGoalId() || 0);
   const [goalData, setGoalData] = useRecoilState(goalSettingState);
   const [isResetButtonClick, setIsResetButtonClick] = useState(false);
+  const [isTrigger, setIsTrigger] = useState(true);
+  const [isGoalDataReady, setIsGoalDataReady] = useState(false);
 
   /**
    * Recoil 상태를 초기화하는 함수
@@ -107,13 +110,15 @@ const GoalSetting = () => {
       if (response) {
         const initialState = initializeGoalSettingState(response.result);
         setGoalData(initialState);
+        setIsGoalDataReady(true); // 🔥 렌더링 트리거
+        setIsTrigger(false);
       } else {
-        // 에러 처리를 수행할 수 있습니다.
-        console.error('Failed to fetch goal setting data');
+        console.error('목표 데이터를 불러오지 못했습니다.');
+        setIsTrigger(false);
       }
     } catch (error) {
-      // 네트워크 오류 또는 다른 예외에 대한 처리를 수행할 수 있습니다.
-      console.error('Error fetching goal setting data:', error);
+      console.error('목표 데이터 로딩 실패:', error);
+      setIsTrigger(false);
     }
   };
 
@@ -123,10 +128,11 @@ const GoalSetting = () => {
   const resetData = () => {
     const resetState = resetGoalSettingState();
     setGoalData(resetState);
+    setIsGoalDataReady(true); // 🔥 이게 있어야 새 목표도 바로 렌더됨
   };
 
   return (
-    <div className={'min-h-screen'}>
+    <>
       {isSettingNewGoalModalOpen && userGoals ? (
         <SettingNewGoalModal
           isFirstGoalSetting={userGoals.length === 0} //새로 생성된 목표가 없을 경우
@@ -137,47 +143,54 @@ const GoalSetting = () => {
           setIsSettingNewModal={setIsSettingNewGoalModalOpen}
         />
       ) : null}
-      <Header
-        headerType={'dynamic'}
-        title={'목표설정'}
-        rightElement={
-          isResetButtonClick ? (
-            <Button
-              onClick={async () => {
-                await postGoalSettingData(goalData, selectedCertificationId).then((r) => {
-                  console.log('목표 저장 성공~r', r);
-                });
-                await mutate(`/certificates/${certificateId}/goals`);
-                setIsResetButtonClick(false);
-                router.push('/home');
-              }}
-              className={' w-fit'}>
-              저장
-            </Button>
-          ) : (
-            <Button
-              onClick={() => {
-                putGoalSettingData(goalData, getLastGoalId() || 0).then((r) => {
-                  console.log('목표 수정 성공', r);
-                  router.push('/home');
-                });
-              }}
-              className={'w-fit'}>
-              수정
-            </Button>
-          )
-        }></Header>
-      <div className="flex flex-col gap-y-8 mx-5 mb-8">
-        {/*자격증 선택*/}
-        {isResetButtonClick ? <SelectCertification /> : null}
-        {/*목표 점수 설정*/}
-        <SetGoalScore />
-        {/*자격증 준비기간 설정*/}
-        <PreparationPeriodSetting />
-        {/*매일 목표 설정*/}
-        <SetDailyGoals />
-      </div>
-    </div>
+      {!isGoalDataReady ? (
+        <></>
+      ) : (
+        <div className={''}>
+          <Header
+            className={'fixed'}
+            headerType={'dynamic'}
+            title={'목표설정'}
+            rightElement={
+              isResetButtonClick ? (
+                <Button
+                  onClick={async () => {
+                    await postGoalSettingData(goalData, selectedCertificationId).then((r) => {
+                      console.log('목표 저장 성공~r', r);
+                    });
+                    await mutate(`/certificates/${certificateId}/goals`);
+                    setIsResetButtonClick(false);
+                    router.push('/home');
+                  }}
+                  className={' w-fit'}>
+                  저장
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => {
+                    putGoalSettingData(goalData, getLastGoalId() || 0).then((r) => {
+                      console.log('목표 수정 성공', r, goalData);
+                      router.push('/home');
+                    });
+                  }}
+                  className={'w-fit'}>
+                  수정
+                </Button>
+              )
+            }></Header>
+          <div className="flex flex-col gap-y-8 pt-20 mx-5 mb-8">
+            {/*자격증 선택*/}
+            {isResetButtonClick ? <SelectCertification /> : null}
+            {/*목표 점수 설정*/}
+            <SetGoalScore />
+            {/*자격증 준비기간 설정*/}
+            <PreparationPeriodSetting />
+            {/*매일 목표 설정*/}
+            <SetDailyGoals />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 export default GoalSetting;
