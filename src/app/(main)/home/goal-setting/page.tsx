@@ -8,7 +8,6 @@ import { useSWRConfig } from 'swr';
 
 import Button from '@/components/common/Button';
 import Header from '@/components/common/Header';
-import Spinner from '@/components/common/Spinner';
 import PreparationPeriodSetting from '@/components/home/goal-setting/PreparationPeriodSetting';
 import SelectCertification from '@/components/home/goal-setting/SelectCertification';
 import SetDailyGoals from '@/components/home/goal-setting/SetDailyGoals';
@@ -101,10 +100,6 @@ const GoalSetting = () => {
       };
     }
   };
-
-  useEffect(() => {
-    console.log('기존에 저장된 목표', goalSettingData)
-  }, [goalSettingData]);
 
   /**
    * API 에서 데이터를 가져와 Recoil 상태 업데이트 해주는 함수

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRecoilState } from 'recoil';
+
 import { goalSettingState } from '@/recoil/home/atom';
 
 interface Props {
@@ -11,27 +12,20 @@ interface Props {
 const SelectRepeatDayItem = ({ usage }: Props) => {
   const [goalData, setGoalData] = useRecoilState(goalSettingState);
 
-  const selectedDays =
-    usage === 'MockExam' ? goalData.mockExamRepeatDays : goalData.studyRepeatDays;
+  const selectedDays = usage === 'MockExam' ? goalData.mockExamRepeatDays : goalData.studyRepeatDays;
 
   // ✅ 아직 초기화가 안되었으면 렌더링하지 않음
   const isInitialized =
-    usage === 'MockExam'
-      ? Array.isArray(goalData.mockExamRepeatDays)
-      : Array.isArray(goalData.studyRepeatDays);
+    usage === 'MockExam' ? Array.isArray(goalData.mockExamRepeatDays) : Array.isArray(goalData.studyRepeatDays);
 
   if (!isInitialized) return null;
 
   const toggleDay = (day: number) => {
-    const updatedDays = selectedDays.includes(day)
-      ? selectedDays.filter((d) => d !== day)
-      : [...selectedDays, day];
+    const updatedDays = selectedDays.includes(day) ? selectedDays.filter((d) => d !== day) : [...selectedDays, day];
 
     setGoalData((prev) => ({
       ...prev,
-      ...(usage === 'MockExam'
-        ? { mockExamRepeatDays: updatedDays }
-        : { studyRepeatDays: updatedDays }),
+      ...(usage === 'MockExam' ? { mockExamRepeatDays: updatedDays } : { studyRepeatDays: updatedDays }),
     }));
   };
 
@@ -79,14 +73,7 @@ export default SelectRepeatDayItem;
 function Icon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg width={24} height={24} fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <mask
-        id="prefix__a"
-        style={{ maskType: 'alpha' }}
-        maskUnits="userSpaceOnUse"
-        x={0}
-        y={0}
-        width={24}
-        height={24}>
+      <mask id="prefix__a" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x={0} y={0} width={24} height={24}>
         <path fill="#D9D9D9" d="M0 0h24v24H0z" />
       </mask>
       <g mask="url(#prefix__a)">

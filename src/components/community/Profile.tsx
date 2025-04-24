@@ -13,8 +13,7 @@ interface Props {
 }
 
 const Profile = (props: Props) => {
-  const { profileUrl, nickName, createdTime, setIsOptionModalOpen, imageClassName, nickNameClassName } =
-    props;
+  const { profileUrl, nickName, createdTime, setIsOptionModalOpen, imageClassName, nickNameClassName } = props;
 
   return (
     <div className={'flex justify-between items-center'}>

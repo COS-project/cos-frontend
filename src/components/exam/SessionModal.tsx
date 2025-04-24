@@ -7,9 +7,9 @@ import Skeleton from 'react-loading-skeleton';
 import Spinner from '@/components/common/Spinner';
 import useDelayOver from '@/hooks/useDelayOver';
 import useGetTestResults from '@/lib/hooks/useGetTestResults';
+import { SubjectResultsType } from '@/types/exam/type';
 
 import SubjectGradeCard from './SubjectGradeCard';
-import { SubjectResultsType } from '@/types/exam/type';
 
 interface SessionModalProps {
   round: number;
