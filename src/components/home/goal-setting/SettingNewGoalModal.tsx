@@ -22,6 +22,7 @@ const SettingNewGoalModal = (props: Props) => {
     fetchDataAndUpdateState,
   } = props;
   const router = useRouter();
+
   return (
     <>
       <div
@@ -45,14 +46,10 @@ const SettingNewGoalModal = (props: Props) => {
           </div>
           <div className={'flex flex-col gap-y-4 bg-white rounded-[32px] p-5'}>
             <div className={'flex flex-col gap-y-1'}>
-              <div className={'text-h2 font-semibold text-black'}>
-                {isFirstGoalSetting ? '이전에 세우신 목표가 없어요!' : '이전 목표를 불러올까요?'}
-              </div>
+              <div className={'text-h2 font-semibold text-black'}>이전 목표를 불러올까요?</div>
               <div>
-                <div className={'flex items-center text-h6'}>
-                  {isFirstGoalSetting ? '새로운 목표를 세워보시겠어요?' : '정보를 불러오면 이전에 설정한 목표를'}
-                </div>
-                {!isFirstGoalSetting && <div className={'text-h6'}>토대로 작성할 수 있어요.</div>}
+                <div className={'flex items-center text-h6'}>정보를 불러오면 이전에 설정한 목표를</div>
+                <div className={'text-h6'}>토대로 작성할 수 있어요.</div>
               </div>
             </div>
             <div className={'flex justify-end gap-x-2'}>

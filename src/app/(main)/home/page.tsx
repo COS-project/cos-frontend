@@ -155,11 +155,13 @@ function HomeComponents() {
 
   useEffect(() => {
     if (goalSettingStatus && !goalSettingStatus.result) {
-      setIsGoalSettingStatusModalOpen(!goalSettingStatus.result);
+      setIsGoalSettingStatusModalOpen(true);
+    } else if (goalSettingStatus && goalSettingStatus.result) {
+      setIsGoalSettingStatusModalOpen(false);
     }
   }, [goalSettingStatus]);
 
-  if (!isCookieSet || !isCertIdInitialized) {
+  if (!isCookieSet) {
     return <Spinner />;
   }
 
