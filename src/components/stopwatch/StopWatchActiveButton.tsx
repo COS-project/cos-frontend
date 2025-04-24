@@ -38,7 +38,7 @@ const StopWatchActiveButton = (props: Props) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
             className={'flex flex-col gap-y-2'}>
             <button
               onClick={() => {
