@@ -15,9 +15,10 @@ interface Props {
   type: AlarmType;
   receiver: AlarmReceiverType;
   setReadAlarmList: React.Dispatch<React.SetStateAction<number[]>>;
+  likerNickname: string;
 }
 const AlarmItem = (props: Props) => {
-  const { time, targetPostId, receiver, type, id, setReadAlarmList } = props;
+  const { time, targetPostId, receiver, type, id, setReadAlarmList, likerNickname } = props;
   const certificateId = useRecoilValue(certificateIdAtom);
   const router = useRouter();
 
@@ -51,7 +52,7 @@ const AlarmItem = (props: Props) => {
         return (
           <div className={'flex flex-col gap-y-1'}>
             <div>
-              {`${receiver.nickname}님이 `}
+              {`${likerNickname}님이 `}
               <span className={'font-semibold'}>회원님의 글</span>
               {'을 좋아합니다.'}
             </div>
@@ -70,9 +71,8 @@ const AlarmItem = (props: Props) => {
         return (
           <div className={'flex flex-col gap-y-1'}>
             <div>
-              {`${receiver.nickname}님이 `}
               <span className={'font-semibold'}>회원님의 글</span>
-              {'에 댓글을 남겼습니다.'}
+              {'에 누군가 댓글을 남겼습니다.'}
             </div>
             <button
               className={'flex items-center text-h6 py-1 px-3 rounded-full border-[1px] border-gray2 w-fit'}
@@ -89,7 +89,7 @@ const AlarmItem = (props: Props) => {
         return (
           <div className={'flex flex-col gap-y-1'}>
             <div>
-              {`${receiver.nickname}님이 `}
+              {`${likerNickname}님이 `}
               <span className={'font-semibold'}>회원님의 댓글</span>
               {'을 좋아합니다.'}
             </div>

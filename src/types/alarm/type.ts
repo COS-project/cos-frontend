@@ -11,6 +11,13 @@ export interface Alarm {
   alarmType: AlarmType;
   alarmTime: string; //"2025-04-09T19:15:01.072Z",
   read: boolean;
+  likeTargetType: 'POST' | 'COMMENT';
+  likerId: number;
+  likerNickname: string;
+  certificate: {
+    certificateName: string;
+    certificateId: number;
+  };
 }
 
 export type AlarmType =

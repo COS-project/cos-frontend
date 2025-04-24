@@ -1,9 +1,10 @@
 'use client';
 
+import { EventSourcePolyfill } from 'event-source-polyfill';
 import Cookies from 'js-cookie';
 import { useSearchParams } from 'next/navigation';
-import React, { Suspense, useEffect, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import React, { memo, Suspense, useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import Header from '@/components/common/Header';
 import NavBar from '@/components/common/NavBar';
@@ -21,15 +22,27 @@ import HomeSkeleton from '@/components/home/skeleton/HomeSkeleton';
 import TodayGoalSkeleton from '@/components/home/skeleton/TodayGoalSkeleton';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import TodayGoal from '@/components/TodayGoal';
+import { getAlarms, getAlarmUnreadCount } from '@/lib/api/alarm';
 import useAverageSubjectInfo from '@/lib/hooks/useAverageSubjectInfo';
 import useBest3TipPosts from '@/lib/hooks/useBest3TipPosts';
 import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
 import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
+import { alarmAtom, readAlarmListAtom, unreadAlarmCountAtom } from '@/recoil/alarm/atom';
 import { certificateIdAtom, isInitialCertificateIdSetAtom } from '@/recoil/atom';
 import { selectedPrepareTimeState } from '@/recoil/home/atom';
+import { Alarm } from '@/types/alarm/type';
+import { ResponseType } from '@/types/common/type';
 import { UserCertGoalPeriodType } from '@/types/home/type';
+
+// ✅ 변경: React.memo()로 감싸줍니다.
+const MemoizedGoalBox = memo(GoalBox);
+const MemoizedTodayGoal = memo(TodayGoal);
+const MemoizedRecentGrowthChart = memo(RecentGrowthChart); // RecentGrowthChart가 props를 잘 받는지 확인 필요
+const MemoizedAverageAccurayChat = memo(AverageAccurayChat);
+const MemoizedAverageTakenTimeGraphReport = memo(AverageTakenTimeGraphReport);
+const MemoizedBestTip = memo(BestTip); // BestTip이 props를 잘 받는지 확인 필요
 
 function HomeComponents() {
   const searchParams = useSearchParams();
@@ -54,6 +67,11 @@ function HomeComponents() {
   const { averageSubjectList } = useAverageSubjectInfo(isCertIdInitialized ? certificateId : null);
   const { goalSettingStatus } = useGoalSettingStatus(isCertIdInitialized ? certificateId : null);
   const { bestTipPosts } = useBest3TipPosts(isCertIdInitialized ? certificateId : null);
+
+  const [alarms, setAlarms] = useRecoilState<Alarm[]>(alarmAtom);
+  const [readAlarmList, setReadAlarmList] = useRecoilState<number[]>(readAlarmListAtom);
+  const unreadCount = useRecoilValue(unreadAlarmCountAtom);
+  const setUnreadCount = useSetRecoilState(unreadAlarmCountAtom);
 
   // AccessToken, RefreshToken 저장
   useEffect(() => {
@@ -81,6 +99,70 @@ function HomeComponents() {
       Cookies.set('userId', String(userProfile.userId), { expires: Date.now() + 604800000 });
     }
   }, [userProfile]);
+
+  useEffect(() => {
+    const connect = () => {
+      const accessToken = Cookies.get('accessToken');
+
+      if (!accessToken) {
+        console.error('Access token is missing.');
+        return;
+      }
+
+      const eventSource = new EventSourcePolyfill(`${process.env.NEXT_PUBLIC_ALARM_URL}/v2/alarms/subscribe`, {
+        headers: {
+          'Access-Token': accessToken,
+        },
+      });
+
+      eventSource.onopen = () => {
+        getAlarms().then((res: ResponseType<Alarm[]>) => {
+          console.log('res', res.result);
+          if (res && res.result) {
+            setAlarms(res.result);
+          }
+        });
+      };
+
+      eventSource.addEventListener('alarm', (event: any) => {
+        try {
+          const newAlarm = JSON.parse(event.data);
+          setAlarms((prevAlarms) => [newAlarm, ...prevAlarms]);
+
+          getAlarmUnreadCount().then((res: ResponseType<number>) => {
+            if (res && res.result !== undefined) {
+              setUnreadCount(res.result);
+            }
+          });
+        } catch (e) {
+          console.error('알림 데이터 파싱 오류:', e);
+        }
+      });
+
+      eventSource.onerror = (error) => {
+        console.error('EventSource error:', error);
+        eventSource.close();
+      };
+
+      return () => {
+        eventSource.close();
+      };
+    };
+
+    connect();
+  }, []);
+
+  useEffect(() => {
+    if (alarms) {
+      // 새로운 alarmId 중 readAlarmList에 없는 값만 필터링
+      const newAlarmIds = alarms.map((alarm) => alarm.id).filter((alarmId) => !readAlarmList.includes(alarmId)); // 중복 체크
+
+      // 새로운 alarmId가 있을 때만 상태 업데이트
+      if (newAlarmIds.length > 0) {
+        setReadAlarmList((prevList) => [...prevList, ...newAlarmIds]);
+      }
+    }
+  }, [alarms, readAlarmList]); // alarms나 readAlarmList가 변경될 때 실행
 
   /**
    * 주차를 계산해주는 함수
@@ -183,7 +265,7 @@ function HomeComponents() {
         {userGoals ? (
           <div className={'mt-4 px-5 flex flex-col gap-y-5'}>
             {goalAchievementData ? (
-              <GoalBox
+              <MemoizedGoalBox
                 goalMockExams={goalAchievementData.result.goalMockExams}
                 currentMockExams={goalAchievementData.result.currentMockExams}
                 goalStudyTime={goalAchievementData.result.goalStudyTime}
@@ -195,7 +277,7 @@ function HomeComponents() {
               <GoalBoxSkeleton />
             )}
             {goalAchievementData ? (
-              <TodayGoal
+              <MemoizedTodayGoal
                 todayMockExams={goalAchievementData.result.todayMockExams}
                 mockExamsPerDay={goalAchievementData.result.mockExamsPerDay}
                 todayStudyTime={goalAchievementData.result.todayStudyTime}
@@ -204,15 +286,15 @@ function HomeComponents() {
             ) : (
               <TodayGoalSkeleton />
             )}
-            <RecentGrowthChart />
+            <MemoizedRecentGrowthChart />
 
             {averageSubjectList ? (
-              <AverageAccurayChat subjectResults={averageSubjectList} />
+              <MemoizedAverageAccurayChat subjectResults={averageSubjectList} />
             ) : (
               <AverageAccurayChatSkeleton />
             )}
             {averageSubjectList ? (
-              <AverageTakenTimeGraphReport
+              <MemoizedAverageTakenTimeGraphReport
                 totalTakenTime={sumTotalTakenTime()}
                 subjectResults={averageSubjectList}
                 timeLimit={averageSubjectList && averageSubjectList.length > 0 ? averageSubjectList[0].timeLimit : 0}
@@ -220,7 +302,7 @@ function HomeComponents() {
             ) : (
               <AverageTakenTimeGraphReportSkeleton />
             )}
-            {bestTipPosts && bestTipPosts?.length > 0 ? <BestTip /> : null}
+            {bestTipPosts && bestTipPosts?.length > 0 ? <MemoizedBestTip /> : null}
           </div>
         ) : (
           <HomeSkeleton />
