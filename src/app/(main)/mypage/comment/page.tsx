@@ -10,7 +10,6 @@ import Post from '@/components/mypage/Post';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
 import useGetUserCommentPost from '@/lib/hooks/useGetUserCommentPost';
 import { PostType } from '@/types/community/type';
-import { MyPostsResponseType } from '@/types/mypage/type';
 import { filterContent } from '@/utils/mypage/FilterContent';
 
 export default function MyComment() {
@@ -71,40 +70,44 @@ export default function MyComment() {
             ) : null}
           </div>
           <div className={'flex flex-col gap-y-4'}>
-            {userCommentPostsList
-              ? userCommentPostsList.map((userCommentPosts: MyPostsResponseType) => {
-                  return userCommentPosts?.result.content.map((userCommentPost: PostType) => {
-                    return (
-                      <div key={userCommentPost.postId} ref={ref}>
-                        <Post
-                          postId={userCommentPost.postId}
-                          content={userCommentPost.postContent.content}
-                          title={userCommentPost.postContent.title}
-                          commentCount={userCommentPost.commentCount}
-                          createdAt={
-                            userCommentPost.dateTime.modifiedAt
-                              ? userCommentPost.dateTime.modifiedAt
-                              : userCommentPost.dateTime.createdAt
-                          }
-                          topElement={
-                            userCommentPost.question
-                              ? commentaryTopElement(
-                                  userCommentPost.question.mockExam.examYear,
-                                  userCommentPost.question.mockExam.round,
-                                  userCommentPost.question.questionSeq,
-                                )
-                              : null
-                          }
-                          likeCount={userCommentPost.likeCount}
-                          likeStatus={userCommentPost.likeStatus}
-                          imageUrl={
-                            userCommentPost.postContent.images.length !== 0
-                              ? userCommentPost.postContent.images[0].imageUrl
-                              : null
-                          }></Post>
-                      </div>
-                    );
-                  });
+            {userCommentPostsList.length > 0 &&
+              userCommentPostsList.map((userCommentPosts) => {
+                return userCommentPosts.result.content.length > 0 && <></>;
+              })}
+            {userCommentPostsList.length > 0
+              ? userCommentPostsList.map((userCommentPosts) => {
+                  return userCommentPosts && userCommentPosts.result.content.length > 0
+                    ? userCommentPosts?.result.content.map((userCommentPost: PostType) => {
+                        return (
+                          <Post
+                            key={userCommentPost.postId}
+                            postId={userCommentPost.postId}
+                            content={userCommentPost.postContent.content}
+                            title={userCommentPost.postContent.title}
+                            commentCount={userCommentPost.commentCount}
+                            createdAt={
+                              userCommentPost.dateTime.modifiedAt
+                                ? userCommentPost.dateTime.modifiedAt
+                                : userCommentPost.dateTime.createdAt
+                            }
+                            topElement={
+                              userCommentPost.question
+                                ? commentaryTopElement(
+                                    userCommentPost.question.mockExam.examYear,
+                                    userCommentPost.question.mockExam.round,
+                                    userCommentPost.question.questionSeq,
+                                  )
+                                : null
+                            }
+                            imageUrl={
+                              userCommentPost.postImages.length > 0 ? userCommentPost.postImages[0].imageUrl : null
+                            }
+                            likeCount={userCommentPost.likeCount}
+                            likeStatus={userCommentPost.likeStatus}
+                          />
+                        );
+                      })
+                    : null;
                 })
               : null}
           </div>
