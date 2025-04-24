@@ -151,7 +151,7 @@ function HomeComponents() {
   };
 
   useEffect(() => {
-    if (goalSettingStatus) {
+    if (goalSettingStatus && !goalSettingStatus.result) {
       setIsGoalSettingStatusModalOpen(!goalSettingStatus.result);
     }
   }, [goalSettingStatus]);
