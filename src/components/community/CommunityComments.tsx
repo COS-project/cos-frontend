@@ -69,7 +69,7 @@ const CommunityComments = (props: Props) => {
             <section className={'flex flex-col gap-y-2'}>
               <Profile
                 nickName={comment.user.nickname}
-                profileUrl={comment.user.profileImage}
+                profileUrl={comment.user.profileImage === null ? '/person.png' : comment.user.profileImage}
                 createdTime={
                   comment.dateTime.createdAt === comment.dateTime.modifiedAt
                     ? comment.dateTime.createdAt
@@ -141,7 +141,9 @@ const CommunityComments = (props: Props) => {
                     <div key={replyComment.postCommentId} className={'pl-[48px] flex flex-col gap-y-2'}>
                       <Profile
                         nickName={replyComment.user.nickname}
-                        profileUrl={replyComment.user.profileImage}
+                        profileUrl={
+                          replyComment.user.profileImage === null ? '/person.png' : replyComment.user.profileImage
+                        }
                         createdTime={replyComment.dateTime.createdAt}
                         setIsOptionModalOpen={() => {
                           setCommentIsOptionModalOpen(true);

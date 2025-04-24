@@ -261,7 +261,7 @@ interface User {
   userId: number;
   nickname: string;
   email: string;
-  profileImage: string;
+  profileImage: string | null;
 }
 
 //태그
