@@ -46,6 +46,23 @@ export default function Alarm() {
         });
       };
 
+      eventSource.onmessage = (event) => {
+        console.log('새로운 알림 수신:', event.data);
+        try {
+          // 서버에서 보낸 데이터(event.data)를 파싱합니다.
+          // 서버의 데이터 형식에 따라 JSON.parse가 필요 없을 수도 있습니다.
+          const newAlarm = JSON.parse(event.data);
+
+          // 새로운 알림을 기존 알림 목록의 맨 앞에 추가하여 상태를 업데이트합니다.
+          setAlarms((prevAlarms) => [newAlarm, ...prevAlarms]);
+
+          // 필요하다면 읽지 않은 알림 카운트 등 다른 상태도 업데이트합니다.
+          // (이 부분은 필요에 따라 추가 구현)
+        } catch (e) {
+          console.error('알림 데이터 파싱 오류:', e);
+        }
+      };
+
       eventSource.onerror = (error) => {
         console.error('EventSource error:', error);
         eventSource.close();

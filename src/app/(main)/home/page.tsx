@@ -27,13 +27,14 @@ import useGetUserGoals from '@/lib/hooks/useGetUserGoals';
 import useGetUserProfile from '@/lib/hooks/useGetUserProfile';
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
 import useGoalSettingStatus from '@/lib/hooks/UserGoalSettingStatus';
-import { certificateIdAtom } from '@/recoil/atom';
+import { certificateIdAtom, isInitialCertificateIdSetAtom } from '@/recoil/atom';
 import { selectedPrepareTimeState } from '@/recoil/home/atom';
 import { UserCertGoalPeriodType } from '@/types/home/type';
 
 function HomeComponents() {
   const searchParams = useSearchParams();
   const certificateId = useRecoilValue(certificateIdAtom);
+  const isCertIdInitialized = useRecoilValue(isInitialCertificateIdSetAtom);
   const { userProfile } = useGetUserProfile();
   const [goalPeriodContent, setGoalPeriodContent] = useState<string>('목표 기간 선택');
   const [isGoalSettingStatusModalOpen, setIsGoalSettingStatusModalOpen] = useState(false);
@@ -48,11 +49,11 @@ function HomeComponents() {
 
   const [isCookieSet, setIsCookieSet] = useState(false); // ✅ 쿠키 저장 여부
 
-  const { userGoals } = useGetUserGoals(certificateId);
-  const { goalAchievementData } = useGoalAchievement(certificateId);
-  const { averageSubjectList } = useAverageSubjectInfo(certificateId);
-  const { goalSettingStatus } = useGoalSettingStatus(certificateId);
-  const { bestTipPosts } = useBest3TipPosts(certificateId);
+  const { userGoals } = useGetUserGoals(isCertIdInitialized ? certificateId : null);
+  const { goalAchievementData } = useGoalAchievement(isCertIdInitialized ? certificateId : null);
+  const { averageSubjectList } = useAverageSubjectInfo(isCertIdInitialized ? certificateId : null);
+  const { goalSettingStatus } = useGoalSettingStatus(isCertIdInitialized ? certificateId : null);
+  const { bestTipPosts } = useBest3TipPosts(isCertIdInitialized ? certificateId : null);
 
   // AccessToken, RefreshToken 저장
   useEffect(() => {
@@ -128,12 +129,14 @@ function HomeComponents() {
     }
   };
 
+  // userGoals가 불러와지면 (isCertIdInitialized가 true가 된 후) 목표 기간 설정
   useEffect(() => {
     if (userGoals && userGoals.length > 0) {
+      // userGoals 데이터가 있을 때만 실행
       setGoalPeriodContent(
         formatGoalPeriod(
           new Date(userGoals[0].prepareStartDateTime),
-          new Date(userGoals[0].prepareStartDateTime),
+          new Date(userGoals[0].prepareFinishDateTime), // 종료 날짜도 formatGoalPeriod에 전달해야 합니다.
           userGoals[0],
         ),
       );
@@ -144,7 +147,7 @@ function HomeComponents() {
         goalId: userGoals[0].goalId,
       }));
     }
-  }, [userGoals]);
+  }, [userGoals, isCertIdInitialized, setSelectedPrepareTime]); // 의존성 배열에 userGoals와 isCertIdInitialized 추가
 
   const sumTotalTakenTime = () => {
     return averageSubjectList ? averageSubjectList.reduce((sum, subject) => sum + subject.totalTakenTime, 0) : 0;
@@ -152,13 +155,18 @@ function HomeComponents() {
 
   useEffect(() => {
     if (goalSettingStatus && !goalSettingStatus.result) {
-      setIsGoalSettingStatusModalOpen(!goalSettingStatus.result);
+      setIsGoalSettingStatusModalOpen(true);
+    } else if (goalSettingStatus && goalSettingStatus.result) {
+      setIsGoalSettingStatusModalOpen(false);
     }
   }, [goalSettingStatus]);
 
-  // ✅ 쿠키 저장 전이면 로딩 UI
   if (!isCookieSet) {
     return <Spinner />;
+  }
+
+  if (userGoals === undefined && isCertIdInitialized) {
+    return <HomeSkeleton />;
   }
 
   return (

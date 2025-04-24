@@ -131,9 +131,16 @@ const GoalSetting = () => {
     setIsGoalDataReady(true); // 🔥 이게 있어야 새 목표도 바로 렌더됨
   };
 
+  useEffect(() => {
+    if (userGoals && userGoals.length === 0) {
+      resetData();
+      setIsResetButtonClick(true);
+    }
+  }, [userGoals]);
+
   return (
     <>
-      {isSettingNewGoalModalOpen && userGoals ? (
+      {userGoals && userGoals.length !== 0 && isSettingNewGoalModalOpen ? (
         <SettingNewGoalModal
           isFirstGoalSetting={userGoals.length === 0} //새로 생성된 목표가 없을 경우
           fetchDataAndUpdateState={fetchDataAndUpdateState}

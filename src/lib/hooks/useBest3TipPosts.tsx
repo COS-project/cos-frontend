@@ -4,9 +4,10 @@ import { swrGetFetcher } from '@/lib/axios';
 import { ResponseType } from '@/types/common/type';
 import { PostType } from '@/types/community/type';
 
-const useBest3TipPosts = (certificateId: number) => {
+const useBest3TipPosts = (certificateId: number | null) => {
+  const shouldFetch = certificateId !== null;
   const { data, error } = useSWR<ResponseType<PostType[]>>(
-    `/api/v2/certificates/${certificateId}/tip-posts/best`,
+    shouldFetch ? `/api/v2/certificates/${certificateId}/tip-posts/best` : null,
     swrGetFetcher,
     {
       shouldRetryOnError: false, // ❗️에러 발생 시 재요청 방지
@@ -18,7 +19,7 @@ const useBest3TipPosts = (certificateId: number) => {
 
   return {
     bestTipPosts: parseResultList,
-    isLoading: !error && !data,
+    isLoading: shouldFetch && !error && !data,
     isError: error,
   };
 };

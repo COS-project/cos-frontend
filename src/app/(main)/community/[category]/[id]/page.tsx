@@ -192,7 +192,7 @@ const CommunityDetailPage = () => {
               setIsOptionModalOpen={() => {
                 setPostIsOptionModalOpen(true);
               }}
-              profileUrl={postData.user.profileImage}
+              profileUrl={postData.user.profileImage === null ? '/person.png' : postData.user.profileImage}
               createdTime={
                 postData.dateTime.createdAt === postData.dateTime.modifiedAt
                   ? postData.dateTime.createdAt

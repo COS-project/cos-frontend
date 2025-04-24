@@ -3,9 +3,10 @@ import useSWR from 'swr';
 import { swrGetFetcher } from '@/lib/axios';
 import { GoalSettingStatusResponseType } from '@/types/home/type';
 
-const useGoalSettingStatus = (certificateId: number) => {
+const useGoalSettingStatus = (certificateId: number | null) => {
+  const shouldFetch = certificateId !== null;
   const { data, error } = useSWR<GoalSettingStatusResponseType>(
-    `/api/v2/certificates/${certificateId}/goal-status`,
+    shouldFetch ? `/api/v2/certificates/${certificateId}/goal-status` : null,
     swrGetFetcher,
     {
       shouldRetryOnError: false, // ❗️에러 발생 시 재요청 방지
@@ -15,7 +16,7 @@ const useGoalSettingStatus = (certificateId: number) => {
 
   return {
     goalSettingStatus: data,
-    isLoading: !error && !data,
+    isLoading: shouldFetch && !error && !data,
     isError: error,
   };
 };

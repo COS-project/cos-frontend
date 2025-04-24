@@ -20,6 +20,12 @@ export const certificateIdAtom = atom<number>({
   effects_UNSTABLE: [persistAtom],
 });
 
+// ✅ 추가: 초기 certificateId 설정이 완료되었는지 여부를 나타내는 상태
+export const isInitialCertificateIdSetAtom = atom<boolean>({
+  key: 'isInitialCertificateIdSetAtom',
+  default: false,
+});
+
 //자격증 응시 정보를 확인하는 페이지에서 navbar, header가 보이지 않도록 하는 state
 export const layoutState = atom({
   key: 'layoutState',
