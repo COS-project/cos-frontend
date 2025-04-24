@@ -76,7 +76,7 @@ export default function Header(props: Props) {
     switch (headerType) {
       case 'static':
         return (
-          <header className="bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
+          <header className="pt-8 bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
             <Logo />
             <div className={'relative flex items-center justify-center w-[40px] h-[40px]'}>
               {unreadCount !== 0 && (
