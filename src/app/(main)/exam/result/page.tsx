@@ -138,8 +138,9 @@ const Result = () => {
 
   return (
     <div className={'bg-gray0 min-h-screen'}>
-      <Header headerType={'dynamic'} title={'성적 리포트'} onBack={onBack}></Header>
+      <Header headerType={'dynamic'} title={'성적 리포트'} onBack={onBack} className={'pt-10'} />
       <MockExamReportHeader isClicked={isClicked} setIsClicked={setIsClicked} />
+      <div className={'h-[140px]'} />
       <div className={'p-5'}>{displayComponentBasedOnExamResults(examResults)}</div>
       <div className={'h-[100px]'} />
       <StopWatchActiveButton />

@@ -79,9 +79,10 @@ const ProfileSettings = () => {
   }, []);
 
   return (
-    <div>
+    <div className={'bg-gray0'}>
       <Header headerType={'dynamic'} title={'프로필 변경'} rightElement={<EmptyIcon />} />
-      <form onSubmit={handleSubmit} className="bg-gray0 min-h-screen">
+      <div className={'h-[80px]'} />
+      <form onSubmit={handleSubmit} className="min-h-screen">
         <div className="w-full mt-2"></div>
         <div className="flex flex-col gap-y-5 mx-5">
           {/* 프로필 사진 설정 섹션 */}

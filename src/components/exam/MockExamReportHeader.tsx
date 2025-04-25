@@ -6,7 +6,7 @@ interface Props {
 const MockExamReportHeader = (props: Props) => {
   const { isClicked, setIsClicked } = props;
   return (
-    <div className={'flex w-full bg-white px-5 pt-3'}>
+    <div className={'fixed top-[84px] flex w-full bg-white px-5 pt-3'}>
       <div
         onClick={() => {
           setIsClicked('시험결과');

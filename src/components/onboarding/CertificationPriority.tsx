@@ -65,7 +65,7 @@ const CertificationPriority: React.FC<CertificationPriorityProps> = ({
   return (
     <div>
       <Header headerType={'dynamic'} onBack={onBefore} title={'종목설정'}></Header>
-
+      <div className={'h-[90px]'} />
       <div className="grid gap-y-8 m-4">
         <div className="grid">
           <span className="text-h1 font-bold">

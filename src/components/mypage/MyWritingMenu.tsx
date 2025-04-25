@@ -16,7 +16,7 @@ const MyWritingMenu = (props: Props) => {
   };
 
   return (
-    <div className={'bg-white px-4 py-3 flex gap-x-2 w-full overflow-x-scroll'}>
+    <div className={'fixed top-20 z-20 bg-white px-4 py-3 flex gap-x-2 w-full overflow-x-scroll'}>
       <button
         onClick={() => {
           changeBoardType('COMMENTARY');

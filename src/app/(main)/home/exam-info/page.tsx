@@ -170,7 +170,13 @@ const ExamInfo = () => {
 
   return (
     <div className="bg-gray0 min-h-screen">
-      <Header headerType={'dynamic'} title={'응시정보'} rightElement={registerCertificateButton()}></Header>
+      <Header
+        headerType={'dynamic'}
+        title={'응시정보'}
+        rightElement={registerCertificateButton()}
+        className={'pt-10'}
+      />
+      <div className={'h-[80px]'} />
       <div className="flex flex-col gap-y-5 m-5 mt-4">
         {Object.entries(commonTitle).map(([key, value]) => {
           return <ExamInfoItem key={key} Icon={value.Icon} title={value.title} element={renderElement(key)} />;

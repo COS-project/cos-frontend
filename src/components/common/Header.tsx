@@ -76,10 +76,10 @@ export default function Header(props: Props) {
     switch (headerType) {
       case 'static':
         return (
-          <header className="pt-8 bg-white flex sticky top-0 justify-between items-center px-5 py-1 z-10">
+          <header className="fixed w-full top-0 bg-white flex justify-between items-center px-5 py-1 z-30 pt-10">
             <Logo />
             <div className={'relative flex items-center justify-center w-[40px] h-[40px]'}>
-              {unreadCount !== 0 && (
+              {unreadCount > 0 && (
                 <div className={'absolute top-1 right-1 text-[10px] text-white bg-primary rounded-full px-1'}>
                   {unreadCount}
                 </div>
@@ -92,7 +92,7 @@ export default function Header(props: Props) {
         return (
           <header
             className={twMerge(
-              'bg-white flex sticky w-full top-0 justify-between items-center px-5 py-3 z-10',
+              'fixed w-full top-0 bg-white flex justify-between items-center px-5 py-3 z-30 pt-10', // border 클래스도 여기서 제거함 (필요하다면 twMerge 되는 className prop으로 넘기세요)
               className,
             )}>
             {CancelIcon ? (
@@ -116,6 +116,7 @@ export default function Header(props: Props) {
                 }}
               />
             )}
+            {/* h1의 absolute 포지셔닝은 유지 */}
             <h1 className="absolute left-1/2 right1-1/2 transform -translate-x-1/2 text-black font-h1 flex-shrink-0">
               {title}
             </h1>
@@ -124,7 +125,7 @@ export default function Header(props: Props) {
         );
       case 'second':
         return (
-          <header className="bg-white flex sticky top-12 justify-between items-center px-5 py-3 border-b-[1px] border-gray0 z-10">
+          <header className="fixed w-full top-[84px] bg-white flex justify-between items-center px-5 py-3 border-b-[1px] border-gray0 z-30">
             <div
               onClick={() => {
                 setIsFilterOpen(!isFilterOpen);
@@ -149,18 +150,22 @@ export default function Header(props: Props) {
   };
 
   return (
-    <div className={'relative'}>
+    <>
+      {' '}
+      {/* React Fragment 사용 또는 부모 div 제거 */}
       {renderHeader(headerType)}
+      {/* FilterModal의 absolute 위치 기준이 body가 될 수 있으므로 위치 조정 필요 */}
       {isFilterOpen ? (
         <FilterModal
           setIsOpen={setIsFilterOpen}
-          className={'absolute top-12 left-5 w-[90%]'}
+          // className을 Header의 높이를 고려하여 top 값을 조정해야 함
+          className={'absolute left-5 w-[90%]'} // 예시: top-은 필요에 따라 추가
           data={interestCertificates}
           setDataState={setSelectedCertificationName}
           setIdState={setSelectedCertificationId}
         />
       ) : null}
-    </div>
+    </>
   );
 }
 

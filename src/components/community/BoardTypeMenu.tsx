@@ -29,7 +29,7 @@ const BoardTypeMenu = (props: Props) => {
   const setSearchValue = useSetRecoilState<number | undefined>(commentarySearchQuestionSequence);
 
   return (
-    <div className={'bg-white px-4 py-3 flex gap-x-2 w-full overflow-x-scroll'}>
+    <div className={'fixed z-20 top-20 bg-white px-4 py-3 flex gap-x-2 w-full overflow-x-scroll'}>
       {checkReviewPeriod && (
         <button
           onClick={() => {

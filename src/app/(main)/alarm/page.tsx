@@ -76,8 +76,9 @@ export default function Alarm() {
 
   return (
     <div className={'bg-gray0 min-h-screen'}>
-      <Header headerType={'dynamic'} title={'알림'} rightElement={<EmptyIcon />} onBack={onBack} />
-      <div className={'mt-[20px]'}>
+      <Header headerType={'dynamic'} title={'알림'} rightElement={<EmptyIcon />} onBack={onBack} className={'pt-10'} />
+      <div className={'h-[100px]'} />
+      <div className={''}>
         <div className={'flex flex-col gap-y-4 px-5'}>
           {alarms
             ? alarms.map((alarm, index) => {
@@ -97,9 +98,7 @@ export default function Alarm() {
             : null}
         </div>
       </div>
-      <StopWatchActiveButton />
-      <NavBar />
-      <div className={'h-[120px]'} />
+      <StopWatchActiveButton className={'bottom-5'} />
     </div>
   );
 }

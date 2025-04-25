@@ -262,6 +262,7 @@ function HomeComponents() {
       <div className="bg-gray0 h-screen overflow-y-auto">
         <Header />
         <Header headerType={'second'}></Header>
+        <div className={'h-[146px]'} />
         {userGoals ? (
           <div className={'mt-4 px-5 flex flex-col gap-y-5'}>
             {goalAchievementData ? (

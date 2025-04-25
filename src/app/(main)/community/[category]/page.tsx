@@ -168,7 +168,7 @@ export default function CommunityCategoryPage() {
   ) : boardType === 'NORMAL' && isClickedWriteButton ? (
     <WriteNormalPost setIsClickedWriteButton={setIsClickedWriteButton} mutate={mutate} />
   ) : (
-    <>
+    <div className={' bg-gray0'}>
       {reviewWriteAccess && reviewWriteAccess.result ? (
         <WriteReviewModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
       ) : null}
@@ -182,9 +182,11 @@ export default function CommunityCategoryPage() {
             }}
           />
         }
+        className={'pt-10'}
         title={selectedCertificationName}
       />
-      <div className={'flex flex-col gap-y-4 bg-gray0 min-h-screen'}>
+      <div className={'h-[158px]'} />
+      <div className={'flex flex-col gap-y-4 min-h-screen'}>
         {/*boardType 변경 메뉴*/}
         <BoardTypeMenu
           boardType={boardType}
@@ -217,7 +219,7 @@ export default function CommunityCategoryPage() {
       <div className={'h-[120px] bg-gray0'} />
       <StopWatchActiveButton />
       <NavBar />
-    </>
+    </div>
   );
 }
 

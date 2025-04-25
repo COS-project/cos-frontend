@@ -22,7 +22,7 @@ const MyPageHeader = () => {
 
   return (
     <>
-      <div className={'flex flex-col bg-white p-5 gap-y-4'}>
+      <div className={'w-full flex flex-col bg-white p-5 gap-y-4'}>
         {/*프로필 설정*/}
         <div
           onClick={() => {

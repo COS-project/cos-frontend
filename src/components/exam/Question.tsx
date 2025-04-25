@@ -156,12 +156,12 @@ const Question = () => {
       {allQuestionModalIsOpen ? (
         <AllQuestionModal toggleQuestionModal={toggleQuestionModal} recordSessionTime={recordSessionTime} />
       ) : null}
-      <div className={'h-[70px]'} />
+      <div className={'h-[94px]'} />
       <div className="relative flex flex-col">
         {/* progressBar */}
-        <div className="fixed top-[70px] left-0 h-[4px] w-full bg-gray1" />
+        <div className="fixed top-[94px] left-0 h-[4px] w-full bg-gray1" />
         <div
-          className="fixed top-[70px] left-0 z-10 h-[4px] bg-black rounded-r"
+          className="fixed top-[94px] left-0 z-10 h-[4px] bg-black rounded-r"
           style={{ width: `${((questionIdx + 1) / (progressBarLength || 1)) * 100}%` }}
         />
 
@@ -205,8 +205,8 @@ const Question = () => {
       </div>
 
       {/*이동 버튼*/}
-      <div className={'fixed bottom-0 bg-white h-[86px] w-full '}>
-        <div className={'absolute bottom-[8px] right-[20px] left-[20px] '}>
+      <div className={'fixed bottom-0 bg-white h-[95px] w-full '}>
+        <div className={'absolute bottom-[20px] right-[20px] left-[20px] '}>
           {questionIdx + 1 === 1 ? (
             <button
               onClick={() => {

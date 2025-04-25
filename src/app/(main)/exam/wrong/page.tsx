@@ -30,7 +30,8 @@ const IncorrectQuestion = () => {
 
   return (
     <>
-      <Header headerType={'dynamic'} title={'틀린문제 모아보기'}></Header>
+      <Header headerType={'dynamic'} title={'틀린문제 모아보기'} className={'pt-10'} />
+      <div className={'h-[80px]'} />
       <div className={'flex flex-col bg-gray0 p-5 gap-y-5 min-h-screen'}>
         {isLoading && <WrongQuestionListSkeleton />}
         {incorrectQuestions

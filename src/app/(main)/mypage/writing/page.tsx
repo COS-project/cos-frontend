@@ -51,13 +51,14 @@ export default function MyWriting() {
         />
       ) : (
         <div className={'bg-gray0'}>
-          <Header headerType={'dynamic'} title={'내가 작성한 글'} rightElement={<EmptyIcon />} />
+          <Header headerType={'dynamic'} title={'내가 작성한 글'} rightElement={<EmptyIcon />} className={'pt-10'} />
           {/* 게시판 종류 선택 메뉴 */}
           <MyWritingMenu
             boardType={boardType}
             setBoardType={setBoardType}
             setSelectedFilterContent={setSelectedFilterContent}
           />
+          <div className={'h-[148px]'} />
           {/* 필터 */}
           <div className={'flex flex-col bg-gray0 min-h-screen px-5'}>
             <div className={'relative'}>
