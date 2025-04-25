@@ -8,6 +8,8 @@ import Spinner from '@/components/common/Spinner';
 import CertificationPriority from '@/components/onboarding/CertificationPriority';
 import ChooseCertification from '@/components/onboarding/ChooseCertification';
 import ProfileSettings from '@/components/onboarding/ProfileSettings';
+import TermsAgreement from '@/components/onboarding/TermsAgreement';
+import PermissionNotice from '@/components/onboarding/PermissionNotice';
 
 const OnBoardingComponents = () => {
   const searchParams = useSearchParams();
@@ -19,9 +21,9 @@ const OnBoardingComponents = () => {
 
   const [isCookieSet, setIsCookieSet] = useState(false); // ✅ 쿠키 저장 여부
 
-  const [step, setStep] = useState<'ProfileSetting' | 'ChooseCertification' | 'CertificationPriority'>(
-    'ProfileSetting',
-  );
+  const [step, setStep] = useState<
+    'TermsAgreement' | 'PermissionNotice' | 'ProfileSetting' | 'ChooseCertification' | 'CertificationPriority'
+  >('TermsAgreement');
   const router = useRouter();
 
   const moveUnSignUp = () => {
@@ -49,8 +51,14 @@ const OnBoardingComponents = () => {
 
   return (
     <main>
+      {step === 'TermsAgreement' && (
+        <TermsAgreement onNext={() => setStep('PermissionNotice')} onBefore={moveUnSignUp} />
+      )}
+      {step === 'PermissionNotice' && (
+        <PermissionNotice onNext={() => setStep('ProfileSetting')} onBefore={() => setStep('TermsAgreement')} />
+      )}
       {step === 'ProfileSetting' && (
-        <ProfileSettings onNext={() => setStep('ChooseCertification')} onBefore={moveUnSignUp} />
+        <ProfileSettings onNext={() => setStep('ChooseCertification')} onBefore={() => setStep('PermissionNotice')} />
       )}
       {step === 'ChooseCertification' && (
         <ChooseCertification

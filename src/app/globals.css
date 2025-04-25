@@ -11,10 +11,10 @@
 @layer components {
     /* 온보딩, 게시판 선택시 사용되는 컴포넌트 스타일 */
     .head1 {
-        @apply text-h1 font-bold leading-[36px] tracking-[-0.02em] font-pre
+        @apply text-h1 font-bold leading-[36px] tracking-[-0.48px] font-pre
     }
     .title1 {
-        @apply text-h2 font-bold leading-[36px] tracking-[-0.02em] font-pre
+        @apply text-h2 font-bold leading-[36px] tracking-[-0.32px] font-pre
     }
     .title2 {
         @apply text-h3 font-bold leading-[36px] tracking-[-0.02em] font-pre
@@ -26,7 +26,7 @@
         @apply text-h4 font-bold leading-[36px] tracking-[-0.02em] font-pre
     }
     .title5 {
-        @apply text-h4 font-semibold leading-[36px] tracking-[-0.02em] font-pre
+        @apply text-h4 font-semibold leading-[36px] tracking-[-0.32px] font-pre
     }
     .subtitle1 {
         @apply text-h4 font-medium leading-[36px] tracking-[-0.02em] font-pre
@@ -35,10 +35,10 @@
         @apply text-h6 font-semibold leading-[36px] tracking-[-0.02em] font-pre
     }
     .body1 {
-        @apply text-h4 font-normal leading-[36px] tracking-[-0.02em] font-pre
+        @apply text-h4 font-pre not-italic font-normal leading-[150%] tracking-[-0.32px]
     }
     .body2 {
-        @apply text-h6 font-normal leading-[36px] tracking-[-0.02em] font-pre
+        @apply text-h6 font-normal leading-[36px] tracking-[-0.28px] font-pre
     }
     .button {
         @apply text-h6 font-medium leading-[36px] tracking-[-0.02em] font-pre
