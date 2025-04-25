@@ -51,7 +51,7 @@ const Test = () => {
           setIsAutoSubmitTimeUpModalOpen={setIsAutoSubmitTimeUpModalOpen}
         />
         <Question />
-        <StopWatchActiveButton className={'bottom-20'} />
+        <StopWatchActiveButton className={'bottom-24'} />
       </div>
     </>
   );

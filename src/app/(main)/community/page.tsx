@@ -36,7 +36,8 @@ export default function Community() {
   return (
     <>
       <Header />
-      <div className={' border-t-[1px] border-gray0'}></div>
+      <div className={'h-[100px]'} />
+      <div className={'border-t-[1px] border-gray0'}></div>
       <div className="grid gap-y-8 m-5 mt-6">
         <div className="grid gap-y-2">
           <div className="text-primary text-h4">게시판</div>

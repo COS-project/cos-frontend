@@ -45,6 +45,7 @@ const SolveExamBox = () => {
         <RandomMockExamModal setIsRandomMockExamModalOpen={setIsRandomMockExamModalOpen} />
       ) : null}
       <Header headerType={'second'} />
+      <div className={'h-[146px]'} />
       <div className="px-5 py-4">
         <div className="flex gap-x-4 justify-between">
           <Banner title="지금까지 틀린 문제만 모아봤어요." buttonText="틀린 문제 풀기" href="/exam/wrong" />

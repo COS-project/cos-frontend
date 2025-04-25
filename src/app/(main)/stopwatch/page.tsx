@@ -34,6 +34,7 @@ export default function StopWatch() {
     <main className={'min-h-screen'}>
       <Header />
       <Header headerType={'second'} />
+      <div className={'h-[146px]'} />
       <div className="flex justify-center items-center mt-[100px]">
         <div className="w-80 h-[449px] flex-col justify-start items-center gap-6 flex">
           {/* <div className={twMerge('h-[320px] w-[320px] border border-gray2 rounded-full', className)}> */}

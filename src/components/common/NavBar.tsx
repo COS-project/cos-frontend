@@ -8,7 +8,7 @@ export default function NavBar() {
   const paramsName = usePathname();
 
   return (
-    <nav className="fixed z-20 bottom-0 flex w-full justify-center rounded-t-[32px] items-center gap-[0.8rem] pb-4 pt-[0.8rem] bg-white drop-shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+    <nav className="fixed z-20 bottom-0 pb-[32px] flex w-full justify-center rounded-t-[32px] items-center gap-[0.8rem] pb-4 pt-[0.8rem] bg-white drop-shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
       {MENU_LIST.map((menu) => {
         return (
           <Link href={menu.path} key={menu.id} className="w-[4rem] flex flex-col justify-center items-center">

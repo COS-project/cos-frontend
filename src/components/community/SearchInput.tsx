@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 import { SVGProps } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import AutoCompleteSearchKeywords from '@/components/community/AutoCompleteSearchKeywords';
 import { getTotalSearchResults } from '@/lib/api/community';
@@ -26,23 +26,26 @@ const SearchInput = (props: Props) => {
   const { mutate } = useGetRecentSearchResults(certificateId);
   const { autoCompleteKeywords } = useGetAutoCompleteSearchKeywords(certificateId, parameter.get('keyword'));
   const router = useRouter();
-  const setTotalSearchResults = useSetRecoilState(totalSearchResultsAtom);
+  const [totalSearchResults, setTotalSearchResults] = useRecoilState(totalSearchResultsAtom);
 
   const handleSubmit = async () => {
     await getTotalSearchResults(certificateId, searchValue).then((r) => setTotalSearchResults(r.result.content));
     await mutate();
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      handleSubmit();
-      setSearchValue('');
+
+      if (searchValue.trim() !== '') {
+        await handleSubmit();
+        setSearchValue('');
+      }
     }
   };
 
   return (
-    <div className={'bg-white px-5 py-[10px]'}>
+    <div className={'pt-10 bg-white px-5 py-[10px]'}>
       <div className={'flex gap-x-3  items-center'}>
         <BackIcon
           onClick={() => {
@@ -71,7 +74,21 @@ const SearchInput = (props: Props) => {
               onKeyDown={handleKeyDown}
               className={'text-h4 text-gray4 outline-none'}
               placeholder={'검색어를 입력해주세요.'}></input>
-            <SearchIcon />
+            {totalSearchResults.length > 0 ? (
+              <DeleteIcon
+                onClick={() => {
+                  setTotalSearchResults([]);
+                  setSearchValue('');
+                }}
+              />
+            ) : (
+              <SearchIcon
+                onClick={() => {
+                  handleSubmit();
+                  setSearchValue('');
+                }}
+              />
+            )}
           </form>
           {/*자동완성 필터*/}
           {isClickedAutoCompleteSearchKeywords && searchValue !== '' ? (
@@ -113,5 +130,27 @@ const SearchIcon = (props: SVGProps<SVGSVGElement>) => (
 const BackIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={33} height={32} fill="none" {...props}>
     <path stroke="#0D0E10" strokeLinecap="round" strokeLinejoin="round" d="m21.646 26-10-10 10-10" />
+  </svg>
+);
+const DeleteIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={25} height={24} fill="none" {...props}>
+    <mask
+      id="a"
+      width={25}
+      height={24}
+      x={0}
+      y={0}
+      maskUnits="userSpaceOnUse"
+      style={{
+        maskType: 'alpha',
+      }}>
+      <path fill="#D9D9D9" d="M.646 0h24v24h-24z" />
+    </mask>
+    <g mask="url(#a)">
+      <path
+        fill="#6E6F71"
+        d="M12.646 12.708 7.4 17.954a.5.5 0 0 1-.345.15.47.47 0 0 1-.363-.15.5.5 0 0 1-.16-.354.5.5 0 0 1 .16-.354L11.938 12 6.692 6.754a.5.5 0 0 1-.15-.344.47.47 0 0 1 .15-.364.5.5 0 0 1 .354-.16.5.5 0 0 1 .354.16l5.246 5.246 5.246-5.246a.5.5 0 0 1 .344-.15.47.47 0 0 1 .364.15.5.5 0 0 1 .16.354.5.5 0 0 1-.16.354L13.353 12l5.247 5.246a.5.5 0 0 1 .15.344.47.47 0 0 1-.15.364.5.5 0 0 1-.354.16.5.5 0 0 1-.354-.16z"
+      />
+    </g>
   </svg>
 );

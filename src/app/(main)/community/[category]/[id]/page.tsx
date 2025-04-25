@@ -185,7 +185,9 @@ const CommunityDetailPage = () => {
               setBoardType(postData.postType);
               setBoardTypeInit(false);
             }}
+            className={'pt-10'}
           />
+          <div className={'h-[84px]'} />
           {/* 게시글 */}
           <section className={'px-5 mt-[20px]'}>
             <Profile

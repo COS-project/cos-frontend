@@ -88,6 +88,7 @@ const ChooseCertification: React.FC<ChooseCertificationProps> = ({ onNext, onBef
   return (
     <div className={'relative'}>
       <Header headerType={'dynamic'} title={'종목선택'} onBack={onBefore} />
+      <div className={'h-[90px]'} />
       {isNullErrorModalOpen ? (
         <NullErrorModal isErrorModalOpen={isNullErrorModalOpen} setIsErrorModalOpen={setIsNullErrorModalOpen} />
       ) : null}

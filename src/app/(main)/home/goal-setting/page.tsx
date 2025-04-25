@@ -185,7 +185,8 @@ const GoalSetting = () => {
                 </Button>
               )
             }></Header>
-          <div className="flex flex-col gap-y-8 pt-20 mx-5 mb-8">
+          <div className={'h-[98px]'} />
+          <div className="flex flex-col gap-y-8 mx-5 mb-8">
             {/*자격증 선택*/}
             {isResetButtonClick ? <SelectCertification /> : null}
             {/*목표 점수 설정*/}

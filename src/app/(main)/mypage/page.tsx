@@ -26,8 +26,10 @@ export default function MyPage() {
         />
       ) : null}
       <Header />
+      <div className={'h-[83px]'} />
       <div className={'flex flex-col gap-y-6 min-h-screen border-t-[1px] border-t-gray1'}>
         <MyPageHeader />
+        <div className={'h-[240px]'} />
         <div className={'mx-5 flex flex-col gap-y-3'}>
           {/* 게시판 */}
           <MyPageItem contents={boardContents} category={'게시판'} />
