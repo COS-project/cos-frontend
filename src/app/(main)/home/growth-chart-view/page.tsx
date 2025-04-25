@@ -172,6 +172,7 @@ const GrowthChartView = () => {
   return (
     <div className={'bg-gray0 min-h-screen pb-6'}>
       <Header title={'성장그래프 자세히보기'} headerType={'dynamic'} onBack={onBack} />
+      <div className={'h-[80px]'} />
       <div className={'relative m-5 flex flex-col gap-y-[24px]'}>
         {/*유저별 목표 기간 전체 필터*/}
         <section className={'flex flex-col gap-y-[16px]'}>
