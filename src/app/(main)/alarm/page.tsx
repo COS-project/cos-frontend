@@ -98,7 +98,7 @@ export default function Alarm() {
             : null}
         </div>
       </div>
-      <StopWatchActiveButton className={'bottom-5'}/>
+      <StopWatchActiveButton className={'bottom-5'} />
     </div>
   );
 }

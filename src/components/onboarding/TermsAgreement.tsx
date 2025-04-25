@@ -26,13 +26,13 @@ const TermsAgreement = (props: Props) => {
     },
     {
       content: '개인 정보 수집 및 이용 동의(필수)',
-      router: '/mypage/etc/personal-Info',
+      router: '/mypage/etc/personal-info',
       state: personalInformation,
       setState: setPersonalInformation,
     },
     {
       content: '마케팅 정보 수신 동의(선택)',
-      router: '/mypage/etc/marketing-Info',
+      router: '/mypage/etc/marketing-info',
       state: marketingInformation,
       setState: setMarketingInformation,
     },

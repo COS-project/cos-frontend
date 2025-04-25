@@ -46,7 +46,7 @@ export default function MyComment() {
 
   return (
     <div className={'bg-gray0'}>
-      <Header headerType={'dynamic'} title={'내가 작성한 댓글'} rightElement={<EmptyIcon />} className={'pt-10'}/>
+      <Header headerType={'dynamic'} title={'내가 작성한 댓글'} rightElement={<EmptyIcon />} className={'pt-10'} />
       <div className={'h-[80px]'} />
       <div className={'py-6 min-h-screen'}>
         <div className={'relative px-5 flex flex-col gap-y-4 '}>

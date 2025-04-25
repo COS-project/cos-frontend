@@ -7,9 +7,9 @@ import { Suspense, useEffect, useState } from 'react';
 import Spinner from '@/components/common/Spinner';
 import CertificationPriority from '@/components/onboarding/CertificationPriority';
 import ChooseCertification from '@/components/onboarding/ChooseCertification';
+import PermissionNotice from '@/components/onboarding/PermissionNotice';
 import ProfileSettings from '@/components/onboarding/ProfileSettings';
 import TermsAgreement from '@/components/onboarding/TermsAgreement';
-import PermissionNotice from '@/components/onboarding/PermissionNotice';
 
 const OnBoardingComponents = () => {
   const searchParams = useSearchParams();

@@ -65,7 +65,7 @@ const ProfileSettings = (props: Props) => {
   return (
     <div>
       <form className={'min-h-screen bg-gray0'} onSubmit={handleSubmit}>
-        <Header headerType={'dynamic'} title={'프로필 변경'} onBack={onBefore}/>
+        <Header headerType={'dynamic'} title={'프로필 변경'} onBack={onBefore} />
         <div className={'h-[80px]'} />
         <div className="flex flex-col gap-y-5 m-5">
           {/* 프로필 사진 설정 섹션 */}

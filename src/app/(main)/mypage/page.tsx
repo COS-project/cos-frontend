@@ -8,7 +8,7 @@ import MyPageHeader from '@/components/mypage/MyPageHeader';
 import MyPageItem from '@/components/mypage/MyPageItem';
 import UnRegisterModal from '@/components/mypage/UnRegisterModal';
 import StopWatchActiveButton from '@/components/stopwatch/StopWatchActiveButton';
-import { boardContents } from '@/utils/mypage/ItemContents';
+import { boardContents, etcContents } from '@/utils/mypage/ItemContents';
 
 export default function MyPage() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState<boolean>(false);
@@ -29,11 +29,11 @@ export default function MyPage() {
       <div className={'h-[83px]'} />
       <div className={'flex flex-col gap-y-6 min-h-screen border-t-[1px] border-t-gray1'}>
         <MyPageHeader />
-        <div className={'h-[240px]'} />
         <div className={'mx-5 flex flex-col gap-y-3'}>
           {/* 게시판 */}
           <MyPageItem contents={boardContents} category={'게시판'} />
-          {/* 설정 */}
+          {/* 기타 */}
+          <MyPageItem contents={etcContents} category={'기타'} />
           {/*<MyPageItem contents={alarmContents} category={'설정'} />*/}
           {/* 계정관리 */}
           <div className={'flex flex-col gap-y-3 bg-white rounded-[24px] p-4'}>
@@ -62,6 +62,7 @@ export default function MyPage() {
         </div>
       </div>
       <StopWatchActiveButton />
+      <div className={'h-[120px]'} />
       <NavBar />
     </div>
   );
