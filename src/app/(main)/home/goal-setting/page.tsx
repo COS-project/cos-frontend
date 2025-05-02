@@ -8,6 +8,7 @@ import { useSWRConfig } from 'swr';
 
 import Button from '@/components/common/Button';
 import Header from '@/components/common/Header';
+import GoalScoreAlertModal from '@/components/home/goal-setting/GoalScoreAlertModal';
 import PreparationPeriodSetting from '@/components/home/goal-setting/PreparationPeriodSetting';
 import SelectCertification from '@/components/home/goal-setting/SelectCertification';
 import SetDailyGoals from '@/components/home/goal-setting/SetDailyGoals';
@@ -28,6 +29,7 @@ const GoalSetting = () => {
     goalSettingCertificateId,
   );
   const [isSettingNewGoalModalOpen, setIsSettingNewGoalModalOpen] = useState(true);
+  const [isGoalScoreAlertModalOpen, setIsGoalScoreAlertModalOpen] = useState(false);
   // 사용자의 목표 설정 Id를 불러오는 데이터 패칭
   const { userGoals } = useGetUserGoals(certificateId);
   const { mutate } = useSWRConfig();
@@ -150,6 +152,12 @@ const GoalSetting = () => {
           setIsSettingNewModal={setIsSettingNewGoalModalOpen}
         />
       ) : null}
+      {isGoalScoreAlertModalOpen && (
+        <GoalScoreAlertModal
+          maxScore={mockExams && mockExams[0].maxScore}
+          setIsGoalScoreAlertModalOpen={setIsGoalScoreAlertModalOpen}
+        />
+      )}
       {!isGoalDataReady ? (
         <></>
       ) : (
@@ -162,12 +170,16 @@ const GoalSetting = () => {
               isResetButtonClick ? (
                 <Button
                   onClick={async () => {
-                    await postGoalSettingData(goalData, selectedCertificationId).then((r) => {
-                      console.log('목표 저장 성공~r', r);
-                    });
-                    await mutate(`/certificates/${certificateId}/goals`);
-                    setIsResetButtonClick(false);
-                    router.push('/home');
+                    if (goalData.goalScore < 0 || (mockExams && goalData.goalScore > mockExams[0].maxScore)) {
+                      setIsGoalScoreAlertModalOpen(true);
+                    } else if (goalData.goalScore >= 0 && mockExams && goalData.goalScore <= mockExams[0].maxScore) {
+                      await postGoalSettingData(goalData, selectedCertificationId).then((r) => {
+                        console.log('목표 저장 성공~r', r);
+                      });
+                      await mutate(`/certificates/${certificateId}/goals`);
+                      setIsResetButtonClick(false);
+                      router.push('/home');
+                    }
                   }}
                   className={' w-fit'}>
                   저장
@@ -175,10 +187,14 @@ const GoalSetting = () => {
               ) : (
                 <Button
                   onClick={() => {
-                    putGoalSettingData(goalData, getLastGoalId() || 0).then((r) => {
-                      console.log('목표 수정 성공', r, goalData);
-                      router.push('/home');
-                    });
+                    if (goalData.goalScore < 0 || (mockExams && goalData.goalScore > mockExams[0].maxScore)) {
+                      setIsGoalScoreAlertModalOpen(true);
+                    } else if (goalData.goalScore >= 0 && mockExams && goalData.goalScore <= mockExams[0].maxScore) {
+                      putGoalSettingData(goalData, getLastGoalId() || 0).then((r) => {
+                        console.log('목표 수정 성공', r, goalData);
+                        router.push('/home');
+                      });
+                    }
                   }}
                   className={'w-fit'}>
                   수정
