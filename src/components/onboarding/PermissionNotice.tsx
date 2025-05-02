@@ -71,7 +71,7 @@ const PermissionNotice = (props: Props) => {
             ? 'w-full bg-gray2 h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0'
             : 'w-full bg-primary h-[100px] rounded-t-[32px] text-white text-h3 fixed bottom-0'
         }>
-        <div className="text-white text-h3 py-[25px]">동의</div>
+        <div className="text-white text-h3 py-[25px]">다음</div>
       </button>
     </>
   );
