@@ -133,6 +133,7 @@ const Question = () => {
   }, [questionIdx]);
 
   useEffect(() => {
+    if (userAnswer.selectOptionSeq < 0) return;
     updateUserAnswerInUserAnswerList();
   }, [userAnswer]);
 
@@ -212,6 +213,10 @@ const Question = () => {
               onClick={() => {
                 recordSessionTime();
                 setQuestionIdx((prev) => prev + 1);
+                setUserAnswer((prevState) => ({
+                  ...prevState,
+                  selectOptionSeq: -1,
+                }));
               }}
               className={'relative w-full rounded-[16px] bg-blue text-white p-4'}>
               다음
@@ -223,6 +228,10 @@ const Question = () => {
               onClick={() => {
                 setQuestionIdx((prev) => prev - 1);
                 recordSessionTime();
+                setUserAnswer((prevState) => ({
+                  ...prevState,
+                  selectOptionSeq: -1,
+                }));
               }}>
               <BeforeIcon className={'absolute left-5 bottom-[18px]'}></BeforeIcon>
               이전
@@ -234,6 +243,10 @@ const Question = () => {
                 onClick={() => {
                   setQuestionIdx((prev) => prev - 1);
                   recordSessionTime();
+                  setUserAnswer((prevState) => ({
+                    ...prevState,
+                    selectOptionSeq: -1,
+                  }));
                 }}>
                 <BeforeIcon className={'absolute left-5 bottom-[18px]'}></BeforeIcon>
                 이전
@@ -243,6 +256,10 @@ const Question = () => {
                 onClick={() => {
                   recordSessionTime();
                   setQuestionIdx((prev) => prev + 1);
+                  setUserAnswer((prevState) => ({
+                    ...prevState,
+                    selectOptionSeq: -1,
+                  }));
                 }}>
                 다음
                 <NextIcon className={'absolute right-5 bottom-[18px]'}></NextIcon>

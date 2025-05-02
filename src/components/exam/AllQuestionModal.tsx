@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 
-import { questionIndex, userAnswerRequestsList } from '@/recoil/exam/atom';
+import { questionIndex, userAnswerRequests, userAnswerRequestsList } from '@/recoil/exam/atom';
 import { UserAnswerRequests } from '@/types/global';
 
 interface AllQuestionModalProps {
@@ -15,6 +15,7 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
   const { toggleQuestionModal, recordSessionTime } = props;
 
   const [userAnswerList, setUserAnswerList] = useRecoilState<UserAnswerRequests[]>(userAnswerRequestsList);
+  const [userAnswer, setUserAnswer] = useRecoilState<UserAnswerRequests>(userAnswerRequests);
   const [questionIdx, setQuestionIdx] = useRecoilState<number>(questionIndex);
 
   return (
@@ -48,6 +49,10 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
                         key={userAnswer.questionId}
                         onClick={() => {
                           setQuestionIdx(userAnswer.questionId - 1);
+                          setUserAnswer((prevState) => ({
+                            ...prevState,
+                            selectOptionSeq: -1,
+                          }));
                           recordSessionTime();
                           toggleQuestionModal();
                         }}
@@ -59,6 +64,10 @@ export const AllQuestionModal = (props: AllQuestionModalProps) => {
                         key={userAnswer.questionId}
                         onClick={() => {
                           setQuestionIdx(userAnswer.questionId - 1);
+                          setUserAnswer((prevState) => ({
+                            ...prevState,
+                            selectOptionSeq: -1,
+                          }));
                           recordSessionTime();
                           toggleQuestionModal();
                         }}
