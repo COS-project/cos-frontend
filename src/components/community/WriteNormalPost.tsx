@@ -147,6 +147,8 @@ const WriteNormalPost = (props: Props) => {
               완료
             </button>
           }></Header>
+
+        <div className={'h-[30px]'} />
         <div className={'m-5'}>
           {/* 제목, 글 작성 세션 */}
           <div className={'flex flex-col gap-y-2 mt-[16px]'}>

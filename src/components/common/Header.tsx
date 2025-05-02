@@ -76,7 +76,7 @@ export default function Header(props: Props) {
     switch (headerType) {
       case 'static':
         return (
-          <header className="fixed w-full top-0 bg-white flex justify-between items-center px-5 py-1 z-30 pt-10">
+          <header className="fixed w-full top-0 bg-white flex justify-between items-center px-5 py-1 z-30 pt-12">
             <Logo />
             <div className={'relative flex items-center justify-center w-[40px] h-[40px]'}>
               {unreadCount > 0 && (
@@ -92,7 +92,7 @@ export default function Header(props: Props) {
         return (
           <header
             className={twMerge(
-              'fixed w-full top-0 bg-white flex justify-between items-center px-5 py-3 z-30 pt-10', // border 클래스도 여기서 제거함 (필요하다면 twMerge 되는 className prop으로 넘기세요)
+              'fixed w-full top-0 bg-white flex justify-between items-center px-5 py-3 z-30 pt-12', // border 클래스도 여기서 제거함 (필요하다면 twMerge 되는 className prop으로 넘기세요)
               className,
             )}>
             {CancelIcon ? (
