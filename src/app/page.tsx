@@ -12,7 +12,7 @@ export default function Page() {
       <Link
         href="https://cercat.o-r.kr/oauth2/authorization/apple"
         className={
-          'flex gap-x-1 items-center absolute bottom-20 justify-center bg-white rounded-[16px] font-semibold w-[90%] py-[10px]'
+          'flex gap-x-1 items-center absolute bottom-24 justify-center bg-white rounded-[16px] font-semibold w-[90%] py-[10px]'
         }>
         <Image src="/login/AppleLogo.svg" width={30} height={30} alt={'애플로고'} />
         Apple로 시작하기
@@ -20,7 +20,7 @@ export default function Page() {
       <Link
         href="https://cercat.o-r.kr/oauth2/authorization/kakao"
         className={
-          'flex gap-x-2 absolute bottom-5 justify-center bg-white rounded-[16px] font-semibold w-[90%] py-[14px]'
+          'flex gap-x-2 absolute bottom-8 justify-center bg-white rounded-[16px] font-semibold w-[90%] py-[14px]'
         }>
         <KakaoIcon />
         카카오로 시작하기

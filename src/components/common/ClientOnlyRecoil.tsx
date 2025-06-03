@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { RecoilRoot } from 'recoil';
 
-import Timer from '@/components/common/Timer';
+import Timer from '@/hooks/Timer';
 
 export default function ClientOnlyRecoil({ children }: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);

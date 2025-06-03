@@ -187,147 +187,152 @@ const WriteExplanationPost = (props: Props) => {
   };
 
   return (
-    <div className={'pt-14 py-8'}>
+    <>
       {isTitleEmpty ? <EmptyTitleAlertModal setIsTitleEmpty={setIsTitleEmpty} /> : null}
-      {isQuestionNumberExceedingLimit ? (
-        <QuestionNumberExceedingLimitAlertModal setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit} />
-      ) : null}
-      <form onSubmit={handleException}>
-        <Header
-          onBack={onBack}
-          CancelIcon={CancelIcon}
-          headerType={'dynamic'}
-          title={'해설 쓰기'}
-          className={'fixed'}
-          rightElement={
-            <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
-              완료
-            </button>
-          }></Header>
+      <div className={'pt-14 py-8'}>
+        {isQuestionNumberExceedingLimit ? (
+          <QuestionNumberExceedingLimitAlertModal
+            setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit}
+          />
+        ) : null}
+        <form onSubmit={handleException}>
+          <Header
+            onBack={onBack}
+            CancelIcon={CancelIcon}
+            headerType={'dynamic'}
+            title={'해설 쓰기'}
+            className={'fixed'}
+            rightElement={
+              <button type={'submit'} className={'bg-primary text-white text-h6 px-4 py-[6px] rounded-full'}>
+                완료
+              </button>
+            }></Header>
 
-        <div className={'flex flex-col m-5 gap-y-4'}>
-          {/* 년도 선택 세션 */}
-          <div className={'flex flex-col relative gap-y-2'}>
-            <div className={'text-h3 font-bold ml-2'}>모의고사 년도 선택</div>
-            <div
-              onClick={() => {
-                setIsYearsFilterOpen(!isYearsFilterOpen);
-              }}
-              className={'flex justify-between bg-gray0 rounded-[16px] py-3 px-4'}>
-              <div className={'text-h4'}>{postData.examYear}년</div>
-              {isYearsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
-            </div>
-            {isYearsFilterOpen && (
-              <MockExamYearsFilter years={examYears} setIsOpen={setIsYearsFilterOpen} setDataState={setPostData} />
-            )}
-          </div>
-
-          {/* 회차 선택 세션 */}
-          <div className={'flex flex-col relative gap-y-2'}>
-            <div className={'text-h3 font-bold ml-2'}>모의고사 회차 선택</div>
-            <div
-              onClick={() => {
-                setIsRoundsFilterOpen(!isRoundsFilterOpen);
-              }}
-              className={'flex justify-between bg-gray0 rounded-[16px] py-3 px-4'}>
-              <div className={'text-h4'}>{postData.round}회차</div>
-              {isRoundsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
-            </div>
-            {isRoundsFilterOpen && (
-              <MockExamRoundFilter
-                //TODO: 회차 모의고사
-                mockExams={postData.examYear ? mockExams : null}
-                setDataState={setPostData}
-                setIsOpen={setIsRoundsFilterOpen}
-                className={'absolute w-full top-[100%]'}
-              />
-            )}
-          </div>
-
-          {/* 문제 번호 선택 세션 */}
-          <div className={'flex flex-col relative gap-y-2'}>
-            <div className={'text-h3 font-bold ml-2'}>문항 번호 입력</div>
-            <div>
-              <input
-                onChange={(e) => {
-                  isNumeric(e.target.value);
-                  setIsEmpty(e.target.value.length === 0);
-                  setQuestionSequence(parseInt(e.target.value));
-                  if (
-                    /^\d+$/.test(e.target.value) &&
-                    e.target.value.length !== 0 &&
-                    parseInt(e.target.value) < (questions?.length || 0)
-                  ) {
-                    changePostDataQuestionSequence(e.target.value);
-                  }
+          <div className={'h-[30px]'} />
+          <div className={'flex flex-col m-5 gap-y-4'}>
+            {/* 년도 선택 세션 */}
+            <div className={'flex flex-col relative gap-y-2'}>
+              <div className={'text-h3 font-bold ml-2'}>모의고사 년도 선택</div>
+              <div
+                onClick={() => {
+                  setIsYearsFilterOpen(!isYearsFilterOpen);
                 }}
-                className={'w-full bg-gray0 rounded-[16px] py-3 px-4 focus:outline-0'}></input>
-              {/* 경고 문구 세션 */}
-              {isEmpty ? <div className={'text-point ml-1'}>내용을 입력해주세요.</div> : null}
-              {!isQuestionSequenceNumeric && !isEmpty ? (
-                <div className={'text-point ml-1'}>숫자만 입력해주세요.</div>
-              ) : null}
-              {questionSequence > (questions?.length || 0) && !isEmpty && isQuestionSequenceNumeric ? (
-                <div className={'text-point ml-1'}>전체 문제 수({questions?.length}) 이하의 숫자를 입력해주세요.</div>
-              ) : null}
-            </div>
-          </div>
-
-          {/* 제목, 글 작성 세션 */}
-          <div className={'flex flex-col gap-y-2 mt-[16px]'}>
-            <div className={'text-h3 font-bold ml-2'}>해설 작성</div>
-            <div className={'flex flex-col gap-y-3'}>
-              <input
-                onChange={(e) => {
-                  changePostDataTitle(e.target.value);
-                }}
-                className={
-                  'w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
-                }
-                placeholder={'제목'}></input>
-              <textarea
-                onChange={(e) => {
-                  changePostDataContent(e.target.value);
-                }}
-                placeholder={'내용을 입력해주세요.'}
-                className={
-                  'w-full h-[300px] border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
-                }></textarea>
-            </div>
-          </div>
-        </div>
-
-        {/* 이미지 추가 세션 */}
-        <div className={'mx-5 flex gap-x-2 '}>
-          <div className={'rounded-[8px] p-2 bg-gray0 w-[48px] h-[48px]'}>
-            <label htmlFor="image">
-              <AddImageIcon />
-            </label>
-            <input
-              type={'file'}
-              accept={'image/*'}
-              id="image"
-              name="image"
-              ref={imgRef}
-              onChange={saveImgFile}
-              multiple
-              style={{ display: 'none' }}></input>
-          </div>
-        </div>
-        <div className={'mx-5 mt-3 w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
-          {imagePreviews.map((img, i) => {
-            return (
-              <div key={i} className={'relative rounded-[8px]'}>
-                <ImageDeleteButton i={i} usage={'create'} />
-                <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
-                  <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
-                </div>
+                className={'flex justify-between bg-gray0 rounded-[16px] py-3 px-4'}>
+                <div className={'text-h4'}>{postData.examYear}년</div>
+                {isYearsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
               </div>
-            );
-          })}
-        </div>
-      </form>
-    </div>
+              {isYearsFilterOpen && (
+                <MockExamYearsFilter years={examYears} setIsOpen={setIsYearsFilterOpen} setDataState={setPostData} />
+              )}
+            </div>
+
+            {/* 회차 선택 세션 */}
+            <div className={'flex flex-col relative gap-y-2'}>
+              <div className={'text-h3 font-bold ml-2'}>모의고사 회차 선택</div>
+              <div
+                onClick={() => {
+                  setIsRoundsFilterOpen(!isRoundsFilterOpen);
+                }}
+                className={'flex justify-between bg-gray0 rounded-[16px] py-3 px-4'}>
+                <div className={'text-h4'}>{postData.round}회차</div>
+                {isRoundsFilterOpen ? <DropUpIcon /> : <DropDownIcon />}
+              </div>
+              {isRoundsFilterOpen && (
+                <MockExamRoundFilter
+                  //TODO: 회차 모의고사
+                  mockExams={postData.examYear ? mockExams : null}
+                  setDataState={setPostData}
+                  setIsOpen={setIsRoundsFilterOpen}
+                  className={'absolute w-full top-[100%]'}
+                />
+              )}
+            </div>
+
+            {/* 문제 번호 선택 세션 */}
+            <div className={'flex flex-col relative gap-y-2'}>
+              <div className={'text-h3 font-bold ml-2'}>문항 번호 입력</div>
+              <div>
+                <input
+                  onChange={(e) => {
+                    isNumeric(e.target.value);
+                    setIsEmpty(e.target.value.length === 0);
+                    setQuestionSequence(parseInt(e.target.value));
+                    if (
+                      /^\d+$/.test(e.target.value) &&
+                      e.target.value.length !== 0 &&
+                      parseInt(e.target.value) < (questions?.length || 0)
+                    ) {
+                      changePostDataQuestionSequence(e.target.value);
+                    }
+                  }}
+                  className={'w-full bg-gray0 rounded-[16px] py-3 px-4 focus:outline-0'}></input>
+                {/* 경고 문구 세션 */}
+                {isEmpty ? <div className={'text-point ml-1'}>내용을 입력해주세요.</div> : null}
+                {!isQuestionSequenceNumeric && !isEmpty ? (
+                  <div className={'text-point ml-1'}>숫자만 입력해주세요.</div>
+                ) : null}
+                {questionSequence > (questions?.length || 0) && !isEmpty && isQuestionSequenceNumeric ? (
+                  <div className={'text-point ml-1'}>전체 문제 수({questions?.length}) 이하의 숫자를 입력해주세요.</div>
+                ) : null}
+              </div>
+            </div>
+
+            {/* 제목, 글 작성 세션 */}
+            <div className={'flex flex-col gap-y-2 mt-[16px]'}>
+              <div className={'text-h3 font-bold ml-2'}>해설 작성</div>
+              <div className={'flex flex-col gap-y-3'}>
+                <input
+                  onChange={(e) => {
+                    changePostDataTitle(e.target.value);
+                  }}
+                  className={
+                    'w-full border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
+                  }
+                  placeholder={'제목'}></input>
+                <textarea
+                  onChange={(e) => {
+                    changePostDataContent(e.target.value);
+                  }}
+                  placeholder={'내용을 입력해주세요.'}
+                  className={
+                    'w-full h-[300px] border-gray2 border-[1px] rounded-[16px] py-3 px-4 placeholder:text-gray4 focus:outline-0'
+                  }></textarea>
+              </div>
+            </div>
+          </div>
+
+          {/* 이미지 추가 세션 */}
+          <div className={'mx-5 flex gap-x-2 '}>
+            <div className={'rounded-[8px] p-2 bg-gray0 w-[48px] h-[48px]'}>
+              <label htmlFor="image">
+                <AddImageIcon />
+              </label>
+              <input
+                type={'file'}
+                accept={'image/*'}
+                id="image"
+                name="image"
+                ref={imgRef}
+                onChange={saveImgFile}
+                multiple
+                style={{ display: 'none' }}></input>
+            </div>
+          </div>
+          <div className={'mx-5 mt-3 w-[375px] flex items-center overflow-x-scroll gap-x-3'}>
+            {imagePreviews.map((img, i) => {
+              return (
+                <div key={i} className={'relative rounded-[8px]'}>
+                  <ImageDeleteButton i={i} usage={'create'} />
+                  <div className={'relative rounded-[8px] w-[80px] h-[80px] overflow-hidden'}>
+                    <Image key={i} src={img} fill alt={img} className={'object-cover'}></Image>;
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 export default WriteExplanationPost;

@@ -88,11 +88,13 @@ const ProfileSettings = (props: Props) => {
               </label>
               <input
                 type="file"
+                accept="image/*"
                 id={'input-file'}
                 ref={imgRef}
                 name="input-file"
                 onChange={handleImagePreview}
-                className="hidden"></input>
+                className="hidden"
+              />
             </div>
           </div>
 

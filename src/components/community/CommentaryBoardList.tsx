@@ -11,7 +11,7 @@ import useGetCommentarySearchResults from '@/lib/hooks/useGetCommentarySearchRes
 import useGetMockExams from '@/lib/hooks/useGetMockExams';
 import useGetMockExamYears from '@/lib/hooks/useGetMockExamYears';
 import { certificateIdAtom } from '@/recoil/atom';
-import { BoardType, ResponsePostType } from '@/types/community/type';
+import { BoardType } from '@/types/community/type';
 import { MockExam } from '@/types/global';
 
 interface Props {
@@ -232,7 +232,11 @@ const CommentaryBoardList = (props: Props) => {
                     commentCount={postResponse?.commentCount || 0}
                     likeCount={postResponse?.likeCount || 0}
                     likeStatus={postResponse?.likeStatus || false}
-                    createdAt={formatDate(postResponse.dateTime?.createdAt || '')}
+                    createdAt={
+                      postResponse.dateTime.modifiedAt
+                        ? formatDate(postResponse.dateTime.modifiedAt)
+                        : formatDate(postResponse.dateTime.createdAt)
+                    }
                     imageUrl={postResponse.postImages.length ? postResponse.postImages[0].imageUrl : null}
                     topElement={
                       postResponse.question

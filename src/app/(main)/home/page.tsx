@@ -217,16 +217,16 @@ function HomeComponents() {
       // userGoals 데이터가 있을 때만 실행
       setGoalPeriodContent(
         formatGoalPeriod(
-          new Date(userGoals[0].prepareStartDateTime),
-          new Date(userGoals[0].prepareFinishDateTime), // 종료 날짜도 formatGoalPeriod에 전달해야 합니다.
-          userGoals[0],
+          new Date(userGoals[userGoals.length - 1].prepareStartDateTime),
+          new Date(userGoals[userGoals.length - 1].prepareFinishDateTime), // 종료 날짜도 formatGoalPeriod에 전달해야 합니다.
+          userGoals[userGoals.length - 1],
         ),
       );
       setSelectedPrepareTime((prevState) => ({
         ...prevState,
-        prepareFinishDateTime: userGoals[0].prepareFinishDateTime,
-        prepareStartDateTime: userGoals[0].prepareStartDateTime,
-        goalId: userGoals[0].goalId,
+        prepareFinishDateTime: userGoals[userGoals.length - 1].prepareFinishDateTime,
+        prepareStartDateTime: userGoals[userGoals.length - 1].prepareStartDateTime,
+        goalId: userGoals[userGoals.length - 1].goalId,
       }));
     }
   }, [userGoals, isCertIdInitialized, setSelectedPrepareTime]); // 의존성 배열에 userGoals와 isCertIdInitialized 추가
