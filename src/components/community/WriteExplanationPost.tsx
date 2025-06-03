@@ -192,7 +192,8 @@ const WriteExplanationPost = (props: Props) => {
       <div className={'pt-14 py-8'}>
         {isQuestionNumberExceedingLimit ? (
           <QuestionNumberExceedingLimitAlertModal
-            setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit} />
+            setIsQuestionNumberExceedingLimit={setIsQuestionNumberExceedingLimit}
+          />
         ) : null}
         <form onSubmit={handleException}>
           <Header

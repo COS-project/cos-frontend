@@ -61,7 +61,7 @@ function StopwatchAlert(props: Props) {
             <section className="flex flex-col gap-y-4 bg-white rounded-[32px] p-5">
               <div className="self-stretch flex-col gap-4 flex">
                 <div className={'flex text-h2 font-bold gap-x-1'}>
-                  <div className="self-stretch leading-[30px]">누적시간</div>
+                  <div className="self-stretch leading-[30px]">공부 시간</div>
                   <div className="self-stretch text-primary leading-[30px]">
                     {hStopwatchTime}시간 {mStopwatchTime}분 {sStopwatchTime}초
                   </div>
@@ -95,7 +95,6 @@ function StopwatchAlert(props: Props) {
                           setOnModal(false); //현재창 닫기
                           setStartTime(Date.now());
                           setNow(Date.now());
-                          setIsReset(true);
                         });
                       }}>
                       기록하기

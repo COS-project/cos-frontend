@@ -82,16 +82,16 @@ const GrowthChartView = () => {
     if (userGoals) {
       setGoalPeriod(
         formatGoalPeriod(
-          new Date(userGoals[0].prepareStartDateTime),
-          new Date(userGoals[0].prepareStartDateTime),
-          userGoals[0],
+          new Date(userGoals[userGoals.length - 1].prepareStartDateTime),
+          new Date(userGoals[userGoals.length - 1].prepareStartDateTime),
+          userGoals[userGoals.length - 1],
         ),
       );
       setSelectedPrepareTime((prevState) => ({
         ...prevState,
-        prepareFinishDateTime: userGoals[0].prepareFinishDateTime,
-        prepareStartDateTime: userGoals[0].prepareStartDateTime,
-        goalId: userGoals[0].goalId,
+        prepareFinishDateTime: userGoals[userGoals.length - 1].prepareFinishDateTime,
+        prepareStartDateTime: userGoals[userGoals.length - 1].prepareStartDateTime,
+        goalId: userGoals[userGoals.length - 1].goalId,
       }));
     }
     console.log('성적그래프 통계', statisticsData);

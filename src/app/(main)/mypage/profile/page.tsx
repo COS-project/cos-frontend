@@ -105,6 +105,7 @@ const ProfileSettings = () => {
                 <ProfileImageIcon className="absolute bottom-0 right-0" />
               </label>
               <input
+                accept="image/*"
                 type="file"
                 id={'input-file'}
                 ref={imgRef}

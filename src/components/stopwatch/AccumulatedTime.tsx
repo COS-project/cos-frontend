@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import { SVGProps } from 'react';
 import React from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import useGoalAchievement from '@/lib/hooks/useGoalAchievement';
 import { certificateIdAtom } from '@/recoil/atom';
-import { hStopwatchTimeState, mStopwatchTimeState, sStopwatchTimeState } from '@/recoil/stopwatch/atom';
+import { hStopwatchTimeState, isResetState, mStopwatchTimeState, sStopwatchTimeState } from '@/recoil/stopwatch/atom';
 
 interface Props {
   setOnAccumulatedModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,6 +19,8 @@ function AccumulatedTime(props: Props) {
   const [hStopwatchTime, setHStopwatchTime] = useRecoilState(hStopwatchTimeState); //시 기록
   const [mStopwatchTime, setMStopwatchTime] = useRecoilState(mStopwatchTimeState); //분 기록
   const [sStopwatchTime, setSStopwatchTime] = useRecoilState(sStopwatchTimeState); //초 기록
+
+  const setIsReset = useSetRecoilState(isResetState); //리셋 여부
 
   const formatMillisecondsToTime = (ms: number) => {
     const totalSeconds = Math.floor(ms / 1000);
@@ -43,6 +45,7 @@ function AccumulatedTime(props: Props) {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
             <div
               onClick={() => {
+                setIsReset(true);
                 setOnAccumulatedModal(false); //현재창 닫기
               }}
               className={'flex justify-end items-center cursor-pointer'}>
@@ -52,7 +55,7 @@ function AccumulatedTime(props: Props) {
             <section className="flex flex-col gap-y-4 bg-white rounded-[32px] p-5">
               <div className="self-stretch flex-col gap-4 flex">
                 <div className="self-stretch flex-col gap-1 flex">
-                  <div className="self-stretch text-h4 leading-[30px] font-medium">전체 누적 시간</div>
+                  <div className="self-stretch text-h4 leading-[30px] font-medium">현재 공부 시간</div>
                   <div className="self-stretch text-primary text-h1 font-bold font-['Pretendard Variable'] leading-[30px]">
                     {hStopwatchTime}시간 {mStopwatchTime}분 {sStopwatchTime}초
                   </div>
@@ -61,7 +64,6 @@ function AccumulatedTime(props: Props) {
                     목표 기간 동안의 누적 시간
                   </div>
                   <div className="self-stretch text-primary text-h1 font-bold font-['Pretendard Variable'] leading-[30px]">
-                    {/*TODO: 백엔드 수정되면 변경*/}
                     {goalAchievementData && formatMillisecondsToTime(goalAchievementData.result.currentStudyTime).hours}
                     시간{' '}
                     {goalAchievementData &&

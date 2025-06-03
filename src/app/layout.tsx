@@ -2,11 +2,7 @@
 
 import './globals.css';
 
-import { RecoilRoot } from 'recoil';
-
 import ClientOnlyRecoil from '@/components/common/ClientOnlyRecoil';
-import Timer from '@/components/common/Timer';
-import { certificateNameAtom } from '@/recoil/atom';
 
 // export const metadata: Metadata = {
 //   title: 'COS project',

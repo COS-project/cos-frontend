@@ -4,6 +4,10 @@
     font-family:"Pretendard Variable";
     src: url("/fonts/PretendardVariable.ttf") format("opentype");
 }
+html, body {
+    touch-action: manipulation;
+    overscroll-behavior: none;  /* 일부 브라우저에서 터치 반응 억제 */
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
